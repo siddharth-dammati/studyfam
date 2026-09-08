@@ -30,7 +30,9 @@ export function GoogleSignInButton({
 }: GoogleSignInButtonProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { signInWithGoogle, profile } = useAuth();
-  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  const googleClientId =
+    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
+    "655007764370-h48i629okpm01d7mfvutjsq69a6sh7uj.apps.googleusercontent.com";
 
   useEffect(() => {
     if (profile || !googleClientId) return;
