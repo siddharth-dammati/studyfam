@@ -1,17 +1,32 @@
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+"use client";
 
-export default async function Page() {
-  const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/client";
 
-  const { data: todos } = await supabase.from("todos").select();
+export default function Page() {
+  const [todos, setTodos] = useState<{ id: string | number; name: string }[] | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("todos")
+      .select()
+      .then(({ data, error }) => {
+        if (!error && data) {
+          setTodos(data);
+        }
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen p-8 bg-gray-50 text-gray-900">
       <div className="max-w-md mx-auto bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <h1 className="text-xl font-bold mb-4">Supabase Connection Test</h1>
-        {todos && todos.length > 0 ? (
+        {loading ? (
+          <p className="text-sm text-gray-500">Loading todos...</p>
+        ) : todos && todos.length > 0 ? (
           <ul className="space-y-2">
             {todos.map((todo) => (
               <li key={todo.id} className="p-2 bg-gray-50 rounded border border-gray-100">
