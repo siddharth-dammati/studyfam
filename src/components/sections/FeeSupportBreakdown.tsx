@@ -59,11 +59,11 @@ export function FeeSupportBreakdown() {
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-emerald-600" />
                     <h4 className="text-xs font-bold text-slate-900 uppercase font-mono tracking-wider">
-                      Dual-Track Scholarship Allocation
+                      Dynamic Dual-Track Allocation (Scales With Registrations)
                     </h4>
                   </div>
                   <span className="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
-                    50 / 50 Equal Split
+                    50% Merit · 50% Need-Based
                   </span>
                 </div>
                 
@@ -71,40 +71,46 @@ export function FeeSupportBreakdown() {
                   {/* Track 1: Merit */}
                   <div className="p-4 rounded-xl bg-white border border-emerald-200 shadow-xs">
                     <div className="flex items-center gap-1.5 text-emerald-700 font-mono text-[11px] font-bold uppercase mb-1">
-                      <span>🏆</span> Merit Track (50% Slots)
+                      <span>🏆</span> Merit Track (50% of Pool)
                     </div>
-                    <div className="text-sm font-bold text-slate-900 mb-1.5">
-                      Top 250 Boys + Top 250 Girls
+                    <div className="text-sm font-bold text-slate-900 mb-1">
+                      100% Mock AIR Rank Based
+                    </div>
+                    <div className="text-[11px] text-emerald-800 font-semibold mb-1.5">
+                      If 50,000 registrations: Top 250 Boys + Top 250 Girls
                     </div>
                     <ul className="text-[11px] text-slate-600 space-y-1">
-                      <li>• <strong>100% Mock Rank:</strong> Pure academic performance</li>
-                      <li>• <strong>No financial screening:</strong> Open to all eligible rankers</li>
-                      <li>• ₹1,000 (Boys) · ₹800 (Girls) NTA exam fee</li>
+                      <li>• <strong>Pure Merit:</strong> No financial checks, open to all</li>
+                      <li>• <strong>50:50 Gender Parity:</strong> Equal slots for boys & girls</li>
+                      <li>• <strong>Full Reimbursement:</strong> ₹1,000 (Boys) · ₹800 (Girls)</li>
                     </ul>
                   </div>
 
                   {/* Track 2: Need-Based */}
                   <div className="p-4 rounded-xl bg-white border border-rose-200 shadow-xs">
                     <div className="flex items-center gap-1.5 text-rose-700 font-mono text-[11px] font-bold uppercase mb-1">
-                      <span>❤️</span> Need-Based Support (50% Slots)
+                      <span>❤️</span> Need-Based Support (50% of Pool)
                     </div>
-                    <div className="text-sm font-bold text-slate-900 mb-1.5">
-                      Next 250 Boys + Next 250 Girls
+                    <div className="text-sm font-bold text-slate-900 mb-1">
+                      50% Reserved for Financial Aid
+                    </div>
+                    <div className="text-[11px] text-rose-800 font-semibold mb-1.5">
+                      If 50,000 registrations: Next 250 Boys + Next 250 Girls
                     </div>
                     <ul className="text-[11px] text-slate-600 space-y-1">
-                      <li>• <strong>Financial Need Considered:</strong> Reserved for genuine help</li>
-                      <li>• Separate eligible pool of economically modest students</li>
-                      <li>• ₹1,000 (Boys) · ₹800 (Girls) NTA exam fee</li>
+                      <li>• <strong>Eligibility:</strong> Family income ≤ ₹8 Lakh / year</li>
+                      <li>• <strong>50:50 Gender Parity:</strong> Equal slots for boys & girls</li>
+                      <li>• <strong>Full Reimbursement:</strong> ₹1,000 (Boys) · ₹800 (Girls)</li>
                     </ul>
                   </div>
                 </div>
 
                 <div className="pt-3 border-t border-emerald-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs">
                   <span className="font-mono text-slate-700 font-medium">
-                    At 1,000 Kickoff (₹18,000 pool): <strong className="text-slate-900">10 Merit + 10 Need-Based</strong>
+                    Scaling: <strong className="text-slate-900">20 funded at 1,000 registrations → 1,000 funded if 50,000 reached</strong>
                   </span>
                   <span className="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-bold font-mono text-[11px]">
-                    = 20 Students Fully Funded!
+                    ₹18 Escrowed / Student
                   </span>
                 </div>
               </div>

@@ -386,7 +386,7 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
               {/* Gender Selection */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Gender * <span className="text-indigo-600 font-normal lowercase">(for Top 250 Boys & 250 Girls pools)</span>
+                  Gender * <span className="text-indigo-600 font-normal lowercase">(required for equal boys & girls rank pool split)</span>
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[

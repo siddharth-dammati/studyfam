@@ -145,7 +145,7 @@ export function ScholarshipDossierModal({
             Complete Your Candidate Profile
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
-            StudyFAM awards <strong>500 Merit Scholarships</strong> (Top 250 Boys & Top 250 Girls) and reserves <strong>500 Need-Based slots</strong>. Please confirm your academic & socio-economic details to ensure accurate pool allocation.
+            Scholarship slots <strong>scale dynamically</strong> with total registrations — 50% Merit, 50% Need-Based. At 50,000 registrations, that unlocks 500 Merit + 500 Need-Based slots. Confirm your details to be accurately placed in the pool.
           </p>
         </div>
 
@@ -203,7 +203,7 @@ export function ScholarshipDossierModal({
             {/* 2. Gender Selection (CRITICAL FOR TOP 250 BOYS / TOP 250 GIRLS SPLIT) */}
             <div>
               <label className="block text-[11px] font-mono font-bold uppercase text-slate-700 mb-1">
-                Gender * <span className="text-indigo-600 lowercase font-normal">(required for 250 boys & 250 girls rank split)</span>
+                Gender * <span className="text-indigo-600 lowercase font-normal">(required for equal boys & girls rank pool split)</span>
               </label>
               <div className="grid grid-cols-3 gap-2.5">
                 {[
@@ -319,7 +319,7 @@ export function ScholarshipDossierModal({
                       <span>🏆 Merit Track</span>
                     </div>
                     <p className="text-[10px] text-slate-600 leading-relaxed">
-                      100% Mock score based. Top 250 boys & Top 250 girls receive direct fee grants.
+                      100% Mock rank based. Top boys & girls (count scales with registrations) receive direct fee grants.
                     </p>
                   </div>
                   <span className="mt-2 inline-block font-mono text-[9px] font-bold text-amber-800 uppercase">
@@ -350,7 +350,7 @@ export function ScholarshipDossierModal({
                     <p className="text-[10px] text-slate-500 leading-relaxed">
                       {familyIncome === "above_8l"
                         ? "Ineligible: Income exceeds ₹8 Lakh/year. Only Merit Track is available."
-                        : "50% slots reserved for verified financial assistance pool (next 250 boys & girls)."}
+                        : "50% slots reserved for verified financial assistance pool — next eligible boys & girls (scales with registrations)."}
                     </p>
                   </div>
                   <span className={`mt-2 inline-block font-mono text-[9px] font-bold uppercase ${

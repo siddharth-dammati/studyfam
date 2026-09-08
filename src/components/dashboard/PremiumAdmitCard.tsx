@@ -353,7 +353,7 @@ export function PremiumAdmitCard({
                         Need-Based Support Track Allotted:
                       </span>{" "}
                       <span className="text-slate-700 text-[11px]">
-                        ❤️ 50% Need-Based Assistance Pool (Next 250 Boys & 250 Girls with socio-economic verification).
+                        ❤️ 50% Need-Based Assistance Pool — slot count scales with total registrations; socio-economic verification applies.
                       </span>
                     </div>
                   </div>
@@ -365,7 +365,7 @@ export function PremiumAdmitCard({
                         Merit Scholarship Track Allotted:
                       </span>{" "}
                       <span className="text-slate-700 text-[11px]">
-                        🏆 50% Merit Track (Top 250 Boys + Top 250 Girls based 100% on Mock AIR).
+                        🏆 50% Merit Track — top boys & girls selected 100% on Mock AIR; slot count scales with total registrations.
                       </span>
                     </div>
                   </div>
@@ -484,7 +484,7 @@ export function PremiumAdmitCard({
                 <strong>Scoring & Marking Scheme:</strong> 4 marks for each correct response, -1 penalty mark for incorrect answers. Unattempted questions receive 0 marks.
               </li>
               <li>
-                <strong>50% Merit & 50% Need-Based Dual Track:</strong> Rank 1–500 (250 boys + 250 girls) merit scholarships are determined solely by test percentile. Need-based assistance will be verified independently post-exam.
+                <strong>50% Merit &amp; 50% Need-Based Dual Track:</strong> Top-ranked boys &amp; girls (slot count scales with total verified registrations) earn merit scholarships purely by test percentile. Need-based assistance will be verified independently post-exam.
               </li>
               <li>
                 <strong>Rough Sheets & Calculations:</strong> Blank physical paper and ballpoint pens are permitted at your study desk. Electronic calculators or smartwatches are strictly forbidden.

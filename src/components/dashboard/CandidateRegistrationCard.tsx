@@ -175,7 +175,7 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-slate-600">
               <span>Gender: <strong className="text-slate-900">{registration.gender === "boy" ? "👦 Boy (Male)" : registration.gender === "girl" ? "👧 Girl (Female)" : "⚪ Other"}</strong></span>
               <span>Income: <strong className="text-slate-900 font-mono">{registration.family_income === "below_1.5l" ? "< ₹1.5L" : registration.family_income === "1.5l_3l" ? "₹1.5L–3L" : registration.family_income === "3l_6l" ? "₹3L–6L" : registration.family_income === "6l_8l" ? "₹6L–8L" : "> ₹8L"}</strong></span>
-              <span>Track: <strong className="text-indigo-700 font-bold">{registration.scholarship_track === "opt_out" ? "💖 Opted Out (Donated Slot)" : registration.scholarship_track === "need_based" ? "❤️ Need-Based Support" : "🏆 Merit Track (Top 250)"}</strong></span>
+              <span>Track: <strong className="text-indigo-700 font-bold">{registration.scholarship_track === "opt_out" ? "💖 Opted Out (Donated Slot)" : registration.scholarship_track === "need_based" ? "❤️ Need-Based Support" : "🏆 Merit Track"}</strong></span>
             </div>
             <button
               onClick={() => setShowDossierModal(true)}
@@ -194,7 +194,7 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
               <div>
                 <div className="font-bold text-indigo-950 text-xs">Action Required: Complete Your Scholarship Dossier</div>
                 <p className="text-slate-600 mt-0.5 text-[11px]">
-                  Specify your gender, family income bracket, and scholarship track to verify eligibility for the 500 Merit & 500 Need-Based slots.
+                  Specify your gender, family income, and scholarship track to be placed in the Merit or Need-Based pool (slots scale dynamically with total registrations).
                 </p>
               </div>
             </div>

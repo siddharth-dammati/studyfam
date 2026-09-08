@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: "How many students receive the scholarship?",
-    a: "Scholarship slots scale up dynamically as participation grows, reserving exactly 50% of all slots for need-based students alongside 50% pure merit rankers. At 50,000 scale (1,000 students funded):\n• 🏆 Merit Track (500 students): Top 250 boys + Top 250 girls based 100% on All-India rank.\n• ❤️ Need-Based Track (500 students): Next 250 boys + Next 250 girls with verified financial need.\nAt our 1,000 students kickoff (₹18,000 pool), 20 students are fully funded: 10 Merit (Top 5 boys + Top 5 girls) and 10 Need-Based (Next 5 boys + Next 5 girls)."
+    a: "Scholarship slots scale dynamically as participation grows — exactly 50% Merit, 50% Need-Based at every level. Examples:\n• At 1,000 registrations (₹18,000 pool): 20 students funded — 10 Merit (Top 5 boys + Top 5 girls) + 10 Need-Based.\n• At 10,000 registrations (₹1,80,000 pool): 200 students — 100 Merit (50 boys + 50 girls) + 100 Need-Based.\n• If 50,000 registrations are reached (₹9,00,000 pool): 1,000 students — 500 Merit (250 boys + 250 girls) + 500 Need-Based. These are milestone projections; actual numbers track real registrations."
   },
   {
     q: "How is the ₹18 fee support allocated and disbursed?",
