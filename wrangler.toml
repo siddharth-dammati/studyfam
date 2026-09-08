@@ -10,3 +10,9 @@ html_handling = "auto-trailing-slash"
 not_found_handling = "single-page-application"
 run_worker_first = true
 
+[vars]
+CASHFREE_APP_ID = "1104906797b7e0ff7bf86edf2bf6094011"
+CASHFREE_ENV = "production"
+NEXT_PUBLIC_CASHFREE_MODE = "production"
+
+
