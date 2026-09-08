@@ -1,9 +1,10 @@
 "use client";
 
-import { formatIndianCurrency, formatIndianNumber } from "@/lib/impactConfig";
+import { formatIndianCurrency, formatIndianNumber, getActiveMilestone } from "@/lib/impactConfig";
 import { useState } from "react";
 import Link from "next/link";
 import { CheckIcon, Trophy, Award, Users, Sparkles } from "lucide-react";
+import { useImpactStats } from "@/hooks/useImpactStats";
 
 const milestones = [
   { students: 1000, boysCount: 10, girlsCount: 10, boysAmount: 10000, girlsAmount: 8000, topN: 20 },
@@ -17,6 +18,8 @@ const RATE = 18;
 const shareText = "I'm taking the StudyFam National Mock on 27 December 2026 (9 AM – 12 PM). ₹27 entry, national ranking, AI percentile analysis, and Top N performers win their full JEE exam fees (e.g. 1000 registrations = Top 10 Boys + Top 10 Girls). Join me.";
 
 export function FeeSupportBreakdown() {
+  const { total_registrations = 0 } = useImpactStats();
+  const activeMilestone = getActiveMilestone(total_registrations);
   const [copied, setCopied] = useState(false);
   const copy = () => { navigator.clipboard.writeText(shareText); setCopied(true); setTimeout(() => setCopied(false), 2000); };
   const wa = () => window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
@@ -234,11 +237,18 @@ export function FeeSupportBreakdown() {
                   <tbody className="divide-y divide-[var(--border)]">
                     {milestones.map((m) => {
                       const pool = m.students * RATE;
-                      const isActive = m.students === 10000;
+                      const isActive = m.students === activeMilestone.students;
                       return (
-                        <tr key={m.students} className={`hover:bg-[var(--surface-1)] transition-colors ${isActive ? "bg-emerald-50/50" : ""}`}>
+                        <tr key={m.students} className={`hover:bg-[var(--surface-1)] transition-colors ${isActive ? "bg-emerald-50/70 font-semibold" : ""}`}>
                           <td className="px-4 py-3.5 font-semibold text-[var(--text-primary)]">
-                            {m.students.toLocaleString("en-IN")}
+                            <div className="flex items-center gap-1.5">
+                              <span>{m.students.toLocaleString("en-IN")}</span>
+                              {isActive && (
+                                <span className="text-[9px] font-mono font-bold bg-emerald-600 text-white px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+                                  Current Goal
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="px-4 py-3.5 font-bold text-[var(--text-primary)]">
                             {formatIndianCurrency(pool)}
@@ -247,7 +257,7 @@ export function FeeSupportBreakdown() {
                             Top {m.boysCount} Boys (₹{(m.boysAmount/1000).toFixed(0)}k) + Top {m.girlsCount} Girls (₹{(m.girlsAmount/1000).toFixed(0)}k)
                           </td>
                           <td className="px-4 py-3.5 text-right">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${isActive ? "bg-emerald-600 text-white shadow-xs" : "bg-emerald-100 text-emerald-800"}`}>
                               🏆 Top {m.topN}
                             </span>
                           </td>

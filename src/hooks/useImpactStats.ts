@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { getActiveMilestone, getMilestoneProgress, MilestoneTier, MILESTONE_TIERS } from "@/lib/impactConfig";
 
 export interface ImpactStats {
   total_registrations: number;
@@ -10,16 +11,20 @@ export interface ImpactStats {
   milestone: number;
   progress_percentage: number;
   remaining_to_milestone: number;
+  current_tier: MilestoneTier;
   isLoading: boolean;
 }
+
+const defaultTier = MILESTONE_TIERS[0]; // 1,000 Aspirants
 
 const defaultStats: ImpactStats = {
   total_registrations: 0,
   support_pool: 0,
   funded_students: 0,
-  milestone: 15000,
+  milestone: 1000,
   progress_percentage: 0,
-  remaining_to_milestone: 15000,
+  remaining_to_milestone: 1000,
+  current_tier: defaultTier,
   isLoading: true,
 };
 
@@ -32,13 +37,19 @@ export function useImpactStats() {
       // 1. Try secure Postgres RPC function
       const { data, error } = await supabase.rpc("get_impact_stats");
       if (!error && data) {
+        const total = Number(data.total_registrations) || 0;
+        const pool = Number(data.support_pool) || (total * 18);
+        const funded = Number(data.funded_students) || Math.floor(pool / 900);
+        const progressInfo = getMilestoneProgress(total);
+
         setStats({
-          total_registrations: Number(data.total_registrations) || 0,
-          support_pool: Number(data.support_pool) || 0,
-          funded_students: Number(data.funded_students) || 0,
-          milestone: Number(data.milestone) || 15000,
-          progress_percentage: Number(data.progress_percentage) || 0,
-          remaining_to_milestone: Number(data.remaining_to_milestone) || 15000,
+          total_registrations: total,
+          support_pool: pool,
+          funded_students: funded,
+          milestone: progressInfo.current.students,
+          progress_percentage: progressInfo.progressInTier,
+          remaining_to_milestone: progressInfo.remaining,
+          current_tier: progressInfo.current,
           isLoading: false,
         });
         return;
@@ -53,14 +64,16 @@ export function useImpactStats() {
         const total = count;
         const pool = total * 18;
         const funded = Math.floor(pool / 900);
-        const ms = 15000;
+        const progressInfo = getMilestoneProgress(total);
+
         setStats({
           total_registrations: total,
           support_pool: pool,
           funded_students: funded,
-          milestone: ms,
-          progress_percentage: Math.min((total / ms) * 100, 100),
-          remaining_to_milestone: Math.max(0, ms - total),
+          milestone: progressInfo.current.students,
+          progress_percentage: progressInfo.progressInTier,
+          remaining_to_milestone: progressInfo.remaining,
+          current_tier: progressInfo.current,
           isLoading: false,
         });
         return;

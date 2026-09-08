@@ -86,7 +86,7 @@ insert into public.app_config (key, value, description) values
     ('exam_date', '2026-12-27T09:00:00+05:30', 'Date of the All India Mock Exam'),
     ('support_per_registration', '18', 'INR allocated to scholarship pool per registration'),
     ('fee_per_mock', '27', 'Entry fee in INR'),
-    ('milestone', '15000', 'Current target milestone of registrations'),
+    ('milestone', '1000', 'Current target milestone of registrations'),
     ('support_amount_boys', '1000', 'Official NTA application fee for boys'),
     ('support_amount_girls', '800', 'Official NTA application fee for girls'),
     ('baseline_registrations', '0', 'Baseline offset for live counter if migrating existing counts')
@@ -126,6 +126,21 @@ begin
     pool_total := total_count * support_rate;
     avg_fee := (boys_fee + girls_fee) / 2;
     funded_count := floor(pool_total / avg_fee);
+
+    -- Progressive milestone tiers: 1000 -> 5000 -> 10000 -> 25000 -> 50000 -> 100000
+    if total_count < 1000 then
+        target_milestone := 1000;
+    elsif total_count < 5000 then
+        target_milestone := 5000;
+    elsif total_count < 10000 then
+        target_milestone := 10000;
+    elsif total_count < 25000 then
+        target_milestone := 25000;
+    elsif total_count < 50000 then
+        target_milestone := 50000;
+    else
+        target_milestone := 100000;
+    end if;
 
     result := json_build_object(
         'total_registrations', total_count,

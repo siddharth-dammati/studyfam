@@ -1,8 +1,25 @@
 "use client";
 
-import { formatIndianNumber, formatIndianCurrency } from "@/lib/impactConfig";
+import {
+  formatIndianNumber,
+  formatIndianCurrency,
+  MILESTONE_TIERS,
+  MilestoneTier,
+  getActiveMilestone,
+  getMilestoneProgress,
+} from "@/lib/impactConfig";
 import { useEffect, useState } from "react";
-import { Trophy, Award, Users } from "lucide-react";
+import {
+  Trophy,
+  Award,
+  Users,
+  Target,
+  CheckCircle2,
+  Sparkles,
+  ShieldCheck,
+  Share2,
+  Check,
+} from "lucide-react";
 import { useImpactStats } from "@/hooks/useImpactStats";
 
 export function ImpactProgress() {
@@ -11,18 +28,33 @@ export function ImpactProgress() {
     total_registrations: count = 0,
     support_pool: pool = 0,
     funded_students: topN = 0,
-    milestone = 15000,
-    progress_percentage: pct = 0,
-    remaining_to_milestone: remaining = 15000,
   } = useImpactStats();
+
+  const activeMilestone = getActiveMilestone(count);
+  const milestoneInfo = getMilestoneProgress(count);
+  const [selectedMilestone, setSelectedMilestone] = useState<MilestoneTier>(activeMilestone);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  const nextMilestoneTopN = Math.floor(((milestone || 15000) * 18) / 900);
+    setSelectedMilestone(getActiveMilestone(count));
+  }, [count]);
 
   if (!mounted) return null;
+
+  const isCurrentActive = selectedMilestone.students === activeMilestone.students;
+  const isUnlocked = count >= selectedMilestone.students;
+
+  const handleShare = () => {
+    const text = `StudyFam's All-India JEE Main Mock has set a target of ${selectedMilestone.students.toLocaleString()} students to fund Top ${selectedMilestone.topN} rankers' official NTA exam fees! Entry is just ₹27. Join here: https://studyfam.com`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText("https://studyfam.com/#impact");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <section id="impact" className="py-20 sm:py-24 bg-slate-50/70 border-y border-slate-200">
@@ -115,77 +147,217 @@ export function ImpactProgress() {
 
         </div>
 
-        {/* The 1,000 Rule (Simple, Visual, Concrete Example) */}
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
-            <div className="flex items-center gap-2">
-              <span className="text-base">💡</span>
-              <h3 className="text-sm font-bold text-slate-900">
-                Simple Example: For Every 1,000 Students Who Register
-              </h3>
-            </div>
-            <span className="text-xs font-mono text-slate-500">
-              Pool created = 1,000 × ₹18 = <strong className="text-slate-900 font-bold">₹18,000</strong>
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-              <span className="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-bold shrink-0">
-                👨
-              </span>
-              <div className="text-xs">
-                <div className="text-slate-500 font-medium">Top 10 Boys</div>
-                <div className="font-bold text-slate-900">₹1,000 each <span className="font-mono text-[11px] text-slate-500 font-normal">(= ₹10,000)</span></div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-              <span className="w-8 h-8 rounded-lg bg-pink-100 text-pink-700 flex items-center justify-center text-sm font-bold shrink-0">
-                👩
-              </span>
-              <div className="text-xs">
-                <div className="text-slate-500 font-medium">Top 10 Girls</div>
-                <div className="font-bold text-slate-900">₹800 each <span className="font-mono text-[11px] text-slate-500 font-normal">(= ₹8,000)</span></div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200">
-              <span className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-sm font-bold shrink-0">
-                🏆
-              </span>
-              <div className="text-xs">
-                <div className="text-emerald-900 font-bold">Top 20 Winners</div>
-                <div className="font-bold text-emerald-700">100% Exam Fee Funded</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Milestone Progress Bar */}
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs">
+        {/* Live Active Target Progress Bar */}
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-medium text-slate-600 mb-3 gap-2">
-            <div>
-              Next Goal: <strong className="text-slate-900 font-bold">{formatIndianNumber(milestone)} registrations</strong>
-              <span className="text-emerald-700 font-semibold ml-1.5">(Expands to Top {nextMilestoneTopN} Winners)</span>
+            <div className="flex items-center gap-2">
+              <Target className="w-4 h-4 text-indigo-600 shrink-0" />
+              <span>
+                Active Target: <strong className="text-slate-900 font-bold">{formatIndianNumber(activeMilestone.students)} registrations</strong>
+              </span>
+              <span className="text-emerald-700 font-semibold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full text-[11px]">
+                Funds Top {activeMilestone.topN} Winners
+              </span>
             </div>
             <span className="text-indigo-600 font-mono font-semibold">
-              {formatIndianNumber(remaining)} registrations left
+              {formatIndianNumber(milestoneInfo.remaining)} registrations left
             </span>
           </div>
 
-          <div className="h-2 bg-slate-100 rounded-full overflow-hidden mb-2">
+          <div className="h-3 bg-slate-100 rounded-full overflow-hidden mb-2 relative">
             <div
               className="h-full rounded-full transition-all duration-1000"
-              style={{ width: `${pct}%`, background: "linear-gradient(90deg, #6366F1, #10B981)" }}
+              style={{
+                width: `${Math.min(100, Math.max(0, milestoneInfo.overallProgress))}%`,
+                background: "linear-gradient(90deg, #6366F1, #10B981)",
+              }}
             />
           </div>
 
           <div className="flex justify-between text-[10px] text-slate-400 font-mono">
             <span>0</span>
-            <span className="text-slate-700 font-semibold">{formatIndianNumber(count)} today (Top {topN} Funded)</span>
-            <span>Target: {formatIndianNumber(milestone)} (Top {nextMilestoneTopN})</span>
+            <span className="text-slate-700 font-semibold">
+              {formatIndianNumber(count)} today ({milestoneInfo.overallProgress.toFixed(1)}% toward Target {formatIndianNumber(activeMilestone.students)})
+            </span>
+            <span>Target: {formatIndianNumber(activeMilestone.students)} Aspirants</span>
           </div>
+        </div>
+
+        {/* Milestone Progression Ladder & Benefits Explorer */}
+        <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs">
+          
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Sparkles className="w-4 h-4 text-amber-500" />
+                <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                  Scholarship Milestone Roadmap & Benefits
+                </h3>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-500">
+                First targeting 1,000 students, then unlocking 5,000, 10,000, and scaling up to 1,00,000. Click any tier to inspect its exact benefits.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleShare}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+              >
+                <Share2 size={13} />
+                <span>Share Target</span>
+              </button>
+              <button
+                onClick={handleCopyLink}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
+              >
+                {copied ? <Check size={13} className="text-emerald-600" /> : null}
+                <span>{copied ? "Copied" : "Copy Link"}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Milestone Tier Tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6">
+            {MILESTONE_TIERS.map((tier) => {
+              const isSelected = selectedMilestone.students === tier.students;
+              const isTierActive = activeMilestone.students === tier.students;
+              const isTierUnlocked = count >= tier.students;
+
+              return (
+                <button
+                  key={tier.students}
+                  onClick={() => setSelectedMilestone(tier)}
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap border shrink-0 ${
+                    isSelected
+                      ? "bg-slate-900 text-white border-slate-900 shadow-xs scale-[1.02]"
+                      : isTierActive
+                      ? "bg-emerald-50 text-emerald-900 border-emerald-300 hover:bg-emerald-100"
+                      : isTierUnlocked
+                      ? "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                      : "bg-white text-slate-500 border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <span>{formatIndianNumber(tier.students)} Students</span>
+                  {isTierActive && (
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  )}
+                  {isTierUnlocked && !isTierActive && (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Selected Milestone Benefits Showcase */}
+          <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-6 transition-all">
+            
+            {/* Header of Selected Tier */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">🎯</span>
+                  <h4 className="text-lg font-bold text-slate-900">
+                    {selectedMilestone.title}
+                  </h4>
+                  {isCurrentActive && (
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-emerald-500 text-white tracking-wider animate-pulse">
+                      Current Target
+                    </span>
+                  )}
+                  {isUnlocked && !isCurrentActive && (
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-slate-900 text-white tracking-wider">
+                      Unlocked & Achieved ✓
+                    </span>
+                  )}
+                  {!isUnlocked && !isCurrentActive && (
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-slate-200 text-slate-600 tracking-wider">
+                      Upcoming Target
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 font-medium">
+                  {selectedMilestone.tagline}
+                </p>
+              </div>
+
+              <div className="text-left sm:text-right">
+                <div className="text-xs font-mono text-slate-400 uppercase tracking-wider">Guaranteed Pool</div>
+                <div className="text-xl sm:text-2xl font-bold font-mono text-emerald-700">
+                  {formatIndianCurrency(selectedMilestone.pool)}
+                </div>
+              </div>
+            </div>
+
+            {/* Key 3 Metric Cards for this Tier */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+              
+              {/* Boys Reimbursement */}
+              <div className="bg-white p-4 rounded-xl border border-slate-200/90 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-lg shrink-0">
+                  👨
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-slate-500">Top {selectedMilestone.boysCount} Boys</div>
+                  <div className="font-bold text-slate-900 text-sm">
+                    ₹1,000 each <span className="text-xs font-mono text-slate-400 font-normal">(= {formatIndianCurrency(selectedMilestone.boysAmount)})</span>
+                  </div>
+                  <div className="text-[10px] text-indigo-600 font-medium">100% NTA Exam Fee</div>
+                </div>
+              </div>
+
+              {/* Girls Reimbursement */}
+              <div className="bg-white p-4 rounded-xl border border-slate-200/90 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-pink-50 border border-pink-100 flex items-center justify-center text-lg shrink-0">
+                  👩
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-slate-500">Top {selectedMilestone.girlsCount} Girls</div>
+                  <div className="font-bold text-slate-900 text-sm">
+                    ₹800 each <span className="text-xs font-mono text-slate-400 font-normal">(= {formatIndianCurrency(selectedMilestone.girlsAmount)})</span>
+                  </div>
+                  <div className="text-[10px] text-pink-600 font-medium">100% NTA Exam Fee</div>
+                </div>
+              </div>
+
+              {/* Total Winners */}
+              <div className="bg-emerald-50/90 p-4 rounded-xl border border-emerald-200 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0">
+                  <Trophy size={18} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-emerald-800 uppercase tracking-wider font-mono">
+                    Total Winners
+                  </div>
+                  <div className="font-bold text-emerald-950 text-base">
+                    Top {formatIndianNumber(selectedMilestone.topN)} Rankers
+                  </div>
+                  <div className="text-[10px] text-emerald-700 font-medium">
+                    100% Full Fees Reimbursed
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Detailed Benefits List */}
+            <div className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/90">
+              <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
+                <ShieldCheck size={14} className="text-emerald-600" />
+                <span>Guaranteed Benefits Unlocked At {formatIndianNumber(selectedMilestone.students)} Students:</span>
+              </div>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs text-slate-700">
+                {selectedMilestone.benefits.map((benefit, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
