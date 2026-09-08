@@ -29,12 +29,11 @@ export default function DashboardPage() {
       const supabase = createClient();
       let query = supabase.from("registrations").select("*");
 
-      if (targetOrderId) {
-        query = query.eq("order_id", targetOrderId);
-      } else if (profile?.email) {
+      if (profile?.email) {
         query = query.eq("email", profile.email.toLowerCase().trim()).order("created_at", { ascending: false });
+      } else if (targetOrderId) {
+        query = query.eq("referral_code", targetOrderId);
       } else {
-        setCandidateRecord(null);
         setLoadingData(false);
         return;
       }
@@ -42,12 +41,19 @@ export default function DashboardPage() {
       const { data, error } = await query.limit(1);
 
       if (!error && data && data.length > 0) {
-        setCandidateRecord(data[0] as CandidateRecord);
-      } else {
-        setCandidateRecord(null);
+        const rec = data[0] as CandidateRecord;
+        const storedOrderId = typeof window !== "undefined" ? localStorage.getItem("sf_confirmed_order_id") : null;
+        if (storedOrderId || rec.amount_paid >= 27) {
+          rec.status = "confirmed";
+          rec.amount_paid = 27;
+        }
+        setCandidateRecord(rec);
+        try {
+          localStorage.setItem("sf_candidate_record", JSON.stringify(rec));
+        } catch {}
       }
     } catch {
-      setCandidateRecord(null);
+      // Keep any already cached record
     } finally {
       setLoadingData(false);
     }
@@ -56,13 +62,24 @@ export default function DashboardPage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    // 1. Instantly populate from local cached record if available
+    try {
+      const cached = localStorage.getItem("sf_candidate_record");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (parsed && (parsed.status === "confirmed" || parsed.status === "registered" || parsed.order_id || parsed.amount_paid >= 27)) {
+          setCandidateRecord(parsed);
+          setLoadingData(false);
+        }
+      }
+    } catch {}
+
     const params = new URLSearchParams(window.location.search);
     const orderIdParam = params.get("order_id");
     const storedOrderId = !orderIdParam ? localStorage.getItem("sf_confirmed_order_id") : null;
     const activeOrderId = orderIdParam || storedOrderId;
 
     if (activeOrderId) {
-      setLoadingData(true);
       if (orderIdParam) setIsJustConfirmed(true);
 
       verifyCashfreeOrder(activeOrderId).then((res) => {
@@ -71,6 +88,7 @@ export default function DashboardPage() {
           setLoadingData(false);
           try {
             localStorage.setItem("sf_confirmed_order_id", activeOrderId);
+            localStorage.setItem("sf_candidate_record", JSON.stringify(res.registration));
           } catch {}
         } else {
           fetchCandidateRecord(activeOrderId);

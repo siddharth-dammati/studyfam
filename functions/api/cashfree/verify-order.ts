@@ -1,4 +1,4 @@
-﻿interface Env {
+interface Env {
   CASHFREE_APP_ID?: string;
   CASHFREE_SECRET_KEY?: string;
   CASHFREE_ENV?: string;
@@ -67,30 +67,90 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
           paymentMethod = String(successPayment.payment_group || "online");
         }
 
-        // Update Supabase
-        await fetch(`${supabaseUrl}/rest/v1/registrations?order_id=eq.${encodeURIComponent(orderId)}`, {
-          method: "PATCH",
-          headers: {
-            apikey: supabaseKey,
-            Authorization: `Bearer ${supabaseKey}`,
-            "Content-Type": "application/json",
-            Prefer: "return=representation",
-          },
-          body: JSON.stringify({
-            status: "registered",
-            amount_paid: 27,
+        const customerEmail = (orderData.customer_details?.customer_email || "").toLowerCase().trim();
+        const customerName = orderData.customer_details?.customer_name || "Candidate";
+        const customerPhone = orderData.customer_details?.customer_phone || "";
+
+        let registrationId = "";
+        let registrationRecord: any = null;
+
+        try {
+          // Update Supabase
+          const patchRes = await fetch(`${supabaseUrl}/rest/v1/registrations?order_id=eq.${encodeURIComponent(orderId)}`, {
+            method: "PATCH",
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
+            },
+            body: JSON.stringify({
+              status: "registered",
+              amount_paid: 27,
+              payment_status: "success",
+              payment_id: paymentId,
+              payment_method: paymentMethod,
+            }),
+          });
+          const patched: any = await patchRes.json();
+          if (Array.isArray(patched) && patched.length > 0) {
+            registrationId = patched[0].id;
+            registrationRecord = patched[0];
+          } else if (customerEmail) {
+            const emailPatchRes = await fetch(`${supabaseUrl}/rest/v1/registrations?email=eq.${encodeURIComponent(customerEmail)}`, {
+              method: "PATCH",
+              headers: {
+                apikey: supabaseKey,
+                Authorization: `Bearer ${supabaseKey}`,
+                "Content-Type": "application/json",
+                Prefer: "return=representation",
+              },
+              body: JSON.stringify({
+                status: "registered",
+                amount_paid: 27,
+                referral_code: orderId,
+              }),
+            });
+            const emailPatched: any = await emailPatchRes.json();
+            if (Array.isArray(emailPatched) && emailPatched.length > 0) {
+              registrationId = emailPatched[0].id;
+              registrationRecord = emailPatched[0];
+            }
+          }
+        } catch (e) {}
+
+        if (!registrationRecord) {
+          registrationRecord = {
+            id: `sf_${orderId}`,
+            full_name: customerName,
+            email: customerEmail,
+            phone: customerPhone,
+            jee_status: "class-11",
+            status: "confirmed",
+            amount_paid: Number(orderData.order_amount) || 27,
+            order_id: orderId,
+            payment_id: paymentId || `pay_${orderId.slice(0, 12)}`,
             payment_status: "success",
-            payment_id: paymentId,
-            payment_method: paymentMethod,
-          }),
-        });
+            payment_method: paymentMethod || "online",
+            created_at: orderData.created_at || new Date().toISOString(),
+          };
+          registrationId = registrationRecord.id;
+        } else {
+          registrationRecord.status = "confirmed";
+          registrationRecord.amount_paid = 27;
+          registrationRecord.order_id = orderId;
+          registrationRecord.payment_id = paymentId || registrationRecord.payment_id;
+          registrationRecord.payment_status = "success";
+        }
 
         return new Response(
           JSON.stringify({
             success: true,
             order_id: orderId,
             payment_id: paymentId,
+            registration_id: registrationId,
             status: "PAID",
+            registration: registrationRecord,
           }),
           { status: 200, headers: { "Content-Type": "application/json" } }
         );

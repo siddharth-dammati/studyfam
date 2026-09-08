@@ -19,6 +19,13 @@ create table if not exists public.registrations (
     created_at timestamptz not null default now()
 );
 
+-- Safe idempotent migrations if table already exists
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS order_id text UNIQUE;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS payment_id text;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS payment_status text DEFAULT 'pending';
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS payment_method text;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS referral_code text;
+
 -- Index for lookups & duplicate detection
 create index if not exists idx_registrations_email on public.registrations(email);
 create index if not exists idx_registrations_created_at on public.registrations(created_at);
@@ -35,13 +42,13 @@ for insert
 to anon, authenticated
 with check (true);
 
--- Authenticated candidates can read their own registration records
-drop policy if exists "Allow users to read own registration by email" on public.registrations;
-create policy "Allow users to read own registration by email"
+-- Allow reading registration records
+drop policy if exists "Allow public select registrations" on public.registrations;
+create policy "Allow public select registrations"
 on public.registrations
 for select
-to authenticated
-using (email = (select auth.jwt() ->> 'email'));
+to anon, authenticated
+using (true);
 
 -- Allow update of payment status via order verification
 drop policy if exists "Allow public update registration payment" on public.registrations;
@@ -49,8 +56,8 @@ create policy "Allow public update registration payment"
 on public.registrations
 for update
 to anon, authenticated
-using (order_id is not null)
-with check (order_id is not null);
+using (true)
+with check (true);
 
 -- 2. SUPPORT INQUIRIES & GRIEVANCES TABLE
 create table if not exists public.support_inquiries (

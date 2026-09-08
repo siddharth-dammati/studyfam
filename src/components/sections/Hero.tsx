@@ -4,6 +4,7 @@ import { useRegistrationState } from "@/hooks/useRegistrationState";
 import { useEffect, useState } from "react";
 import { ArrowRight, Trophy, BarChart3, Calendar, Sparkles, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
 function ExamMockup() {
   const [answered, setAnswered] = useState(1);
@@ -98,7 +99,18 @@ function ExamMockup() {
 
 export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void }) {
   const { isOpen, days, hours, minutes, seconds, isClient } = useRegistrationState();
+  const [isEnrolled, setIsEnrolled] = useState(false);
   const pad = (n: number) => String(n).padStart(2, "0");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedOrder = localStorage.getItem("sf_confirmed_order_id");
+      const storedRecord = localStorage.getItem("sf_candidate_record");
+      if (storedOrder || storedRecord) {
+        setIsEnrolled(true);
+      }
+    }
+  }, []);
 
   return (
     <section className="relative min-h-screen bg-white overflow-hidden flex flex-col">
@@ -153,9 +165,9 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
                     <Trophy className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-emerald-950 mb-1">100% Exam Fee Scholarships</h4>
+                    <h4 className="text-xs font-bold text-emerald-950 mb-1">50% Merit + 50% Need Scholarships</h4>
                     <p className="text-[11px] text-emerald-800 leading-relaxed">
-                      ₹18 of every ₹27 fee enters the scholarship pool. Top boys (₹1,000) & top girls (₹800) win their full official NTA exam fees refunded.
+                      ₹18 of every ₹27 fee enters the pool. 50% awarded purely on mock rank (Top boys & girls) & 50% reserved for genuine need-based support.
                     </p>
                   </div>
                 </div>
@@ -196,10 +208,19 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
                   )}
 
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Button size="lg" onClick={onOpenRegistration} className="shadow-lg shadow-indigo-500/20">
-                      {isOpen ? "Register for All-India Mock — ₹27" : "Get Notified for Mock Test — Free"}
-                      <ArrowRight size={16} />
-                    </Button>
+                    {isEnrolled ? (
+                      <Link href="/dashboard" className="w-full sm:w-auto">
+                        <Button size="lg" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20 flex items-center gap-2">
+                          <span>✓ Mock Seat Confirmed — View Candidate Slip</span>
+                          <ArrowRight size={16} />
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button size="lg" onClick={onOpenRegistration} className="shadow-lg shadow-indigo-500/20">
+                        {isOpen ? "Register for All-India Mock — ₹27" : "Get Notified for Mock Test — Free"}
+                        <ArrowRight size={16} />
+                      </Button>
+                    )}
                     <Button size="lg" variant="secondary" onClick={() => document.getElementById("impact")?.scrollIntoView({ behavior: "smooth" })}>
                       View Scholarship Cutoff & Rules
                     </Button>

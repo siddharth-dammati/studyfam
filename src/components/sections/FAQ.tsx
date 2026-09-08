@@ -22,15 +22,15 @@ const faqs = [
   },
   {
     q: "How can I win my official JEE Main exam fees?",
-    a: "Top-performing students on the All-India Mock leaderboard receive full reimbursement of their official NTA JEE Main 2027 application fees as a merit scholarship. The scholarship pool is funded directly by allocating ₹18 from every ₹27 mock test registration."
+    a: "We allocate ₹18 of every ₹27 registration into the Scholarship Pool. Scholarships are awarded across two equal tracks: 50% Merit Scholarships (selected 100% on All-India mock test rank without financial screening) and 50% Need-Based Support (reserved for students from a separate eligible pool where financial need is considered to assist aspirants who genuinely need help)."
   },
   {
-    q: "How many students (Top N) receive the scholarship?",
-    a: "The number of sponsored students (N) expands dynamically with registrations with equal gender representation. For example, with 1,000 registrations (₹18,000 pool): Top 10 Boys receive ₹1,000 each (₹10,000) and Top 10 Girls receive ₹800 each (₹8,000), funding Top 20 students in total (₹10,000 + ₹8,000 = ₹18,000). At 10,000 registrations, Top 100 Boys + Top 100 Girls (200 students) win; and at 50,000 registrations, Top 1,000 students win!"
+    q: "How many students receive the scholarship?",
+    a: "Scholarship slots scale up dynamically as participation grows, reserving exactly 50% of all slots for need-based students alongside 50% pure merit rankers. At 50,000 scale (1,000 students funded):\n• 🏆 Merit Track (500 students): Top 250 boys + Top 250 girls based 100% on All-India rank.\n• ❤️ Need-Based Track (500 students): Next 250 boys + Next 250 girls with verified financial need.\nAt our 1,000 students kickoff (₹18,000 pool), 20 students are fully funded: 10 Merit (Top 5 boys + Top 5 girls) and 10 Need-Based (Next 5 boys + Next 5 girls)."
   },
   {
-    q: "How is the ₹18 fee support allocated?",
-    a: "₹18 from each ₹27 registration deposits directly into the scholarship pool. Awards are distributed in rank order based on official NTA category exam fees (₹1,000 for male candidates / ₹800 for female candidates). If a student voluntarily declines, the grant passes to the next eligible rank on the leaderboard."
+    q: "How is the ₹18 fee support allocated and disbursed?",
+    a: "₹18 from each ₹27 registration deposits directly into the scholarship pool. Awards correspond to the official NTA examination fees: ₹1,000 for male candidates and ₹800 for female candidates. Direct Benefit Transfer (DBT) is disbursed to verified candidates within 7 business days of NTA confirmation. If a student declines, the grant rolls down to the next eligible aspirant in that category."
   },
   {
     q: "Can I take the test from home?",

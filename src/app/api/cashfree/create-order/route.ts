@@ -83,7 +83,19 @@ export async function POST(request: Request) {
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
 
     try {
-      await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+      const fullPayload = {
+        full_name: fullName,
+        email,
+        phone: cleanPhone,
+        jee_status: jeeStatus,
+        status: "waitlist",
+        amount_paid: 0,
+        order_id: orderId,
+        payment_status: "pending",
+        referral_code: referralCode || orderId,
+      };
+
+      const res = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
         method: "POST",
         headers: {
           apikey: supabaseKey,
@@ -91,18 +103,30 @@ export async function POST(request: Request) {
           "Content-Type": "application/json",
           Prefer: "return=minimal",
         },
-        body: JSON.stringify({
-          full_name: fullName,
-          email,
-          phone: cleanPhone,
-          jee_status: jeeStatus,
-          status: "waitlist",
-          amount_paid: 0,
-          order_id: orderId,
-          payment_status: "pending",
-          referral_code: referralCode,
-        }),
+        body: JSON.stringify(fullPayload),
       });
+
+      if (!res.ok) {
+        // Fallback with only legacy schema fields
+        await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+          method: "POST",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            "Content-Type": "application/json",
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify({
+            full_name: fullName,
+            email,
+            phone: cleanPhone,
+            jee_status: jeeStatus,
+            status: "waitlist",
+            amount_paid: 0,
+            referral_code: referralCode || orderId,
+          }),
+        });
+      }
     } catch (dbErr) {
       console.warn("Supabase record creation warning:", dbErr);
     }

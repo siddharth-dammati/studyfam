@@ -62,19 +62,19 @@ export function MeritPoolStatusCard() {
         </div>
       </div>
 
-      {/* Dynamic prize structure badges */}
+      {/* Dynamic prize structure badges: 50% Merit + 50% Need-Based */}
       <div className="space-y-2 mb-5">
-        <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 text-xs border border-slate-100">
-          <span className="font-semibold text-slate-700 flex items-center gap-2">
-            <span>👨</span> Top {tier.boysCount} Boys
+        <div className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-50/70 text-xs border border-emerald-200/80">
+          <span className="font-semibold text-emerald-900 flex items-center gap-2">
+            <span>🏆</span> 50% Merit: Top {tier.meritBoys ?? Math.floor(tier.boysCount / 2)} Boys + Top {tier.meritGirls ?? Math.floor(tier.girlsCount / 2)} Girls
           </span>
-          <span className="font-bold text-slate-900">₹1,000 each (100% NTA Fee)</span>
+          <span className="font-bold text-emerald-800 font-mono text-[11px]">100% Mock Rank</span>
         </div>
-        <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 text-xs border border-slate-100">
-          <span className="font-semibold text-slate-700 flex items-center gap-2">
-            <span>👩</span> Top {tier.girlsCount} Girls
+        <div className="flex items-center justify-between p-2.5 rounded-xl bg-rose-50/70 text-xs border border-rose-200/80">
+          <span className="font-semibold text-rose-900 flex items-center gap-2">
+            <span>❤️</span> 50% Need-Based: Next {tier.needBoys ?? Math.floor(tier.boysCount / 2)} Boys + Next {tier.needGirls ?? Math.floor(tier.girlsCount / 2)} Girls
           </span>
-          <span className="font-bold text-slate-900">₹800 each (100% NTA Fee)</span>
+          <span className="font-bold text-rose-800 font-mono text-[11px]">50% Reserved</span>
         </div>
       </div>
 

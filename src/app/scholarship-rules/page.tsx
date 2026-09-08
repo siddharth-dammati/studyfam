@@ -76,28 +76,50 @@ export default function ScholarshipRulesPage() {
             </ul>
             
             <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 my-4">
-              <div className="font-mono text-xs font-bold text-slate-900 uppercase">
-                The 1,000 Registrations Statutory Model (P = 1,000)
+              <div className="flex items-center justify-between">
+                <div className="font-mono text-xs font-bold text-slate-900 uppercase">
+                  Statutory Dual-Track Model (At 50,000 Aspirants · 1,000 Winners)
+                </div>
+                <span className="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+                  50% Merit / 50% Need-Based
+                </span>
               </div>
               <p className="text-xs text-slate-600">
-                Total Pool Accumulated: 1,000 × ₹18 = <strong>₹18,000.00</strong>
+                Total Pool Accumulated: 50,000 × ₹18 = <strong>₹9,00,000.00</strong> (1,000 Students Fully Sponsored)
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
-                <div className="bg-white p-3 rounded-xl border border-slate-200">
-                  <div className="font-semibold text-slate-900">Top 10 Male Merit Rankers</div>
-                  <div className="text-emerald-700 font-mono font-medium">10 × ₹1,000 = ₹10,000.00</div>
+                <div className="bg-white p-3.5 rounded-xl border border-emerald-200">
+                  <div className="font-bold text-emerald-900 flex items-center gap-1.5 mb-1">
+                    <span>🏆</span> Merit Track (500 Students)
+                  </div>
+                  <div className="text-slate-700 font-semibold">Top 250 Boys + Top 250 Girls</div>
+                  <p className="text-[11px] text-slate-500 mt-1">100% based on All-India mock rank. No financial-need check.</p>
+                  <div className="text-emerald-700 font-mono font-medium mt-1">₹2,50,000 (Boys) + ₹2,00,000 (Girls) = ₹4.5L</div>
                 </div>
-                <div className="bg-white p-3 rounded-xl border border-slate-200">
-                  <div className="font-semibold text-slate-900">Top 10 Female Merit Rankers</div>
-                  <div className="text-emerald-700 font-mono font-medium">10 × ₹800 = ₹8,000.00</div>
+
+                <div className="bg-white p-3.5 rounded-xl border border-rose-200">
+                  <div className="font-bold text-rose-900 flex items-center gap-1.5 mb-1">
+                    <span>❤️</span> Need-Based Track (500 Students)
+                  </div>
+                  <div className="text-slate-700 font-semibold">Next 250 Boys + Next 250 Girls</div>
+                  <p className="text-[11px] text-slate-500 mt-1">50% reserved for genuine financial assistance candidates.</p>
+                  <div className="text-rose-700 font-mono font-medium mt-1">₹2,50,000 (Boys) + ₹2,00,000 (Girls) = ₹4.5L</div>
                 </div>
               </div>
-              <div className="text-xs font-mono font-bold text-slate-900 pt-2 border-t border-slate-200">
-                Total Disbursed: ₹10,000 + ₹8,000 = ₹18,000.00 (Exactly 20 Students Funded)
+              <div className="text-xs font-mono font-bold text-slate-900 pt-2 border-t border-slate-200 flex justify-between items-center">
+                <span>Total Pool Disbursed: ₹4,50,000 + ₹4,50,000 = ₹9,00,000.00</span>
+                <span className="text-emerald-700">1,000 Students Funded</span>
               </div>
             </div>
+
             <p>
-              2.3 <strong>Gender Parity Mandate:</strong> Beneficiary allotments shall be divided equally by gender quota (50% male rankers, 50% female rankers) to encourage female STEM participation in engineering streams across India.
+              2.3 <strong>🏆 Merit Scholarships Track (50% of Slots):</strong> Fifty percent (50%) of all available scholarship slots are awarded strictly in rank order based on All-India mock test performance (Top 50% boys + Top 50% girls). Selection on this track is 100% merit-based without any financial need screening.
+            </p>
+            <p>
+              2.4 <strong>❤️ Need-Based Support Track (50% of Slots):</strong> Fifty percent (50%) of all available scholarship slots are strictly reserved for aspirants who genuinely need financial assistance. Recipients are selected as the next qualifying boys and girls from a separate eligible pool of economically modest students with verified financial need.
+            </p>
+            <p>
+              2.5 <strong>Gender Parity Mandate:</strong> Within each track, beneficiary allocations are divided equally between male aspirants (NTA fee: ₹1,000.00) and female aspirants (NTA fee: ₹800.00) to support gender inclusion across engineering colleges nationwide.
             </p>
           </section>
 

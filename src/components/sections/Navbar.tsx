@@ -15,6 +15,17 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
   const { profile, loading: authLoading, signInWithGoogle, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isEnrolled, setIsEnrolled] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedOrder = localStorage.getItem("sf_confirmed_order_id");
+      const storedRecord = localStorage.getItem("sf_candidate_record");
+      if (storedOrder || storedRecord) {
+        setIsEnrolled(true);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -93,10 +104,21 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
                 <GoogleSignInButton size="medium" shape="pill" />
               )}
 
-              <span className="pill pill-indigo">₹27 Only</span>
-              <Button size="md" onClick={onOpenRegistration}>
-                {isOpen ? "Register — ₹27" : "Opens Nov 27"}
-              </Button>
+              {isEnrolled ? (
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all"
+                >
+                  <span>✓ Seat Confirmed · Dashboard</span>
+                </Link>
+              ) : (
+                <>
+                  <span className="pill pill-indigo">₹27 Only</span>
+                  <Button size="md" onClick={onOpenRegistration}>
+                    {isOpen ? "Register — ₹27" : "Opens Nov 27"}
+                  </Button>
+                </>
+              )}
             </div>
 
             {/* Mobile Toggle */}
@@ -158,13 +180,23 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
                 </div>
               )}
 
-              <Button
-                size="md"
-                className="w-full"
-                onClick={() => { setMobileOpen(false); onOpenRegistration(); }}
-              >
-                {isOpen ? "Register — ₹27" : "Opens Nov 27"}
-              </Button>
+              {isEnrolled ? (
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMobileOpen(false)}
+                  className="w-full flex items-center justify-center py-2.5 px-4 bg-emerald-600 text-white font-bold rounded-xl text-xs shadow-xs"
+                >
+                  ✓ Mock Seat Confirmed · Dashboard →
+                </Link>
+              ) : (
+                <Button
+                  size="md"
+                  className="w-full"
+                  onClick={() => { setMobileOpen(false); onOpenRegistration(); }}
+                >
+                  {isOpen ? "Register — ₹27" : "Opens Nov 27"}
+                </Button>
+              )}
             </div>
           </div>
         )}

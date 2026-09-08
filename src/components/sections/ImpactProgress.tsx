@@ -47,17 +47,17 @@ export function ImpactProgress() {
   const isUnlocked = count >= selectedMilestone.students;
 
   const handleShare = () => {
-    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Target: Top ${selectedMilestone.topN} rankers win full fee sponsorship! Join here: https://studyfam.in`;
+    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! 50% of slots are Merit Scholarships (100% rank) and 50% are reserved for Need-Based Support. Target: Top ${selectedMilestone.topN} rankers win full fee sponsorship! Join here: https://studyfam.in`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   const handleTelegram = () => {
-    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Target: Top ${selectedMilestone.topN} rankers win full fee sponsorship!`;
+    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! 50% of slots are Merit Scholarships (100% rank) and 50% are reserved for Need-Based Support. Target: Top ${selectedMilestone.topN} rankers win full fee sponsorship!`;
     window.open(`https://t.me/share/url?url=https%3A%2F%2Fstudyfam.in&text=${encodeURIComponent(text)}`, "_blank");
   };
 
   const handleCopyLink = () => {
-    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Join here: https://studyfam.in`;
+    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! 50% of slots are Merit Scholarships (100% rank) and 50% are reserved for Need-Based Support. Join here: https://studyfam.in`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -72,19 +72,19 @@ export function ImpactProgress() {
           <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-3.5 py-1 mb-4">
             <Trophy className="w-3.5 h-3.5 text-emerald-600" />
             <span className="text-emerald-800 text-[11px] font-mono font-bold uppercase tracking-wider">
-              Live Merit Scholarship Pool
+              50% Merit · 50% Need-Based Dual Track
             </span>
           </div>
 
           <h2 className="text-[clamp(1.9rem,3.8vw,3.2rem)] font-bold tracking-tight text-slate-900 leading-tight mb-3">
             More Students Join.{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-indigo-600">
-              More Top Rankers Win.
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-indigo-600 to-rose-600">
+              More Deserving Aspirants Win.
             </span>
           </h2>
 
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            ₹18 from every ₹27 registration goes straight into the Scholarship Pool. As more aspirants participate, the number of students who win 100% of their official JEE Main exam fees scales up!
+            ₹18 from every ₹27 registration goes straight into the Scholarship Pool. We reserve <strong>50% of all scholarship slots for students who genuinely need assistance</strong>, alongside <strong>50% pure merit scholarships</strong> awarded 100% on All-India mock test rank!
           </p>
         </div>
 
@@ -131,12 +131,12 @@ export function ImpactProgress() {
             </div>
           </div>
 
-          {/* Card 3: Top N Winners */}
+          {/* Card 3: Dual-Track Winners */}
           <div className="bg-emerald-50/80 border-2 border-emerald-300 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[11px] font-mono uppercase font-bold text-emerald-800 tracking-wider flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                3. Funded Rankers Today
+                3. Dual-Track Scholarships
               </span>
               <Trophy className="w-4 h-4 text-emerald-600" />
             </div>
@@ -144,7 +144,7 @@ export function ImpactProgress() {
               <div className="text-3xl sm:text-4xl font-bold text-emerald-700 tracking-tight tabular-nums mb-1">
                 Top {formatIndianNumber(topN)}
               </div>
-              <p className="text-xs text-emerald-900 font-medium">Win 100% JEE Main Exam Fees</p>
+              <p className="text-xs text-emerald-900 font-medium">50% Merit + 50% Need-Based Support</p>
             </div>
             <div className="mt-4 pt-3 border-t border-emerald-200 flex items-center justify-between text-[11px] font-mono text-emerald-800">
               <span>Reimbursement</span>
@@ -303,34 +303,42 @@ export function ImpactProgress() {
               </div>
             </div>
 
-            {/* Key 3 Metric Cards for this Tier */}
+            {/* Key Metric Cards for this Tier: Merit Track vs Need-Based Track */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
               
-              {/* Boys Reimbursement */}
-              <div className="bg-white p-4 rounded-xl border border-slate-200/90 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-lg shrink-0">
-                  👨
+              {/* Merit Track (50% of slots) */}
+              <div className="bg-white p-4 rounded-xl border border-emerald-200 shadow-xs flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-lg shrink-0">
+                  🏆
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-slate-500">Top {selectedMilestone.boysCount} Boys</div>
-                  <div className="font-bold text-slate-900 text-sm">
-                    ₹1,000 each <span className="text-xs font-mono text-slate-400 font-normal">(= {formatIndianCurrency(selectedMilestone.boysAmount)})</span>
+                  <div className="text-[11px] font-bold font-mono uppercase text-emerald-800">
+                    50% Merit Track ({selectedMilestone.meritCount} Slots)
                   </div>
-                  <div className="text-[10px] text-indigo-600 font-medium">100% NTA Exam Fee</div>
+                  <div className="font-bold text-slate-900 text-sm mt-0.5">
+                    Top {selectedMilestone.meritBoys} Boys + Top {selectedMilestone.meritGirls} Girls
+                  </div>
+                  <div className="text-[11px] text-emerald-700 font-medium mt-1">
+                    100% Mock Rank · Zero Need Check
+                  </div>
                 </div>
               </div>
 
-              {/* Girls Reimbursement */}
-              <div className="bg-white p-4 rounded-xl border border-slate-200/90 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-pink-50 border border-pink-100 flex items-center justify-center text-lg shrink-0">
-                  👩
+              {/* Need-Based Track (50% of slots) */}
+              <div className="bg-white p-4 rounded-xl border border-rose-200 shadow-xs flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-lg shrink-0">
+                  ❤️
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-slate-500">Top {selectedMilestone.girlsCount} Girls</div>
-                  <div className="font-bold text-slate-900 text-sm">
-                    ₹800 each <span className="text-xs font-mono text-slate-400 font-normal">(= {formatIndianCurrency(selectedMilestone.girlsAmount)})</span>
+                  <div className="text-[11px] font-bold font-mono uppercase text-rose-800">
+                    50% Need-Based ({selectedMilestone.needCount} Slots)
                   </div>
-                  <div className="text-[10px] text-pink-600 font-medium">100% NTA Exam Fee</div>
+                  <div className="font-bold text-slate-900 text-sm mt-0.5">
+                    Next {selectedMilestone.needBoys} Boys + Next {selectedMilestone.needGirls} Girls
+                  </div>
+                  <div className="text-[11px] text-rose-700 font-medium mt-1">
+                    Financial Need Considered · 50% Reserved
+                  </div>
                 </div>
               </div>
 
@@ -341,13 +349,13 @@ export function ImpactProgress() {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-emerald-800 uppercase tracking-wider font-mono">
-                    Total Winners
+                    Total Funded
                   </div>
                   <div className="font-bold text-emerald-950 text-base">
-                    Top {formatIndianNumber(selectedMilestone.topN)} Rankers
+                    Top {formatIndianNumber(selectedMilestone.topN)} Aspirants
                   </div>
                   <div className="text-[10px] text-emerald-700 font-medium">
-                    100% Full Fees Reimbursed
+                    ₹1,000 (Boys) · ₹800 (Girls) 100% Fees
                   </div>
                 </div>
               </div>

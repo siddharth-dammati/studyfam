@@ -84,15 +84,8 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
       const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
       const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
 
-      await fetch(`${supabaseUrl}/rest/v1/registrations`, {
-        method: "POST",
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-          "Content-Type": "application/json",
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify({
+      try {
+        const fullPayload = {
           full_name: fullName,
           email,
           phone: cleanPhone,
@@ -101,9 +94,41 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
           amount_paid: 0,
           order_id: orderId,
           payment_status: "pending",
-          referral_code: referralCode,
-        }),
-      });
+          referral_code: referralCode || orderId,
+        };
+
+        const res = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+          method: "POST",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            "Content-Type": "application/json",
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify(fullPayload),
+        });
+
+        if (!res.ok) {
+          await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+            method: "POST",
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+              "Content-Type": "application/json",
+              Prefer: "return=minimal",
+            },
+            body: JSON.stringify({
+              full_name: fullName,
+              email,
+              phone: cleanPhone,
+              jee_status: jeeStatus,
+              status: "waitlist",
+              amount_paid: 0,
+              referral_code: referralCode || orderId,
+            }),
+          });
+        }
+      } catch (e) {}
 
       return new Response(
         JSON.stringify({

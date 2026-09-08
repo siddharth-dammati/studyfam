@@ -32,6 +32,25 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedOrder = localStorage.getItem("sf_confirmed_order_id");
+      const storedRecord = localStorage.getItem("sf_candidate_record");
+      if (storedRecord) {
+        try {
+          const rec = JSON.parse(storedRecord);
+          if (rec && (rec.status === "confirmed" || rec.status === "registered" || rec.amount_paid >= 27 || rec.order_id)) {
+            setFullName(rec.full_name || "");
+            setEmail(rec.email || "");
+            setRegisteredId(rec.id || storedOrder);
+            setOrderId(rec.order_id || storedOrder);
+            setPaymentId(rec.payment_id || null);
+            setStep(3); // Already confirmed! Show slip directly
+            return;
+          }
+        } catch {}
+      }
+    }
+
     if (profile) {
       if (profile.fullName && !fullName) setFullName(profile.fullName);
       if (profile.email && !email) setEmail(profile.email);
@@ -89,6 +108,9 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
           try {
             if (typeof window !== "undefined") {
               localStorage.setItem("sf_confirmed_order_id", orderRes.order_id);
+              if (verifyRes.registration) {
+                localStorage.setItem("sf_candidate_record", JSON.stringify(verifyRes.registration));
+              }
             }
           } catch {}
           setRegisteredId(verifyRes.registration_id || orderRes.order_id);

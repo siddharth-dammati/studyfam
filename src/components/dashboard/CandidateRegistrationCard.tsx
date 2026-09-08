@@ -53,7 +53,9 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
       registration.amount_paid >= 27 ||
       registration.status === "registered" ||
       registration.status === "confirmed" ||
-      registration.payment_status === "success";
+      registration.payment_status === "success" ||
+      Boolean(registration.order_id) ||
+      Boolean(registration.payment_id);
 
     const streamLabel =
       registration.jee_status === "class-11"

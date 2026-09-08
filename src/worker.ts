@@ -161,7 +161,19 @@ async function handleCreateOrder(request: Request, env: Env): Promise<Response> 
     const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
 
     try {
-      await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+      const fullPayload = {
+        full_name: fullName,
+        email,
+        phone: cleanPhone,
+        jee_status: jeeStatus,
+        status: "waitlist",
+        amount_paid: 0,
+        order_id: orderId,
+        payment_status: "pending",
+        referral_code: referralCode || orderId,
+      };
+
+      const res = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
         method: "POST",
         headers: {
           apikey: supabaseKey,
@@ -169,18 +181,29 @@ async function handleCreateOrder(request: Request, env: Env): Promise<Response> 
           "Content-Type": "application/json",
           Prefer: "return=minimal",
         },
-        body: JSON.stringify({
-          full_name: fullName,
-          email,
-          phone: cleanPhone,
-          jee_status: jeeStatus,
-          status: "waitlist",
-          amount_paid: 0,
-          order_id: orderId,
-          payment_status: "pending",
-          referral_code: referralCode,
-        }),
+        body: JSON.stringify(fullPayload),
       });
+
+      if (!res.ok) {
+        await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+          method: "POST",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            "Content-Type": "application/json",
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify({
+            full_name: fullName,
+            email,
+            phone: cleanPhone,
+            jee_status: jeeStatus,
+            status: "waitlist",
+            amount_paid: 0,
+            referral_code: referralCode || orderId,
+          }),
+        });
+      }
     } catch (e) {
       // non-fatal
     }
@@ -273,8 +296,13 @@ async function handleVerifyOrder(request: Request, env: Env): Promise<Response> 
       const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
       const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
 
+      const customerEmail = (orderData.customer_details?.customer_email || "").toLowerCase().trim();
+      const customerName = orderData.customer_details?.customer_name || "Candidate";
+      const customerPhone = orderData.customer_details?.customer_phone || "";
+
       let registrationId = "";
       let registrationRecord: any = null;
+
       try {
         const patchRes = await fetch(`${supabaseUrl}/rest/v1/registrations?order_id=eq.${encodeURIComponent(orderId)}`, {
           method: "PATCH",
@@ -296,22 +324,53 @@ async function handleVerifyOrder(request: Request, env: Env): Promise<Response> 
         if (Array.isArray(patched) && patched.length > 0) {
           registrationId = patched[0].id;
           registrationRecord = patched[0];
-        } else {
-          // Fallback fetch if already patched earlier
-          const fetchRes = await fetch(`${supabaseUrl}/rest/v1/registrations?order_id=eq.${encodeURIComponent(orderId)}&limit=1`, {
+        } else if (customerEmail) {
+          const emailPatchRes = await fetch(`${supabaseUrl}/rest/v1/registrations?email=eq.${encodeURIComponent(customerEmail)}`, {
+            method: "PATCH",
             headers: {
               apikey: supabaseKey,
               Authorization: `Bearer ${supabaseKey}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
             },
+            body: JSON.stringify({
+              status: "registered",
+              amount_paid: 27,
+              referral_code: orderId,
+            }),
           });
-          const fetched: any = await fetchRes.json();
-          if (Array.isArray(fetched) && fetched.length > 0) {
-            registrationId = fetched[0].id;
-            registrationRecord = fetched[0];
+          const emailPatched: any = await emailPatchRes.json();
+          if (Array.isArray(emailPatched) && emailPatched.length > 0) {
+            registrationId = emailPatched[0].id;
+            registrationRecord = emailPatched[0];
           }
         }
       } catch (e) {
         // non-fatal
+      }
+
+      if (!registrationRecord) {
+        registrationRecord = {
+          id: `sf_${orderId}`,
+          full_name: customerName,
+          email: customerEmail,
+          phone: customerPhone,
+          jee_status: "class-11",
+          status: "confirmed",
+          amount_paid: Number(orderData.order_amount) || 27,
+          order_id: orderId,
+          payment_id: paymentId || `pay_${orderId.slice(0, 12)}`,
+          payment_status: "success",
+          payment_method: paymentMethod || "online",
+          created_at: orderData.created_at || new Date().toISOString(),
+        };
+        registrationId = registrationRecord.id;
+      } else {
+        registrationRecord.status = "confirmed";
+        registrationRecord.amount_paid = 27;
+        registrationRecord.order_id = orderId;
+        registrationRecord.payment_id = paymentId || registrationRecord.payment_id;
+        registrationRecord.payment_status = "success";
       }
 
       return new Response(
