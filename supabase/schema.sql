@@ -23,6 +23,7 @@ create index if not exists idx_registrations_created_at on public.registrations(
 alter table public.registrations enable row level security;
 
 -- Public can register/join waitlist
+drop policy if exists "Allow public insert registrations" on public.registrations;
 create policy "Allow public insert registrations"
 on public.registrations
 for insert
@@ -45,6 +46,7 @@ create table if not exists public.support_inquiries (
 alter table public.support_inquiries enable row level security;
 
 -- Public can submit inquiries
+drop policy if exists "Allow public insert support inquiries" on public.support_inquiries;
 create policy "Allow public insert support inquiries"
 on public.support_inquiries
 for insert
@@ -63,6 +65,7 @@ create table if not exists public.app_config (
 alter table public.app_config enable row level security;
 
 -- Public can read configuration settings
+drop policy if exists "Allow public read app config" on public.app_config;
 create policy "Allow public read app config"
 on public.app_config
 for select

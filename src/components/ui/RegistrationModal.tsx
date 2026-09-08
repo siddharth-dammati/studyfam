@@ -26,33 +26,33 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMsg(null);
-
     try {
       const supabase = createClient();
-      const { data, error } = await supabase
+      const newId = typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : undefined;
+
+      const payload: Record<string, any> = {
+        full_name: fullName.trim(),
+        email: email.trim().toLowerCase(),
+        phone: phone.trim(),
+        jee_status: jeeStatus,
+        status: isMockOpen ? "registered" : "waitlist",
+        amount_paid: isMockOpen ? 27 : 0,
+      };
+      if (newId) {
+        payload.id = newId;
+      }
+
+      const { error } = await supabase
         .from("registrations")
-        .insert([
-          {
-            full_name: fullName.trim(),
-            email: email.trim().toLowerCase(),
-            phone: phone.trim(),
-            jee_status: jeeStatus,
-            status: isMockOpen ? "registered" : "waitlist",
-            amount_paid: isMockOpen ? 27 : 0,
-          },
-        ])
-        .select("id")
-        .single();
+        .insert([payload]);
 
       if (error) {
-        // If table doesn't exist yet or connection issue, report clearly
         setErrorMsg(error.message || "Unable to save registration. Please try again.");
         setLoading(false);
         return;
       }
 
-      setRegisteredId(data?.id || "CONFIRMED");
+      setRegisteredId(newId || "CONFIRMED");
       setStep(3); // success view
     } catch (err: any) {
       setErrorMsg(err.message || "An unexpected error occurred. Please try again.");
