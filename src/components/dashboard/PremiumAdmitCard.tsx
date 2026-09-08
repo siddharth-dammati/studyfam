@@ -196,37 +196,36 @@ export function PremiumAdmitCard({
         <div className="p-6 sm:p-8 print:p-6 print:text-[11px]">
           {/* Top Council Header */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b-2 border-slate-900">
-            {/* Left: Official Emblem & Board Identity */}
-            <div className="flex items-center gap-3.5 text-center sm:text-left">
-              <div className="w-16 h-16 rounded-full border-2 border-indigo-950 bg-gradient-to-br from-indigo-900 to-slate-950 text-white flex flex-col items-center justify-center p-1 shrink-0 shadow-inner">
-                <ShieldCheck size={26} className="text-amber-300 mb-0.5" />
-                <span className="text-[7px] font-black uppercase tracking-tighter leading-none text-slate-200">
-                  STUDYFAM
-                </span>
-                <span className="text-[6px] font-mono text-amber-300">ESTD 2024</span>
+            {/* Left: Official StudyFam Logo & Examination Title */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
+              <div className="shrink-0 pt-0.5">
+                <img
+                  src="/logo-dark.png"
+                  srcSet="/logo-dark.png 1x, /logo-dark@2x.png 2x"
+                  alt="StudyFam"
+                  className="h-10 sm:h-12 w-auto object-contain block"
+                  draggable={false}
+                />
               </div>
               <div>
-                <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-indigo-900">
-                  National JEE Main Aptitude Benchmarking Council
-                </div>
                 <h1 className="text-lg sm:text-xl font-black tracking-tight text-slate-900 uppercase">
                   StudyFAM All-India JEE (Main) 2027 Mock
                 </h1>
                 <div className="text-xs font-semibold text-slate-600 uppercase tracking-wide">
                   Provisional E-Admit Card & Candidate Examination Allotment Slip
                 </div>
-                <div className="inline-block mt-1 px-2 py-0.5 bg-slate-900 text-white font-mono text-[9px] font-bold tracking-wider rounded uppercase">
+                <div className="inline-block mt-1 px-2.5 py-0.5 bg-slate-900 text-white font-mono text-[9px] font-bold tracking-wider rounded uppercase">
                   Session: Computer-Based Test (CBT) · December 2026 Cycle
                 </div>
               </div>
             </div>
 
-            {/* Right: Barcode & Quick Verification QR */}
+            {/* Right: Barcode & Quick Verification Badge */}
             <div className="flex flex-col items-center sm:items-end gap-1.5 shrink-0">
               <SvgBarcode value={rollNumber} />
               <div className="flex items-center gap-1.5 text-[9px] font-mono font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                 <CheckCircle2 size={11} className="text-emerald-600" />
-                <span>GOVERNMENT BENCHMARK COMPLIANT</span>
+                <span>OFFICIAL VERIFIED HALL TICKET</span>
               </div>
             </div>
           </div>
@@ -382,9 +381,8 @@ export function PremiumAdmitCard({
                 <thead>
                   <tr className="bg-slate-900 text-white font-mono text-[10px] uppercase">
                     <th className="border border-slate-300 p-2">Exam Date</th>
-                    <th className="border border-slate-300 p-2">Reporting Time</th>
-                    <th className="border border-slate-300 p-2">Gate Closure</th>
                     <th className="border border-slate-300 p-2">Examination Timing</th>
+                    <th className="border border-slate-300 p-2">Test Mode</th>
                     <th className="border border-slate-300 p-2">Question Breakdown</th>
                   </tr>
                 </thead>
@@ -393,14 +391,11 @@ export function PremiumAdmitCard({
                     <td className="border border-slate-300 p-2.5 font-bold text-slate-900">
                       Sunday, 27 Dec 2026
                     </td>
-                    <td className="border border-slate-300 p-2.5 font-semibold text-amber-700">
-                      08:15 AM IST
-                    </td>
-                    <td className="border border-slate-300 p-2.5 font-semibold text-rose-600">
-                      08:45 AM IST (Strict)
-                    </td>
                     <td className="border border-slate-300 p-2.5 font-extrabold text-slate-950">
                       09:00 AM – 12:00 PM IST (3 Hours)
+                    </td>
+                    <td className="border border-slate-300 p-2.5 font-medium text-slate-800">
+                      Online Computer-Based Test (CBT)
                     </td>
                     <td className="border border-slate-300 p-2.5 text-[11px]">
                       75 Questions · 300 Marks<br />
@@ -440,7 +435,7 @@ export function PremiumAdmitCard({
 
             <ol className="list-decimal pl-4 space-y-1.5 text-[11px] text-slate-700 leading-relaxed">
               <li>
-                <strong>CBT Terminal Login:</strong> Candidates must log in to the test portal by <strong>08:30 AM IST</strong> on 27 Dec 2026. The mock examination console will lock automatically at 09:00 AM IST.
+                <strong>CBT Terminal Access:</strong> The examination console will go live on <strong>Sunday, 27 Dec 2026 at 09:00 AM IST</strong>. Candidates can begin attempting their test immediately upon portal access.
               </li>
               <li>
                 <strong>Proctoring & Integrity:</strong> The test interface utilizes browser tab-lock and window-blur tracking. Attempting to switch tabs, minimize windows, or use unauthorized AI toolbars will result in automatic score nullification.
@@ -475,25 +470,23 @@ export function PremiumAdmitCard({
               </span>
             </div>
 
-            {/* Official StudyFam Seal & Controller Signature */}
+            {/* Official StudyFam Digital Authentication Seal */}
             <div className="text-right flex flex-col items-end">
-              <div className="flex items-center gap-3 mb-1">
-                {/* Micro Stamp */}
-                <div className="w-10 h-10 rounded-full border border-indigo-900 bg-indigo-50 flex items-center justify-center text-indigo-900">
+              <div className="flex items-center gap-2.5 mb-1">
+                <div className="w-9 h-9 rounded-xl border border-emerald-600 bg-emerald-50 flex items-center justify-center text-emerald-700 shadow-2xs">
                   <ShieldCheck size={20} />
                 </div>
-                {/* Controller Signature */}
                 <div className="text-right">
-                  <div className="font-serif italic font-bold text-sm text-indigo-950 tracking-wider">
-                    R.K. Vardhan
+                  <div className="font-extrabold text-xs text-slate-950 uppercase tracking-wide">
+                    StudyFAM Examination Authority
                   </div>
-                  <div className="text-[9px] font-mono uppercase font-bold text-slate-900">
-                    Controller of Examinations
+                  <div className="text-[10px] font-bold text-emerald-700">
+                    Officially Authenticated & Issued
                   </div>
                 </div>
               </div>
               <span className="text-[8px] font-mono text-slate-400 uppercase">
-                StudyFAM National Academic Council · Govt. Benchmarking Division
+                Digital Verification Seal · StudyFAM All-India Mock 2027
               </span>
             </div>
           </div>
