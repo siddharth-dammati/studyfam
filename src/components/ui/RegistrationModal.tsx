@@ -71,41 +71,28 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
           jeeStatus,
         });
 
-        if (!orderRes.success || !orderRes.order_id) {
-          setErrorMsg(orderRes.error || "Unable to initiate payment session. Please try again.");
+        if (!orderRes.success || !orderRes.payment_session_id) {
+          setErrorMsg(orderRes.error || "Unable to initiate payment session. Please check your details and try again.");
           setLoading(false);
           return;
         }
 
         setOrderId(orderRes.order_id);
 
-        // A. If payment session exists, open Cashfree checkout modal
-        if (orderRes.payment_session_id) {
-          setLoadingText("Opening Payment Modal...");
-          const checkoutRes = await openCashfreeCheckout(orderRes.payment_session_id);
+        setLoadingText("Opening Payment Gateway...");
+        const checkoutRes = await openCashfreeCheckout(orderRes.payment_session_id);
 
-          setLoadingText("Verifying Payment Status...");
-          const verifyRes = await verifyCashfreeOrder(orderRes.order_id);
+        setLoadingText("Verifying Payment Status...");
+        const verifyRes = await verifyCashfreeOrder(orderRes.order_id);
 
-          if (verifyRes.success && verifyRes.status === "PAID") {
-            setRegisteredId(verifyRes.registration_id || orderRes.order_id);
-            if (verifyRes.payment_id) setPaymentId(verifyRes.payment_id);
-            setStep(3); // Success receipt
-          } else if (checkoutRes.error) {
-            setErrorMsg(checkoutRes.error.message || "Payment cancelled or incomplete. You can retry anytime.");
-          } else {
-            setErrorMsg("Payment verification pending. If money was debited, your enrollment will update shortly.");
-          }
-        } 
-        // B. Simulation / Dev Fallback mode
-        else if (orderRes.is_simulation) {
-          setLoadingText("Confirming Test Enrollment...");
-          const verifyRes = await verifyCashfreeOrder(orderRes.order_id);
+        if (verifyRes.success && verifyRes.status === "PAID") {
           setRegisteredId(verifyRes.registration_id || orderRes.order_id);
           if (verifyRes.payment_id) setPaymentId(verifyRes.payment_id);
-          setStep(3);
+          setStep(3); // Success receipt
+        } else if (checkoutRes.error) {
+          setErrorMsg(checkoutRes.error.message || "Payment cancelled or incomplete. You can retry anytime.");
         } else {
-          setErrorMsg("No active payment session returned from gateway.");
+          setErrorMsg(verifyRes.error || "Payment was not completed. You can try again.");
         }
       } 
       // 2. Waitlist mode (Free)

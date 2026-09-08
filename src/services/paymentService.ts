@@ -1,4 +1,4 @@
-﻿import { openCashfreeCheckout, CheckoutResult } from "@/utils/cashfree";
+import { openCashfreeCheckout, CheckoutResult } from "@/utils/cashfree";
 import { createClient } from "@/utils/supabase/client";
 
 export interface CandidateOrderInput {
@@ -14,7 +14,6 @@ export interface CreateOrderResponse {
   order_id: string;
   payment_session_id?: string;
   error?: string;
-  is_simulation?: boolean;
 }
 
 export interface VerifyOrderResponse {
@@ -47,8 +46,9 @@ export async function createCashfreeOrder(
       }),
     });
 
-    if (res.ok) {
-      const data = await res.json();
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.success && data.payment_session_id) {
       return {
         success: true,
         order_id: data.order_id,
@@ -56,33 +56,16 @@ export async function createCashfreeOrder(
       };
     }
 
-    const errData = await res.json().catch(() => ({}));
-    throw new Error(errData.error || `Server responded with status ${res.status}`);
-  } catch (err: any) {
-    // Graceful fallback for local development or if credentials are not yet configured in edge
-    console.warn("Cashfree Edge API unavailable or not configured. Initializing Sandbox fallback:", err.message);
-
-    const fallbackOrderId = `SF_TEST_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-    const supabase = createClient();
-
-    // Create preliminary pending row directly in Supabase
-    await supabase.from("registrations").insert([
-      {
-        full_name: input.fullName.trim(),
-        email: input.email.trim().toLowerCase(),
-        phone: cleanPhone,
-        jee_status: input.jeeStatus,
-        status: "waitlist",
-        amount_paid: 0,
-        order_id: fallbackOrderId,
-        payment_status: "pending",
-      },
-    ]);
-
     return {
-      success: true,
-      order_id: fallbackOrderId,
-      is_simulation: true,
+      success: false,
+      order_id: data.order_id || "",
+      error: data.error || `Payment gateway responded with status ${res.status}`,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      order_id: "",
+      error: err.message || "Failed to connect to payment server.",
     };
   }
 }
@@ -100,68 +83,57 @@ export async function verifyCashfreeOrder(
       body: JSON.stringify({ order_id: orderId }),
     });
 
-    if (res.ok) {
-      const data = await res.json();
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.status === "PAID") {
       return {
-        success: data.success,
+        success: true,
         order_id: data.order_id,
         registration_id: data.registration_id,
         payment_id: data.payment_id,
+        status: "PAID",
+      };
+    }
+
+    if (data.status) {
+      return {
+        success: false,
+        order_id: orderId,
         status: data.status,
+        error: data.error || `Payment status: ${data.status}`,
       };
     }
   } catch {
-    // Continue to client-side verification
+    // Continue to Supabase lookup
   }
 
-  // Direct Supabase lookup / verification fallback
-  const supabase = createClient();
-  const { data: record } = await supabase
-    .from("registrations")
-    .select("id, status, payment_status, payment_id")
-    .eq("order_id", orderId)
-    .single();
+  // Direct Supabase lookup to check if webhook or async update already succeeded
+  try {
+    const supabase = createClient();
+    const { data: record } = await supabase
+      .from("registrations")
+      .select("id, status, payment_status, payment_id")
+      .eq("order_id", orderId)
+      .single();
 
-  if (record && record.payment_status === "success") {
-    return {
-      success: true,
-      order_id: orderId,
-      registration_id: record.id,
-      payment_id: record.payment_id,
-      status: "PAID",
-    };
-  }
-
-  // If in simulation or test mode, mark confirmed
-  const updatePayload = {
-    status: "registered",
-    amount_paid: 27,
-    payment_status: "success",
-    payment_id: `pay_sim_${Date.now()}`,
-    payment_method: "upi_simulation",
-  };
-
-  const { data: updated, error } = await supabase
-    .from("registrations")
-    .update(updatePayload)
-    .eq("order_id", orderId)
-    .select("id")
-    .single();
-
-  if (!error && updated) {
-    return {
-      success: true,
-      order_id: orderId,
-      registration_id: updated.id,
-      payment_id: updatePayload.payment_id,
-      status: "PAID",
-    };
+    if (record && record.payment_status === "success") {
+      return {
+        success: true,
+        order_id: orderId,
+        registration_id: record.id,
+        payment_id: record.payment_id,
+        status: "PAID",
+      };
+    }
+  } catch {
+    // ignore
   }
 
   return {
     success: false,
     order_id: orderId,
     status: "FAILED",
-    error: "Unable to verify payment record",
+    error: "Payment verification pending. If amount was debited, your dashboard will update shortly.",
   };
 }
+
