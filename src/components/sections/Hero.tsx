@@ -211,7 +211,7 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
                     {isEnrolled ? (
                       <Link href="/dashboard" className="w-full sm:w-auto">
                         <Button size="lg" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20 flex items-center gap-2">
-                          <span>✓ Mock Seat Confirmed — View Candidate Slip</span>
+                          <span>✓ Mock Seat Confirmed — Enter Dashboard</span>
                           <ArrowRight size={16} />
                         </Button>
                       </Link>

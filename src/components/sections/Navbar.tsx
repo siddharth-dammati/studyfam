@@ -71,147 +71,126 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
 
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center gap-3 shrink-0">
-              {profile ? (
-                <div className="flex items-center gap-2">
-                  <Link
-                    href="/dashboard"
-                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1"
-                  >
-                    <span>Dashboard</span>
-                  </Link>
-
-                  <div className="flex items-center gap-2 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-full">
-                    {profile.avatarUrl ? (
-                      <img src={profile.avatarUrl} alt={profile.fullName} className="w-6 h-6 rounded-full" />
-                    ) : (
-                      <div className="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold">
-                        {profile.fullName.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                    <span className="text-xs font-semibold text-slate-800 max-w-[110px] truncate">
-                      {profile.fullName.split(" ")[0]}
-                    </span>
-                    <button
-                      onClick={signOut}
-                      title="Sign Out"
-                      className="text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-200 transition-colors"
-                    >
-                      <LogOut size={13} />
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <GoogleSignInButton size="medium" shape="pill" />
-              )}
-
-              {isEnrolled ? (
-                <div className="flex items-center gap-2">
-                  <Link
-                    href="/admit-card"
-                    className="hidden xl:inline-flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-all border border-slate-200/80"
-                  >
-                    <span>Admit Slip</span>
-                  </Link>
-                  <Link
-                    href="/dashboard"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all"
-                  >
-                    <span>✓ Seat Confirmed · Dashboard</span>
-                  </Link>
-                </div>
-              ) : (
-                <>
-                  <span className="pill pill-indigo">₹27 Only</span>
-                  <Button size="md" onClick={onOpenRegistration}>
-                    {isOpen ? "Register — ₹27" : "Opens Nov 27"}
-                  </Button>
-                </>
-              )}
-            </div>
-
-            {/* Mobile Toggle */}
-            <button
-              className="md:hidden p-2 rounded-[10px] text-[var(--text-secondary)] hover:bg-[var(--surface-1)] hover:text-[var(--text-primary)] transition-colors"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileOpen && (
-          <div className="md:hidden border-t border-[var(--border)] px-4 py-4 space-y-1 bg-white rounded-b-[28px]">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2.5 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-1)] rounded-[10px] transition-all"
-              >
-                {link.label}
-              </a>
-            ))}
-            <div className="pt-3 border-t border-[var(--border)] mt-3 space-y-2">
-              {profile ? (
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                    <div className="flex items-center gap-2">
-                      {profile.avatarUrl ? (
-                        <img src={profile.avatarUrl} alt={profile.fullName} className="w-7 h-7 rounded-full" />
-                      ) : (
-                        <div className="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold">
-                          {profile.fullName.charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                      <span className="text-xs font-semibold text-slate-800">{profile.fullName}</span>
+              {profile && (
+                <div className="flex items-center gap-2 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-full">
+                  {profile.avatarUrl ? (
+                    <img src={profile.avatarUrl} alt={profile.fullName} className="w-6 h-6 rounded-full" />
+                  ) : (
+                    <div className="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold">
+                      {profile.fullName.charAt(0).toUpperCase()}
                     </div>
-                    <button
-                      onClick={() => { setMobileOpen(false); signOut(); }}
-                      className="text-xs text-red-600 font-semibold hover:underline flex items-center gap-1"
-                    >
-                      <LogOut size={12} /> Sign out
-                    </button>
-                  </div>
-                  <Link
-                    href="/dashboard"
-                    onClick={() => setMobileOpen(false)}
-                    className="w-full flex items-center justify-center py-2.5 px-4 bg-indigo-50 text-indigo-700 font-bold rounded-xl text-xs hover:bg-indigo-100 transition-colors"
-                  >
-                    Go to Candidate Dashboard →
-                  </Link>
-                  {isEnrolled && (
-                    <Link
-                      href="/admit-card"
-                      onClick={() => setMobileOpen(false)}
-                      className="w-full flex items-center justify-center py-2.5 px-4 bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold rounded-xl text-xs hover:bg-emerald-100 transition-colors"
-                    >
-                      📄 View & Print Admit Slip
-                    </Link>
                   )}
-                </div>
-              ) : (
-                <div className="flex justify-center w-full">
-                  <GoogleSignInButton size="large" width={280} shape="rectangular" />
+                  <span className="text-xs font-semibold text-slate-800 max-w-[110px] truncate">
+                    {profile.fullName.split(" ")[0]}
+                  </span>
+                  <button
+                    onClick={signOut}
+                    title="Sign Out"
+                    className="text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-200 transition-colors"
+                  >
+                    <LogOut size={13} />
+                  </button>
                 </div>
               )}
 
               {isEnrolled ? (
                 <Link
                   href="/dashboard"
-                  onClick={() => setMobileOpen(false)}
-                  className="w-full flex items-center justify-center py-2.5 px-4 bg-emerald-600 text-white font-bold rounded-xl text-xs shadow-xs"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all active:scale-95"
                 >
-                  ✓ Mock Seat Confirmed · Dashboard →
+                  <span>Enter Dashboard →</span>
                 </Link>
               ) : (
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/dashboard"
+                    className="px-3 py-2 text-xs font-semibold text-slate-600 hover:text-indigo-600 transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                  <span className="pill pill-indigo">₹27 Only</span>
+                  <Button size="md" onClick={onOpenRegistration}>
+                    {isOpen ? "Register — ₹27" : "Opens Nov 27"}
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Actions & Toggle */}
+            <div className="flex md:hidden items-center gap-2 shrink-0">
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-xs transition-transform active:scale-95"
+              >
+                <span>Enter Dashboard</span>
+              </Link>
+
+              <button
+                className="p-2 rounded-[10px] text-[var(--text-secondary)] hover:bg-[var(--surface-1)] hover:text-[var(--text-primary)] transition-colors"
+                onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label="Toggle menu"
+              >
+                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileOpen && (
+          <div className="md:hidden border-t border-[var(--border)] px-4 py-4 space-y-2 bg-white rounded-b-[28px]">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="block px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-1)] rounded-[10px] transition-all"
+              >
+                {link.label}
+              </a>
+            ))}
+
+            <div className="pt-3 border-t border-[var(--border)] mt-2 space-y-2">
+              {profile ? (
+                <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <div className="flex items-center gap-2">
+                    {profile.avatarUrl ? (
+                      <img src={profile.avatarUrl} alt={profile.fullName} className="w-7 h-7 rounded-full" />
+                    ) : (
+                      <div className="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold">
+                        {profile.fullName.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <span className="text-xs font-semibold text-slate-800">{profile.fullName}</span>
+                  </div>
+                  <button
+                    onClick={() => { setMobileOpen(false); signOut(); }}
+                    className="text-xs text-red-600 font-semibold hover:underline flex items-center gap-1"
+                  >
+                    <LogOut size={12} /> Sign out
+                  </button>
+                </div>
+              ) : (
+                <div className="flex justify-center w-full py-1">
+                  <GoogleSignInButton size="medium" width={260} shape="pill" />
+                </div>
+              )}
+
+              <Link
+                href="/dashboard"
+                onClick={() => setMobileOpen(false)}
+                className="w-full flex items-center justify-center py-2.5 px-4 bg-indigo-600 text-white font-bold rounded-xl text-xs shadow-xs hover:bg-indigo-700 transition-colors"
+              >
+                Enter Candidate Dashboard →
+              </Link>
+
+              {!isEnrolled && (
                 <Button
                   size="md"
                   className="w-full"
                   onClick={() => { setMobileOpen(false); onOpenRegistration(); }}
                 >
-                  {isOpen ? "Register — ₹27" : "Opens Nov 27"}
+                  {isOpen ? "Register for Mock — ₹27" : "Opens Nov 27"}
                 </Button>
               )}
             </div>
