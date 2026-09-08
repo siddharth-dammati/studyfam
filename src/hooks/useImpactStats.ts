@@ -75,21 +75,32 @@ export function useImpactStats() {
   useEffect(() => {
     fetchStats();
 
-    // Subscribe to real-time changes
-    const supabase = createClient();
-    const channel = supabase
-      .channel("realtime-registrations")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "registrations" },
-        () => {
-          fetchStats();
-        }
-      )
-      .subscribe();
+    let channel: any;
+    try {
+      const supabase = createClient();
+      channel = supabase
+        .channel("realtime-registrations")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "registrations" },
+          () => {
+            fetchStats();
+          }
+        )
+        .subscribe();
+    } catch {
+      // Fallback safely if WebSocket/Realtime fails
+    }
 
     return () => {
-      supabase.removeChannel(channel);
+      try {
+        if (channel) {
+          const supabase = createClient();
+          supabase.removeChannel(channel);
+        }
+      } catch {
+        // Safe cleanup
+      }
     };
   }, []);
 

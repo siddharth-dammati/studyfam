@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useImpactStats } from "@/hooks/useImpactStats";
 
 export function ParticipationCounter() {
-  const { total_registrations: count } = useImpactStats();
+  const { total_registrations: count = 0 } = useImpactStats();
 
   return (
     <section className="py-32 bg-[var(--background-soft)] relative ">
@@ -45,7 +45,7 @@ export function ParticipationCounter() {
               </div>
               
               <div className="text-[clamp(4rem,10vw,8rem)] font-bold text-[var(--foreground)] mb-2 tracking-tighter tabular-nums  leading-none">
-                {count.toLocaleString()}
+                {(count ?? 0).toLocaleString()}
               </div>
               <div className="text-xl md:text-2xl text-[var(--foreground-muted)] font-medium tracking-wide">
                 JEE ASPIRANTS REGISTERED

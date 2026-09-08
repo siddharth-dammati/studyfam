@@ -3,11 +3,11 @@
 import { useImpactStats } from "@/hooks/useImpactStats";
 
 export function StatsTicker() {
-  const { total_registrations, support_pool } = useImpactStats();
+  const { total_registrations = 0, support_pool = 0 } = useImpactStats();
 
   const items = [
-    `${total_registrations.toLocaleString()} Students Registered`,
-    `₹${support_pool.toLocaleString("en-IN")} Support Pool Built`,
+    `${(total_registrations ?? 0).toLocaleString()} Students Registered`,
+    `₹${(support_pool ?? 0).toLocaleString("en-IN")} Support Pool Built`,
     "300 Marks · 180 Minutes",
     "All-India Percentile Prediction",
     "NTA CBT Interface",

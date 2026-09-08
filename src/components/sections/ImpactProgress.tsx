@@ -8,19 +8,19 @@ import { useImpactStats } from "@/hooks/useImpactStats";
 export function ImpactProgress() {
   const [mounted, setMounted] = useState(false);
   const {
-    total_registrations: count,
-    support_pool: pool,
-    funded_students: topN,
-    milestone,
-    progress_percentage: pct,
-    remaining_to_milestone: remaining,
+    total_registrations: count = 0,
+    support_pool: pool = 0,
+    funded_students: topN = 0,
+    milestone = 15000,
+    progress_percentage: pct = 0,
+    remaining_to_milestone: remaining = 15000,
   } = useImpactStats();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const nextMilestoneTopN = Math.floor((milestone * 18) / 900);
+  const nextMilestoneTopN = Math.floor(((milestone || 15000) * 18) / 900);
 
   if (!mounted) return null;
 
