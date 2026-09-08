@@ -43,7 +43,6 @@ export function ScholarshipDossierModal({
   const [jeeStatus, setJeeStatus] = useState<"class-11" | "class-12" | "dropper">("class-11");
   const [familyIncome, setFamilyIncome] = useState<string>("1.5l_3l");
   const [scholarshipTrack, setScholarshipTrack] = useState<"merit" | "need_based" | "opt_out">("merit");
-  const [scholarshipSlab, setScholarshipSlab] = useState<string>("full_fee_100");
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -58,7 +57,6 @@ export function ScholarshipDossierModal({
       if (candidateRecord.jee_status) setJeeStatus(candidateRecord.jee_status as any);
       if (candidateRecord.family_income) setFamilyIncome(candidateRecord.family_income);
       if (candidateRecord.scholarship_track) setScholarshipTrack(candidateRecord.scholarship_track as any);
-      if (candidateRecord.scholarship_slab) setScholarshipSlab(candidateRecord.scholarship_slab);
     } else {
       if (userFullName && !fullName) setFullName(userFullName);
     }
@@ -86,7 +84,7 @@ export function ScholarshipDossierModal({
     setLoading(true);
 
     try {
-      const slabToSubmit = scholarshipTrack === "opt_out" ? "opt_out" : scholarshipSlab;
+      const slabToSubmit = scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100";
 
       const res = await updateCandidateProfile({
         email: emailToUse,
@@ -357,54 +355,27 @@ export function ScholarshipDossierModal({
               </div>
             </div>
 
-            {/* 6. Scholarship Slab Preference (if not opted out) */}
+            {/* 6. Scholarship Entitlement (100% Full Fee Support) */}
             {scholarshipTrack !== "opt_out" ? (
               <div>
                 <label className="block text-[11px] font-mono font-bold uppercase text-slate-700 mb-1">
-                  Desired Scholarship Slab / Grant Level
+                  Scholarship Entitlement Level
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  <label
-                    className={`p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all ${
-                      scholarshipSlab === "full_fee_100"
-                        ? "border-indigo-600 bg-indigo-50/50"
-                        : "border-slate-200 bg-slate-50"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="slab"
-                      value="full_fee_100"
-                      checked={scholarshipSlab === "full_fee_100"}
-                      onChange={() => setScholarshipSlab("full_fee_100")}
-                      className="text-indigo-600"
-                    />
-                    <div>
-                      <div className="font-bold text-slate-900 text-xs">100% NTA Application Fee Grant</div>
-                      <div className="text-[10px] text-slate-500">₹1,000 for Boys · ₹800 for Girls</div>
+                <div className="p-3 rounded-2xl border border-indigo-200 bg-indigo-50/70 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                      <ShieldCheck size={18} />
                     </div>
-                  </label>
-
-                  <label
-                    className={`p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all ${
-                      scholarshipSlab === "partial_fee_50"
-                        ? "border-indigo-600 bg-indigo-50/50"
-                        : "border-slate-200 bg-slate-50"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="slab"
-                      value="partial_fee_50"
-                      checked={scholarshipSlab === "partial_fee_50"}
-                      onChange={() => setScholarshipSlab("partial_fee_50")}
-                      className="text-indigo-600"
-                    />
                     <div>
-                      <div className="font-bold text-slate-900 text-xs">50% Partial Fee Support</div>
-                      <div className="text-[10px] text-slate-500">₹500 for Boys · ₹400 for Girls</div>
+                      <div className="font-bold text-slate-900 text-xs">100% Full NTA Application Fee Grant</div>
+                      <div className="text-[10px] text-slate-600 mt-0.5">
+                        Direct grant of ₹1,000 for Boys and ₹800 for Girls (100% exam fee covered).
+                      </div>
                     </div>
-                  </label>
+                  </div>
+                  <span className="font-mono text-[10px] font-bold text-indigo-700 bg-white px-2.5 py-1 rounded-lg border border-indigo-200 shrink-0 shadow-2xs">
+                    100% FULL FEE
+                  </span>
                 </div>
               </div>
             ) : (
