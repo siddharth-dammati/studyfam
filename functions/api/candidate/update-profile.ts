@@ -19,7 +19,10 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     const gender = body.gender || null;
     const jeeStatus = body.jeeStatus || "class-11";
     const familyIncome = body.familyIncome || null;
-    const scholarshipTrack = body.scholarshipTrack || "merit";
+    let scholarshipTrack = body.scholarshipTrack || "merit";
+    if (familyIncome === "above_8l" && scholarshipTrack === "need_based") {
+      scholarshipTrack = "merit";
+    }
     const scholarshipSlab = body.scholarshipSlab || (scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100");
     const orderId = body.orderId || null;
 

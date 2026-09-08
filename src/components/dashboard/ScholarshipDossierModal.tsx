@@ -56,7 +56,13 @@ export function ScholarshipDossierModal({
       if (candidateRecord.gender) setGender(candidateRecord.gender as any);
       if (candidateRecord.jee_status) setJeeStatus(candidateRecord.jee_status as any);
       if (candidateRecord.family_income) setFamilyIncome(candidateRecord.family_income);
-      if (candidateRecord.scholarship_track) setScholarshipTrack(candidateRecord.scholarship_track as any);
+      if (candidateRecord.scholarship_track) {
+        if (candidateRecord.family_income === "above_8l" && candidateRecord.scholarship_track === "need_based") {
+          setScholarshipTrack("merit");
+        } else {
+          setScholarshipTrack(candidateRecord.scholarship_track as any);
+        }
+      }
     } else {
       if (userFullName && !fullName) setFullName(userFullName);
     }
@@ -84,7 +90,8 @@ export function ScholarshipDossierModal({
     setLoading(true);
 
     try {
-      const slabToSubmit = scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100";
+      const finalTrack = familyIncome === "above_8l" && scholarshipTrack === "need_based" ? "merit" : scholarshipTrack;
+      const slabToSubmit = finalTrack === "opt_out" ? "opt_out" : "full_fee_100";
 
       const res = await updateCandidateProfile({
         email: emailToUse,
@@ -93,7 +100,7 @@ export function ScholarshipDossierModal({
         gender,
         jeeStatus,
         familyIncome,
-        scholarshipTrack,
+        scholarshipTrack: finalTrack,
         scholarshipSlab: slabToSubmit,
         orderId: candidateRecord?.order_id,
       });
@@ -263,17 +270,30 @@ export function ScholarshipDossierModal({
               </label>
               <select
                 value={familyIncome}
-                onChange={(e) => setFamilyIncome(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFamilyIncome(val);
+                  if (val === "above_8l" && scholarshipTrack === "need_based") {
+                    setScholarshipTrack("merit");
+                  }
+                }}
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs"
               >
                 <option value="below_1.5l">Below ₹1.5 Lakh / year (High Financial Need)</option>
                 <option value="1.5l_3l">₹1.5 Lakh – ₹3 Lakh / year (Moderate Need)</option>
                 <option value="3l_6l">₹3 Lakh – ₹6 Lakh / year</option>
                 <option value="6l_8l">₹6 Lakh – ₹8 Lakh / year</option>
-                <option value="above_8l">Above ₹8 Lakh / year (Standard Income)</option>
+                <option value="above_8l">Above ₹8 Lakh / year (Merit Track Only)</option>
               </select>
               <span className="text-[10px] text-slate-500 mt-1 block">
-                Used to determine eligibility for the 50% Need-Based assistance pool.
+                {familyIncome === "above_8l" ? (
+                  <span className="text-amber-700 font-semibold flex items-center gap-1">
+                    <AlertCircle size={12} className="inline shrink-0" />
+                    Income &gt; ₹8L/year is ineligible for Need-Based Track. Merit Track is selected.
+                  </span>
+                ) : (
+                  "Used to determine eligibility for the 50% Need-Based assistance pool."
+                )}
               </span>
             </div>
 
@@ -309,24 +329,34 @@ export function ScholarshipDossierModal({
 
                 {/* Need-Based Track */}
                 <div
-                  onClick={() => setScholarshipTrack("need_based")}
-                  className={`p-3 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between ${
-                    scholarshipTrack === "need_based"
-                      ? "border-indigo-600 bg-indigo-50/70 shadow-xs ring-1 ring-indigo-500"
-                      : "border-slate-200 bg-slate-50/70 hover:bg-white"
+                  onClick={() => {
+                    if (familyIncome !== "above_8l") {
+                      setScholarshipTrack("need_based");
+                    }
+                  }}
+                  className={`p-3 rounded-2xl border transition-all flex flex-col justify-between ${
+                    familyIncome === "above_8l"
+                      ? "border-slate-200 bg-slate-100/80 opacity-40 cursor-not-allowed select-none"
+                      : scholarshipTrack === "need_based"
+                      ? "border-indigo-600 bg-indigo-50/70 shadow-xs ring-1 ring-indigo-500 cursor-pointer"
+                      : "border-slate-200 bg-slate-50/70 hover:bg-white cursor-pointer"
                   }`}
                 >
                   <div>
                     <div className="flex items-center gap-1.5 font-bold text-slate-900 text-xs mb-1">
-                      <Heart size={15} className="text-indigo-600 shrink-0" />
-                      <span>❤️ Need-Based Track</span>
+                      <Heart size={15} className={familyIncome === "above_8l" ? "text-slate-400 shrink-0" : "text-indigo-600 shrink-0"} />
+                      <span className={familyIncome === "above_8l" ? "text-slate-500 line-through" : ""}>❤️ Need-Based Track</span>
                     </div>
-                    <p className="text-[10px] text-slate-600 leading-relaxed">
-                      50% slots reserved for verified financial assistance pool (next 250 boys & girls).
+                    <p className="text-[10px] text-slate-500 leading-relaxed">
+                      {familyIncome === "above_8l"
+                        ? "Ineligible: Income exceeds ₹8 Lakh/year. Only Merit Track is available."
+                        : "50% slots reserved for verified financial assistance pool (next 250 boys & girls)."}
                     </p>
                   </div>
-                  <span className="mt-2 inline-block font-mono text-[9px] font-bold text-indigo-800 uppercase">
-                    50% Reserved
+                  <span className={`mt-2 inline-block font-mono text-[9px] font-bold uppercase ${
+                    familyIncome === "above_8l" ? "text-rose-600" : "text-indigo-800"
+                  }`}>
+                    {familyIncome === "above_8l" ? "Ineligible (>₹8L/yr)" : "50% Reserved"}
                   </span>
                 </div>
 

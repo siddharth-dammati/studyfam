@@ -10,7 +10,10 @@ export async function POST(request: Request) {
     const gender = body.gender || null; // 'boy' | 'girl' | 'other'
     const jeeStatus = body.jeeStatus || "class-11";
     const familyIncome = body.familyIncome || null;
-    const scholarshipTrack = body.scholarshipTrack || "merit"; // 'merit' | 'need_based' | 'opt_out'
+    let scholarshipTrack = body.scholarshipTrack || "merit"; // 'merit' | 'need_based' | 'opt_out'
+    if (familyIncome === "above_8l" && scholarshipTrack === "need_based") {
+      scholarshipTrack = "merit";
+    }
     const scholarshipSlab = body.scholarshipSlab || (scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100");
     const orderId = body.orderId || null;
 

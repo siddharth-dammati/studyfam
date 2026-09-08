@@ -12,8 +12,11 @@ export async function POST(request: Request) {
     const referralCode = body.referralCode || null;
     const gender = body.gender || null;
     const familyIncome = body.familyIncome || null;
-    const scholarshipTrack = body.scholarshipTrack || null;
-    const scholarshipSlab = body.scholarshipSlab || null;
+    let scholarshipTrack = body.scholarshipTrack || null;
+    if (familyIncome === "above_8l" && scholarshipTrack === "need_based") {
+      scholarshipTrack = "merit";
+    }
+    const scholarshipSlab = body.scholarshipSlab || (scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100");
 
     if (!fullName || !email || cleanPhone.length !== 10) {
       return NextResponse.json(

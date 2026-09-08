@@ -94,6 +94,13 @@ async function handleCreateOrder(request: Request, env: Env): Promise<Response> 
     const cleanPhone = rawPhone.replace(/\D/g, "").slice(-10);
     const jeeStatus = body.jeeStatus || "class-11";
     const referralCode = body.referralCode || null;
+    const gender = body.gender || null;
+    const familyIncome = body.familyIncome || null;
+    let scholarshipTrack = body.scholarshipTrack || null;
+    if (familyIncome === "above_8l" && scholarshipTrack === "need_based") {
+      scholarshipTrack = "merit";
+    }
+    const scholarshipSlab = body.scholarshipSlab || (scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100");
 
     if (!fullName || !email || cleanPhone.length !== 10) {
       return new Response(
@@ -166,7 +173,7 @@ async function handleCreateOrder(request: Request, env: Env): Promise<Response> 
     const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
 
     try {
-      const fullPayload = {
+      const fullPayload: any = {
         full_name: fullName,
         email,
         phone: cleanPhone,
@@ -177,6 +184,10 @@ async function handleCreateOrder(request: Request, env: Env): Promise<Response> 
         payment_status: "pending",
         referral_code: referralCode || orderId,
       };
+      if (gender) fullPayload.gender = gender;
+      if (familyIncome) fullPayload.family_income = familyIncome;
+      if (scholarshipTrack) fullPayload.scholarship_track = scholarshipTrack;
+      if (scholarshipSlab) fullPayload.scholarship_slab = scholarshipSlab;
 
       const res = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
         method: "POST",
@@ -467,7 +478,10 @@ async function handleCandidateUpdateProfile(request: Request, env: Env): Promise
     const gender = body.gender || null;
     const jeeStatus = body.jeeStatus || "class-11";
     const familyIncome = body.familyIncome || null;
-    const scholarshipTrack = body.scholarshipTrack || "merit";
+    let scholarshipTrack = body.scholarshipTrack || "merit";
+    if (familyIncome === "above_8l" && scholarshipTrack === "need_based") {
+      scholarshipTrack = "merit";
+    }
     const scholarshipSlab = body.scholarshipSlab || (scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100");
     const orderId = body.orderId || null;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { X, CheckCircle2, Loader2, ShieldCheck, ArrowRight, Copy, Check, Sparkles } from "lucide-react";
+import { X, CheckCircle2, Loader2, ShieldCheck, ArrowRight, Copy, Check, Sparkles, AlertCircle } from "lucide-react";
 import { Button } from "./Button";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -46,7 +46,13 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
             setEmail(rec.email || "");
             if (rec.gender) setGender(rec.gender);
             if (rec.family_income) setFamilyIncome(rec.family_income);
-            if (rec.scholarship_track) setScholarshipTrack(rec.scholarship_track);
+            if (rec.scholarship_track) {
+              if (rec.family_income === "above_8l" && rec.scholarship_track === "need_based") {
+                setScholarshipTrack("merit");
+              } else {
+                setScholarshipTrack(rec.scholarship_track);
+              }
+            }
             setRegisteredId(rec.id || storedOrder);
             setOrderId(rec.order_id || storedOrder);
             setPaymentId(rec.payment_id || null);
@@ -85,6 +91,9 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
     setLoading(true);
 
     try {
+      const finalTrack = familyIncome === "above_8l" && scholarshipTrack === "need_based" ? "merit" : scholarshipTrack;
+      const finalSlab = finalTrack === "opt_out" ? "opt_out" : "full_fee_100";
+
       // 1. If mock is open, process Cashfree payment (₹27)
       if (isMockOpen) {
         setLoadingText("Initializing Cashfree Gateway...");
@@ -96,8 +105,8 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
           jeeStatus,
           gender,
           familyIncome,
-          scholarshipTrack,
-          scholarshipSlab: scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100",
+          scholarshipTrack: finalTrack,
+          scholarshipSlab: finalSlab,
         });
 
         if (!orderRes.success || !orderRes.payment_session_id) {
@@ -145,8 +154,8 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
           jee_status: jeeStatus,
           gender,
           family_income: familyIncome,
-          scholarship_track: scholarshipTrack,
-          scholarship_slab: scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100",
+          scholarship_track: finalTrack,
+          scholarship_slab: finalSlab,
           status: "waitlist",
           amount_paid: 0,
         };
@@ -408,15 +417,31 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
                 </label>
                 <select
                   value={familyIncome}
-                  onChange={(e) => setFamilyIncome(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setFamilyIncome(val);
+                    if (val === "above_8l" && scholarshipTrack === "need_based") {
+                      setScholarshipTrack("merit");
+                    }
+                  }}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 transition-colors"
                 >
                   <option value="below_1.5l">Below ₹1.5 Lakh / year (High Need)</option>
                   <option value="1.5l_3l">₹1.5 Lakh – ₹3 Lakh / year (Moderate Need)</option>
                   <option value="3l_6l">₹3 Lakh – ₹6 Lakh / year</option>
                   <option value="6l_8l">₹6 Lakh – ₹8 Lakh / year</option>
-                  <option value="above_8l">Above ₹8 Lakh / year</option>
+                  <option value="above_8l">Above ₹8 Lakh / year (Merit Track Only)</option>
                 </select>
+                {familyIncome === "above_8l" ? (
+                  <p className="text-[10px] text-amber-700 mt-1 font-medium flex items-center gap-1">
+                    <AlertCircle size={12} className="shrink-0" />
+                    Income &gt; ₹8L/year is ineligible for Need-Based Track. Merit Track is selected.
+                  </p>
+                ) : (
+                  <p className="text-[10px] text-slate-500 mt-1">
+                    Used to assess eligibility for the 50% need-based assistance pool.
+                  </p>
+                )}
               </div>
 
               {/* Scholarship Track Selection & Opt-Out */}
@@ -431,19 +456,27 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
                     className={`p-2 rounded-xl border font-bold text-center transition-all ${
                       scholarshipTrack === "merit"
                         ? "border-amber-500 bg-amber-50 text-amber-900 shadow-2xs"
-                        : "border-slate-200 bg-slate-50 text-slate-600"
+                        : "border-slate-200 bg-slate-50 text-slate-600 hover:bg-white"
                     }`}
                   >
                     🏆 Merit (500)
                   </button>
                   <button
                     type="button"
-                    onClick={() => setScholarshipTrack("need_based")}
+                    disabled={familyIncome === "above_8l"}
+                    onClick={() => {
+                      if (familyIncome !== "above_8l") {
+                        setScholarshipTrack("need_based");
+                      }
+                    }}
                     className={`p-2 rounded-xl border font-bold text-center transition-all ${
-                      scholarshipTrack === "need_based"
+                      familyIncome === "above_8l"
+                        ? "opacity-40 cursor-not-allowed bg-slate-100 text-slate-400 border-slate-200 line-through select-none"
+                        : scholarshipTrack === "need_based"
                         ? "border-indigo-600 bg-indigo-50 text-indigo-900 shadow-2xs"
-                        : "border-slate-200 bg-slate-50 text-slate-600"
+                        : "border-slate-200 bg-slate-50 text-slate-600 hover:bg-white"
                     }`}
+                    title={familyIncome === "above_8l" ? "Ineligible for Need-Based Track (Income > ₹8L/yr)" : "Need-Based Support"}
                   >
                     ❤️ Need-Based
                   </button>
@@ -453,7 +486,7 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
                     className={`p-2 rounded-xl border font-bold text-center transition-all ${
                       scholarshipTrack === "opt_out"
                         ? "border-emerald-600 bg-emerald-50 text-emerald-900 shadow-2xs"
-                        : "border-slate-200 bg-slate-50 text-slate-600"
+                        : "border-slate-200 bg-slate-50 text-slate-600 hover:bg-white"
                     }`}
                     title="Opt out and donate scholarship slot"
                   >
