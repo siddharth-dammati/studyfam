@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, AlertCircle, Calendar, Phone, Mail, Award, ShieldCheck, Sparkles, CreditCard } from "lucide-react";
+import { Copy, Check, AlertCircle, Calendar, Phone, Mail, Award, ShieldCheck, Sparkles, CreditCard, FileText, Printer, X, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import Link from "next/link";
+import { PremiumAdmitCard } from "./PremiumAdmitCard";
 
 export interface CandidateRecord {
   id: string;
@@ -27,6 +29,7 @@ interface Props {
 
 export function CandidateRegistrationCard({ registration, loading, onOpenRegister }: Props) {
   const [copied, setCopied] = useState(false);
+  const [showAdmitSlipModal, setShowAdmitSlipModal] = useState(false);
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -182,15 +185,25 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
                 <button
-                  onClick={() => window.print()}
-                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-100/70 font-semibold text-xs transition-colors shadow-2xs"
-                  title="Print Admit Slip"
+                  onClick={() => setShowAdmitSlipModal(true)}
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-95"
+                  title="View Official E-Admit Card & Candidate Slip"
                 >
-                  <CreditCard size={14} />
-                  <span>Print Admit Slip</span>
+                  <FileText size={15} />
+                  <span>View Official Admit Slip</span>
                 </button>
+                <Link
+                  href={`/admit-card?order_id=${encodeURIComponent(registration.order_id || registration.payment_id || registration.id)}`}
+                  target="_blank"
+                  className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 font-semibold text-xs transition-colors shadow-2xs"
+                  title="Open Dedicated Printable Hall Ticket"
+                >
+                  <Printer size={14} />
+                  <span>Print PDF</span>
+                  <ExternalLink size={12} className="opacity-60" />
+                </Link>
               </div>
             </div>
           </div>
@@ -208,6 +221,27 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
             <Button size="sm" onClick={onOpenRegister} className="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white">
               Complete Registration — ₹27
             </Button>
+          </div>
+        )}
+
+        {/* Fullscreen Admit Card Modal */}
+        {showAdmitSlipModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-3 sm:p-6 overflow-y-auto">
+            <div className="relative w-full max-w-4xl my-auto">
+              <button
+                onClick={() => setShowAdmitSlipModal(false)}
+                className="print:hidden absolute -top-3 -right-2 sm:-right-4 w-9 h-9 rounded-full bg-slate-900 text-white hover:bg-slate-800 flex items-center justify-center shadow-lg border border-white/20 transition-all z-20 cursor-pointer"
+                title="Close Modal"
+              >
+                <X size={18} />
+              </button>
+              <div className="max-h-[90vh] overflow-y-auto rounded-2xl bg-slate-100/95 p-2 sm:p-4 shadow-2xl">
+                <PremiumAdmitCard
+                  registration={registration}
+                  onClose={() => setShowAdmitSlipModal(false)}
+                />
+              </div>
+            </div>
           </div>
         )}
       </div>

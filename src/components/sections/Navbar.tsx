@@ -105,12 +105,20 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
               )}
 
               {isEnrolled ? (
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all"
-                >
-                  <span>✓ Seat Confirmed · Dashboard</span>
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/admit-card"
+                    className="hidden xl:inline-flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-all border border-slate-200/80"
+                  >
+                    <span>Admit Slip</span>
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all"
+                  >
+                    <span>✓ Seat Confirmed · Dashboard</span>
+                  </Link>
+                </div>
               ) : (
                 <>
                   <span className="pill pill-indigo">₹27 Only</span>
@@ -173,6 +181,15 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
                   >
                     Go to Candidate Dashboard →
                   </Link>
+                  {isEnrolled && (
+                    <Link
+                      href="/admit-card"
+                      onClick={() => setMobileOpen(false)}
+                      className="w-full flex items-center justify-center py-2.5 px-4 bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold rounded-xl text-xs hover:bg-emerald-100 transition-colors"
+                    >
+                      📄 View & Print Admit Slip
+                    </Link>
+                  )}
                 </div>
               ) : (
                 <div className="flex justify-center w-full">

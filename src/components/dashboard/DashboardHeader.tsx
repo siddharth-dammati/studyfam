@@ -30,6 +30,14 @@ export function DashboardHeader() {
         {/* Right: Candidate Profile & Sign Out */}
         {profile && (
           <div className="flex items-center gap-3">
+            <Link
+              href="/admit-card"
+              className="hidden sm:flex items-center gap-1 px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200/80 rounded-full text-xs text-slate-800 font-medium transition-colors"
+              title="View & Print Official E-Admit Card"
+            >
+              <span>Hall Ticket</span>
+            </Link>
+
             <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 bg-emerald-50 border border-emerald-200 rounded-full text-xs text-emerald-800 font-medium">
               <ShieldCheck size={14} className="text-emerald-600" />
               <span>Verified Student</span>
