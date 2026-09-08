@@ -1,22 +1,21 @@
 "use client";
 
-import { X, Copy, Check, MessageCircle } from "lucide-react";
+import { X, Copy, Check, MessageCircle, Send } from "lucide-react";
 import { Button } from "./Button";
 import { useState } from "react";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  isMockOpen: boolean;
+  isMockOpen?: boolean;
 }
 
-export function ShareModal({ isOpen, onClose, isMockOpen }: Props) {
+export function ShareModal({ isOpen, onClose }: Props) {
   const [copied, setCopied] = useState(false);
-  const shareUrl = "https://studyfam.com/mock-2027";
+  const shareUrl = "https://studyfam.com";
   
-  const shareText = isMockOpen 
-    ? "I just registered for the StudyFam JEE Main 2027 All India Mock. It's only ₹27 and everyone takes the same paper. Let's see who scores higher!"
-    : "I just joined the waitlist for the StudyFam JEE Main 2027 All India Mock. It's only ₹27 and designed to give us a real national benchmark. Join me!";
+  const shareText =
+    "Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 for ₹27! Rank on top of the list to win 100% of your official NTA JEE application fees paid back (₹1,000 for Boys / ₹800 for Girls). Compete nationwide and win your exam fees:";
 
   if (!isOpen) return null;
 
@@ -27,19 +26,29 @@ export function ShareModal({ isOpen, onClose, isMockOpen }: Props) {
   };
 
   const handleWhatsApp = () => {
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + "\n\n" + shareUrl)}`);
+    window.open(
+      `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + "\n\n" + shareUrl)}`,
+      "_blank"
+    );
+  };
+
+  const handleTelegram = () => {
+    window.open(
+      `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
+      "_blank"
+    );
   };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div 
-        className="absolute inset-0 bg-white/80 backdrop-blur-md"
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
         onClick={onClose}
       />
       
-      <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-[24px] shadow-2xl p-8 overflow-hidden">
+      <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-[28px] shadow-2xl p-6 sm:p-8 overflow-hidden">
         {/* Themed Header Banner */}
-        <div className="relative -mx-8 -mt-8 mb-6 p-6 overflow-hidden bg-[#070E22] border-b border-cyan-500/20">
+        <div className="relative -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 mb-6 p-6 overflow-hidden bg-[#070E22] border-b border-cyan-500/20">
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-45 mix-blend-screen pointer-events-none"
             style={{ backgroundImage: "url('/footer-theme-bg.png')" }}
@@ -55,30 +64,48 @@ export function ShareModal({ isOpen, onClose, isMockOpen }: Props) {
 
           <div className="relative z-10">
             <span className="text-[10px] font-mono font-bold tracking-widest text-cyan-300 uppercase block mb-1">
-              Compete · Improve · Impact
+              Top Rankers Win 100% Exam Fees
             </span>
             <h3 className="text-xl font-bold text-white tracking-tight">
-              Challenge Study Groups
+              Challenge & Win Your JEE Fees
             </h3>
             <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-              Invite your peers to take the All-India Mock and expand the scholarship pool.
+              Invite your coaching peers. Compete on the same All-India Mock, and top performers win 100% of their official NTA JEE Main fees funded!
             </p>
           </div>
         </div>
 
-        <div className="bg-[var(--background-soft)] border border-[var(--border)] rounded-xl p-4 mb-6 relative group">
-          <p className="text-sm text-[var(--foreground)] pr-8 italic">&quot;{shareText}&quot;</p>
-          <div className="mt-3 text-xs text-[var(--accent)] font-bold">{shareUrl}</div>
+        <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 mb-6 relative group">
+          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium italic">
+            &quot;{shareText}&quot;
+          </p>
+          <div className="mt-3 text-xs text-indigo-600 font-mono font-bold">
+            {shareUrl}
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <Button size="md" variant="secondary" onClick={handleCopy} className="flex gap-2">
-            {copied ? <Check size={18} className="text-green-600" /> : <Copy size={18} />}
-            {copied ? "Copied ✓" : "Copy Link"}
-          </Button>
-          <Button size="md" onClick={handleWhatsApp} className="flex gap-2 bg-[#25D366] hover:bg-[#20bd5a] shadow-[#25D366]/20">
-            <MessageCircle size={18} />
-            WhatsApp
+        <div className="space-y-2.5">
+          <div className="grid grid-cols-2 gap-2.5">
+            <button
+              onClick={handleWhatsApp}
+              className="flex items-center justify-center gap-2 py-3 px-4 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+            >
+              <MessageCircle size={16} />
+              <span>WhatsApp</span>
+            </button>
+
+            <button
+              onClick={handleTelegram}
+              className="flex items-center justify-center gap-2 py-3 px-4 bg-[#229ED9] hover:bg-[#1d8bc0] text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+            >
+              <Send size={16} />
+              <span>Telegram</span>
+            </button>
+          </div>
+
+          <Button size="md" variant="secondary" onClick={handleCopy} className="w-full flex items-center justify-center gap-2">
+            {copied ? <Check size={16} className="text-emerald-600" /> : <Copy size={16} />}
+            <span>{copied ? "Copied Share Text & Link ✓" : "Copy Share Link & Text"}</span>
           </Button>
         </div>
       </div>

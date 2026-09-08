@@ -19,6 +19,7 @@ import {
   ShieldCheck,
   Share2,
   Check,
+  Send,
 } from "lucide-react";
 import { useImpactStats } from "@/hooks/useImpactStats";
 
@@ -46,12 +47,18 @@ export function ImpactProgress() {
   const isUnlocked = count >= selectedMilestone.students;
 
   const handleShare = () => {
-    const text = `StudyFam's All-India JEE Main Mock has set a target of ${selectedMilestone.students.toLocaleString()} students to fund Top ${selectedMilestone.topN} rankers' official NTA exam fees! Entry is just ₹27. Join here: https://studyfam.com`;
+    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Target: Top ${selectedMilestone.topN} rankers win full fee sponsorship! Join here: https://studyfam.com`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
   };
 
+  const handleTelegram = () => {
+    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Target: Top ${selectedMilestone.topN} rankers win full fee sponsorship!`;
+    window.open(`https://t.me/share/url?url=https%3A%2F%2Fstudyfam.com&text=${encodeURIComponent(text)}`, "_blank");
+  };
+
   const handleCopyLink = () => {
-    navigator.clipboard.writeText("https://studyfam.com/#impact");
+    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Join here: https://studyfam.com`;
+    navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -198,20 +205,27 @@ export function ImpactProgress() {
                 First targeting 1,000 students, then unlocking 5,000, 10,000, and scaling up to 1,00,000. Click any tier to inspect its exact benefits.
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={handleShare}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
               >
                 <Share2 size={13} />
-                <span>Share Target</span>
+                <span>WhatsApp</span>
+              </button>
+              <button
+                onClick={handleTelegram}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#229ED9] hover:bg-[#1d8bc0] text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+              >
+                <Send size={13} />
+                <span>Telegram</span>
               </button>
               <button
                 onClick={handleCopyLink}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
               >
                 {copied ? <Check size={13} className="text-emerald-600" /> : null}
-                <span>{copied ? "Copied" : "Copy Link"}</span>
+                <span>{copied ? "Copied" : "Copy Link & Text"}</span>
               </button>
             </div>
           </div>

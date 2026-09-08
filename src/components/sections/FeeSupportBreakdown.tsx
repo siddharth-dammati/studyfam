@@ -3,7 +3,7 @@
 import { formatIndianCurrency, formatIndianNumber, getActiveMilestone } from "@/lib/impactConfig";
 import { useState } from "react";
 import Link from "next/link";
-import { CheckIcon, Trophy, Award, Users, Sparkles } from "lucide-react";
+import { CheckIcon, Trophy, Award, Users, Sparkles, MessageCircle, Send } from "lucide-react";
 import { useImpactStats } from "@/hooks/useImpactStats";
 
 const milestones = [
@@ -15,7 +15,7 @@ const milestones = [
 ];
 
 const RATE = 18;
-const shareText = "I'm taking the StudyFam National Mock on 27 December 2026 (9 AM – 12 PM). ₹27 entry, national ranking, AI percentile analysis, and Top N performers win their full JEE exam fees (e.g. 1000 registrations = Top 10 Boys + Top 10 Girls). Join me.";
+const shareText = "Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! If you rank on top of the list, you win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Compete nationwide and win your exam fees: https://studyfam.com";
 
 export function FeeSupportBreakdown() {
   const { total_registrations = 0 } = useImpactStats();
@@ -23,6 +23,7 @@ export function FeeSupportBreakdown() {
   const [copied, setCopied] = useState(false);
   const copy = () => { navigator.clipboard.writeText(shareText); setCopied(true); setTimeout(() => setCopied(false), 2000); };
   const wa = () => window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
+  const tg = () => window.open(`https://t.me/share/url?url=https%3A%2F%2Fstudyfam.com&text=${encodeURIComponent(shareText)}`, "_blank");
 
   return (
     <section className="bg-white border-t border-[var(--border)]">
@@ -203,12 +204,17 @@ export function FeeSupportBreakdown() {
                 </span>
               </div>
 
-              <div className="flex gap-3">
-                <button onClick={wa} className="inline-flex items-center gap-2 h-10 px-5 bg-[#25D366] text-white text-sm font-semibold rounded-[12px] border border-[#1FAD55] shadow-[0_1px_4px_rgba(37,211,102,0.3)] hover:-translate-y-[1px] transition-all">
-                  Share on WhatsApp
+              <div className="flex flex-wrap gap-2.5">
+                <button onClick={wa} className="inline-flex items-center gap-2 h-10 px-4 bg-[#25D366] text-white text-xs font-bold rounded-[12px] border border-[#1FAD55] shadow-[0_1px_4px_rgba(37,211,102,0.3)] hover:-translate-y-[1px] transition-all">
+                  <MessageCircle size={15} />
+                  <span>Share on WhatsApp</span>
                 </button>
-                <button onClick={copy} className="inline-flex items-center gap-2 h-10 px-5 bg-white text-[var(--text-primary)] text-sm font-semibold rounded-[12px] border border-[var(--border-strong)] shadow-[var(--shadow-xs)] hover:border-[var(--indigo-400)] transition-all">
-                  {copied ? <><CheckIcon size={14} className="text-emerald-600" />Copied Link</> : "Copy Share Link"}
+                <button onClick={tg} className="inline-flex items-center gap-2 h-10 px-4 bg-[#229ED9] text-white text-xs font-bold rounded-[12px] border border-[#1d8bc0] shadow-[0_1px_4px_rgba(34,158,217,0.3)] hover:-translate-y-[1px] transition-all">
+                  <Send size={15} />
+                  <span>Share on Telegram</span>
+                </button>
+                <button onClick={copy} className="inline-flex items-center gap-2 h-10 px-4 bg-white text-[var(--text-primary)] text-xs font-semibold rounded-[12px] border border-[var(--border-strong)] shadow-[var(--shadow-xs)] hover:border-[var(--indigo-400)] transition-all">
+                  {copied ? <><CheckIcon size={14} className="text-emerald-600" />Copied Link & Text</> : "Copy Share Link"}
                 </button>
               </div>
             </div>

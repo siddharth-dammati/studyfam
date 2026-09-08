@@ -7,11 +7,19 @@ export function ChallengeFriends({ onOpenShare }: { onOpenShare: () => void }) {
   return (
     <section className="py-32 bg-[var(--background)]">
       <div className="max-w-[1000px] mx-auto px-4 text-center">
-        <h2 className="text-h2 font-bold tracking-tight text-[var(--foreground)] mb-20">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-xs font-mono font-bold text-amber-800 uppercase tracking-wider mb-4">
+          <span>🏆 Top Rankers Win 100% Exam Fees</span>
+        </div>
+
+        <h2 className="text-h2 font-bold tracking-tight text-[var(--foreground)] mb-4">
           WHO RANKS HIGHER?
         </h2>
 
-        <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-20">
+        <p className="text-sm sm:text-base text-slate-600 max-w-xl mx-auto mb-14 leading-relaxed">
+          Your friends are preparing for JEE too. Take the same All-India Mock for ₹27, compete on the national leaderboard, and rank on top of the list to win 100% of your official JEE application fees paid back!
+        </p>
+
+        <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-14">
           <motion.div 
             initial={{ y: 20, rotate: -4 }}
             whileInView={{ y: 0, rotate: -2 }}
@@ -35,12 +43,8 @@ export function ChallengeFriends({ onOpenShare }: { onOpenShare: () => void }) {
           </motion.div>
         </div>
 
-        <p className="text-lg text-[var(--foreground-secondary)] mb-10 max-w-xl mx-auto">
-          Your friends are preparing for JEE too. Get them into the same mock and see who ranks higher.
-        </p>
-
         <Button size="lg" onClick={onOpenShare} className="group">
-          CHALLENGE YOUR FRIENDS 
+          CHALLENGE FRIENDS & WIN YOUR FEES
           <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
         </Button>
       </div>
