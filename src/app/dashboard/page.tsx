@@ -22,6 +22,7 @@ export default function DashboardPage() {
   const [candidateRecord, setCandidateRecord] = useState<CandidateRecord | null>(null);
   const [loadingData, setLoadingData] = useState(true);
   const [isRegModalOpen, setIsRegModalOpen] = useState(false);
+  const [isJustConfirmed, setIsJustConfirmed] = useState(false);
 
   const fetchCandidateRecord = async (targetOrderId?: string | null) => {
     try {
@@ -57,13 +58,25 @@ export default function DashboardPage() {
 
     const params = new URLSearchParams(window.location.search);
     const orderIdParam = params.get("order_id");
+    const storedOrderId = !orderIdParam ? localStorage.getItem("sf_confirmed_order_id") : null;
+    const activeOrderId = orderIdParam || storedOrderId;
 
-    if (orderIdParam) {
+    if (activeOrderId) {
       setLoadingData(true);
-      verifyCashfreeOrder(orderIdParam).then(() => {
-        fetchCandidateRecord(orderIdParam);
+      if (orderIdParam) setIsJustConfirmed(true);
+
+      verifyCashfreeOrder(activeOrderId).then((res) => {
+        if (res.registration) {
+          setCandidateRecord(res.registration as CandidateRecord);
+          setLoadingData(false);
+          try {
+            localStorage.setItem("sf_confirmed_order_id", activeOrderId);
+          } catch {}
+        } else {
+          fetchCandidateRecord(activeOrderId);
+        }
       }).catch(() => {
-        fetchCandidateRecord(orderIdParam);
+        fetchCandidateRecord(activeOrderId);
       });
     } else if (!authLoading) {
       fetchCandidateRecord();
@@ -125,6 +138,27 @@ export default function DashboardPage() {
       <DashboardHeader />
 
       <main className="flex-1 max-w-[1140px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
+        {/* Success Alert Banner after payment */}
+        {isJustConfirmed && (
+          <div className="p-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 rounded-2xl text-white shadow-md flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                <Sparkles className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm tracking-tight">Payment Verified · All-India Mock Seat Confirmed!</h4>
+                <p className="text-xs text-emerald-100 mt-0.5">Your official registration for 27 Dec 2026 is confirmed. Your reference slip is below.</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsJustConfirmed(false)}
+              className="text-white/80 hover:text-white text-xs font-semibold px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors shrink-0"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
+
         {/* Welcome greeting */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
@@ -135,6 +169,11 @@ export default function DashboardPage() {
               Your official StudyFam candidate portal for the All-India JEE Main 2027 Mock.
             </p>
           </div>
+          {!profile && candidateRecord && (
+            <div className="flex items-center gap-2">
+              <GoogleSignInButton text="signin_with" size="medium" shape="pill" width={220} />
+            </div>
+          )}
         </div>
 
         {/* Candidate Registration Card */}

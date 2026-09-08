@@ -23,6 +23,7 @@ export interface VerifyOrderResponse {
   payment_id?: string;
   status: "PAID" | "PENDING" | "FAILED" | "USER_DROPPED";
   error?: string;
+  registration?: any;
 }
 
 /**
@@ -92,6 +93,7 @@ export async function verifyCashfreeOrder(
         registration_id: data.registration_id,
         payment_id: data.payment_id,
         status: "PAID",
+        registration: data.registration,
       };
     }
 

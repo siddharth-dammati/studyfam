@@ -274,6 +274,7 @@ async function handleVerifyOrder(request: Request, env: Env): Promise<Response> 
       const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
 
       let registrationId = "";
+      let registrationRecord: any = null;
       try {
         const patchRes = await fetch(`${supabaseUrl}/rest/v1/registrations?order_id=eq.${encodeURIComponent(orderId)}`, {
           method: "PATCH",
@@ -294,6 +295,20 @@ async function handleVerifyOrder(request: Request, env: Env): Promise<Response> 
         const patched: any = await patchRes.json();
         if (Array.isArray(patched) && patched.length > 0) {
           registrationId = patched[0].id;
+          registrationRecord = patched[0];
+        } else {
+          // Fallback fetch if already patched earlier
+          const fetchRes = await fetch(`${supabaseUrl}/rest/v1/registrations?order_id=eq.${encodeURIComponent(orderId)}&limit=1`, {
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+            },
+          });
+          const fetched: any = await fetchRes.json();
+          if (Array.isArray(fetched) && fetched.length > 0) {
+            registrationId = fetched[0].id;
+            registrationRecord = fetched[0];
+          }
         }
       } catch (e) {
         // non-fatal
@@ -306,6 +321,7 @@ async function handleVerifyOrder(request: Request, env: Env): Promise<Response> 
           payment_id: paymentId,
           registration_id: registrationId,
           status: "PAID",
+          registration: registrationRecord,
         }),
         { status: 200, headers: jsonHeaders }
       );

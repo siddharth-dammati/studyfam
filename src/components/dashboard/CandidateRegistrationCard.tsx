@@ -157,17 +157,39 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
           </div>
         </div>
 
-        {/* Payment Confirmation Banner or Upgrade Callout */}
+        {/* Payment Confirmation Banner & Action Toolbar */}
         {isConfirmed ? (
-          <div className="mt-4 p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2.5 text-emerald-900 font-medium">
-              <ShieldCheck size={18} className="text-emerald-600 shrink-0" />
-              <span>
-                Payment Confirmed via Cashfree PG {registration.order_id ? `(${registration.order_id})` : ""} · Your slot is guaranteed.
-              </span>
-            </div>
-            <div className="font-mono text-[11px] text-emerald-700 shrink-0">
-              CBT Hall Ticket link will activate 48 hrs prior.
+          <div className="mt-5 space-y-3">
+            <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-emerald-950 font-bold text-sm">
+                  <ShieldCheck size={18} className="text-emerald-600 shrink-0" />
+                  <span>Payment Verified · Official CBT Seat Guaranteed</span>
+                </div>
+                <p className="text-emerald-800 leading-relaxed text-xs">
+                  Your seat for the All-India Mock on <strong>27 Dec 2026 (9:00 AM – 12:00 PM IST)</strong> is locked. Admit card and test portal access credentials will be delivered to your WhatsApp (<strong>{registration.phone}</strong>) 24 hours prior.
+                </p>
+                <div className="pt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-emerald-900">
+                  {registration.order_id && (
+                    <span>Order: <strong>{registration.order_id}</strong></span>
+                  )}
+                  {registration.payment_id && (
+                    <span>Payment ID: <strong>{registration.payment_id}</strong></span>
+                  )}
+                  <span>Gateway: <strong>Cashfree Production (₹27.00)</strong></span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => window.print()}
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-100/70 font-semibold text-xs transition-colors shadow-2xs"
+                  title="Print Admit Slip"
+                >
+                  <CreditCard size={14} />
+                  <span>Print Admit Slip</span>
+                </button>
+              </div>
             </div>
           </div>
         ) : (

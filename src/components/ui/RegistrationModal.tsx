@@ -86,6 +86,11 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
         const verifyRes = await verifyCashfreeOrder(orderRes.order_id);
 
         if (verifyRes.success && verifyRes.status === "PAID") {
+          try {
+            if (typeof window !== "undefined") {
+              localStorage.setItem("sf_confirmed_order_id", orderRes.order_id);
+            }
+          } catch {}
           setRegisteredId(verifyRes.registration_id || orderRes.order_id);
           if (verifyRes.payment_id) setPaymentId(verifyRes.payment_id);
           setStep(3); // Success receipt
@@ -218,7 +223,11 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
             </div>
 
             <div className="space-y-2">
-              <Link href="/dashboard" onClick={handleReset} className="block w-full">
+              <Link
+                href={orderId ? `/dashboard?order_id=${encodeURIComponent(orderId)}` : "/dashboard"}
+                onClick={handleReset}
+                className="block w-full"
+              >
                 <Button size="lg" className="w-full flex items-center justify-center gap-2">
                   <span>Go to Candidate Dashboard</span>
                   <ArrowRight size={16} />
