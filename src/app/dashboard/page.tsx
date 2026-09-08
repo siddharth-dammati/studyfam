@@ -15,6 +15,7 @@ import { useRegistrationState } from "@/hooks/useRegistrationState";
 import { HelpCircle, ExternalLink, BookOpen, Sparkles, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { verifyCashfreeOrder } from "@/services/paymentService";
+import { hydrateCandidateRecord } from "@/lib/candidateUtils";
 
 import { ScholarshipDossierModal } from "@/components/dashboard/ScholarshipDossierModal";
 
@@ -45,7 +46,13 @@ export default function DashboardPage() {
       const { data, error } = await query.limit(1);
 
       if (!error && data && data.length > 0) {
-        const rec = data[0] as CandidateRecord;
+        let cachedFallback: any = null;
+        try {
+          const cachedRaw = localStorage.getItem("sf_candidate_record");
+          if (cachedRaw) cachedFallback = JSON.parse(cachedRaw);
+        } catch {}
+
+        const rec = hydrateCandidateRecord(data[0], cachedFallback);
         const storedOrderId = typeof window !== "undefined" ? localStorage.getItem("sf_confirmed_order_id") : null;
         if (storedOrderId || rec.amount_paid >= 27) {
           rec.status = "confirmed";
@@ -72,7 +79,8 @@ export default function DashboardPage() {
       if (cached) {
         const parsed = JSON.parse(cached);
         if (parsed && (parsed.status === "confirmed" || parsed.status === "registered" || parsed.order_id || parsed.amount_paid >= 27)) {
-          setCandidateRecord(parsed);
+          const hydrated = hydrateCandidateRecord(parsed);
+          setCandidateRecord(hydrated);
           setLoadingData(false);
         }
       }
@@ -88,11 +96,12 @@ export default function DashboardPage() {
 
       verifyCashfreeOrder(activeOrderId).then((res) => {
         if (res.registration) {
-          setCandidateRecord(res.registration as CandidateRecord);
+          const hydrated = hydrateCandidateRecord(res.registration);
+          setCandidateRecord(hydrated);
           setLoadingData(false);
           try {
             localStorage.setItem("sf_confirmed_order_id", activeOrderId);
-            localStorage.setItem("sf_candidate_record", JSON.stringify(res.registration));
+            localStorage.setItem("sf_candidate_record", JSON.stringify(hydrated));
           } catch {}
         } else {
           fetchCandidateRecord(activeOrderId);
@@ -115,7 +124,10 @@ export default function DashboardPage() {
         !candidateRecord.family_income ||
         !candidateRecord.scholarship_track;
 
-      if (isMissingDossier) {
+      const dismissalKey = `sf_dossier_dismissed_${candidateRecord.email || candidateRecord.order_id}`;
+      const wasDismissed = typeof window !== "undefined" && sessionStorage.getItem(dismissalKey) === "true";
+
+      if (isMissingDossier && !wasDismissed) {
         setIsDossierModalOpen(true);
         setDossierPrompted(true);
       }
@@ -282,15 +294,25 @@ export default function DashboardPage() {
 
       <ScholarshipDossierModal
         isOpen={isDossierModalOpen}
-        onClose={() => setIsDossierModalOpen(false)}
+        onClose={() => {
+          setIsDossierModalOpen(false);
+          if (candidateRecord) {
+            try {
+              sessionStorage.setItem(`sf_dossier_dismissed_${candidateRecord.email || candidateRecord.order_id}`, "true");
+            } catch {}
+          }
+        }}
         candidateRecord={candidateRecord}
         userEmail={profile?.email}
         userFullName={profile?.fullName}
         onSuccess={(updated) => {
-          setCandidateRecord(updated);
+          const hydrated = hydrateCandidateRecord(updated);
+          setCandidateRecord(hydrated);
           setIsDossierModalOpen(false);
+          setDossierPrompted(true);
           try {
-            localStorage.setItem("sf_candidate_record", JSON.stringify(updated));
+            localStorage.setItem("sf_candidate_record", JSON.stringify(hydrated));
+            sessionStorage.setItem(`sf_dossier_dismissed_${hydrated.email || hydrated.order_id}`, "true");
           } catch {}
         }}
       />

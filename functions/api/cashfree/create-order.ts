@@ -18,6 +18,13 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
     const cleanPhone = rawPhone.replace(/\D/g, "").slice(-10);
     const jeeStatus = body.jeeStatus || "class-11";
     const referralCode = body.referralCode || null;
+    const gender = body.gender || null;
+    const familyIncome = body.familyIncome || null;
+    let scholarshipTrack = body.scholarshipTrack || null;
+    if (familyIncome === "above_8l" && scholarshipTrack === "need_based") {
+      scholarshipTrack = "merit";
+    }
+    const scholarshipSlab = body.scholarshipSlab || (scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100");
 
     if (!fullName || !email || cleanPhone.length !== 10) {
       return new Response(
@@ -85,7 +92,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
       const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
 
       try {
-        const fullPayload = {
+        const fullPayload: any = {
           full_name: fullName,
           email,
           phone: cleanPhone,
@@ -96,6 +103,10 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
           payment_status: "pending",
           referral_code: referralCode || orderId,
         };
+        if (gender) fullPayload.gender = gender;
+        if (familyIncome) fullPayload.family_income = familyIncome;
+        if (scholarshipTrack) fullPayload.scholarship_track = scholarshipTrack;
+        if (scholarshipSlab) fullPayload.scholarship_slab = scholarshipSlab;
 
         const res = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
           method: "POST",
@@ -109,6 +120,13 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
         });
 
         if (!res.ok) {
+          const serializedDossier = "dossier:" + JSON.stringify({
+            gender,
+            family_income: familyIncome,
+            scholarship_track: scholarshipTrack,
+            scholarship_slab: scholarshipSlab,
+          });
+
           await fetch(`${supabaseUrl}/rest/v1/registrations`, {
             method: "POST",
             headers: {
@@ -125,6 +143,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
               status: "waitlist",
               amount_paid: 0,
               referral_code: referralCode || orderId,
+              payment_method: serializedDossier,
             }),
           });
         }

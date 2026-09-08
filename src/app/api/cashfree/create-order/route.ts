@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { serializeDossier } from "@/lib/candidateUtils";
 
 export async function POST(request: Request) {
   try {
@@ -134,7 +135,15 @@ export async function POST(request: Request) {
             jee_status: jeeStatus,
             status: "waitlist",
             amount_paid: 0,
+            order_id: orderId,
             referral_code: referralCode || orderId,
+            payment_status: "pending",
+            payment_method: serializeDossier({
+              gender,
+              family_income: familyIncome,
+              scholarship_track: scholarshipTrack,
+              scholarship_slab: scholarshipSlab,
+            }),
           }),
         });
       }

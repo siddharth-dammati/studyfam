@@ -30,6 +30,33 @@ function getAppId(env: Env): string {
     : DEFAULT_APP_ID;
 }
 
+function serializeDossier(data: { gender?: any; family_income?: any; scholarship_track?: any; scholarship_slab?: any }) {
+  return "dossier:" + JSON.stringify({
+    gender: data.gender || null,
+    family_income: data.family_income || null,
+    scholarship_track: data.scholarship_track || "merit",
+    scholarship_slab: data.scholarship_slab || (data.scholarship_track === "opt_out" ? "opt_out" : "full_fee_100"),
+  });
+}
+
+function hydrateRecord(raw: any, fallback?: any) {
+  if (!raw) return raw;
+  let dossier: any = {};
+  if (raw.payment_method && typeof raw.payment_method === "string" && raw.payment_method.startsWith("dossier:")) {
+    try {
+      dossier = JSON.parse(raw.payment_method.slice(8)) || {};
+    } catch {}
+  }
+  const fb = fallback || {};
+  return {
+    ...raw,
+    gender: raw.gender || dossier.gender || fb.gender || undefined,
+    family_income: raw.family_income || dossier.family_income || fb.family_income || undefined,
+    scholarship_track: raw.scholarship_track || dossier.scholarship_track || fb.scholarship_track || undefined,
+    scholarship_slab: raw.scholarship_slab || dossier.scholarship_slab || fb.scholarship_slab || undefined,
+  };
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -217,6 +244,12 @@ async function handleCreateOrder(request: Request, env: Env): Promise<Response> 
             status: "waitlist",
             amount_paid: 0,
             referral_code: referralCode || orderId,
+            payment_method: serializeDossier({
+              gender,
+              family_income: familyIncome,
+              scholarship_track: scholarshipTrack,
+              scholarship_slab: scholarshipSlab,
+            }),
           }),
         });
       }
@@ -521,16 +554,16 @@ async function handleCandidateUpdateProfile(request: Request, env: Env): Promise
     let updatedRecord: any = null;
 
     if (existingRecord) {
-      const patchPayload: Record<string, any> = {};
-      if (fullName) patchPayload.full_name = fullName;
-      if (cleanPhone) patchPayload.phone = cleanPhone;
-      if (gender) patchPayload.gender = gender;
-      if (jeeStatus) patchPayload.jee_status = jeeStatus;
-      if (familyIncome) patchPayload.family_income = familyIncome;
-      if (scholarshipTrack) patchPayload.scholarship_track = scholarshipTrack;
-      if (scholarshipSlab) patchPayload.scholarship_slab = scholarshipSlab;
+      const fullPatchPayload: Record<string, any> = {};
+      if (fullName) fullPatchPayload.full_name = fullName;
+      if (cleanPhone) fullPatchPayload.phone = cleanPhone;
+      if (gender) fullPatchPayload.gender = gender;
+      if (jeeStatus) fullPatchPayload.jee_status = jeeStatus;
+      if (familyIncome) fullPatchPayload.family_income = familyIncome;
+      if (scholarshipTrack) fullPatchPayload.scholarship_track = scholarshipTrack;
+      if (scholarshipSlab) fullPatchPayload.scholarship_slab = scholarshipSlab;
 
-      const patchRes = await fetch(
+      let patchRes = await fetch(
         `${supabaseUrl}/rest/v1/registrations?id=eq.${encodeURIComponent(existingRecord.id)}`,
         {
           method: "PATCH",
@@ -540,9 +573,37 @@ async function handleCandidateUpdateProfile(request: Request, env: Env): Promise
             "Content-Type": "application/json",
             Prefer: "return=representation",
           },
-          body: JSON.stringify(patchPayload),
+          body: JSON.stringify(fullPatchPayload),
         }
       );
+
+      if (!patchRes.ok) {
+        const fallbackPatchPayload: Record<string, any> = {
+          payment_method: serializeDossier({
+            gender,
+            family_income: familyIncome,
+            scholarship_track: scholarshipTrack,
+            scholarship_slab: scholarshipSlab,
+          }),
+        };
+        if (fullName) fallbackPatchPayload.full_name = fullName;
+        if (cleanPhone) fallbackPatchPayload.phone = cleanPhone;
+        if (jeeStatus) fallbackPatchPayload.jee_status = jeeStatus;
+
+        patchRes = await fetch(
+          `${supabaseUrl}/rest/v1/registrations?id=eq.${encodeURIComponent(existingRecord.id)}`,
+          {
+            method: "PATCH",
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
+            },
+            body: JSON.stringify(fallbackPatchPayload),
+          }
+        );
+      }
 
       if (patchRes.ok) {
         const patched: any = await patchRes.json();
@@ -552,12 +613,10 @@ async function handleCandidateUpdateProfile(request: Request, env: Env): Promise
       }
 
       if (!updatedRecord) {
-        updatedRecord = { ...existingRecord, ...patchPayload };
+        updatedRecord = { ...existingRecord, ...fullPatchPayload };
       }
     } else {
-      const newId = `sf_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-      const insertPayload = {
-        id: newId,
+      const fullInsertPayload: Record<string, any> = {
         email,
         full_name: fullName || "Candidate",
         phone: cleanPhone || "0000000000",
@@ -569,10 +628,11 @@ async function handleCandidateUpdateProfile(request: Request, env: Env): Promise
         status: "waitlist",
         amount_paid: 0,
         order_id: orderId || null,
+        referral_code: orderId || null,
         payment_status: "pending",
       };
 
-      const insertRes = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+      let insertRes = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
         method: "POST",
         headers: {
           apikey: supabaseKey,
@@ -580,8 +640,39 @@ async function handleCandidateUpdateProfile(request: Request, env: Env): Promise
           "Content-Type": "application/json",
           Prefer: "return=representation",
         },
-        body: JSON.stringify(insertPayload),
+        body: JSON.stringify(fullInsertPayload),
       });
+
+      if (!insertRes.ok) {
+        const fallbackInsertPayload = {
+          email,
+          full_name: fullName || "Candidate",
+          phone: cleanPhone || "0000000000",
+          jee_status: jeeStatus,
+          status: "waitlist",
+          amount_paid: 0,
+          order_id: orderId || null,
+          referral_code: orderId || null,
+          payment_status: "pending",
+          payment_method: serializeDossier({
+            gender,
+            family_income: familyIncome,
+            scholarship_track: scholarshipTrack,
+            scholarship_slab: scholarshipSlab,
+          }),
+        };
+
+        insertRes = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+          method: "POST",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            "Content-Type": "application/json",
+            Prefer: "return=representation",
+          },
+          body: JSON.stringify(fallbackInsertPayload),
+        });
+      }
 
       if (insertRes.ok) {
         const inserted: any = await insertRes.json();
@@ -591,12 +682,19 @@ async function handleCandidateUpdateProfile(request: Request, env: Env): Promise
       }
 
       if (!updatedRecord) {
-        updatedRecord = insertPayload;
+        updatedRecord = fullInsertPayload;
       }
     }
 
+    const hydrated = hydrateRecord(updatedRecord, {
+      gender,
+      family_income: familyIncome,
+      scholarship_track: scholarshipTrack,
+      scholarship_slab: scholarshipSlab,
+    });
+
     return new Response(
-      JSON.stringify({ success: true, registration: updatedRecord }),
+      JSON.stringify({ success: true, registration: hydrated }),
       { status: 200, headers: jsonHeaders }
     );
   } catch (err: any) {

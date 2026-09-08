@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { createClient } from "@/utils/supabase/client";
 import { verifyCashfreeOrder } from "@/services/paymentService";
 import { CandidateRecord } from "@/components/dashboard/CandidateRegistrationCard";
+import { hydrateCandidateRecord } from "@/lib/candidateUtils";
 import { PremiumAdmitCard } from "@/components/dashboard/PremiumAdmitCard";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { Footer } from "@/components/sections/Footer";
@@ -37,7 +38,7 @@ function AdmitCardContent() {
           try {
             const res = await verifyCashfreeOrder(orderIdParam);
             if (res.registration && isMounted) {
-              setCandidate(res.registration as CandidateRecord);
+              setCandidate(hydrateCandidateRecord(res.registration));
               setLoading(false);
               return;
             }
@@ -52,7 +53,7 @@ function AdmitCardContent() {
             .limit(1);
 
           if (data && data.length > 0 && isMounted) {
-            setCandidate(data[0] as CandidateRecord);
+            setCandidate(hydrateCandidateRecord(data[0]));
             setLoading(false);
             return;
           }
@@ -66,7 +67,7 @@ function AdmitCardContent() {
               const parsed = JSON.parse(cached);
               if (parsed && (parsed.status === "confirmed" || parsed.status === "registered" || parsed.order_id || parsed.amount_paid >= 27)) {
                 if (isMounted) {
-                  setCandidate(parsed);
+                  setCandidate(hydrateCandidateRecord(parsed));
                   setLoading(false);
                   return;
                 }
@@ -86,7 +87,7 @@ function AdmitCardContent() {
             .limit(1);
 
           if (data && data.length > 0 && isMounted) {
-            const rec = data[0] as CandidateRecord;
+            const rec = hydrateCandidateRecord(data[0]);
             if (rec.amount_paid >= 27 || rec.status === "confirmed" || rec.status === "registered") {
               setCandidate(rec);
               setLoading(false);
@@ -135,13 +136,13 @@ function AdmitCardContent() {
         if (q.startsWith("SF_") || q.startsWith("order_")) {
           const cfRes = await verifyCashfreeOrder(q);
           if (cfRes.registration) {
-            setCandidate(cfRes.registration as CandidateRecord);
+            setCandidate(hydrateCandidateRecord(cfRes.registration));
             return;
           }
         }
         setErrorMsg("No confirmed registration found matching this Mobile Number or Order Reference. Please verify and try again.");
       } else {
-        setCandidate(data[0] as CandidateRecord);
+        setCandidate(hydrateCandidateRecord(data[0]));
       }
     } catch (err) {
       setErrorMsg("Unable to retrieve candidate record. Please check your network and try again.");

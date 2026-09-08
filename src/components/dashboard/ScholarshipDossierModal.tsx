@@ -106,9 +106,28 @@ export function ScholarshipDossierModal({
       });
 
       if (res.success && res.registration) {
+        const fullCandidate: CandidateRecord = {
+          ...(candidateRecord || ({} as any)),
+          ...res.registration,
+          gender,
+          family_income: familyIncome,
+          scholarship_track: finalTrack,
+          scholarship_slab: slabToSubmit,
+          full_name: fullName.trim(),
+          phone: cleanDigits.slice(-10),
+          jee_status: jeeStatus,
+        };
+
+        if (typeof window !== "undefined") {
+          try {
+            localStorage.setItem("sf_candidate_record", JSON.stringify(fullCandidate));
+            sessionStorage.setItem(`sf_dossier_dismissed_${emailToUse}`, "true");
+          } catch {}
+        }
+
         setShowSuccessBadge(true);
         setTimeout(() => {
-          onSuccess(res.registration);
+          onSuccess(fullCandidate);
           setShowSuccessBadge(false);
           onClose();
         }, 1200);
