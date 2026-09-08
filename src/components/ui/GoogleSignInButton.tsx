@@ -29,13 +29,20 @@ export function GoogleSignInButton({
   className = "",
 }: GoogleSignInButtonProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { signInWithGoogle, profile } = useAuth();
+  const { signInWithGoogle, profile, loading } = useAuth();
   const googleClientId =
     process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
     "655007764370-h48i629okpm01d7mfvutjsq69a6sh7uj.apps.googleusercontent.com";
 
   useEffect(() => {
-    if (profile || !googleClientId) return;
+    if (profile) {
+      if (typeof window !== "undefined" && window.google?.accounts?.id) {
+        window.google.accounts.id.cancel();
+      }
+      return;
+    }
+
+    if (loading || !googleClientId) return;
 
     const initializeGsi = () => {
       if (!window.google?.accounts?.id || !containerRef.current) return;
@@ -73,9 +80,6 @@ export function GoogleSignInButton({
         logo_alignment: "left",
         width,
       });
-
-      // Optional One-Tap prompt
-      window.google.accounts.id.prompt();
     };
 
     if (window.google?.accounts?.id) {
@@ -88,9 +92,9 @@ export function GoogleSignInButton({
       script.onload = initializeGsi;
       document.body.appendChild(script);
     }
-  }, [googleClientId, profile, text, theme, size, shape, width]);
+  }, [googleClientId, profile, loading, text, theme, size, shape, width]);
 
-  if (profile) return null;
+  if (loading || profile) return null;
 
   // Fallback to standard OAuth button if client ID is not configured yet
   if (!googleClientId) {

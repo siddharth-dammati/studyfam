@@ -31,10 +31,16 @@ export function useAuth() {
     try {
       const supabase = createClient();
 
-      // Check active user
-      supabase.auth.getUser().then(({ data: { user } }) => {
-        setUser(user);
-        setProfile(extractProfile(user));
+      // Fast local session restore
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        const currentUser = session?.user || null;
+        if (currentUser) {
+          setUser(currentUser);
+          setProfile(extractProfile(currentUser));
+          if (typeof window !== "undefined" && window.google?.accounts?.id) {
+            window.google.accounts.id.cancel();
+          }
+        }
         setLoading(false);
       }).catch(() => {
         setLoading(false);
@@ -46,6 +52,9 @@ export function useAuth() {
         setUser(currentUser);
         setProfile(extractProfile(currentUser));
         setLoading(false);
+        if (currentUser && typeof window !== "undefined" && window.google?.accounts?.id) {
+          window.google.accounts.id.cancel();
+        }
       });
 
       return () => {
@@ -82,6 +91,9 @@ export function useAuth() {
       await supabase.auth.signOut();
       setUser(null);
       setProfile(null);
+      if (typeof window !== "undefined" && window.google?.accounts?.id) {
+        window.google.accounts.id.disableAutoSelect();
+      }
     } catch (err) {
       console.error("Failed to sign out:", err);
     }
