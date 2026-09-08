@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export function Timeline() {
   const events = [
     { date: "27 NOV 2026", time: "20:27 IST", title: "REGISTRATIONS OPEN", desc: "Secure your spot for ₹27." },
-    { date: "27 DEC 2026", time: "ALL DAY", title: "MOCK TEST DAY", desc: "Take the All-India Mock from your device." },
+    { date: "27 DEC 2026", time: "9:00 AM – 12:00 PM IST", title: "MOCK TEST DAY", desc: "Take the All-India Mock from your device." },
     { date: "AFTER TEST", time: "TBA", title: "RESULTS & ANALYSIS", desc: "Get your expected All-India Rank & Percentile." },
   ];
 

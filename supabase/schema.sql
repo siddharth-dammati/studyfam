@@ -83,7 +83,7 @@ using (true);
 -- Seed baseline configuration
 insert into public.app_config (key, value, description) values
     ('registration_open_date', '2026-11-27T20:27:00+05:30', 'Countdown target for registration opening'),
-    ('exam_date', '2027-12-27T20:27:00+05:30', 'Date of the All India Mock Exam'),
+    ('exam_date', '2026-12-27T09:00:00+05:30', 'Date of the All India Mock Exam'),
     ('support_per_registration', '18', 'INR allocated to scholarship pool per registration'),
     ('fee_per_mock', '27', 'Entry fee in INR'),
     ('milestone', '15000', 'Current target milestone of registrations'),

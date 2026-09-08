@@ -14,7 +14,7 @@ const milestones = [
 ];
 
 const RATE = 18;
-const shareText = "I'm taking the StudyFam National Mock 2027 on 27 December. ₹27 entry, national ranking, AI percentile analysis, and Top N performers win their full JEE exam fees (e.g. 1000 registrations = Top 10 Boys + Top 10 Girls). Join me.";
+const shareText = "I'm taking the StudyFam National Mock on 27 December 2026 (9 AM – 12 PM). ₹27 entry, national ranking, AI percentile analysis, and Top N performers win their full JEE exam fees (e.g. 1000 registrations = Top 10 Boys + Top 10 Girls). Join me.";
 
 export function FeeSupportBreakdown() {
   const [copied, setCopied] = useState(false);

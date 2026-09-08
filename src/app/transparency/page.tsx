@@ -84,7 +84,7 @@ export default function TransparencyPage() {
               2.1 <strong>Segregated Bank Accounts:</strong> All scholarship pool funds (₹18 per registration) are maintained in a dedicated bank account in India. These funds are held in trust exclusively for eligible candidate disbursements.
             </p>
             <p>
-              2.2 <strong>Third-Party Reconciliation:</strong> Following the completion of the 27 December 2027 All India Mock, an independent Chartered Accountant firm will conduct a reconciliation audit verifying that 100% of the scholarship reserve is accounted for and distributed to verified student rankers.
+              2.2 <strong>Third-Party Reconciliation:</strong> Following the completion of the 27 December 2026 All India Mock, an independent Chartered Accountant firm will conduct a reconciliation audit verifying that 100% of the scholarship reserve is accounted for and distributed to verified student rankers.
             </p>
             <p>
               2.3 <strong>Public Proof-of-Payout:</strong> An anonymized payout ledger displaying candidate Roll Numbers, Category, Rank, and Bank UTR Transaction References will be published for public community verification upon completion of disbursements.

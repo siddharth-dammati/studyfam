@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: "What is the exam date and time?",
-    a: "The mock test will be held on 27 December 2027 at 20:27 IST. Mark it in your calendar. It is a single-slot, single-day national event."
+    a: "The mock test will be held on 27 December 2026 from 9:00 AM to 12:00 PM IST. Mark it in your calendar. It is a single-slot, single-day national event."
   },
   {
     q: "Why is the fee only ₹27?",

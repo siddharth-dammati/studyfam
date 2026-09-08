@@ -123,11 +123,11 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
                   <span className="relative flex h-2 w-2 rounded-full bg-emerald-500" />
                 </span>
                 <span className="text-indigo-900 font-mono text-[11px] font-bold tracking-wide uppercase">
-                  All India JEE Main 2027 Mock Test
+                  All India JEE Main Mock Test
                 </span>
                 <span className="text-slate-300">·</span>
                 <span className="text-emerald-700 font-mono text-[11px] font-bold">
-                  27 Dec 2027 at 20:27 IST
+                  27 Dec 2026 · 9:00 AM – 12:00 PM IST
                 </span>
               </div>
 
@@ -207,7 +207,7 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
 
                   <p className="text-slate-500 text-xs font-mono mt-4 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    ₹27 Entry · Opens Nov 27 · Single National Slot: 27 Dec at 20:27 IST
+                    ₹27 Entry · Opens Nov 27 · Single National Slot: 27 Dec 2026 (9:00 AM – 12:00 PM IST)
                   </p>
                 </>
               )}

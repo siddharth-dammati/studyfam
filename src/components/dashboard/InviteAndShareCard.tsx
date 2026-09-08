@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 export function InviteAndShareCard() {
   const [copied, setCopied] = useState(false);
   const shareUrl = "https://studyfam.com";
-  const shareText = "Hey! I just registered for StudyFam's All-India JEE Main 2027 Mock for ₹27. Top 20 rankers win 100% of their official NTA exam fees! Join here:";
+  const shareText = "Hey! I just registered for StudyFam's All-India JEE Main Mock on 27 December 2026 (9 AM – 12 PM) for ₹27. Top rankers win 100% of their official NTA exam fees! Join here:";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(`${shareText} ${shareUrl}`);

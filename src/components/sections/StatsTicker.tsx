@@ -13,7 +13,7 @@ export function StatsTicker() {
     "NTA CBT Interface",
     "+4 / −1 Marking Scheme",
     "Physics · Chemistry · Maths",
-    "27 December 2027",
+    "27 December 2026 · 9:00 AM – 12:00 PM",
     "Entry Fee: ₹27 Only",
     "₹18 Goes to JEE Fee Support",
     "Section A: 20 MCQs",

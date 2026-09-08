@@ -77,7 +77,7 @@ export function Footer() {
             </div>
 
             <div className="pt-2 text-xs font-mono text-white space-y-1.5 drop-shadow-[0_1px_2px_rgba(0,10,35,0.7)]">
-              <p>National Exam Slot: <strong className="text-cyan-200 font-bold ml-1">27 December 2027 · 20:27 IST</strong></p>
+              <p>National Exam Slot: <strong className="text-cyan-200 font-bold ml-1">27 December 2026 · 9:00 AM – 12:00 PM IST</strong></p>
               <p>Standard Entry Fee: <strong className="text-cyan-200 font-bold ml-1">₹27 Only (All Taxes Included)</strong></p>
             </div>
           </div>

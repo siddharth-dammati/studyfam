@@ -60,7 +60,7 @@ export default function RefundPolicyPage() {
             </p>
             <ul className="list-disc pl-6 space-y-2 text-slate-600">
               <li><strong>Duplicate Transactions:</strong> If a candidate was erroneously charged multiple times for the same email/phone number due to payment gateway lag, all surplus amounts will be refunded within 5-7 working days.</li>
-              <li><strong>Major Service Outage:</strong> In the extraordinary event of an unresolvable server failure on StudyFam&apos;s end preventing more than 15% of registered candidates from taking the test on 27 December 2027 (and where no rescheduled slot is offered), a full 100% refund shall be issued.</li>
+              <li><strong>Major Service Outage:</strong> In the extraordinary event of an unresolvable server failure on StudyFam&apos;s end preventing more than 15% of registered candidates from taking the test on 27 December 2026 (and where no rescheduled slot is offered), a full 100% refund shall be issued.</li>
             </ul>
           </section>
 
@@ -68,7 +68,7 @@ export default function RefundPolicyPage() {
             <h2 className="text-lg font-bold text-slate-900 tracking-tight">3. Ineligibility for Refunds</h2>
             <p>Refunds shall NOT be granted under any of the following circumstances:</p>
             <ul className="list-disc pl-6 space-y-2 text-slate-600">
-              <li>Candidate failing to attend the examination at the scheduled slot (20:27 IST on 27 December 2027).</li>
+              <li>Candidate failing to attend the examination at the scheduled slot (9:00 AM – 12:00 PM IST on 27 December 2026).</li>
               <li>Candidate experiencing personal hardware, browser, local power, or local internet connectivity failures.</li>
               <li>Candidate disqualified for cheating, unauthorized tabs, screen-recording tools, or breach of examination conduct.</li>
               <li>Dissatisfaction with test score, predicted percentile, or leaderboard rank.</li>

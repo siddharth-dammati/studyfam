@@ -12,7 +12,7 @@ export function MockCountdownCard() {
   });
 
   useEffect(() => {
-    const target = new Date("2027-12-27T09:00:00+05:30").getTime();
+    const target = new Date("2026-12-27T09:00:00+05:30").getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -41,12 +41,12 @@ export function MockCountdownCard() {
           </span>
         </div>
         <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
-          27 December 2027
+          27 Dec 2026 · 9:00 AM – 12:00 PM
         </span>
       </div>
 
       <h3 className="text-xl font-bold text-slate-900 tracking-tight mb-4">
-        All-India JEE Main 2027 Mock CBT
+        All-India JEE Main Mock CBT
       </h3>
 
       {/* Countdown Digits */}
@@ -70,6 +70,12 @@ export function MockCountdownCard() {
 
       {/* CBT Engine Checklist */}
       <div className="space-y-2.5 pt-4 border-t border-slate-100 text-xs">
+        <div className="flex items-center justify-between text-slate-600">
+          <span className="flex items-center gap-2">
+            <Clock size={14} className="text-slate-400" /> Exam Slot
+          </span>
+          <span className="font-semibold text-slate-900">9:00 AM – 12:00 PM IST</span>
+        </div>
         <div className="flex items-center justify-between text-slate-600">
           <span className="flex items-center gap-2">
             <FileText size={14} className="text-slate-400" /> Pattern

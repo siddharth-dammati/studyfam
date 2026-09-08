@@ -2,7 +2,7 @@
 export function HowItWorks() {
   const steps = [
     { num: "01", title: "REGISTER", desc: "Secure your ₹27 spot." },
-    { num: "02", title: "TAKE THE MOCK", desc: "Attempt the full JEE Main-style mock on 27 December 2026." },
+    { num: "02", title: "TAKE THE MOCK", desc: "Attempt the full JEE Main-style mock on 27 December 2026 (9:00 AM – 12:00 PM IST)." },
     { num: "03", title: "GET YOUR PERFORMANCE", desc: "Receive your score and detailed analysis." },
     { num: "04", title: "SEE YOUR BENCHMARK", desc: "Understand how you performed within the participating pool." },
   ];
