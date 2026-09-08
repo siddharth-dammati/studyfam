@@ -207,7 +207,9 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
 
                   <p className="text-slate-500 text-xs font-mono mt-4 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    ₹27 Entry · Opens Nov 27 · Single National Slot: 27 Dec 2026 (9:00 AM – 12:00 PM IST)
+                    {isOpen 
+                      ? "₹27 Entry · Registrations Now Open · Single National Slot: 27 Dec 2026 (9:00 AM – 12:00 PM IST)"
+                      : "₹27 Entry · Opens Nov 27 · Single National Slot: 27 Dec 2026 (9:00 AM – 12:00 PM IST)"}
                   </p>
                 </>
               )}

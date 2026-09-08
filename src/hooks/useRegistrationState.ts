@@ -1,13 +1,17 @@
 
+"use client";
+
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 
-export const DEFAULT_TARGET_DATE = new Date("2026-11-27T20:27:00+05:30");
+// Registrations are now open (default date set to past)
+export const DEFAULT_TARGET_DATE = new Date("2026-01-01T00:00:00+05:30");
 
 export function useRegistrationState() {
   const [isClient, setIsClient] = useState(false);
   const [now, setNow] = useState(new Date());
   const [targetDate, setTargetDate] = useState<Date>(DEFAULT_TARGET_DATE);
+  const [forceOpen, setForceOpen] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
@@ -19,18 +23,27 @@ export function useRegistrationState() {
         const supabase = createClient();
         const { data } = await supabase
           .from("app_config")
-          .select("value")
-          .eq("key", "registration_open_date")
-          .single();
+          .select("key, value")
+          .in("key", ["registration_open", "registration_open_date"]);
 
-        if (data?.value) {
-          const parsed = new Date(data.value);
-          if (!isNaN(parsed.getTime())) {
-            setTargetDate(parsed);
+        if (data && data.length > 0) {
+          const openToggle = data.find((d) => d.key === "registration_open");
+          if (openToggle?.value === "true" || openToggle?.value === "1") {
+            setForceOpen(true);
+            return;
+          }
+
+          const dateConfig = data.find((d) => d.key === "registration_open_date");
+          if (dateConfig?.value) {
+            const parsed = new Date(dateConfig.value);
+            if (!isNaN(parsed.getTime())) {
+              setTargetDate(parsed);
+              setForceOpen(false);
+            }
           }
         }
       } catch {
-        // Fallback to default
+        // Fallback to default open
       }
     };
     fetchConfig();
@@ -41,8 +54,8 @@ export function useRegistrationState() {
     return () => clearInterval(interval);
   }, []);
 
-  const isOpen = now.getTime() >= targetDate.getTime();
-  const timeRemaining = Math.max(0, targetDate.getTime() - now.getTime());
+  const isOpen = forceOpen || now.getTime() >= targetDate.getTime();
+  const timeRemaining = isOpen ? 0 : Math.max(0, targetDate.getTime() - now.getTime());
 
   const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
   const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -50,7 +63,7 @@ export function useRegistrationState() {
   const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
   return {
-    isOpen: isClient ? isOpen : false,
+    isOpen: isClient ? isOpen : true,
     days,
     hours,
     minutes,
@@ -58,4 +71,5 @@ export function useRegistrationState() {
     isClient,
   };
 }
+
 
