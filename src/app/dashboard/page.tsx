@@ -16,12 +16,16 @@ import { HelpCircle, ExternalLink, BookOpen, Sparkles, Loader2 } from "lucide-re
 import Link from "next/link";
 import { verifyCashfreeOrder } from "@/services/paymentService";
 
+import { ScholarshipDossierModal } from "@/components/dashboard/ScholarshipDossierModal";
+
 export default function DashboardPage() {
   const { profile, loading: authLoading } = useAuth();
   const { isOpen } = useRegistrationState();
   const [candidateRecord, setCandidateRecord] = useState<CandidateRecord | null>(null);
   const [loadingData, setLoadingData] = useState(true);
   const [isRegModalOpen, setIsRegModalOpen] = useState(false);
+  const [isDossierModalOpen, setIsDossierModalOpen] = useState(false);
+  const [dossierPrompted, setDossierPrompted] = useState(false);
   const [isJustConfirmed, setIsJustConfirmed] = useState(false);
 
   const fetchCandidateRecord = async (targetOrderId?: string | null) => {
@@ -100,6 +104,23 @@ export default function DashboardPage() {
       fetchCandidateRecord();
     }
   }, [profile?.email, authLoading]);
+
+  // 2. Automatically prompt for missing scholarship dossier if user has candidate record
+  useEffect(() => {
+    if (loadingData || authLoading || dossierPrompted) return;
+
+    if (candidateRecord) {
+      const isMissingDossier =
+        !candidateRecord.gender ||
+        !candidateRecord.family_income ||
+        !candidateRecord.scholarship_track;
+
+      if (isMissingDossier) {
+        setIsDossierModalOpen(true);
+        setDossierPrompted(true);
+      }
+    }
+  }, [candidateRecord, loadingData, authLoading, dossierPrompted]);
 
   // 1. Loading state
   if (authLoading && loadingData) {
@@ -199,6 +220,7 @@ export default function DashboardPage() {
           registration={candidateRecord}
           loading={loadingData}
           onOpenRegister={() => setIsRegModalOpen(true)}
+          onUpdateRegistration={(updated) => setCandidateRecord(updated)}
         />
 
         {/* 2-Column Dashboard Grid */}
@@ -256,6 +278,21 @@ export default function DashboardPage() {
           fetchCandidateRecord();
         }}
         isMockOpen={isOpen}
+      />
+
+      <ScholarshipDossierModal
+        isOpen={isDossierModalOpen}
+        onClose={() => setIsDossierModalOpen(false)}
+        candidateRecord={candidateRecord}
+        userEmail={profile?.email}
+        userFullName={profile?.fullName}
+        onSuccess={(updated) => {
+          setCandidateRecord(updated);
+          setIsDossierModalOpen(false);
+          try {
+            localStorage.setItem("sf_candidate_record", JSON.stringify(updated));
+          } catch {}
+        }}
       />
     </div>
   );

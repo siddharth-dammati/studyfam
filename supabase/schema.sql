@@ -25,6 +25,10 @@ ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS payment_id text;
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS payment_status text DEFAULT 'pending';
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS payment_method text;
 ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS referral_code text;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS gender text;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS family_income text;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS scholarship_track text;
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS scholarship_slab text;
 
 -- Index for lookups & duplicate detection
 create index if not exists idx_registrations_email on public.registrations(email);

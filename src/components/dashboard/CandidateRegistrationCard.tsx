@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, AlertCircle, Calendar, Phone, Mail, Award, ShieldCheck, Sparkles, CreditCard, FileText, Printer, X, ExternalLink } from "lucide-react";
+import { Copy, Check, AlertCircle, Calendar, Phone, Mail, Award, ShieldCheck, Sparkles, CreditCard, FileText, Printer, X, ExternalLink, HeartHandshake, Edit3 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { PremiumAdmitCard } from "./PremiumAdmitCard";
+import { ScholarshipDossierModal } from "./ScholarshipDossierModal";
 
 export interface CandidateRecord {
   id: string;
@@ -19,17 +20,23 @@ export interface CandidateRecord {
   payment_id?: string;
   payment_status?: string;
   payment_method?: string;
+  gender?: "boy" | "girl" | "other" | string;
+  family_income?: string;
+  scholarship_track?: "merit" | "need_based" | "opt_out" | string;
+  scholarship_slab?: string;
 }
 
 interface Props {
   registration: CandidateRecord | null;
   loading: boolean;
   onOpenRegister: () => void;
+  onUpdateRegistration?: (updated: CandidateRecord) => void;
 }
 
-export function CandidateRegistrationCard({ registration, loading, onOpenRegister }: Props) {
+export function CandidateRegistrationCard({ registration, loading, onOpenRegister, onUpdateRegistration }: Props) {
   const [copied, setCopied] = useState(false);
   const [showAdmitSlipModal, setShowAdmitSlipModal] = useState(false);
+  const [showDossierModal, setShowDossierModal] = useState(false);
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -162,6 +169,44 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
           </div>
         </div>
 
+        {/* Scholarship Dossier Bar / Action Banner */}
+        {registration.gender && registration.family_income && registration.scholarship_track ? (
+          <div className="mt-4 p-3 bg-slate-50/80 border border-slate-200/90 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-slate-600">
+              <span>Gender: <strong className="text-slate-900">{registration.gender === "boy" ? "👦 Boy (Male)" : registration.gender === "girl" ? "👧 Girl (Female)" : "⚪ Other"}</strong></span>
+              <span>Income: <strong className="text-slate-900 font-mono">{registration.family_income === "below_1.5l" ? "< ₹1.5L" : registration.family_income === "1.5l_3l" ? "₹1.5L–3L" : registration.family_income === "3l_6l" ? "₹3L–6L" : registration.family_income === "6l_8l" ? "₹6L–8L" : "> ₹8L"}</strong></span>
+              <span>Track: <strong className="text-indigo-700 font-bold">{registration.scholarship_track === "opt_out" ? "💖 Opted Out (Donated Slot)" : registration.scholarship_track === "need_based" ? "❤️ Need-Based Support" : "🏆 Merit Track (Top 250)"}</strong></span>
+            </div>
+            <button
+              onClick={() => setShowDossierModal(true)}
+              className="flex items-center gap-1 text-[11px] text-indigo-600 hover:text-indigo-800 font-bold px-2.5 py-1 rounded-lg hover:bg-white transition-all shadow-2xs border border-transparent hover:border-slate-200 cursor-pointer"
+            >
+              <Edit3 size={12} />
+              <span>Edit Dossier</span>
+            </button>
+          </div>
+        ) : (
+          <div className="mt-4 p-4 rounded-2xl bg-indigo-50/90 border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <Sparkles size={16} />
+              </div>
+              <div>
+                <div className="font-bold text-indigo-950 text-xs">Action Required: Complete Your Scholarship Dossier</div>
+                <p className="text-slate-600 mt-0.5 text-[11px]">
+                  Specify your gender, family income bracket, and scholarship track to verify eligibility for the 500 Merit & 500 Need-Based slots.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowDossierModal(true)}
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shrink-0 shadow-xs transition-transform active:scale-95 cursor-pointer"
+            >
+              Complete Dossier →
+            </button>
+          </div>
+        )}
+
         {/* Payment Confirmation Banner & Action Toolbar */}
         {isConfirmed ? (
           <div className="mt-5 space-y-3">
@@ -243,6 +288,19 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
               </div>
             </div>
           </div>
+        )}
+
+        {/* Fullscreen Scholarship Dossier Modal */}
+        {showDossierModal && (
+          <ScholarshipDossierModal
+            isOpen={showDossierModal}
+            onClose={() => setShowDossierModal(false)}
+            candidateRecord={registration}
+            onSuccess={(updated) => {
+              if (onUpdateRegistration) onUpdateRegistration(updated);
+              setShowDossierModal(false);
+            }}
+          />
         )}
       </div>
     );

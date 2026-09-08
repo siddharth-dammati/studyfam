@@ -7,6 +7,10 @@ export interface CandidateOrderInput {
   phone: string;
   jeeStatus: "class-11" | "class-12" | "dropper";
   referralCode?: string;
+  gender?: "boy" | "girl" | "other";
+  familyIncome?: string;
+  scholarshipTrack?: "merit" | "need_based" | "opt_out";
+  scholarshipSlab?: string;
 }
 
 export interface CreateOrderResponse {
@@ -44,6 +48,10 @@ export async function createCashfreeOrder(
         phone: cleanPhone,
         jeeStatus: input.jeeStatus,
         referralCode: input.referralCode,
+        gender: input.gender,
+        familyIncome: input.familyIncome,
+        scholarshipTrack: input.scholarshipTrack,
+        scholarshipSlab: input.scholarshipSlab,
       }),
     });
 
@@ -137,5 +145,50 @@ export async function verifyCashfreeOrder(
     status: "FAILED",
     error: "Payment verification pending. If amount was debited, your dashboard will update shortly.",
   };
+}
+
+export interface CandidateProfileInput {
+  email: string;
+  fullName?: string;
+  phone?: string;
+  gender?: "boy" | "girl" | "other";
+  jeeStatus?: "class-11" | "class-12" | "dropper";
+  familyIncome?: string;
+  scholarshipTrack?: "merit" | "need_based" | "opt_out";
+  scholarshipSlab?: string;
+  orderId?: string;
+}
+
+export async function updateCandidateProfile(
+  input: CandidateProfileInput
+): Promise<{ success: boolean; registration?: any; error?: string }> {
+  try {
+    const res = await fetch("/api/candidate/update-profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.success) {
+      if (data.registration && typeof window !== "undefined") {
+        try {
+          localStorage.setItem("sf_candidate_record", JSON.stringify(data.registration));
+        } catch {}
+      }
+      return { success: true, registration: data.registration };
+    }
+
+    return {
+      success: false,
+      error: data.error || `Server responded with status ${res.status}`,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      error: err.message || "Failed to update profile",
+    };
+  }
 }
 

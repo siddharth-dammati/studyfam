@@ -23,6 +23,9 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [jeeStatus, setJeeStatus] = useState<"class-11" | "class-12" | "dropper">("class-11");
+  const [gender, setGender] = useState<"boy" | "girl" | "other">("boy");
+  const [familyIncome, setFamilyIncome] = useState<string>("1.5l_3l");
+  const [scholarshipTrack, setScholarshipTrack] = useState<"merit" | "need_based" | "opt_out">("merit");
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("Processing...");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -41,6 +44,9 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
           if (rec && (rec.status === "confirmed" || rec.status === "registered" || rec.amount_paid >= 27 || rec.order_id)) {
             setFullName(rec.full_name || "");
             setEmail(rec.email || "");
+            if (rec.gender) setGender(rec.gender);
+            if (rec.family_income) setFamilyIncome(rec.family_income);
+            if (rec.scholarship_track) setScholarshipTrack(rec.scholarship_track);
             setRegisteredId(rec.id || storedOrder);
             setOrderId(rec.order_id || storedOrder);
             setPaymentId(rec.payment_id || null);
@@ -88,6 +94,10 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
           email: email.trim().toLowerCase(),
           phone: cleanDigits.slice(-10),
           jeeStatus,
+          gender,
+          familyIncome,
+          scholarshipTrack,
+          scholarshipSlab: scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100",
         });
 
         if (!orderRes.success || !orderRes.payment_session_id) {
@@ -133,6 +143,10 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
           email: email.trim().toLowerCase(),
           phone: cleanDigits.slice(-10),
           jee_status: jeeStatus,
+          gender,
+          family_income: familyIncome,
+          scholarship_track: scholarshipTrack,
+          scholarship_slab: scholarshipTrack === "opt_out" ? "opt_out" : "full_fee_100",
           status: "waitlist",
           amount_paid: 0,
         };
@@ -176,7 +190,7 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
         onClick={handleReset}
       />
       
-      <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-[28px] shadow-2xl p-6 sm:p-8 overflow-hidden transform transition-all">
+      <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-[28px] shadow-2xl p-6 sm:p-8 overflow-y-auto max-h-[92vh] transform transition-all">
         <button 
           onClick={handleReset}
           className="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition-colors"
@@ -358,6 +372,94 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
                   <option value="class-12">Class 12</option>
                   <option value="dropper">Dropper / Target 2027</option>
                 </select>
+              </div>
+
+              {/* Gender Selection */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Gender * <span className="text-indigo-600 font-normal lowercase">(for Top 250 Boys & 250 Girls pools)</span>
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: "boy", label: "👦 Boy" },
+                    { id: "girl", label: "👧 Girl" },
+                    { id: "other", label: "⚪ Other" },
+                  ].map((g) => (
+                    <button
+                      key={g.id}
+                      type="button"
+                      onClick={() => setGender(g.id as any)}
+                      className={`py-2 px-2 text-xs font-bold rounded-xl border transition-all ${
+                        gender === g.id
+                          ? "border-indigo-600 bg-indigo-50 text-indigo-950 shadow-2xs"
+                          : "border-slate-200 bg-slate-50 text-slate-700 hover:bg-white"
+                      }`}
+                    >
+                      {g.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Family Income Bracket */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Annual Family Income Bracket *
+                </label>
+                <select
+                  value={familyIncome}
+                  onChange={(e) => setFamilyIncome(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 transition-colors"
+                >
+                  <option value="below_1.5l">Below ₹1.5 Lakh / year (High Need)</option>
+                  <option value="1.5l_3l">₹1.5 Lakh – ₹3 Lakh / year (Moderate Need)</option>
+                  <option value="3l_6l">₹3 Lakh – ₹6 Lakh / year</option>
+                  <option value="6l_8l">₹6 Lakh – ₹8 Lakh / year</option>
+                  <option value="above_8l">Above ₹8 Lakh / year</option>
+                </select>
+              </div>
+
+              {/* Scholarship Track Selection & Opt-Out */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Scholarship Track Preference *
+                </label>
+                <div className="grid grid-cols-3 gap-1.5 text-[11px]">
+                  <button
+                    type="button"
+                    onClick={() => setScholarshipTrack("merit")}
+                    className={`p-2 rounded-xl border font-bold text-center transition-all ${
+                      scholarshipTrack === "merit"
+                        ? "border-amber-500 bg-amber-50 text-amber-900 shadow-2xs"
+                        : "border-slate-200 bg-slate-50 text-slate-600"
+                    }`}
+                  >
+                    🏆 Merit (500)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setScholarshipTrack("need_based")}
+                    className={`p-2 rounded-xl border font-bold text-center transition-all ${
+                      scholarshipTrack === "need_based"
+                        ? "border-indigo-600 bg-indigo-50 text-indigo-900 shadow-2xs"
+                        : "border-slate-200 bg-slate-50 text-slate-600"
+                    }`}
+                  >
+                    ❤️ Need-Based
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setScholarshipTrack("opt_out")}
+                    className={`p-2 rounded-xl border font-bold text-center transition-all ${
+                      scholarshipTrack === "opt_out"
+                        ? "border-emerald-600 bg-emerald-50 text-emerald-900 shadow-2xs"
+                        : "border-slate-200 bg-slate-50 text-slate-600"
+                    }`}
+                    title="Opt out and donate scholarship slot"
+                  >
+                    💖 Opt-Out / Donate
+                  </button>
+                </div>
               </div>
 
               {isMockOpen && (

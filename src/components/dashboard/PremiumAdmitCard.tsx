@@ -18,7 +18,8 @@ import {
   AlertTriangle,
   QrCode,
   CheckCircle2,
-  ExternalLink
+  ExternalLink,
+  HeartHandshake
 } from "lucide-react";
 import Link from "next/link";
 
@@ -291,6 +292,19 @@ export function PremiumAdmitCard({
 
                 <div className="p-2 bg-slate-50 border border-slate-200 rounded">
                   <span className="text-[9px] font-mono text-slate-500 uppercase block">
+                    Candidate Gender
+                  </span>
+                  <span className="font-bold text-slate-900 text-[11px]">
+                    {registration.gender === "boy"
+                      ? "MALE (BOY)"
+                      : registration.gender === "girl"
+                      ? "FEMALE (GIRL)"
+                      : "ALL-INDIA OPEN"}
+                  </span>
+                </div>
+
+                <div className="p-2 bg-slate-50 border border-slate-200 rounded">
+                  <span className="text-[9px] font-mono text-slate-500 uppercase block">
                     Academic Cohort
                   </span>
                   <span className="font-semibold text-slate-900 text-[11px]">
@@ -307,7 +321,7 @@ export function PremiumAdmitCard({
                   </span>
                 </div>
 
-                <div className="col-span-2 p-2 bg-slate-50 border border-slate-200 rounded">
+                <div className="col-span-2 sm:col-span-3 p-2 bg-slate-50 border border-slate-200 rounded">
                   <span className="text-[9px] font-mono text-slate-500 uppercase block">
                     Candidate Email ID
                   </span>
@@ -319,19 +333,45 @@ export function PremiumAdmitCard({
 
               {/* Dual-Track Entitlement Ribbon */}
               <div className="mt-3 p-2.5 rounded bg-indigo-50/70 border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                <div className="flex items-center gap-2">
-                  <Award size={16} className="text-amber-600 shrink-0" />
-                  <div>
-                    <span className="font-bold text-indigo-950">
-                      Dual-Track Scholarship Eligibility:
-                    </span>{" "}
-                    <span className="text-slate-700 text-[11px]">
-                      🏆 50% Merit Track (Top 250 Boys + Top 250 Girls) & ❤️ 50% Need-Based Support Pool.
-                    </span>
+                {registration.scholarship_track === "opt_out" ? (
+                  <div className="flex items-center gap-2">
+                    <HeartHandshake size={16} className="text-emerald-600 shrink-0" />
+                    <div>
+                      <span className="font-bold text-emerald-950">
+                        Voluntary Scholarship Opt-Out:
+                      </span>{" "}
+                      <span className="text-slate-700 text-[11px]">
+                        Candidate opted out of cash grants to donate scholarship slot to a peer in financial need. All-India Rank (AIR) will be fully calculated.
+                      </span>
+                    </div>
                   </div>
-                </div>
+                ) : registration.scholarship_track === "need_based" ? (
+                  <div className="flex items-center gap-2">
+                    <Heart size={16} className="text-indigo-600 shrink-0" />
+                    <div>
+                      <span className="font-bold text-indigo-950">
+                        Need-Based Support Track Allotted:
+                      </span>{" "}
+                      <span className="text-slate-700 text-[11px]">
+                        ❤️ 50% Need-Based Assistance Pool (Next 250 Boys & 250 Girls with socio-economic verification).
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Award size={16} className="text-amber-600 shrink-0" />
+                    <div>
+                      <span className="font-bold text-indigo-950">
+                        Merit Scholarship Track Allotted:
+                      </span>{" "}
+                      <span className="text-slate-700 text-[11px]">
+                        🏆 50% Merit Track (Top 250 Boys + Top 250 Girls based 100% on Mock AIR).
+                      </span>
+                    </div>
+                  </div>
+                )}
                 <div className="font-mono text-[10px] font-bold text-indigo-800 shrink-0 bg-white px-2 py-1 rounded border border-indigo-200">
-                  SLOT: CONFIRMED
+                  {registration.scholarship_track === "opt_out" ? "DONOR SLOT" : "SLOT: CONFIRMED"}
                 </div>
               </div>
             </div>

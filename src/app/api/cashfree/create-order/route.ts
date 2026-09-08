@@ -10,6 +10,10 @@ export async function POST(request: Request) {
     const cleanPhone = rawPhone.replace(/\D/g, "").slice(-10);
     const jeeStatus = body.jeeStatus || "class-11";
     const referralCode = body.referralCode || null;
+    const gender = body.gender || null;
+    const familyIncome = body.familyIncome || null;
+    const scholarshipTrack = body.scholarshipTrack || null;
+    const scholarshipSlab = body.scholarshipSlab || null;
 
     if (!fullName || !email || cleanPhone.length !== 10) {
       return NextResponse.json(
@@ -83,7 +87,7 @@ export async function POST(request: Request) {
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
 
     try {
-      const fullPayload = {
+      const fullPayload: Record<string, any> = {
         full_name: fullName,
         email,
         phone: cleanPhone,
@@ -94,6 +98,10 @@ export async function POST(request: Request) {
         payment_status: "pending",
         referral_code: referralCode || orderId,
       };
+      if (gender) fullPayload.gender = gender;
+      if (familyIncome) fullPayload.family_income = familyIncome;
+      if (scholarshipTrack) fullPayload.scholarship_track = scholarshipTrack;
+      if (scholarshipSlab) fullPayload.scholarship_slab = scholarshipSlab;
 
       const res = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
         method: "POST",
