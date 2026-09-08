@@ -61,24 +61,33 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center gap-3 shrink-0">
               {profile ? (
-                <div className="flex items-center gap-2 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-full">
-                  {profile.avatarUrl ? (
-                    <img src={profile.avatarUrl} alt={profile.fullName} className="w-6 h-6 rounded-full" />
-                  ) : (
-                    <div className="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold">
-                      {profile.fullName.charAt(0).toUpperCase()}
-                    </div>
-                  )}
-                  <span className="text-xs font-semibold text-slate-800 max-w-[110px] truncate">
-                    {profile.fullName.split(" ")[0]}
-                  </span>
-                  <button
-                    onClick={signOut}
-                    title="Sign Out"
-                    className="text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-200 transition-colors"
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/dashboard"
+                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1"
                   >
-                    <LogOut size={13} />
-                  </button>
+                    <span>Dashboard</span>
+                  </Link>
+
+                  <div className="flex items-center gap-2 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-full">
+                    {profile.avatarUrl ? (
+                      <img src={profile.avatarUrl} alt={profile.fullName} className="w-6 h-6 rounded-full" />
+                    ) : (
+                      <div className="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold">
+                        {profile.fullName.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <span className="text-xs font-semibold text-slate-800 max-w-[110px] truncate">
+                      {profile.fullName.split(" ")[0]}
+                    </span>
+                    <button
+                      onClick={signOut}
+                      title="Sign Out"
+                      className="text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-200 transition-colors"
+                    >
+                      <LogOut size={13} />
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <GoogleSignInButton size="medium" shape="pill" />
@@ -116,23 +125,32 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
             ))}
             <div className="pt-3 border-t border-[var(--border)] mt-3 space-y-2">
               {profile ? (
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                  <div className="flex items-center gap-2">
-                    {profile.avatarUrl ? (
-                      <img src={profile.avatarUrl} alt={profile.fullName} className="w-7 h-7 rounded-full" />
-                    ) : (
-                      <div className="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold">
-                        {profile.fullName.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                    <span className="text-xs font-semibold text-slate-800">{profile.fullName}</span>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                    <div className="flex items-center gap-2">
+                      {profile.avatarUrl ? (
+                        <img src={profile.avatarUrl} alt={profile.fullName} className="w-7 h-7 rounded-full" />
+                      ) : (
+                        <div className="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold">
+                          {profile.fullName.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <span className="text-xs font-semibold text-slate-800">{profile.fullName}</span>
+                    </div>
+                    <button
+                      onClick={() => { setMobileOpen(false); signOut(); }}
+                      className="text-xs text-red-600 font-semibold hover:underline flex items-center gap-1"
+                    >
+                      <LogOut size={12} /> Sign out
+                    </button>
                   </div>
-                  <button
-                    onClick={() => { setMobileOpen(false); signOut(); }}
-                    className="text-xs text-red-600 font-semibold hover:underline flex items-center gap-1"
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="w-full flex items-center justify-center py-2.5 px-4 bg-indigo-50 text-indigo-700 font-bold rounded-xl text-xs hover:bg-indigo-100 transition-colors"
                   >
-                    <LogOut size={12} /> Sign out
-                  </button>
+                    Go to Candidate Dashboard →
+                  </Link>
                 </div>
               ) : (
                 <div className="flex justify-center w-full">

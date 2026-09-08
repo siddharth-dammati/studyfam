@@ -1,0 +1,188 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { createClient } from "@/utils/supabase/client";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
+import { CandidateRegistrationCard, CandidateRecord } from "@/components/dashboard/CandidateRegistrationCard";
+import { MockCountdownCard } from "@/components/dashboard/MockCountdownCard";
+import { MeritPoolStatusCard } from "@/components/dashboard/MeritPoolStatusCard";
+import { InviteAndShareCard } from "@/components/dashboard/InviteAndShareCard";
+import { RegistrationModal } from "@/components/ui/RegistrationModal";
+import { GoogleSignInButton } from "@/components/ui/GoogleSignInButton";
+import { Footer } from "@/components/sections/Footer";
+import { useRegistrationState } from "@/hooks/useRegistrationState";
+import { HelpCircle, ExternalLink, BookOpen, Sparkles, Loader2 } from "lucide-react";
+import Link from "next/link";
+
+export default function DashboardPage() {
+  const { profile, loading: authLoading } = useAuth();
+  const { isOpen } = useRegistrationState();
+  const [candidateRecord, setCandidateRecord] = useState<CandidateRecord | null>(null);
+  const [loadingData, setLoadingData] = useState(true);
+  const [isRegModalOpen, setIsRegModalOpen] = useState(false);
+
+  const fetchCandidateRecord = async () => {
+    if (!profile?.email) {
+      setCandidateRecord(null);
+      setLoadingData(false);
+      return;
+    }
+
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("registrations")
+        .select("*")
+        .eq("email", profile.email.toLowerCase().trim())
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (!error && data && data.length > 0) {
+        setCandidateRecord(data[0] as CandidateRecord);
+      } else {
+        setCandidateRecord(null);
+      }
+    } catch {
+      setCandidateRecord(null);
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!authLoading) {
+      fetchCandidateRecord();
+    }
+  }, [profile?.email, authLoading]);
+
+  // 1. Loading state
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+          <p className="text-xs font-mono text-slate-500 uppercase tracking-wider">
+            Loading Candidate Dashboard...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Not signed in state
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col">
+        <DashboardHeader />
+        <main className="flex-1 flex items-center justify-center p-4 sm:p-6">
+          <div className="max-w-md w-full bg-white border border-slate-200 rounded-[28px] p-8 text-center shadow-lg">
+            <div className="w-14 h-14 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-xs">
+              <Sparkles size={28} />
+            </div>
+
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight mb-2">
+              Candidate Dashboard
+            </h1>
+            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+              Sign in with your Google account to access your official All-India Mock enrollment status, candidate reference slip, and live scholarship standings.
+            </p>
+
+            <div className="flex justify-center w-full mb-4">
+              <GoogleSignInButton text="signin_with" size="large" shape="rectangular" width={320} />
+            </div>
+
+            <p className="text-[11px] text-slate-400">
+              Only verified candidates can access the examination console.
+            </p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // 3. Signed in state
+  return (
+    <div className="min-h-screen bg-slate-50/70 flex flex-col">
+      <DashboardHeader />
+
+      <main className="flex-1 max-w-[1140px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
+        {/* Welcome greeting */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+              Welcome back, {profile.fullName.split(" ")[0]} 👋
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Your official StudyFam candidate portal for the All-India JEE Main 2027 Mock.
+            </p>
+          </div>
+        </div>
+
+        {/* Candidate Registration Card */}
+        <CandidateRegistrationCard
+          registration={candidateRecord}
+          loading={loadingData}
+          onOpenRegister={() => setIsRegModalOpen(true)}
+        />
+
+        {/* 2-Column Dashboard Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <MockCountdownCard />
+          <MeritPoolStatusCard />
+        </div>
+
+        {/* Invite & Syllabus Links */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <InviteAndShareCard />
+          </div>
+
+          <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-xs flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-slate-500 mb-3">
+                <BookOpen size={14} className="text-indigo-600" />
+                <span>Candidate Resources</span>
+              </div>
+              <h4 className="text-base font-bold text-slate-900 tracking-tight mb-2">
+                Questions or Assistance?
+              </h4>
+              <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                Need help with browser compatibility, receipt re-issues, or scholarship criteria?
+              </p>
+            </div>
+
+            <div className="space-y-2 pt-4 border-t border-slate-100">
+              <Link
+                href="/scholarship-rules"
+                className="flex items-center justify-between text-xs font-semibold text-slate-700 hover:text-indigo-600 p-2 rounded-xl hover:bg-slate-50 transition-colors"
+              >
+                <span>Scholarship & Payout Rules</span>
+                <ExternalLink size={14} />
+              </Link>
+              <Link
+                href="/contact"
+                className="flex items-center justify-between text-xs font-semibold text-slate-700 hover:text-indigo-600 p-2 rounded-xl hover:bg-slate-50 transition-colors"
+              >
+                <span>Helpdesk & Grievance Desk</span>
+                <HelpCircle size={14} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+
+      <RegistrationModal
+        isOpen={isRegModalOpen}
+        onClose={() => {
+          setIsRegModalOpen(false);
+          fetchCandidateRecord();
+        }}
+        isMockOpen={isOpen}
+      />
+    </div>
+  );
+}
