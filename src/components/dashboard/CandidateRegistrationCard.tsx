@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, UserCheck, AlertCircle, Calendar, Hash, Phone, Mail, Award } from "lucide-react";
+import { Copy, Check, AlertCircle, Calendar, Phone, Mail, Award, ShieldCheck, Sparkles, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export interface CandidateRecord {
@@ -13,6 +13,10 @@ export interface CandidateRecord {
   status: string;
   amount_paid: number;
   created_at: string;
+  order_id?: string;
+  payment_id?: string;
+  payment_status?: string;
+  payment_method?: string;
 }
 
 interface Props {
@@ -45,7 +49,12 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
 
   // Candidate is registered
   if (registration) {
-    const isConfirmed = registration.status === "registered" || registration.status === "confirmed";
+    const isConfirmed =
+      registration.amount_paid >= 27 ||
+      registration.status === "registered" ||
+      registration.status === "confirmed" ||
+      registration.payment_status === "success";
+
     const streamLabel =
       registration.jee_status === "class-11"
         ? "Class 11 Aspirant"
@@ -56,7 +65,13 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
     return (
       <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
         {/* Subtle accent bar */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-indigo-500 to-indigo-600" />
+        <div
+          className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${
+            isConfirmed
+              ? "from-emerald-500 via-indigo-500 to-indigo-600"
+              : "from-amber-400 via-amber-500 to-indigo-500"
+          }`}
+        />
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -71,7 +86,9 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
                 <span className="w-1.5 h-1.5 rounded-full bg-current" />
                 {isConfirmed ? "Registration Confirmed" : "Waitlist Active"}
               </span>
-              <span className="text-xs text-slate-500 font-mono">₹{registration.amount_paid} Paid</span>
+              <span className="text-xs text-slate-500 font-mono">
+                {isConfirmed ? `₹${registration.amount_paid || 27} Paid` : "₹0 Paid"}
+              </span>
             </div>
             <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
               {registration.full_name}
@@ -132,17 +149,43 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
 
           <div className="p-3 bg-slate-50/70 rounded-2xl border border-slate-100">
             <div className="text-slate-400 text-[10px] font-mono uppercase mb-1 flex items-center gap-1">
-              <Calendar size={12} /> Date Joined
+              <Calendar size={12} /> Exam Date
             </div>
             <div className="font-semibold text-slate-900">
-              {new Date(registration.created_at).toLocaleDateString("en-IN", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
+              27 Dec 2026 · 9:00 AM
             </div>
           </div>
         </div>
+
+        {/* Payment Confirmation Banner or Upgrade Callout */}
+        {isConfirmed ? (
+          <div className="mt-4 p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2.5 text-emerald-900 font-medium">
+              <ShieldCheck size={18} className="text-emerald-600 shrink-0" />
+              <span>
+                Payment Confirmed via Cashfree PG {registration.order_id ? `(${registration.order_id})` : ""} · Your slot is guaranteed.
+              </span>
+            </div>
+            <div className="font-mono text-[11px] text-emerald-700 shrink-0">
+              CBT Hall Ticket link will activate 48 hrs prior.
+            </div>
+          </div>
+        ) : (
+          <div className="mt-4 p-4 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 text-amber-900 font-bold text-xs">
+                <Sparkles size={15} className="text-amber-600 shrink-0" />
+                <span>Mock Registrations are Open!</span>
+              </div>
+              <p className="text-xs text-amber-800 mt-1 leading-relaxed">
+                You are on the waitlist. Pay <strong>₹27</strong> to lock your official All-India CBT seat and compete for the ₹5,000+ fee scholarship pool.
+              </p>
+            </div>
+            <Button size="sm" onClick={onOpenRegister} className="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white">
+              Complete Registration — ₹27
+            </Button>
+          </div>
+        )}
       </div>
     );
   }
@@ -168,3 +211,4 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
     </div>
   );
 }
+

@@ -11,6 +11,10 @@ create table if not exists public.registrations (
     jee_status text not null check (jee_status in ('class-11', 'class-12', 'dropper')),
     status text not null default 'waitlist' check (status in ('waitlist', 'registered', 'confirmed', 'cancelled')),
     amount_paid numeric not null default 0,
+    order_id text unique,
+    payment_id text,
+    payment_status text not null default 'pending' check (payment_status in ('pending', 'success', 'failed', 'user_dropped')),
+    payment_method text,
     referral_code text,
     created_at timestamptz not null default now()
 );
@@ -18,6 +22,7 @@ create table if not exists public.registrations (
 -- Index for lookups & duplicate detection
 create index if not exists idx_registrations_email on public.registrations(email);
 create index if not exists idx_registrations_created_at on public.registrations(created_at);
+create index if not exists idx_registrations_order_id on public.registrations(order_id);
 
 -- Enable RLS
 alter table public.registrations enable row level security;
@@ -37,6 +42,15 @@ on public.registrations
 for select
 to authenticated
 using (email = (select auth.jwt() ->> 'email'));
+
+-- Allow update of payment status via order verification
+drop policy if exists "Allow public update registration payment" on public.registrations;
+create policy "Allow public update registration payment"
+on public.registrations
+for update
+to anon, authenticated
+using (order_id is not null)
+with check (order_id is not null);
 
 -- 2. SUPPORT INQUIRIES & GRIEVANCES TABLE
 create table if not exists public.support_inquiries (
