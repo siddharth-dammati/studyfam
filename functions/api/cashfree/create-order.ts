@@ -1,4 +1,4 @@
-﻿interface Env {
+interface Env {
   CASHFREE_APP_ID?: string;
   CASHFREE_SECRET_KEY?: string;
   CASHFREE_ENV?: string;
@@ -35,6 +35,17 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
 
     // If Cashfree keys are configured, call Cashfree PG API
     if (appId && secretKey) {
+      const originHeader = request.headers.get("origin") || request.headers.get("referer");
+      let siteOrigin = "https://studyfam.in";
+      if (originHeader) {
+        try {
+          const parsed = new URL(originHeader);
+          if (parsed.protocol === "https:") {
+            siteOrigin = parsed.origin;
+          }
+        } catch {}
+      }
+
       const cfResponse = await fetch(`${baseUrl}/orders`, {
         method: "POST",
         headers: {
@@ -54,7 +65,7 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
             customer_phone: cleanPhone,
           },
           order_meta: {
-            return_url: `https://studyfam.com/dashboard?order_id={order_id}`,
+            return_url: `${siteOrigin}/dashboard?order_id={order_id}`,
           },
           order_note: "StudyFam All-India JEE Main Mock Test Entry Fee (₹27)",
         }),

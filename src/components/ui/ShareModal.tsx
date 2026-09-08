@@ -12,7 +12,7 @@ interface Props {
 
 export function ShareModal({ isOpen, onClose }: Props) {
   const [copied, setCopied] = useState(false);
-  const shareUrl = "https://studyfam.com";
+  const shareUrl = "https://studyfam.in";
   
   const shareText =
     "Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 for ₹27! Rank on top of the list to win 100% of your official NTA JEE application fees paid back (₹1,000 for Boys / ₹800 for Girls). Compete nationwide and win your exam fees:";

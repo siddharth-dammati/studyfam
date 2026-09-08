@@ -14,6 +14,7 @@ import { Footer } from "@/components/sections/Footer";
 import { useRegistrationState } from "@/hooks/useRegistrationState";
 import { HelpCircle, ExternalLink, BookOpen, Sparkles, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { verifyCashfreeOrder } from "@/services/paymentService";
 
 export default function DashboardPage() {
   const { profile, loading: authLoading } = useAuth();
@@ -22,21 +23,22 @@ export default function DashboardPage() {
   const [loadingData, setLoadingData] = useState(true);
   const [isRegModalOpen, setIsRegModalOpen] = useState(false);
 
-  const fetchCandidateRecord = async () => {
-    if (!profile?.email) {
-      setCandidateRecord(null);
-      setLoadingData(false);
-      return;
-    }
-
+  const fetchCandidateRecord = async (targetOrderId?: string | null) => {
     try {
       const supabase = createClient();
-      const { data, error } = await supabase
-        .from("registrations")
-        .select("*")
-        .eq("email", profile.email.toLowerCase().trim())
-        .order("created_at", { ascending: false })
-        .limit(1);
+      let query = supabase.from("registrations").select("*");
+
+      if (targetOrderId) {
+        query = query.eq("order_id", targetOrderId);
+      } else if (profile?.email) {
+        query = query.eq("email", profile.email.toLowerCase().trim()).order("created_at", { ascending: false });
+      } else {
+        setCandidateRecord(null);
+        setLoadingData(false);
+        return;
+      }
+
+      const { data, error } = await query.limit(1);
 
       if (!error && data && data.length > 0) {
         setCandidateRecord(data[0] as CandidateRecord);
@@ -51,13 +53,25 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    if (!authLoading) {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    const orderIdParam = params.get("order_id");
+
+    if (orderIdParam) {
+      setLoadingData(true);
+      verifyCashfreeOrder(orderIdParam).then(() => {
+        fetchCandidateRecord(orderIdParam);
+      }).catch(() => {
+        fetchCandidateRecord(orderIdParam);
+      });
+    } else if (!authLoading) {
       fetchCandidateRecord();
     }
   }, [profile?.email, authLoading]);
 
   // 1. Loading state
-  if (authLoading) {
+  if (authLoading && loadingData) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="flex flex-col items-center gap-3">
@@ -70,8 +84,8 @@ export default function DashboardPage() {
     );
   }
 
-  // 2. Not signed in state
-  if (!profile) {
+  // 2. Not signed in and no order verified
+  if (!profile && !candidateRecord && !loadingData) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col">
         <DashboardHeader />
@@ -102,7 +116,10 @@ export default function DashboardPage() {
     );
   }
 
-  // 3. Signed in state
+  const displayName = profile?.fullName || candidateRecord?.full_name || "Candidate";
+  const firstName = displayName.split(" ")[0];
+
+  // 3. Authenticated or order-verified state
   return (
     <div className="min-h-screen bg-slate-50/70 flex flex-col">
       <DashboardHeader />
@@ -112,7 +129,7 @@ export default function DashboardPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              Welcome back, {profile.fullName.split(" ")[0]} 👋
+              Welcome back, {firstName} 👋
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Your official StudyFam candidate portal for the All-India JEE Main 2027 Mock.

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 
 export function InviteAndShareCard() {
   const [copied, setCopied] = useState(false);
-  const shareUrl = "https://studyfam.com";
+  const shareUrl = "https://studyfam.in";
   const shareText =
     "Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! If you rank on top of the list, you win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). See if you can top the national leaderboard:";
 

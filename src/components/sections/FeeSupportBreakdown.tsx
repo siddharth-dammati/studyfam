@@ -15,7 +15,7 @@ const milestones = [
 ];
 
 const RATE = 18;
-const shareText = "Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! If you rank on top of the list, you win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Compete nationwide and win your exam fees: https://studyfam.com";
+const shareText = "Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! If you rank on top of the list, you win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Compete nationwide and win your exam fees: https://studyfam.in";
 
 export function FeeSupportBreakdown() {
   const { total_registrations = 0 } = useImpactStats();
@@ -23,7 +23,7 @@ export function FeeSupportBreakdown() {
   const [copied, setCopied] = useState(false);
   const copy = () => { navigator.clipboard.writeText(shareText); setCopied(true); setTimeout(() => setCopied(false), 2000); };
   const wa = () => window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
-  const tg = () => window.open(`https://t.me/share/url?url=https%3A%2F%2Fstudyfam.com&text=${encodeURIComponent(shareText)}`, "_blank");
+  const tg = () => window.open(`https://t.me/share/url?url=https%3A%2F%2Fstudyfam.in&text=${encodeURIComponent(shareText)}`, "_blank");
 
   return (
     <section className="bg-white border-t border-[var(--border)]">

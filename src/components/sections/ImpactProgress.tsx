@@ -47,17 +47,17 @@ export function ImpactProgress() {
   const isUnlocked = count >= selectedMilestone.students;
 
   const handleShare = () => {
-    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Target: Top ${selectedMilestone.topN} rankers win full fee sponsorship! Join here: https://studyfam.com`;
+    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Target: Top ${selectedMilestone.topN} rankers win full fee sponsorship! Join here: https://studyfam.in`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   const handleTelegram = () => {
     const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Target: Top ${selectedMilestone.topN} rankers win full fee sponsorship!`;
-    window.open(`https://t.me/share/url?url=https%3A%2F%2Fstudyfam.com&text=${encodeURIComponent(text)}`, "_blank");
+    window.open(`https://t.me/share/url?url=https%3A%2F%2Fstudyfam.in&text=${encodeURIComponent(text)}`, "_blank");
   };
 
   const handleCopyLink = () => {
-    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Join here: https://studyfam.com`;
+    const text = `Take the StudyFam All-India JEE Main Mock on 27 Dec 2026 (9 AM – 12 PM) for ₹27! Rank on top of the list to win 100% of your official NTA JEE Main application fees paid back (₹1,000 for Boys / ₹800 for Girls). Join here: https://studyfam.in`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
