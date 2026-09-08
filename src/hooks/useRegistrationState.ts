@@ -28,22 +28,24 @@ export function useRegistrationState() {
 
         if (data && data.length > 0) {
           const openToggle = data.find((d) => d.key === "registration_open");
-          if (openToggle?.value === "true" || openToggle?.value === "1") {
-            setForceOpen(true);
+          if (openToggle?.value === "false" || openToggle?.value === "0") {
+            setForceOpen(false);
+            const dateConfig = data.find((d) => d.key === "registration_open_date");
+            if (dateConfig?.value) {
+              const parsed = new Date(dateConfig.value);
+              if (!isNaN(parsed.getTime())) {
+                setTargetDate(parsed);
+              }
+            }
             return;
           }
 
-          const dateConfig = data.find((d) => d.key === "registration_open_date");
-          if (dateConfig?.value) {
-            const parsed = new Date(dateConfig.value);
-            if (!isNaN(parsed.getTime())) {
-              setTargetDate(parsed);
-              setForceOpen(false);
-            }
-          }
+          // Default remains open
+          setForceOpen(true);
         }
       } catch {
-        // Fallback to default open
+        // Fallback to open
+        setForceOpen(true);
       }
     };
     fetchConfig();
