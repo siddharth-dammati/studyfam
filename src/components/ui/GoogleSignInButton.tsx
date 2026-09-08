@@ -43,13 +43,18 @@ export function GoogleSignInButton({
       window.google.accounts.id.initialize({
         client_id: googleClientId,
         callback: async (response: { credential: string }) => {
-          if (!response?.credential) return;
           try {
             const supabase = createClient();
-            await supabase.auth.signInWithIdToken({
+            const { data, error } = await supabase.auth.signInWithIdToken({
               provider: "google",
               token: response.credential,
             });
+
+            if (error) {
+              console.error("Supabase signInWithIdToken error:", error.message, error);
+            } else if (data?.user) {
+              window.location.reload();
+            }
           } catch (err) {
             console.error("Supabase signInWithIdToken error:", err);
           }
