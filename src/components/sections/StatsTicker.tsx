@@ -1,21 +1,25 @@
 "use client";
 
-const items = [
-  "12,847 Students Registered",
-  "₹2,31,246 Support Pool Built",
-  "300 Marks · 180 Minutes",
-  "All-India Percentile Prediction",
-  "NTA CBT Interface",
-  "+4 / −1 Marking Scheme",
-  "Physics · Chemistry · Maths",
-  "27 December 2027",
-  "Entry Fee: ₹27 Only",
-  "₹18 Goes to JEE Fee Support",
-  "Section A: 20 MCQs",
-  "Section B: 5 Numerical",
-];
+import { useImpactStats } from "@/hooks/useImpactStats";
 
 export function StatsTicker() {
+  const { total_registrations, support_pool } = useImpactStats();
+
+  const items = [
+    `${total_registrations.toLocaleString()} Students Registered`,
+    `₹${support_pool.toLocaleString("en-IN")} Support Pool Built`,
+    "300 Marks · 180 Minutes",
+    "All-India Percentile Prediction",
+    "NTA CBT Interface",
+    "+4 / −1 Marking Scheme",
+    "Physics · Chemistry · Maths",
+    "27 December 2027",
+    "Entry Fee: ₹27 Only",
+    "₹18 Goes to JEE Fee Support",
+    "Section A: 20 MCQs",
+    "Section B: 5 Numerical",
+  ];
+
   const doubled = [...items, ...items];
 
   return (

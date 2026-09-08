@@ -1,27 +1,26 @@
 "use client";
 
-import { impactConfig, formatIndianNumber, formatIndianCurrency } from "@/lib/impactConfig";
+import { formatIndianNumber, formatIndianCurrency } from "@/lib/impactConfig";
 import { useEffect, useState } from "react";
-import { TrendingUp, Trophy, Award, Users } from "lucide-react";
+import { Trophy, Award, Users } from "lucide-react";
+import { useImpactStats } from "@/hooks/useImpactStats";
 
 export function ImpactProgress() {
   const [mounted, setMounted] = useState(false);
-  const [count, setCount] = useState(impactConfig.registrations);
+  const {
+    total_registrations: count,
+    support_pool: pool,
+    funded_students: topN,
+    milestone,
+    progress_percentage: pct,
+    remaining_to_milestone: remaining,
+  } = useImpactStats();
 
   useEffect(() => {
     setMounted(true);
-    const id = setInterval(() => {
-      if (Math.random() > 0.6) setCount(c => c + Math.ceil(Math.random() * 2));
-    }, 3500);
-    return () => clearInterval(id);
   }, []);
 
-  const pool = count * impactConfig.supportPerRegistration;
-  const avg = (impactConfig.supportAmountBoys + impactConfig.supportAmountGirls) / 2;
-  const topN = Math.floor(pool / avg);
-  const remaining = Math.max(0, impactConfig.milestone - count);
-  const nextMilestoneTopN = impactConfig.calculateTopN(impactConfig.milestone);
-  const pct = Math.min((count / impactConfig.milestone) * 100, 100);
+  const nextMilestoneTopN = Math.floor((milestone * 18) / 900);
 
   if (!mounted) return null;
 
@@ -167,7 +166,7 @@ export function ImpactProgress() {
         <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-medium text-slate-600 mb-3 gap-2">
             <div>
-              Next Goal: <strong className="text-slate-900 font-bold">{formatIndianNumber(impactConfig.milestone)} registrations</strong>
+              Next Goal: <strong className="text-slate-900 font-bold">{formatIndianNumber(milestone)} registrations</strong>
               <span className="text-emerald-700 font-semibold ml-1.5">(Expands to Top {nextMilestoneTopN} Winners)</span>
             </div>
             <span className="text-indigo-600 font-mono font-semibold">
@@ -185,7 +184,7 @@ export function ImpactProgress() {
           <div className="flex justify-between text-[10px] text-slate-400 font-mono">
             <span>0</span>
             <span className="text-slate-700 font-semibold">{formatIndianNumber(count)} today (Top {topN} Funded)</span>
-            <span>Target: {formatIndianNumber(impactConfig.milestone)} (Top {nextMilestoneTopN})</span>
+            <span>Target: {formatIndianNumber(milestone)} (Top {nextMilestoneTopN})</span>
           </div>
         </div>
 

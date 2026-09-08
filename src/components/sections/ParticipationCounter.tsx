@@ -1,18 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useImpactStats } from "@/hooks/useImpactStats";
 
 export function ParticipationCounter() {
-  const [count, setCount] = useState(10000);
-
-  useEffect(() => {
-    // Simulated growth
-    const interval = setInterval(() => {
-      setCount(prev => prev + Math.floor(Math.random() * 3));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  const { total_registrations: count } = useImpactStats();
 
   return (
     <section className="py-32 bg-[var(--background-soft)] relative ">
@@ -47,16 +39,16 @@ export function ParticipationCounter() {
             </div>
 
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[var(--background-subtle)] text-[var(--accent)] rounded-full text-[10px] font-bold uppercase tracking-widest mb-6">
-                <div className="w-1.5 h-1.5 bg-[var(--accent)] rounded-full animate-pulse" />
-                DEMO STATE
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-full text-[10px] font-mono font-bold uppercase tracking-widest mb-6">
+                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                LIVE REGISTRY
               </div>
               
               <div className="text-[clamp(4rem,10vw,8rem)] font-bold text-[var(--foreground)] mb-2 tracking-tighter tabular-nums  leading-none">
-                {count.toLocaleString()}+
+                {count.toLocaleString()}
               </div>
               <div className="text-xl md:text-2xl text-[var(--foreground-muted)] font-medium tracking-wide">
-                JEE ASPIRANTS
+                JEE ASPIRANTS REGISTERED
               </div>
             </div>
           </div>

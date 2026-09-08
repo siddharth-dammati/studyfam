@@ -2,6 +2,7 @@ import { Footer } from "@/components/sections/Footer";
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
+import { ContactForm } from "@/components/ui/ContactForm";
 import { Mail, Clock, ShieldCheck } from "lucide-react";
 
 export const metadata = {
@@ -41,41 +42,8 @@ export default function ContactPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Form */}
-          <div className="lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-7 shadow-sm">
-            <h3 className="text-lg font-bold text-slate-900 mb-6 tracking-tight">Submit an Inquiry</h3>
-            <form className="space-y-4">
-              <div>
-                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700 mb-1.5">Full Name</label>
-                <input required type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-colors" placeholder="e.g. Aryan Sharma" />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700 mb-1.5">Registered Email</label>
-                  <input required type="email" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-colors" placeholder="student@example.com" />
-                </div>
-                <div>
-                  <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700 mb-1.5">WhatsApp / Phone</label>
-                  <input required type="tel" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-colors" placeholder="+91 98765 43210" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700 mb-1.5">Inquiry Department</label>
-                <select className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-colors">
-                  <option>Mock Test Registration & Payment Confirmation</option>
-                  <option>CBT Examination Engine & Browser Compatibility</option>
-                  <option>Top N Scholarship Verification & Payout</option>
-                  <option>Question Key Challenge & Score Audit</option>
-                  <option>Other Institutional / Partnership Queries</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-slate-700 mb-1.5">Detailed Message</label>
-                <textarea required rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-colors resize-none" placeholder="Describe your query in detail..."></textarea>
-              </div>
-              <Button type="submit" size="lg" className="w-full mt-2">
-                Submit Support Ticket
-              </Button>
-            </form>
+          <div className="lg:col-span-7">
+            <ContactForm />
           </div>
 
           {/* Right Cards */}
