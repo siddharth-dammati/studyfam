@@ -21,11 +21,20 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
     if (typeof window !== "undefined") {
       const storedOrder = localStorage.getItem("sf_confirmed_order_id");
       const storedRecord = localStorage.getItem("sf_candidate_record");
-      if (storedOrder || storedRecord) {
-        setIsEnrolled(true);
+      if (storedRecord) {
+        try {
+          const rec = JSON.parse(storedRecord);
+          if (profile?.email) {
+            setIsEnrolled(rec?.email?.toLowerCase() === profile.email.toLowerCase());
+          } else {
+            setIsEnrolled(Boolean(storedOrder || rec.order_id || rec.amount_paid >= 27));
+          }
+          return;
+        } catch {}
       }
+      setIsEnrolled(false);
     }
-  }, []);
+  }, [profile?.email]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);

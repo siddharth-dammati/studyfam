@@ -1,6 +1,7 @@
 "use client";
 
 import { useRegistrationState } from "@/hooks/useRegistrationState";
+import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { ArrowRight, Trophy, BarChart3, Calendar, Sparkles, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -99,6 +100,7 @@ function ExamMockup() {
 
 export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void }) {
   const { isOpen, days, hours, minutes, seconds, isClient } = useRegistrationState();
+  const { profile } = useAuth();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -106,11 +108,20 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
     if (typeof window !== "undefined") {
       const storedOrder = localStorage.getItem("sf_confirmed_order_id");
       const storedRecord = localStorage.getItem("sf_candidate_record");
-      if (storedOrder || storedRecord) {
-        setIsEnrolled(true);
+      if (storedRecord) {
+        try {
+          const rec = JSON.parse(storedRecord);
+          if (profile?.email) {
+            setIsEnrolled(rec?.email?.toLowerCase() === profile.email.toLowerCase());
+          } else {
+            setIsEnrolled(Boolean(storedOrder || rec.order_id || rec.amount_paid >= 27));
+          }
+          return;
+        } catch {}
       }
+      setIsEnrolled(false);
     }
-  }, []);
+  }, [profile?.email]);
 
   return (
     <section className="relative min-h-screen bg-white overflow-hidden flex flex-col">

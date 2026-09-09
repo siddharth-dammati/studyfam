@@ -47,13 +47,36 @@ export function useAuth() {
       });
 
       // Listen for auth state changes
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
         const currentUser = session?.user || null;
+        const newProfile = extractProfile(currentUser);
         setUser(currentUser);
-        setProfile(extractProfile(currentUser));
+        setProfile(newProfile);
         setLoading(false);
-        if (currentUser && typeof window !== "undefined" && window.google?.accounts?.id) {
-          window.google.accounts.id.cancel();
+
+        if (typeof window !== "undefined") {
+          if (event === "SIGNED_OUT" || !currentUser) {
+            try {
+              localStorage.removeItem("sf_candidate_record");
+              localStorage.removeItem("sf_confirmed_order_id");
+              sessionStorage.clear();
+            } catch {}
+          } else if (newProfile?.email) {
+            try {
+              const cachedRaw = localStorage.getItem("sf_candidate_record");
+              if (cachedRaw) {
+                const parsed = JSON.parse(cachedRaw);
+                if (parsed?.email && parsed.email.toLowerCase() !== newProfile.email.toLowerCase()) {
+                  localStorage.removeItem("sf_candidate_record");
+                  localStorage.removeItem("sf_confirmed_order_id");
+                }
+              }
+            } catch {}
+          }
+
+          if (currentUser && window.google?.accounts?.id) {
+            window.google.accounts.id.cancel();
+          }
         }
       });
 
@@ -91,8 +114,15 @@ export function useAuth() {
       await supabase.auth.signOut();
       setUser(null);
       setProfile(null);
-      if (typeof window !== "undefined" && window.google?.accounts?.id) {
-        window.google.accounts.id.disableAutoSelect();
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.removeItem("sf_candidate_record");
+          localStorage.removeItem("sf_confirmed_order_id");
+          sessionStorage.clear();
+        } catch {}
+        if (window.google?.accounts?.id) {
+          window.google.accounts.id.disableAutoSelect();
+        }
       }
     } catch (err) {
       console.error("Failed to sign out:", err);

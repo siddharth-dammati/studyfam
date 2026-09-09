@@ -39,6 +39,7 @@ export default function DashboardPage() {
       } else if (targetOrderId) {
         query = query.eq("referral_code", targetOrderId);
       } else {
+        setCandidateRecord(null);
         setLoadingData(false);
         return;
       }
@@ -49,12 +50,17 @@ export default function DashboardPage() {
         let cachedFallback: any = null;
         try {
           const cachedRaw = localStorage.getItem("sf_candidate_record");
-          if (cachedRaw) cachedFallback = JSON.parse(cachedRaw);
+          if (cachedRaw) {
+            const parsed = JSON.parse(cachedRaw);
+            if (parsed && parsed.email?.toLowerCase() === data[0].email?.toLowerCase()) {
+              cachedFallback = parsed;
+            }
+          }
         } catch {}
 
         const rec = hydrateCandidateRecord(data[0], cachedFallback);
         const storedOrderId = typeof window !== "undefined" ? localStorage.getItem("sf_confirmed_order_id") : null;
-        if (storedOrderId || rec.amount_paid >= 27) {
+        if (storedOrderId === rec.order_id || rec.amount_paid >= 27) {
           rec.status = "confirmed";
           rec.amount_paid = 27;
         }
@@ -62,9 +68,22 @@ export default function DashboardPage() {
         try {
           localStorage.setItem("sf_candidate_record", JSON.stringify(rec));
         } catch {}
+      } else {
+        // No record in DB for this authenticated user
+        setCandidateRecord(null);
+        try {
+          const cachedRaw = localStorage.getItem("sf_candidate_record");
+          if (cachedRaw) {
+            const parsed = JSON.parse(cachedRaw);
+            if (!profile?.email || parsed?.email?.toLowerCase() === profile.email.toLowerCase()) {
+              localStorage.removeItem("sf_candidate_record");
+              localStorage.removeItem("sf_confirmed_order_id");
+            }
+          }
+        } catch {}
       }
     } catch {
-      // Keep any already cached record
+      // Keep any already cached record if network failed
     } finally {
       setLoadingData(false);
     }
@@ -73,41 +92,60 @@ export default function DashboardPage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // 1. Instantly populate from local cached record if available
+    const currentEmail = profile?.email?.toLowerCase().trim();
+
+    // 1. Instantly populate from local cached record ONLY if it matches the current user
     try {
       const cached = localStorage.getItem("sf_candidate_record");
       if (cached) {
         const parsed = JSON.parse(cached);
-        if (parsed && (parsed.status === "confirmed" || parsed.status === "registered" || parsed.order_id || parsed.amount_paid >= 27)) {
-          const hydrated = hydrateCandidateRecord(parsed);
-          setCandidateRecord(hydrated);
-          setLoadingData(false);
+        if (currentEmail) {
+          if (parsed && parsed.email?.toLowerCase() === currentEmail) {
+            const hydrated = hydrateCandidateRecord(parsed);
+            setCandidateRecord(hydrated);
+            setLoadingData(false);
+          } else {
+            // Stale cache from a different account! Discard immediately
+            setCandidateRecord(null);
+            localStorage.removeItem("sf_candidate_record");
+            localStorage.removeItem("sf_confirmed_order_id");
+          }
+        } else if (!authLoading) {
+          // Guest mode
+          if (parsed && (parsed.status === "confirmed" || parsed.status === "registered" || parsed.order_id || parsed.amount_paid >= 27)) {
+            const hydrated = hydrateCandidateRecord(parsed);
+            setCandidateRecord(hydrated);
+            setLoadingData(false);
+          }
         }
+      } else if (currentEmail) {
+        setCandidateRecord(null);
       }
     } catch {}
 
     const params = new URLSearchParams(window.location.search);
     const orderIdParam = params.get("order_id");
-    const storedOrderId = !orderIdParam ? localStorage.getItem("sf_confirmed_order_id") : null;
-    const activeOrderId = orderIdParam || storedOrderId;
 
-    if (activeOrderId) {
-      if (orderIdParam) setIsJustConfirmed(true);
+    // ONLY verify order if order_id is explicitly passed in URL query param (e.g. redirected from Cashfree checkout)
+    if (orderIdParam) {
+      setIsJustConfirmed(true);
 
-      verifyCashfreeOrder(activeOrderId).then((res) => {
+      verifyCashfreeOrder(orderIdParam).then((res) => {
         if (res.registration) {
           const hydrated = hydrateCandidateRecord(res.registration);
-          setCandidateRecord(hydrated);
-          setLoadingData(false);
-          try {
-            localStorage.setItem("sf_confirmed_order_id", activeOrderId);
-            localStorage.setItem("sf_candidate_record", JSON.stringify(hydrated));
-          } catch {}
+          if (!currentEmail || hydrated.email?.toLowerCase() === currentEmail) {
+            setCandidateRecord(hydrated);
+            setLoadingData(false);
+            try {
+              localStorage.setItem("sf_confirmed_order_id", orderIdParam);
+              localStorage.setItem("sf_candidate_record", JSON.stringify(hydrated));
+            } catch {}
+          }
         } else {
-          fetchCandidateRecord(activeOrderId);
+          fetchCandidateRecord(orderIdParam);
         }
       }).catch(() => {
-        fetchCandidateRecord(activeOrderId);
+        fetchCandidateRecord(orderIdParam);
       });
     } else if (!authLoading) {
       fetchCandidateRecord();

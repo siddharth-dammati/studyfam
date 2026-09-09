@@ -32,57 +32,16 @@ function AdmitCardContent() {
       setLoading(true);
       setErrorMsg("");
 
+      const currentEmail = profile?.email?.toLowerCase().trim();
+
       try {
-        // A. If order_id param is provided
-        if (orderIdParam) {
-          try {
-            const res = await verifyCashfreeOrder(orderIdParam);
-            if (res.registration && isMounted) {
-              setCandidate(hydrateCandidateRecord(res.registration));
-              setLoading(false);
-              return;
-            }
-          } catch {}
-
-          // Fallback Supabase query with orderIdParam
+        // A. If user is signed in with email, query their record directly from DB
+        if (currentEmail) {
           const supabase = createClient();
           const { data } = await supabase
             .from("registrations")
             .select("*")
-            .or(`referral_code.eq.${orderIdParam},id.eq.${orderIdParam}`)
-            .limit(1);
-
-          if (data && data.length > 0 && isMounted) {
-            setCandidate(hydrateCandidateRecord(data[0]));
-            setLoading(false);
-            return;
-          }
-        }
-
-        // B. Check localStorage for active session
-        if (typeof window !== "undefined") {
-          const cached = localStorage.getItem("sf_candidate_record");
-          if (cached) {
-            try {
-              const parsed = JSON.parse(cached);
-              if (parsed && (parsed.status === "confirmed" || parsed.status === "registered" || parsed.order_id || parsed.amount_paid >= 27)) {
-                if (isMounted) {
-                  setCandidate(hydrateCandidateRecord(parsed));
-                  setLoading(false);
-                  return;
-                }
-              }
-            } catch {}
-          }
-        }
-
-        // C. If user is signed in with email
-        if (profile?.email) {
-          const supabase = createClient();
-          const { data } = await supabase
-            .from("registrations")
-            .select("*")
-            .eq("email", profile.email.toLowerCase().trim())
+            .eq("email", currentEmail)
             .order("created_at", { ascending: false })
             .limit(1);
 
@@ -95,6 +54,63 @@ function AdmitCardContent() {
             }
           }
         }
+
+        // B. If order_id param is provided in URL
+        if (orderIdParam) {
+          try {
+            const res = await verifyCashfreeOrder(orderIdParam);
+            if (res.registration && isMounted) {
+              const hydrated = hydrateCandidateRecord(res.registration);
+              if (!currentEmail || hydrated.email?.toLowerCase() === currentEmail) {
+                setCandidate(hydrated);
+                setLoading(false);
+                return;
+              }
+            }
+          } catch {}
+
+          // Fallback Supabase query with orderIdParam
+          const supabase = createClient();
+          const { data } = await supabase
+            .from("registrations")
+            .select("*")
+            .or(`referral_code.eq.${orderIdParam},id.eq.${orderIdParam}`)
+            .limit(1);
+
+          if (data && data.length > 0 && isMounted) {
+            const hydrated = hydrateCandidateRecord(data[0]);
+            if (!currentEmail || hydrated.email?.toLowerCase() === currentEmail) {
+              setCandidate(hydrated);
+              setLoading(false);
+              return;
+            }
+          }
+        }
+
+        // C. Check localStorage for active session only if it matches current email or in guest mode
+        if (typeof window !== "undefined") {
+          const cached = localStorage.getItem("sf_candidate_record");
+          if (cached) {
+            try {
+              const parsed = JSON.parse(cached);
+              if (parsed && (parsed.status === "confirmed" || parsed.status === "registered" || parsed.order_id || parsed.amount_paid >= 27)) {
+                if (currentEmail) {
+                  if (parsed.email?.toLowerCase() === currentEmail && isMounted) {
+                    setCandidate(hydrateCandidateRecord(parsed));
+                    setLoading(false);
+                    return;
+                  }
+                } else if (isMounted) {
+                  setCandidate(hydrateCandidateRecord(parsed));
+                  setLoading(false);
+                  return;
+                }
+              }
+            } catch {}
+          }
+        }
+
+        if (isMounted) setCandidate(null);
       } catch (err: any) {
         console.error("Failed to load admit card:", err);
       } finally {

@@ -35,13 +35,19 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    const currentEmail = profile?.email?.toLowerCase().trim();
+
     if (typeof window !== "undefined") {
       const storedOrder = localStorage.getItem("sf_confirmed_order_id");
       const storedRecord = localStorage.getItem("sf_candidate_record");
       if (storedRecord) {
         try {
           const rec = JSON.parse(storedRecord);
-          if (rec && (rec.status === "confirmed" || rec.status === "registered" || rec.amount_paid >= 27 || rec.order_id)) {
+          const isMatchesCurrent = currentEmail
+            ? rec?.email?.toLowerCase() === currentEmail
+            : Boolean(storedOrder || rec.order_id);
+
+          if (isMatchesCurrent && rec && (rec.status === "confirmed" || rec.status === "registered" || rec.amount_paid >= 27 || rec.order_id)) {
             setFullName(rec.full_name || "");
             setEmail(rec.email || "");
             if (rec.gender) setGender(rec.gender);
@@ -63,9 +69,15 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
       }
     }
 
+    // Default to step 1 for fresh registration
+    setStep(1);
+    setRegisteredId(null);
+    setOrderId(null);
+    setPaymentId(null);
+
     if (profile) {
-      if (profile.fullName && !fullName) setFullName(profile.fullName);
-      if (profile.email && !email) setEmail(profile.email);
+      if (profile.fullName) setFullName(profile.fullName);
+      if (profile.email) setEmail(profile.email);
     }
   }, [profile, isOpen]);
 
