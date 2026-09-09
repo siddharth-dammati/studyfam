@@ -13,6 +13,7 @@ export interface HeroConfig {
   supportAmount: number;
   registrationOpen: boolean;
   targetDateIso: string;
+  showLiveCounters: boolean;
 }
 
 export interface ScholarshipConfig {
@@ -72,6 +73,7 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     supportAmount: 18,
     registrationOpen: false,
     targetDateIso: "2026-10-20T00:00:00+05:30",
+    showLiveCounters: false,
   },
   scholarship: {
     scenarioHeadline: "Projected Scenario (If 50,000 Aspirants Register · 1,000 Winners)",

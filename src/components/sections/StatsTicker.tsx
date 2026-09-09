@@ -1,13 +1,24 @@
 "use client";
 
 import { useImpactStats } from "@/hooks/useImpactStats";
+import { useSiteConfig } from "@/context/SiteConfigContext";
 
 export function StatsTicker() {
   const { total_registrations = 0, support_pool = 0 } = useImpactStats();
+  const { config } = useSiteConfig();
+  const showLive = Boolean(config?.hero?.showLiveCounters);
 
   const items = [
-    `${(total_registrations ?? 0).toLocaleString()} Students Registered`,
-    `₹${(support_pool ?? 0).toLocaleString("en-IN")} Support Pool Built`,
+    ...(showLive
+      ? [
+          `${(total_registrations ?? 0).toLocaleString()} Students Registered`,
+          `₹${(support_pool ?? 0).toLocaleString("en-IN")} Support Pool Built`,
+        ]
+      : [
+          "Registrations Open 20 October 2026",
+          "₹18 of Every ₹27 Dedicated to Fee Scholarships",
+          "50% Merit · 50% Need-Based Dual Track",
+        ]),
     "300 Marks · 180 Minutes",
     "All-India Percentile Prediction",
     "NTA CBT Interface",
@@ -15,7 +26,6 @@ export function StatsTicker() {
     "Physics · Chemistry · Maths",
     "27 December 2026 · 9:00 AM – 12:00 PM",
     "Entry Fee: ₹27 Only",
-    "₹18 Goes to JEE Fee Support",
     "Section A: 20 MCQs",
     "Section B: 5 Numerical",
   ];

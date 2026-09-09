@@ -1352,6 +1352,42 @@ export default function AdminSuperPowerPage() {
                 </label>
               </div>
 
+              {/* Public Live Counters Toggle */}
+              <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <div className="font-bold text-sm text-white flex items-center gap-2">
+                    <span>Public Live Counters (Registrations & Pool Data)</span>
+                    <span
+                      className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase ${
+                        editableConfig.hero.showLiveCounters
+                          ? "bg-emerald-500/20 text-emerald-400"
+                          : "bg-slate-700 text-slate-300"
+                      }`}
+                    >
+                      {editableConfig.hero.showLiveCounters ? "LIVE DISPLAY ACTIVE" : "HIDDEN (MILESTONE MODE)"}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    When hidden (recommended while registrations are closed), the landing page displays Milestone 1 benchmarks and the progression ladder without showing live 0 counts or live pool numbers.
+                  </p>
+                </div>
+
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(editableConfig.hero.showLiveCounters)}
+                    onChange={(e) =>
+                      updateDraft((prev) => ({
+                        ...prev,
+                        hero: { ...prev.hero, showLiveCounters: e.target.checked },
+                      }))
+                    }
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600" />
+                </label>
+              </div>
+
               {/* Strict Income Rule Toggle */}
               <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
                 <div>

@@ -2,9 +2,12 @@
 
 import { motion } from "framer-motion";
 import { useImpactStats } from "@/hooks/useImpactStats";
+import { useSiteConfig } from "@/context/SiteConfigContext";
 
 export function ParticipationCounter() {
   const { total_registrations: count = 0 } = useImpactStats();
+  const { config } = useSiteConfig();
+  const showLive = Boolean(config?.hero?.showLiveCounters);
 
   return (
     <section className="py-32 bg-[var(--background-soft)] relative ">
@@ -40,15 +43,15 @@ export function ParticipationCounter() {
 
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-full text-[10px] font-mono font-bold uppercase tracking-widest mb-6">
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                LIVE REGISTRY
+                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                {showLive ? "LIVE REGISTRY" : "BENCHMARK TARGET"}
               </div>
               
               <div className="text-[clamp(4rem,10vw,8rem)] font-bold text-[var(--foreground)] mb-2 tracking-tighter tabular-nums  leading-none">
-                {(count ?? 0).toLocaleString()}
+                {showLive ? (count ?? 0).toLocaleString() : "1,000"}
               </div>
               <div className="text-xl md:text-2xl text-[var(--foreground-muted)] font-medium tracking-wide">
-                JEE ASPIRANTS REGISTERED
+                {showLive ? "JEE ASPIRANTS REGISTERED" : "ASPIRANTS BENCHMARK TARGET"}
               </div>
             </div>
           </div>

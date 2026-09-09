@@ -22,9 +22,12 @@ import {
   Send,
 } from "lucide-react";
 import { useImpactStats } from "@/hooks/useImpactStats";
+import { useSiteConfig } from "@/context/SiteConfigContext";
 
 export function ImpactProgress() {
   const [mounted, setMounted] = useState(false);
+  const { config } = useSiteConfig();
+  const showLive = Boolean(config?.hero?.showLiveCounters);
   const {
     total_registrations: count = 0,
     support_pool: pool = 0,
@@ -91,19 +94,21 @@ export function ImpactProgress() {
         {/* 3 Clear Metric Cards (Input -> Pool -> Prize) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           
-          {/* Card 1: Registrations */}
+          {/* Card 1: Registrations / Milestone 1 Target */}
           <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[11px] font-mono uppercase font-semibold text-slate-500 tracking-wider">
-                1. Students Registered
+                {showLive ? "1. Students Registered" : "1. Milestone 1 Target"}
               </span>
               <Users className="w-4 h-4 text-slate-400" />
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight tabular-nums mb-1">
-                {formatIndianNumber(count)}
+                {formatIndianNumber(showLive ? count : activeMilestone.students)}
               </div>
-              <p className="text-xs text-slate-500">Aspirants joined nationwide</p>
+              <p className="text-xs text-slate-500">
+                {showLive ? "Aspirants joined nationwide" : "Aspirants milestone target"}
+              </p>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-600">
               <span>Fee per mock</span>
@@ -115,15 +120,17 @@ export function ImpactProgress() {
           <div className="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[11px] font-mono uppercase font-semibold text-indigo-700 tracking-wider">
-                2. Scholarship Pool
+                {showLive ? "2. Scholarship Pool" : "2. Target Scholarship Pool"}
               </span>
               <Award className="w-4 h-4 text-indigo-600" />
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-indigo-600 tracking-tight tabular-nums mb-1">
-                {formatIndianCurrency(pool)}
+                {formatIndianCurrency(showLive ? pool : activeMilestone.students * 18)}
               </div>
-              <p className="text-xs text-indigo-900/70">₹18 per student deposited live</p>
+              <p className="text-xs text-indigo-900/70">
+                {showLive ? "₹18 per student deposited live" : "₹18 per student allocated to pool"}
+              </p>
             </div>
             <div className="mt-4 pt-3 border-t border-indigo-100/80 flex items-center justify-between text-[11px] font-mono text-indigo-700">
               <span>Pool allocation</span>
@@ -135,14 +142,14 @@ export function ImpactProgress() {
           <div className="bg-emerald-50/80 border-2 border-emerald-300 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[11px] font-mono uppercase font-bold text-emerald-800 tracking-wider flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 3. Dual-Track Scholarships
               </span>
               <Trophy className="w-4 h-4 text-emerald-600" />
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-emerald-700 tracking-tight tabular-nums mb-1">
-                Top {formatIndianNumber(topN)}
+                Top {formatIndianNumber(showLive ? topN : activeMilestone.topN)}
               </div>
               <p className="text-xs text-emerald-900 font-medium">50% Merit + 50% Need-Based Support</p>
             </div>
@@ -154,41 +161,63 @@ export function ImpactProgress() {
 
         </div>
 
-        {/* Live Active Target Progress Bar */}
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-medium text-slate-600 mb-3 gap-2">
-            <div className="flex items-center gap-2">
-              <Target className="w-4 h-4 text-indigo-600 shrink-0" />
-              <span>
-                Active Target: <strong className="text-slate-900 font-bold">{formatIndianNumber(activeMilestone.students)} registrations</strong>
-              </span>
-              <span className="text-emerald-700 font-semibold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full text-[11px]">
-                Funds Top {activeMilestone.topN} Winners
+        {/* Live Active Target Progress Bar OR Launch Announcement */}
+        {showLive ? (
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-medium text-slate-600 mb-3 gap-2">
+              <div className="flex items-center gap-2">
+                <Target className="w-4 h-4 text-indigo-600 shrink-0" />
+                <span>
+                  Active Target: <strong className="text-slate-900 font-bold">{formatIndianNumber(activeMilestone.students)} registrations</strong>
+                </span>
+                <span className="text-emerald-700 font-semibold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full text-[11px]">
+                  Funds Top {activeMilestone.topN} Winners
+                </span>
+              </div>
+              <span className="text-indigo-600 font-mono font-semibold">
+                {formatIndianNumber(milestoneInfo.remaining)} registrations left
               </span>
             </div>
-            <span className="text-indigo-600 font-mono font-semibold">
-              {formatIndianNumber(milestoneInfo.remaining)} registrations left
-            </span>
-          </div>
 
-          <div className="h-3 bg-slate-100 rounded-full overflow-hidden mb-2 relative">
-            <div
-              className="h-full rounded-full transition-all duration-1000"
-              style={{
-                width: `${Math.min(100, Math.max(0, milestoneInfo.overallProgress))}%`,
-                background: "linear-gradient(90deg, #6366F1, #10B981)",
-              }}
-            />
-          </div>
+            <div className="h-3 bg-slate-100 rounded-full overflow-hidden mb-2 relative">
+              <div
+                className="h-full rounded-full transition-all duration-1000"
+                style={{
+                  width: `${Math.min(100, Math.max(0, milestoneInfo.overallProgress))}%`,
+                  background: "linear-gradient(90deg, #6366F1, #10B981)",
+                }}
+              />
+            </div>
 
-          <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-            <span>0</span>
-            <span className="text-slate-700 font-semibold">
-              {formatIndianNumber(count)} today ({milestoneInfo.overallProgress.toFixed(1)}% toward Target {formatIndianNumber(activeMilestone.students)})
-            </span>
-            <span>Target: {formatIndianNumber(activeMilestone.students)} Aspirants</span>
+            <div className="flex justify-between text-[10px] text-slate-400 font-mono">
+              <span>0</span>
+              <span className="text-slate-700 font-semibold">
+                {formatIndianNumber(count)} today ({milestoneInfo.overallProgress.toFixed(1)}% toward Target {formatIndianNumber(activeMilestone.students)})
+              </span>
+              <span>Target: {formatIndianNumber(activeMilestone.students)} Aspirants</span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2.5 text-slate-700">
+              <span className="flex h-2.5 w-2.5 relative shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600" />
+              </span>
+              <span className="font-medium">
+                National registrations officially open on <strong className="text-slate-900 font-bold">20 October 2026</strong>.
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-indigo-700 font-mono font-bold bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-full text-[11px] w-fit">
+                Milestone 1: 1,000 Aspirants
+              </span>
+              <span className="text-emerald-700 font-mono font-bold bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full text-[11px] w-fit">
+                Exam: 27 Dec 2026
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Milestone Progression Ladder & Benefits Explorer */}
         <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs">
