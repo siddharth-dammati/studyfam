@@ -50,10 +50,10 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
   ];
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4">
+    <header className="sticky top-3 left-0 right-0 z-40 flex justify-center px-4 pt-3 pointer-events-none">
       <nav
         className={cn(
-          "w-full max-w-[1100px] figma-nav transition-all duration-300",
+          "w-full max-w-[1100px] figma-nav transition-all duration-300 pointer-events-auto",
           scrolled ? "shadow-[var(--shadow-md)]" : "shadow-[var(--shadow-sm)]"
         )}
       >
@@ -199,13 +199,13 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
                   className="w-full"
                   onClick={() => { setMobileOpen(false); onOpenRegistration(); }}
                 >
-                  {isOpen ? "Register for Mock — ₹27" : "Opens Nov 27"}
+                  {isOpen ? "Register for Mock — ₹27" : "Opens Oct 20"}
                 </Button>
               )}
             </div>
           </div>
         )}
       </nav>
-    </div>
+    </header>
   );
 }

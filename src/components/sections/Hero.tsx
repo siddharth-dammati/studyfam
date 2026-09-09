@@ -127,7 +127,7 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
   }, [profile?.email]);
 
   return (
-    <section className="relative min-h-screen bg-white overflow-hidden flex flex-col">
+    <section id="waitlist" className="relative min-h-screen bg-white overflow-hidden flex flex-col">
       {/* Subtle modern gradient mesh */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-24 right-0 w-[800px] h-[800px] bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.08)_0%,transparent_60%)]" />
@@ -136,7 +136,7 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
       </div>
 
       <div className="relative z-10 flex-1 flex items-center">
-        <div className="max-w-[1240px] mx-auto px-6 lg:px-8 py-32 lg:py-36 w-full">
+        <div className="max-w-[1240px] mx-auto px-6 lg:px-8 pt-8 sm:pt-12 pb-24 sm:pb-32 lg:pt-12 lg:pb-36 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
             {/* Left Col (Span 7) */}
