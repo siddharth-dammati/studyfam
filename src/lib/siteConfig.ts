@@ -1,4 +1,4 @@
-﻿export interface FAQItem {
+export interface FAQItem {
   id: string;
   q: string;
   a: string;
@@ -70,8 +70,8 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     examTimeLabel: "9:00 AM – 12:00 PM IST",
     registrationFee: 27,
     supportAmount: 18,
-    registrationOpen: true,
-    targetDateIso: "2026-12-27T09:00:00+05:30",
+    registrationOpen: false,
+    targetDateIso: "2026-10-20T00:00:00+05:30",
   },
   scholarship: {
     scenarioHeadline: "Projected Scenario (If 50,000 Aspirants Register · 1,000 Winners)",
@@ -116,9 +116,9 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     },
   ],
   registration: {
-    bannerNotice: "🔥 All-India Registration Window is currently LIVE. Lock your ₹27 CBT seat now!",
+    bannerNotice: "⏳ All-India Registrations open on October 20, 2026. Join the priority waitlist now!",
     bannerNoticeEnabled: true,
-    countdownMode: false,
+    countdownMode: true,
     minIncomeExclusionRule: true,
     enabledStreams: ["class-11", "class-12", "dropper"],
   },
@@ -140,11 +140,11 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     ],
   },
   announcement: {
-    enabled: false,
-    badge: "ANNOUNCEMENT",
-    text: "JEE Main 2027 Mock Test registrations are filling fast. Register now to secure your All-India Percentile benchmarking!",
-    linkText: "Register for ₹27 →",
-    linkUrl: "#register",
+    enabled: true,
+    badge: "REGISTRATION UPDATE",
+    text: "Registrations for All-India JEE Main 2027 Mock Test open on October 20, 2026. Lock your waitlist spot!",
+    linkText: "Join Waitlist →",
+    linkUrl: "#waitlist",
   },
 };
 

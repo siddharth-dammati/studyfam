@@ -239,7 +239,7 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
             <p className="text-xs sm:text-sm text-slate-600 mb-5 leading-relaxed">
               {isMockOpen 
                 ? "Your seat for the All-India Mock Test on 27 December 2026 (9:00 AM - 12:00 PM) is officially locked in."
-                : "Thank you for joining. We will notify you via WhatsApp and Email the moment mock test slots open."}
+                : "Thank you for joining! Your priority waitlist spot is confirmed. We will notify you via WhatsApp and Email the moment registrations open on October 20, 2026."}
             </p>
 
             {/* Payment & Candidate Receipt */}
@@ -317,7 +317,7 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
             <p className="text-xs sm:text-sm text-slate-600 mb-5 font-medium">
               {isMockOpen 
                 ? `Pay ₹${config?.hero?.registrationFee || 27} via UPI, Cards, or Netbanking to lock your All-India Mock seat.` 
-                : "Get notified as soon as registrations open."}
+                : "Registrations will open on October 20, 2026. Join the priority waitlist to lock your early access."}
             </p>
 
             {errorMsg && (
@@ -535,7 +535,7 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
                   ) : isMockOpen ? (
                     "Pay ₹27 & Confirm Spot"
                   ) : (
-                    "Join Waitlist — Free"
+                    "Join Priority Waitlist — Free"
                   )}
                 </Button>
               </div>

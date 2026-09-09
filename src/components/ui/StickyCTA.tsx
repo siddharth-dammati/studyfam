@@ -16,7 +16,7 @@ export function StickyCTA({ onOpenRegistration }: { onOpenRegistration: () => vo
         </Button>
       ) : (
         <Button size="lg" variant="secondary" className="w-full text-sm font-bold" onClick={onOpenRegistration}>
-          OPENS NOV 27 · 20:27 IST
+          OPENS OCTOBER 20, 2026 · JOIN WAITLIST
         </Button>
       )}
     </div>

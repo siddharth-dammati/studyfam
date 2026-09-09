@@ -27,7 +27,7 @@ export function FinalCTA({ onOpenRegistration }: { onOpenRegistration: () => voi
         ) : !isOpen ? (
           <div className="figma-card max-w-[500px] mx-auto p-10">
             <p className="eyebrow text-[var(--foreground-secondary)] mb-8">
-              OPENS 27 NOVEMBER 2026 • 20:27 IST
+              REGISTRATIONS OPEN 20 OCTOBER 2026
             </p>
             <div className="flex justify-center gap-4 text-center mb-10">
               {[
@@ -45,7 +45,7 @@ export function FinalCTA({ onOpenRegistration }: { onOpenRegistration: () => voi
               ))}
             </div>
             <Button size="lg" className="w-full" onClick={onOpenRegistration}>
-              NOTIFY ME
+              JOIN OFFICIAL WAITLIST
             </Button>
           </div>
         ) : (

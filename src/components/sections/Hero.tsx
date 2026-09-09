@@ -228,7 +228,7 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
                       </Link>
                     ) : (
                       <Button size="lg" onClick={onOpenRegistration} className="shadow-lg shadow-indigo-500/20">
-                        {isOpen ? "Register for All-India Mock — ₹27" : "Get Notified for Mock Test — Free"}
+                        {isOpen ? `Register for All-India Mock — ₹${config.hero.registrationFee || 27}` : "Join Priority Waitlist — Free"}
                         <ArrowRight size={16} />
                       </Button>
                     )}
@@ -240,8 +240,8 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
                   <p className="text-slate-500 text-xs font-mono mt-4 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     {isOpen 
-                      ? "₹27 Entry · Registrations Now Open · Single National Slot: 27 Dec 2026 (9:00 AM – 12:00 PM IST)"
-                      : "₹27 Entry · Opens Nov 27 · Single National Slot: 27 Dec 2026 (9:00 AM – 12:00 PM IST)"}
+                      ? `₹${config.hero.registrationFee || 27} Entry · Registrations Now Open · Single National Slot: ${config.hero.examDateLabel} (${config.hero.examTimeLabel})`
+                      : `₹${config.hero.registrationFee || 27} Entry · Opens October 20, 2026 · Single National Slot: ${config.hero.examDateLabel} (${config.hero.examTimeLabel})`}
                   </p>
                 </>
               )}

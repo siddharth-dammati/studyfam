@@ -119,7 +119,7 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
                   </Link>
                   <span className="pill pill-indigo">₹27 Only</span>
                   <Button size="md" onClick={onOpenRegistration}>
-                    {isOpen ? "Register — ₹27" : "Opens Nov 27"}
+                    {isOpen ? "Register — ₹27" : "Opens Oct 20"}
                   </Button>
                 </div>
               )}
