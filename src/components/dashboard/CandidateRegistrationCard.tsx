@@ -20,6 +20,8 @@ export interface CandidateRecord {
   payment_id?: string;
   payment_status?: string;
   payment_method?: string;
+  roll_no?: string;
+  referral_code?: string;
   gender?: "boy" | "girl" | "other" | string;
   family_income?: string;
   scholarship_track?: "merit" | "need_based" | "opt_out" | string;

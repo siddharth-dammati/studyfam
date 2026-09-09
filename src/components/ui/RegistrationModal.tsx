@@ -5,6 +5,7 @@ import { Button } from "./Button";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useSiteConfig } from "@/context/SiteConfigContext";
 import { GoogleSignInButton } from "./GoogleSignInButton";
 import { createCashfreeOrder, verifyCashfreeOrder } from "@/services/paymentService";
 import { openCashfreeCheckout } from "@/utils/cashfree";
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
+  const { config } = useSiteConfig();
   const { profile } = useAuth();
   const [step, setStep] = useState(1);
   const [fullName, setFullName] = useState("");
@@ -300,6 +302,13 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
           </div>
         ) : (
           <>
+            {config?.registration?.bannerNoticeEnabled && config?.registration?.bannerNotice && (
+              <div className="mb-4 p-3 rounded-2xl bg-amber-50/90 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center gap-2">
+                <Sparkles size={15} className="text-amber-600 shrink-0" />
+                <span>{config.registration.bannerNotice}</span>
+              </div>
+            )}
+
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-2xl font-bold text-slate-900 tracking-tight">
                 {isMockOpen ? "Complete Registration" : "Join Official Waitlist"}
@@ -307,7 +316,7 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
             </div>
             <p className="text-xs sm:text-sm text-slate-600 mb-5 font-medium">
               {isMockOpen 
-                ? "Pay ₹27 via UPI, Cards, or Netbanking to lock your All-India Mock seat." 
+                ? `Pay ₹${config?.hero?.registrationFee || 27} via UPI, Cards, or Netbanking to lock your All-India Mock seat.` 
                 : "Get notified as soon as registrations open."}
             </p>
 
@@ -513,7 +522,7 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
                     <ShieldCheck size={16} className="text-indigo-600 shrink-0" />
                     <span>Cashfree Instant PG Checkout</span>
                   </div>
-                  <span className="font-bold text-indigo-700 font-mono text-sm">₹27</span>
+                  <span className="font-bold text-indigo-700 font-mono text-sm">₹{config?.hero?.registrationFee || 27}</span>
                 </div>
               )}
 

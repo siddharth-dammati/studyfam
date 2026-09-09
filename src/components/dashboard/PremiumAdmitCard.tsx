@@ -22,6 +22,7 @@ import {
   HeartHandshake
 } from "lucide-react";
 import Link from "next/link";
+import { useSiteConfig } from "@/context/SiteConfigContext";
 
 interface PremiumAdmitCardProps {
   registration: CandidateRecord;
@@ -76,6 +77,7 @@ export function PremiumAdmitCard({
   onClose,
   isStandalone = false,
 }: PremiumAdmitCardProps) {
+  const { config } = useSiteConfig();
   const [copied, setCopied] = useState(false);
 
   // Deterministic Roll Number & Application Number
@@ -210,7 +212,7 @@ export function PremiumAdmitCard({
               </div>
               <div>
                 <h1 className="text-lg sm:text-xl font-black tracking-tight text-slate-900 uppercase">
-                  StudyFAM All-India JEE (Main) 2027 Mock
+                  {config?.admitCard?.examTitle || "StudyFAM All-India JEE (Main) 2027 Mock"}
                 </h1>
                 <div className="text-xs font-semibold text-slate-600 uppercase tracking-wide">
                   Provisional E-Admit Card & Candidate Examination Allotment Slip
@@ -429,10 +431,10 @@ export function PremiumAdmitCard({
                 <tbody className="bg-white">
                   <tr className="border-b border-slate-200">
                     <td className="border border-slate-300 p-2.5 font-bold text-slate-900">
-                      Sunday, 27 Dec 2026
+                      {config?.admitCard?.examDate || "Sunday, 27 Dec 2026"}
                     </td>
                     <td className="border border-slate-300 p-2.5 font-extrabold text-slate-950">
-                      09:00 AM – 12:00 PM IST (3 Hours)
+                      {config?.admitCard?.testTiming || "09:00 AM – 12:00 PM IST (3 Hours)"}
                     </td>
                     <td className="border border-slate-300 p-2.5 font-medium text-slate-800">
                       Online Computer-Based Test (CBT)
@@ -460,8 +462,8 @@ export function PremiumAdmitCard({
                 </div>
               </div>
               <div className="font-mono text-[10px] text-right text-slate-500">
-                <span>Passkey delivery: <strong>WhatsApp OTP</strong></span><br />
-                <span>Transaction Ref: <strong>{orderRef}</strong></span>
+                <span>Reporting Time: <strong>{config?.admitCard?.reportingTime || "07:30 AM IST"}</strong></span><br />
+                <span>Gate Closes: <strong>{config?.admitCard?.gateClosureTime || "08:30 AM IST"}</strong></span>
               </div>
             </div>
           </div>
@@ -474,24 +476,22 @@ export function PremiumAdmitCard({
             </div>
 
             <ol className="list-decimal pl-4 space-y-1.5 text-[11px] text-slate-700 leading-relaxed">
-              <li>
-                <strong>CBT Terminal Access:</strong> The examination console will go live on <strong>Sunday, 27 Dec 2026 at 09:00 AM IST</strong>. Candidates can begin attempting their test immediately upon portal access.
-              </li>
-              <li>
-                <strong>Proctoring & Integrity:</strong> The test interface utilizes browser tab-lock and window-blur tracking. Attempting to switch tabs, minimize windows, or use unauthorized AI toolbars will result in automatic score nullification.
-              </li>
-              <li>
-                <strong>Scoring & Marking Scheme:</strong> 4 marks for each correct response, -1 penalty mark for incorrect answers. Unattempted questions receive 0 marks.
-              </li>
-              <li>
-                <strong>50% Merit &amp; 50% Need-Based Dual Track:</strong> Top-ranked boys &amp; girls (slot count scales with total verified registrations) earn merit scholarships purely by test percentile. Need-based assistance will be verified independently post-exam.
-              </li>
-              <li>
-                <strong>Rough Sheets & Calculations:</strong> Blank physical paper and ballpoint pens are permitted at your study desk. Electronic calculators or smartwatches are strictly forbidden.
-              </li>
-              <li>
-                <strong>Results & Scholarship Disbursement:</strong> All-India Percentile & Merit Ranks will be declared within 48 hours. Direct bank/UPI fee reimbursements will commence following roll verification.
-              </li>
+              {(config?.admitCard?.instructions && config.admitCard.instructions.length > 0
+                ? config.admitCard.instructions
+                : [
+                    `The examination will be conducted entirely in Computer Based Test (CBT) mode on Sunday, ${config?.admitCard?.examDate || "27 Dec 2026"}.`,
+                    "Candidates must log in with their Registered Mobile Number or Order Reference ID at least 30 minutes before commencement.",
+                    "The test interface utilizes browser tab-lock and window-blur tracking. Attempting to switch tabs, minimize windows, or use unauthorized AI toolbars will result in automatic score nullification.",
+                    "Scoring & Marking Scheme: 4 marks for each correct response, -1 penalty mark for incorrect answers. Unattempted questions receive 0 marks.",
+                    "50% Merit & 50% Need-Based Dual Track: Top-ranked boys & girls earn merit scholarships purely by test percentile. Need-based assistance will be verified independently post-exam.",
+                    "Rough Sheets & Calculations: Blank physical paper and ballpoint pens are permitted at your study desk. Electronic calculators or smartwatches are strictly forbidden.",
+                    "Results & Scholarship Disbursement: All-India Percentile & Merit Ranks will be declared within 48 hours. Direct bank/UPI fee reimbursements will commence following roll verification.",
+                  ]
+              ).map((rule, idx) => (
+                <li key={idx}>
+                  <span>{rule}</span>
+                </li>
+              ))}
             </ol>
           </div>
 

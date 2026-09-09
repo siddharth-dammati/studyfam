@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   },
 };
 
+import { SiteConfigProvider } from "@/context/SiteConfigContext";
+import { AnnouncementBanner } from "@/components/ui/AnnouncementBanner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,7 +34,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth ${geist.variable} ${geistMono.variable}`}>
       <body className={`font-sans bg-[var(--background)] text-[var(--foreground)] antialiased selection:bg-[var(--accent)]/20 selection:text-[var(--accent)]`}>
-        {children}
+        <SiteConfigProvider>
+          <AnnouncementBanner />
+          {children}
+        </SiteConfigProvider>
       </body>
     </html>
   );

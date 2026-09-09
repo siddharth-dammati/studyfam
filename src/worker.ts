@@ -1,3 +1,6 @@
+import { DEFAULT_SITE_CONFIG, parseSiteConfig } from "./lib/siteConfig";
+import { ALLOWED_ADMIN_EMAILS, DEFAULT_ADMIN_PASSCODE } from "./lib/adminAuth";
+
 export interface Env {
   ASSETS: {
     fetch: (request: Request) => Promise<Response>;
@@ -8,6 +11,7 @@ export interface Env {
   NEXT_PUBLIC_SUPABASE_URL?: string;
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?: string;
   SUPABASE_SERVICE_ROLE_KEY?: string;
+  ADMIN_PASSCODE?: string;
 }
 
 const DEFAULT_APP_ID = "1104906797b7e0ff7bf86edf2bf6094011";
@@ -102,7 +106,22 @@ export default {
       return handleWebhook(request, env);
     }
 
-    // 5. Default: Serve Next.js static export from ASSETS binding
+    // 5. Public Site Config
+    if (pathname === "/api/config") {
+      return handleSiteConfig(request, env);
+    }
+
+    // 6. Admin Site Config
+    if (pathname === "/api/admin/config") {
+      return handleAdminConfig(request, env);
+    }
+
+    // 7. Admin Registrations & Stats
+    if (pathname === "/api/admin/registrations") {
+      return handleAdminRegistrations(request, env);
+    }
+
+    // 8. Default: Serve Next.js static export from ASSETS binding
     return env.ASSETS.fetch(request);
   },
 };
@@ -700,6 +719,374 @@ async function handleCandidateUpdateProfile(request: Request, env: Env): Promise
   } catch (err: any) {
     return new Response(
       JSON.stringify({ error: err.message || "Internal server error" }),
+      { status: 500, headers: jsonHeaders }
+    );
+  }
+}
+
+function isWorkerAdmin(request: Request, env: Env): boolean {
+  const passcodeHeader = request.headers.get("x-admin-passcode");
+  const emailHeader = (request.headers.get("x-admin-email") || "").toLowerCase().trim();
+  const validPasscode = env.ADMIN_PASSCODE || DEFAULT_ADMIN_PASSCODE;
+
+  if (passcodeHeader && passcodeHeader.trim() === validPasscode) {
+    return true;
+  }
+  if (emailHeader && ALLOWED_ADMIN_EMAILS.includes(emailHeader)) {
+    return true;
+  }
+  return false;
+}
+
+async function handleSiteConfig(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  };
+
+  try {
+    const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
+    const supabaseKey =
+      env.SUPABASE_SERVICE_ROLE_KEY ||
+      env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+      "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
+
+    const res = await fetch(`${supabaseUrl}/rest/v1/app_config?key=eq.site_master_config&select=value`, {
+      headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+    });
+
+    if (res.ok) {
+      const rows: any = await res.json();
+      if (Array.isArray(rows) && rows.length > 0 && rows[0].value) {
+        try {
+          return new Response(
+            JSON.stringify({ success: true, config: parseSiteConfig(JSON.parse(rows[0].value)) }),
+            { status: 200, headers: jsonHeaders }
+          );
+        } catch {}
+      }
+    }
+
+    const fallbackRes = await fetch(
+      `${supabaseUrl}/rest/v1/registrations?email=eq.system_config@studyfam.org&select=payment_method`,
+      {
+        headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+      }
+    );
+
+    if (fallbackRes.ok) {
+      const fbRows: any = await fallbackRes.json();
+      if (Array.isArray(fbRows) && fbRows.length > 0 && fbRows[0].payment_method?.startsWith("config:")) {
+        try {
+          return new Response(
+            JSON.stringify({
+              success: true,
+              config: parseSiteConfig(JSON.parse(fbRows[0].payment_method.slice(7))),
+            }),
+            { status: 200, headers: jsonHeaders }
+          );
+        } catch {}
+      }
+    }
+
+    return new Response(
+      JSON.stringify({ success: true, config: DEFAULT_SITE_CONFIG }),
+      { status: 200, headers: jsonHeaders }
+    );
+  } catch (err: any) {
+    return new Response(
+      JSON.stringify({ success: true, config: DEFAULT_SITE_CONFIG, warning: err.message }),
+      { status: 200, headers: jsonHeaders }
+    );
+  }
+}
+
+async function handleAdminConfig(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  };
+
+  if (!isWorkerAdmin(request, env)) {
+    return new Response(
+      JSON.stringify({ error: "Unauthorized access. Valid admin passcode or email required." }),
+      { status: 401, headers: jsonHeaders }
+    );
+  }
+
+  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
+  const supabaseKey =
+    env.SUPABASE_SERVICE_ROLE_KEY ||
+    env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
+
+  try {
+    let body: any = {};
+    if (request.method === "POST") {
+      body = await request.json().catch(() => ({}));
+    }
+
+    if (request.method === "GET" || body?.action === "get") {
+      const res = await fetch(`${supabaseUrl}/rest/v1/app_config?key=eq.site_master_config&select=value`, {
+        headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+      });
+      if (res.ok) {
+        const rows: any = await res.json();
+        if (Array.isArray(rows) && rows.length > 0 && rows[0].value) {
+          try {
+            return new Response(
+              JSON.stringify({ success: true, config: parseSiteConfig(JSON.parse(rows[0].value)) }),
+              { status: 200, headers: jsonHeaders }
+            );
+          } catch {}
+        }
+      }
+
+      const fallbackRes = await fetch(
+        `${supabaseUrl}/rest/v1/registrations?email=eq.system_config@studyfam.org&select=payment_method`,
+        {
+          headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+        }
+      );
+      if (fallbackRes.ok) {
+        const fbRows: any = await fallbackRes.json();
+        if (Array.isArray(fbRows) && fbRows.length > 0 && fbRows[0].payment_method?.startsWith("config:")) {
+          try {
+            return new Response(
+              JSON.stringify({
+                success: true,
+                config: parseSiteConfig(JSON.parse(fbRows[0].payment_method.slice(7))),
+              }),
+              { status: 200, headers: jsonHeaders }
+            );
+          } catch {}
+        }
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, config: DEFAULT_SITE_CONFIG }),
+        { status: 200, headers: jsonHeaders }
+      );
+    }
+
+    // Save updated configuration
+    const targetConfig = body.config || body;
+    const updatedConfig = parseSiteConfig(targetConfig);
+    updatedConfig.updatedAt = new Date().toISOString();
+    const serialized = JSON.stringify(updatedConfig);
+
+    try {
+      await fetch(`${supabaseUrl}/rest/v1/app_config`, {
+        method: "POST",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          "Content-Type": "application/json",
+          Prefer: "resolution=merge-duplicates",
+        },
+        body: JSON.stringify({
+          key: "site_master_config",
+          value: serialized,
+          description: "Master site dynamic configuration",
+          updated_at: new Date().toISOString(),
+        }),
+      });
+    } catch {}
+
+    try {
+      const searchRes = await fetch(`${supabaseUrl}/rest/v1/registrations?email=eq.system_config@studyfam.org`, {
+        headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+      });
+      const existing: any = await searchRes.json();
+      if (Array.isArray(existing) && existing.length > 0) {
+        await fetch(`${supabaseUrl}/rest/v1/registrations?id=eq.${existing[0].id}`, {
+          method: "PATCH",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ payment_method: "config:" + serialized }),
+        });
+      } else {
+        await fetch(`${supabaseUrl}/rest/v1/registrations`, {
+          method: "POST",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "system_config@studyfam.org",
+            full_name: "SYSTEM_CONFIG",
+            phone: "0000000000",
+            jee_status: "class-11",
+            payment_method: "config:" + serialized,
+          }),
+        });
+      }
+    } catch (e) {
+      console.warn("Worker fallback save failed:", e);
+    }
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        config: updatedConfig,
+        message: "Site configuration published successfully.",
+      }),
+      { status: 200, headers: jsonHeaders }
+    );
+  } catch (err: any) {
+    return new Response(
+      JSON.stringify({ error: err.message || "Failed to update configuration" }),
+      { status: 500, headers: jsonHeaders }
+    );
+  }
+}
+
+async function handleAdminRegistrations(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  };
+
+  if (!isWorkerAdmin(request, env)) {
+    return new Response(
+      JSON.stringify({ error: "Unauthorized access. Valid admin passcode or email required." }),
+      { status: 401, headers: jsonHeaders }
+    );
+  }
+
+  try {
+    let search = "";
+    let statusFilter = "all";
+    let trackFilter = "all";
+    let genderFilter = "all";
+    let streamFilter = "all";
+
+    if (request.method === "POST") {
+      const body: any = await request.json().catch(() => ({}));
+      search = (body.search || "").trim().toLowerCase();
+      statusFilter = body.status || "all";
+      trackFilter = body.track || "all";
+      genderFilter = body.gender || "all";
+      streamFilter = body.stream || "all";
+    } else {
+      const url = new URL(request.url);
+      search = (url.searchParams.get("search") || "").trim().toLowerCase();
+      statusFilter = url.searchParams.get("status") || "all";
+      trackFilter = url.searchParams.get("track") || "all";
+      genderFilter = url.searchParams.get("gender") || "all";
+      streamFilter = url.searchParams.get("stream") || "all";
+    }
+
+    const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
+    const supabaseKey =
+      env.SUPABASE_SERVICE_ROLE_KEY ||
+      env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+      "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
+
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/registrations?email=neq.system_config@studyfam.org&order=created_at.desc&limit=1000`,
+      {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      return new Response(
+        JSON.stringify({ error: "Failed to fetch registrations: " + errorText }),
+        { status: 500, headers: jsonHeaders }
+      );
+    }
+
+    const rawRows: any = await res.json();
+    const hydratedRows = (Array.isArray(rawRows) ? rawRows : []).map((row: any) =>
+      hydrateRecord(row)
+    );
+
+    const totalRegistrations = hydratedRows.length;
+    const confirmedCount = hydratedRows.filter(
+      (r: any) => r.status === "confirmed" || (r.amount_paid && r.amount_paid > 0)
+    ).length;
+    const waitlistCount = totalRegistrations - confirmedCount;
+    const totalRevenue = confirmedCount * 27;
+    const scholarshipPool = confirmedCount * 18;
+    const fundedStudents = Math.floor(scholarshipPool / 900);
+
+    const meritCount = hydratedRows.filter((r: any) => r.scholarship_track === "merit").length;
+    const needCount = hydratedRows.filter((r: any) => r.scholarship_track === "need_based").length;
+    const optOutCount = hydratedRows.filter((r: any) => r.scholarship_track === "opt_out").length;
+    const boysCount = hydratedRows.filter((r: any) => r.gender === "boy").length;
+    const girlsCount = hydratedRows.filter((r: any) => r.gender === "girl").length;
+
+    const filteredRows = hydratedRows.filter((r: any) => {
+      if (statusFilter === "confirmed") {
+        const isConfirmed = r.status === "confirmed" || (r.amount_paid && r.amount_paid > 0);
+        if (!isConfirmed) return false;
+      } else if (statusFilter === "waitlist") {
+        const isConfirmed = r.status === "confirmed" || (r.amount_paid && r.amount_paid > 0);
+        if (isConfirmed) return false;
+      }
+
+      if (trackFilter !== "all") {
+        if (trackFilter === "merit" && r.scholarship_track !== "merit") return false;
+        if (trackFilter === "need_based" && r.scholarship_track !== "need_based") return false;
+        if (trackFilter === "opt_out" && r.scholarship_track !== "opt_out") return false;
+      }
+
+      if (genderFilter !== "all" && r.gender !== genderFilter) {
+        return false;
+      }
+
+      if (streamFilter !== "all" && r.jee_status !== streamFilter) {
+        return false;
+      }
+
+      if (search) {
+        const searchPool = [
+          r.full_name || "",
+          r.email || "",
+          r.phone || "",
+          r.roll_no || "",
+          r.order_id || "",
+          r.referral_code || "",
+        ].join(" ").toLowerCase();
+
+        if (!searchPool.includes(search)) return false;
+      }
+
+      return true;
+    });
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        stats: {
+          totalRegistrations,
+          confirmedCount,
+          waitlistCount,
+          totalRevenue,
+          scholarshipPool,
+          fundedStudents,
+          meritCount,
+          needCount,
+          optOutCount,
+          boysCount,
+          girlsCount,
+        },
+        registrations: filteredRows,
+      }),
+      { status: 200, headers: jsonHeaders }
+    );
+  } catch (error: any) {
+    return new Response(
+      JSON.stringify({ error: error.message || "Internal server error" }),
       { status: 500, headers: jsonHeaders }
     );
   }

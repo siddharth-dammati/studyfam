@@ -98,8 +98,11 @@ function ExamMockup() {
   );
 }
 
+import { useSiteConfig } from "@/context/SiteConfigContext";
+
 export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void }) {
   const { isOpen, days, hours, minutes, seconds, isClient } = useRegistrationState();
+  const { config } = useSiteConfig();
   const { profile } = useAuth();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -150,21 +153,18 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
                 </span>
                 <span className="text-slate-300">·</span>
                 <span className="text-emerald-700 font-mono text-[11px] font-bold">
-                  27 Dec 2026 · 9:00 AM – 12:00 PM IST
+                  {config.hero.examDateLabel} · {config.hero.examTimeLabel}
                 </span>
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-[clamp(2.6rem,5.2vw,4.8rem)] font-bold tracking-[-0.04em] leading-[0.96] text-slate-900 mb-6">
-                All-India JEE Main Mock.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-indigo-500 to-emerald-600">
-                  Top Performers Win Their Exam Fees.
-                </span>
+              <h1 className="text-[clamp(2.4rem,5vw,4.5rem)] font-bold tracking-[-0.04em] leading-[1.02] text-slate-900 mb-6">
+                {config.hero.headline}
               </h1>
 
               {/* Crystal Clear Proposition */}
               <p className="text-slate-700 text-lg sm:text-xl font-medium leading-relaxed mb-6 max-w-xl">
-                Take India&apos;s unified Computer Based Test for JEE Main 2027. Benchmark your real national percentile against tens of thousands of serious aspirants—and <strong className="text-slate-950 underline decoration-emerald-500 decoration-2 underline-offset-4">win 100% of your official JEE application fees paid back</strong> as a merit scholarship if you rank among the top performers!
+                {config.hero.subheadline}
               </p>
 
               {/* 2 Clear Visual Pillar Cards: (1) 100% Fee Scholarships + (2) Accurate National Percentile */}
@@ -178,7 +178,7 @@ export function Hero({ onOpenRegistration }: { onOpenRegistration: () => void })
                   <div>
                     <h4 className="text-xs font-bold text-emerald-950 mb-1">50% Merit + 50% Need Scholarships</h4>
                     <p className="text-[11px] text-emerald-800 leading-relaxed">
-                      ₹18 of every ₹27 fee enters the pool. 50% awarded purely on mock rank (Top boys & girls) & 50% reserved for genuine need-based support.
+                      ₹{config.hero.supportAmount} of every ₹{config.hero.registrationFee} fee enters the pool. 50% awarded purely on mock rank (Top boys & girls) & 50% reserved for genuine need-based support.
                     </p>
                   </div>
                 </div>

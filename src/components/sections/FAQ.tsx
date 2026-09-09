@@ -46,8 +46,13 @@ const faqs = [
   },
 ];
 
+import { useSiteConfig } from "@/context/SiteConfigContext";
+
 export function FAQ() {
+  const { config } = useSiteConfig();
   const [open, setOpen] = useState<number | null>(0);
+
+  const activeFaqs = config?.faqs && config.faqs.length > 0 ? config.faqs : faqs;
 
   return (
     <section id="faq" className="py-28 bg-[var(--surface-1)] border-t border-[var(--border)]">
@@ -71,7 +76,7 @@ export function FAQ() {
 
           {/* Right: Accordion */}
           <div className="lg:col-span-3 space-y-2">
-            {faqs.map((faq, i) => (
+            {activeFaqs.map((faq, i) => (
               <div
                 key={i}
                 className="bg-white border border-[var(--border)] rounded-2xl overflow-hidden hover:border-[var(--border-strong)] transition-colors"
