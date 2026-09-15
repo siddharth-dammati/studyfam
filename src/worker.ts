@@ -1,5 +1,6 @@
 import { DEFAULT_SITE_CONFIG, parseSiteConfig } from "./lib/siteConfig";
 import { ALLOWED_ADMIN_EMAILS, DEFAULT_ADMIN_PASSCODE } from "./lib/adminAuth";
+import DEFAULT_ACTIVE_EXAM_PAPER from "../questions_database/active_exam_paper.json";
 
 export interface Env {
   ASSETS: {
@@ -121,7 +122,22 @@ export default {
       return handleAdminRegistrations(request, env);
     }
 
-    // 8. Default: Serve Next.js static export from ASSETS binding
+    // 8. Active Exam Paper
+    if (pathname === "/api/exam/active") {
+      return handleActiveExam(request, env);
+    }
+
+    // 9. Admin Exam Paper
+    if (pathname === "/api/admin/exam") {
+      return handleAdminExam(request, env);
+    }
+
+    // 10. Exam Submission & Evaluation
+    if (pathname === "/api/exam/submit") {
+      return handleExamSubmit(request, env);
+    }
+
+    // 11. Default: Serve Next.js static export from ASSETS binding
     return env.ASSETS.fetch(request);
   },
 };
@@ -1089,5 +1105,285 @@ async function handleAdminRegistrations(request: Request, env: Env): Promise<Res
       JSON.stringify({ error: error.message || "Internal server error" }),
       { status: 500, headers: jsonHeaders }
     );
+  }
+}
+
+async function getWorkerActivePaper(env: Env): Promise<any> {
+  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
+  const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
+
+  try {
+    const res = await fetch(`${supabaseUrl}/rest/v1/app_config?key=eq.active_exam_paper&select=value`, {
+      headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+    });
+    if (res.ok) {
+      const rows: any = await res.json();
+      if (Array.isArray(rows) && rows.length > 0 && rows[0].value) {
+        const parsed = JSON.parse(rows[0].value);
+        if (parsed && Array.isArray(parsed.subjects) && parsed.subjects.length === 3) {
+          return parsed;
+        }
+      }
+    }
+  } catch {}
+
+  return DEFAULT_ACTIVE_EXAM_PAPER;
+}
+
+async function handleActiveExam(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  };
+
+  try {
+    const paper = await getWorkerActivePaper(env);
+    const sanitizedSubjects = paper.subjects.map((subj: any) => ({
+      name: subj.name,
+      totalQuestions: subj.totalQuestions,
+      mcqCount: subj.mcqCount,
+      numericalCount: subj.numericalCount,
+      questions: subj.questions.map((q: any) => ({
+        id: q.id,
+        subject: q.subject,
+        section: q.section,
+        type: q.type,
+        questionNumber: q.questionNumber,
+        overallNumber: q.overallNumber,
+        questionText: q.questionText,
+        optionA: q.optionA,
+        optionB: q.optionB,
+        optionC: q.optionC,
+        optionD: q.optionD,
+        imagePaths: q.imagePaths,
+        chapter: q.chapter,
+        difficulty: q.difficulty,
+      })),
+    }));
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        paper: {
+          ...paper,
+          subjects: sanitizedSubjects,
+        },
+      }),
+      { status: 200, headers: jsonHeaders }
+    );
+  } catch (err: any) {
+    return new Response(
+      JSON.stringify({ success: false, error: err.message || "Failed to load active exam" }),
+      { status: 500, headers: jsonHeaders }
+    );
+  }
+}
+
+async function handleAdminExam(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  };
+
+  if (!isWorkerAdmin(request, env)) {
+    return new Response(
+      JSON.stringify({ success: false, error: "Unauthorized access" }),
+      { status: 401, headers: jsonHeaders }
+    );
+  }
+
+  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
+  const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
+
+  try {
+    const body: any = await request.json().catch(() => ({}));
+
+    if (body.action === "get") {
+      const paper = await getWorkerActivePaper(env);
+      return new Response(JSON.stringify({ success: true, paper }), { status: 200, headers: jsonHeaders });
+    }
+
+    if (body.action === "reset") {
+      await fetch(`${supabaseUrl}/rest/v1/app_config`, {
+        method: "POST",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          "Content-Type": "application/json",
+          Prefer: "resolution=merge-duplicates",
+        },
+        body: JSON.stringify({
+          key: "active_exam_paper",
+          value: JSON.stringify(DEFAULT_ACTIVE_EXAM_PAPER),
+          description: "Active 75-Question JEE Main Paper",
+          updated_at: new Date().toISOString(),
+        }),
+      });
+
+      return new Response(
+        JSON.stringify({ success: true, message: "Reset to default paper", paper: DEFAULT_ACTIVE_EXAM_PAPER }),
+        { status: 200, headers: jsonHeaders }
+      );
+    }
+
+    if (body.paper) {
+      body.paper.updatedAt = new Date().toISOString();
+      await fetch(`${supabaseUrl}/rest/v1/app_config`, {
+        method: "POST",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          "Content-Type": "application/json",
+          Prefer: "resolution=merge-duplicates",
+        },
+        body: JSON.stringify({
+          key: "active_exam_paper",
+          value: JSON.stringify(body.paper),
+          description: "Active 75-Question JEE Main Paper",
+          updated_at: new Date().toISOString(),
+        }),
+      });
+
+      return new Response(
+        JSON.stringify({ success: true, message: "Saved successfully", paper: body.paper }),
+        { status: 200, headers: jsonHeaders }
+      );
+    }
+
+    return new Response(JSON.stringify({ success: false, error: "Invalid action" }), { status: 400, headers: jsonHeaders });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500, headers: jsonHeaders });
+  }
+}
+
+async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  };
+
+  try {
+    const body: any = await request.json().catch(() => ({}));
+    const { responses, timeSpentSeconds, candidateEmail } = body;
+
+    const paper = await getWorkerActivePaper(env);
+
+    let totalQuestions = 0;
+    let attemptedCount = 0;
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let totalScore = 0;
+
+    const sectionBreakdown: any[] = [];
+    const detailedResults: any[] = [];
+
+    for (const subj of paper.subjects) {
+      let secTotal = 0;
+      let secAttempted = 0;
+      let secCorrect = 0;
+      let secIncorrect = 0;
+      let secScore = 0;
+
+      for (const q of subj.questions) {
+        totalQuestions++;
+        secTotal++;
+
+        const userAns = (responses[q.id] || "").trim();
+        const isAttempted = Boolean(userAns);
+
+        let isCorrect = false;
+        let marksAwarded = 0;
+
+        if (isAttempted) {
+          attemptedCount++;
+          secAttempted++;
+
+          if (q.type === "NUMERICAL") {
+            const numUser = parseFloat(userAns);
+            const numCorrect = parseFloat(q.correctAnswer);
+            if (!isNaN(numUser) && !isNaN(numCorrect)) {
+              isCorrect = Math.abs(numUser - numCorrect) < 0.01;
+            } else {
+              isCorrect = userAns.toLowerCase() === q.correctAnswer.trim().toLowerCase();
+            }
+          } else {
+            isCorrect = userAns.toUpperCase() === q.correctAnswer.trim().toUpperCase();
+          }
+
+          if (isCorrect) {
+            correctCount++;
+            secCorrect++;
+            marksAwarded = paper.marksPerQuestion || 4;
+            totalScore += marksAwarded;
+            secScore += marksAwarded;
+          } else {
+            incorrectCount++;
+            secIncorrect++;
+            marksAwarded = -(paper.negativeMarks || 1);
+            totalScore += marksAwarded;
+            secScore += marksAwarded;
+          }
+        }
+
+        detailedResults.push({
+          questionId: q.id,
+          questionNumber: q.questionNumber,
+          subject: q.subject,
+          section: q.section,
+          type: q.type,
+          questionText: q.questionText,
+          optionA: q.optionA || null,
+          optionB: q.optionB || null,
+          optionC: q.optionC || null,
+          optionD: q.optionD || null,
+          imagePaths: q.imagePaths || [],
+          userResponse: isAttempted ? userAns : null,
+          correctAnswer: q.correctAnswer,
+          isCorrect,
+          solution: q.solution,
+          marksAwarded,
+        });
+      }
+
+      sectionBreakdown.push({
+        sectionName: subj.name,
+        total: secTotal,
+        attempted: secAttempted,
+        correct: secCorrect,
+        incorrect: secIncorrect,
+        score: secScore,
+      });
+    }
+
+    const unattemptedCount = totalQuestions - attemptedCount;
+    const maxScore = totalQuestions * (paper.marksPerQuestion || 4);
+    const percentage = maxScore > 0 ? Math.max(0, Math.round((totalScore / maxScore) * 100 * 10) / 10) : 0;
+    const accuracy = attemptedCount > 0 ? Math.round((correctCount / attemptedCount) * 100 * 10) / 10 : 0;
+
+    const evaluation = {
+      testId: paper.id,
+      totalQuestions,
+      attemptedCount,
+      correctCount,
+      incorrectCount,
+      unattemptedCount,
+      totalScore,
+      maxScore,
+      percentage,
+      accuracy,
+      timeSpentSeconds: Number(timeSpentSeconds) || 0,
+      sectionBreakdown,
+      detailedResults,
+    };
+
+    return new Response(JSON.stringify({ success: true, result: evaluation }), {
+      status: 200,
+      headers: jsonHeaders,
+    });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ success: false, error: err.message }), {
+      status: 500,
+      headers: jsonHeaders,
+    });
   }
 }

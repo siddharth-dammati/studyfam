@@ -193,3 +193,43 @@ exception
 end;
 $$;
 
+-- 6. EXAM ATTEMPTS TABLE (Stores student mock test scores & analytics)
+create table if not exists public.exam_attempts (
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid references auth.users(id) on delete set null,
+    email text,
+    test_id text not null,
+    score numeric not null default 0,
+    max_score numeric not null default 300,
+    percentage numeric not null default 0,
+    accuracy numeric not null default 0,
+    time_spent_seconds integer not null default 0,
+    total_questions integer not null default 75,
+    attempted_count integer not null default 0,
+    correct_count integer not null default 0,
+    incorrect_count integer not null default 0,
+    section_breakdown jsonb,
+    created_at timestamptz not null default now()
+);
+
+create index if not exists idx_exam_attempts_email on public.exam_attempts(email);
+create index if not exists idx_exam_attempts_test_id on public.exam_attempts(test_id);
+create index if not exists idx_exam_attempts_created_at on public.exam_attempts(created_at);
+
+alter table public.exam_attempts enable row level security;
+
+drop policy if exists "Allow public insert exam attempts" on public.exam_attempts;
+create policy "Allow public insert exam attempts"
+on public.exam_attempts
+for insert
+to anon, authenticated
+with check (true);
+
+drop policy if exists "Allow read own exam attempts" on public.exam_attempts;
+create policy "Allow read own exam attempts"
+on public.exam_attempts
+for select
+to anon, authenticated
+using (true);
+
+

@@ -48,3 +48,8 @@ bw_logo.png
 crop_logo.png
 temp_binary_logo.png
 
+# large raw source data
+free mocks data/
+test_extracted_images/
+.wrangler/
+

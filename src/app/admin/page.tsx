@@ -43,6 +43,7 @@ import {
   ArrowRight,
   Database,
   Share2,
+  BookOpen,
   Heart,
   HeartHandshake,
   CheckSquare,
@@ -461,6 +462,15 @@ export default function AdminSuperPowerPage() {
 
           {/* Center/Right Actions */}
           <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+            {/* 75-Q Test Paper Editor */}
+            <Link
+              href="/admin/exam"
+              className="px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-300 hover:text-white text-xs font-semibold transition-all flex items-center gap-1.5"
+            >
+              <BookOpen size={13} />
+              <span>75-Q Test Paper Editor</span>
+            </Link>
+
             {/* Live site link */}
             <Link
               href="/"

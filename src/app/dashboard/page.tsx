@@ -273,6 +273,30 @@ export default function DashboardPage() {
           onUpdateRegistration={(updated) => setCandidateRecord(updated)}
         />
 
+        {/* Real TCS iON CBT Test Player Banner */}
+        <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border border-blue-700/40 rounded-3xl p-6 sm:p-7 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="space-y-2 relative z-10 max-w-xl">
+            <div className="inline-flex items-center space-x-2 bg-blue-500/20 border border-blue-400/30 px-2.5 py-0.5 rounded-full text-blue-300 text-[11px] font-bold uppercase tracking-wider">
+              <Sparkles size={13} className="text-amber-300" />
+              <span>Official NTA / TCS iON Engine Active</span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-extrabold tracking-tight">
+              Launch All-India Mock Tests &amp; Practice Arena
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Take full 75-question Major Mocks (MFT 1–10) or 400+ chapter tests in the authentic Computer-Based Test interface. Features live countdown timers, official question palettes, and instant solution reviews.
+            </p>
+          </div>
+          <Link
+            href="/exam"
+            className="shrink-0 py-3 px-6 bg-blue-500 hover:bg-blue-400 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-lg transition-all active:scale-98 flex items-center space-x-2 z-10"
+          >
+            <span>Take Mock Test</span>
+            <ExternalLink size={15} />
+          </Link>
+        </div>
+
         {/* 2-Column Dashboard Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <MockCountdownCard />
