@@ -1,6 +1,7 @@
 import { DEFAULT_SITE_CONFIG, parseSiteConfig } from "./lib/siteConfig";
 import { ALLOWED_ADMIN_EMAILS, DEFAULT_ADMIN_PASSCODE } from "./lib/adminAuth";
 import DEFAULT_ACTIVE_EXAM_PAPER from "../questions_database/active_exam_paper.json";
+import CURATED_QUESTION_BANK from "../questions_database/curated_question_bank.json";
 
 export interface Env {
   ASSETS: {
@@ -132,12 +133,17 @@ export default {
       return handleAdminExam(request, env);
     }
 
-    // 10. Exam Submission & Evaluation
+    // 10. Admin Exam Search Question Bank
+    if (pathname === "/api/admin/exam/search" && request.method === "POST") {
+      return handleAdminExamSearch(request, env);
+    }
+
+    // 11. Exam Submission & Evaluation
     if (pathname === "/api/exam/submit") {
       return handleExamSubmit(request, env);
     }
 
-    // 11. Default: Serve Next.js static export from ASSETS binding
+    // 12. Default: Serve Next.js static export from ASSETS binding
     return env.ASSETS.fetch(request);
   },
 };
@@ -1253,6 +1259,66 @@ async function handleAdminExam(request: Request, env: Env): Promise<Response> {
     return new Response(JSON.stringify({ success: false, error: "Invalid action" }), { status: 400, headers: jsonHeaders });
   } catch (err: any) {
     return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500, headers: jsonHeaders });
+  }
+}
+
+async function handleAdminExamSearch(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  };
+
+  const passcodeHeader = request.headers.get("x-admin-passcode");
+  const emailHeader = (request.headers.get("x-admin-email") || "").toLowerCase().trim();
+  const validPasscode = env.ADMIN_PASSCODE || DEFAULT_ADMIN_PASSCODE;
+  const isAuth =
+    (passcodeHeader && passcodeHeader.trim() === validPasscode) ||
+    (emailHeader && ALLOWED_ADMIN_EMAILS.includes(emailHeader));
+
+  if (!isAuth) {
+    return new Response(
+      JSON.stringify({ success: false, error: "Unauthorized access" }),
+      { status: 401, headers: jsonHeaders }
+    );
+  }
+
+  try {
+    const body: any = await request.json().catch(() => ({}));
+    const subject = (body.subject || "").trim();
+    const chapter = (body.chapter || "").trim();
+    const query = (body.q || "").trim();
+    const limit = Math.min(50, Math.max(5, Number(body.limit) || 20));
+
+    // Tokenize search words
+    const rawTokens = (query || chapter)
+      .toLowerCase()
+      .split(/[\s,()&_\-\/]+/)
+      .filter((w: string) => w.length > 2 && !["and", "the", "for", "with", "from", "into", "that", "this"].includes(w));
+
+    let filtered = (CURATED_QUESTION_BANK as any[]).filter((q) => {
+      if (subject && q.subject.toLowerCase() !== subject.toLowerCase()) return false;
+      if (rawTokens.length === 0) return true;
+      const haystack = `${q.chapter} ${q.questionText}`.toLowerCase();
+      return rawTokens.some((tok: string) => haystack.includes(tok));
+    });
+
+    // If query was specific and gave 0 matches, fallback to subject questions so admin is never left with an empty list
+    if (filtered.length === 0 && subject) {
+      filtered = (CURATED_QUESTION_BANK as any[]).filter(
+        (q) => q.subject.toLowerCase() === subject.toLowerCase()
+      );
+    }
+
+    const results = filtered.slice(0, limit);
+    return new Response(
+      JSON.stringify({ success: true, count: results.length, questions: results }),
+      { status: 200, headers: jsonHeaders }
+    );
+  } catch (err: any) {
+    return new Response(
+      JSON.stringify({ success: false, error: err.message }),
+      { status: 500, headers: jsonHeaders }
+    );
   }
 }
 

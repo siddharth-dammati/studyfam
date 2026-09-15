@@ -21,6 +21,51 @@ import {
 } from "lucide-react";
 import { ActiveExamPaper, ActiveExamQuestion } from "@/lib/activeExamService";
 
+const POPULAR_CHAPTERS: Record<string, string[]> = {
+  Physics: [
+    "Units and Dimensions",
+    "Laws of Motion",
+    "Work Power Energy",
+    "Gravitation",
+    "Thermodynamics (Physics)",
+    "Current Electricity",
+    "Magnetic Effects of Current",
+    "Ray Optics",
+    "Wave Optics",
+    "Oscillations",
+    "Semiconductors",
+  ],
+  Chemistry: [
+    "Structure of Atom",
+    "Chemical Bonding and Molecular Structure",
+    "Thermodynamics (Chemistry)",
+    "Chemical Equilibrium",
+    "Solutions",
+    "Electrochemistry",
+    "Chemical Kinetics",
+    "Hydrocarbons",
+    "Haloalkanes and Haloarenes",
+    "Amines",
+    "Biomolecules",
+  ],
+  Mathematics: [
+    "Sets and Relations",
+    "Functions",
+    "Quadratic Equation",
+    "Complex Number",
+    "Sequences and Series",
+    "Limits",
+    "Continuity and Differentiability",
+    "Application of Derivatives",
+    "Indefinite Integration",
+    "Differential Equations",
+    "Vector Algebra",
+    "Three Dimensional Geometry",
+    "Probability",
+    "Matrices",
+  ],
+};
+
 export default function AdminExamManagerPage() {
   const [passcode, setPasscode] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -166,15 +211,18 @@ export default function AdminExamManagerPage() {
         body: JSON.stringify({
           subject: subj,
           q: queryStr,
-          limit: 15,
+          limit: 25,
         }),
       });
       const data = await res.json();
-      if (data.success) {
-        setDbSearchResults(data.questions || []);
+      if (data.success && Array.isArray(data.questions)) {
+        setDbSearchResults(data.questions);
+      } else {
+        setDbSearchResults([]);
       }
     } catch (e) {
-      console.error(e);
+      console.error("Search DB error:", e);
+      setDbSearchResults([]);
     } finally {
       setIsSearchingDb(false);
     }
@@ -449,8 +497,9 @@ export default function AdminExamManagerPage() {
                     <button
                       onClick={() => {
                         setSelectorTargetQ(q);
+                        const initialQuery = (q.chapter || "").split(/[\s,()&_\-\/]+/)[0] || "";
                         setDbSearchQuery(q.chapter || "");
-                        searchDb(q.subject, q.chapter || "");
+                        searchDb(q.subject, initialQuery);
                       }}
                       className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-semibold flex items-center space-x-1 transition-colors cursor-pointer border border-slate-700"
                       title="Pick a replacement question from the 9,395 questions database"
@@ -732,6 +781,36 @@ export default function AdminExamManagerPage() {
               </button>
             </div>
 
+            {/* Quick Chapter Filter Chips */}
+            <div className="px-4 py-2.5 bg-slate-950/60 border-b border-slate-800 flex items-center gap-1.5 overflow-x-auto text-[11px]">
+              <span className="text-slate-500 font-bold uppercase text-[9px] shrink-0 mr-1">Chapters:</span>
+              {(POPULAR_CHAPTERS[selectorTargetQ.subject] || []).map((chap) => (
+                <button
+                  key={chap}
+                  onClick={() => {
+                    setDbSearchQuery(chap);
+                    searchDb(selectorTargetQ.subject, chap);
+                  }}
+                  className={`px-2.5 py-1 rounded-full border shrink-0 transition-colors cursor-pointer text-[11px] ${
+                    dbSearchQuery === chap
+                      ? "bg-blue-600 text-white border-blue-500 font-bold shadow-xs"
+                      : "bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-500 hover:text-white"
+                  }`}
+                >
+                  {chap}
+                </button>
+              ))}
+              <button
+                onClick={() => {
+                  setDbSearchQuery("");
+                  searchDb(selectorTargetQ.subject, "");
+                }}
+                className="px-2.5 py-1 rounded-full border border-purple-500/40 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 shrink-0 font-bold cursor-pointer transition-colors text-[11px]"
+              >
+                All {selectorTargetQ.subject}
+              </button>
+            </div>
+
             {/* Results List */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3 text-xs">
               {isSearchingDb && (
@@ -739,8 +818,19 @@ export default function AdminExamManagerPage() {
               )}
 
               {!isSearchingDb && dbSearchResults.length === 0 && (
-                <div className="text-center py-12 text-slate-500">
-                  No questions found. Try searching for a different chapter name or keyword.
+                <div className="text-center py-12 space-y-3">
+                  <p className="text-slate-400 text-xs">
+                    No questions matched &quot;{dbSearchQuery}&quot;.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setDbSearchQuery("");
+                      searchDb(selectorTargetQ.subject, "");
+                    }}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs cursor-pointer shadow-md transition-colors"
+                  >
+                    Browse All Available {selectorTargetQ.subject} Questions
+                  </button>
                 </div>
               )}
 
