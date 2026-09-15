@@ -44,6 +44,16 @@ const DB_PATH = path.join(process.cwd(), "questions_database", "jee_questions.db
 
 // Seed default 75 questions (25 Physics, 25 Chemistry, 25 Mathematics)
 export function generateDefaultMockPaper(): ActiveExamPaper {
+  if (fs.existsSync(CONFIG_FILE_PATH)) {
+    try {
+      const raw = fs.readFileSync(CONFIG_FILE_PATH, "utf-8");
+      const parsed = JSON.parse(raw);
+      if (parsed && Array.isArray(parsed.subjects) && parsed.subjects.length === 3) {
+        return parsed;
+      }
+    } catch {}
+  }
+
   const subjects: Array<"Physics" | "Chemistry" | "Mathematics"> = [
     "Physics",
     "Chemistry",
