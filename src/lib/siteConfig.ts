@@ -143,10 +143,10 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   },
   announcement: {
     enabled: true,
-    badge: "REGISTRATION UPDATE",
-    text: "Registrations for All-India JEE Main 2027 Mock Test open on October 20, 2026. Lock your waitlist spot!",
-    linkText: "Join Waitlist →",
-    linkUrl: "#waitlist",
+    badge: "SCHOLARSHIP MOCK",
+    text: "All-India JEE Main 2027 Mock Test opens on October 20, 2026. 50% Merit · 50% Need-Based fee sponsorships!",
+    linkText: "Explore National Mock →",
+    linkUrl: "/all-india-mock",
   },
 };
 

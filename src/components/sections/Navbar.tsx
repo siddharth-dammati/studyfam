@@ -43,6 +43,7 @@ export function Navbar({ onOpenRegistration }: { onOpenRegistration: () => void 
   }, []);
 
   const navLinks = [
+    { label: "10 Free Mocks", href: "/#free-mocks" },
     { label: "Why This Mock", href: "#why-mock" },
     { label: "Exam Pattern", href: "#exam-pattern" },
     { label: "Impact", href: "#impact" },
