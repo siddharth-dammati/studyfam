@@ -18,12 +18,16 @@ import { verifyCashfreeOrder } from "@/services/paymentService";
 import { hydrateCandidateRecord } from "@/lib/candidateUtils";
 
 import { ScholarshipDossierModal } from "@/components/dashboard/ScholarshipDossierModal";
+import { MockPerformanceCard, MockAttemptRecord } from "@/components/dashboard/MockPerformanceCard";
+import { AllIndiaMockUpdatesCard } from "@/components/dashboard/AllIndiaMockUpdatesCard";
 
 export default function DashboardPage() {
   const { profile, loading: authLoading } = useAuth();
   const { isOpen } = useRegistrationState();
   const [candidateRecord, setCandidateRecord] = useState<CandidateRecord | null>(null);
   const [loadingData, setLoadingData] = useState(true);
+  const [attempts, setAttempts] = useState<MockAttemptRecord[]>([]);
+  const [loadingAttempts, setLoadingAttempts] = useState(true);
   const [isRegModalOpen, setIsRegModalOpen] = useState(false);
   const [isDossierModalOpen, setIsDossierModalOpen] = useState(false);
   const [dossierPrompted, setDossierPrompted] = useState(false);
@@ -89,8 +93,80 @@ export default function DashboardPage() {
     }
   };
 
+  const fetchAttempts = async () => {
+    try {
+      setLoadingAttempts(true);
+      let localAttempts: MockAttemptRecord[] = [];
+      try {
+        const cachedRaw = localStorage.getItem("sf_recent_attempts");
+        if (cachedRaw) {
+          const parsed = JSON.parse(cachedRaw);
+          if (Array.isArray(parsed)) {
+            localAttempts = parsed;
+          }
+        }
+      } catch {}
+
+      let remoteAttempts: MockAttemptRecord[] = [];
+      const currentEmail = profile?.email?.toLowerCase().trim();
+      if (currentEmail) {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from("exam_attempts")
+          .select("*")
+          .eq("email", currentEmail)
+          .order("created_at", { ascending: false });
+
+        if (!error && data && data.length > 0) {
+          remoteAttempts = data.map((d: any) => ({
+            id: String(d.id || `${d.test_id}_${d.created_at}`),
+            testId: d.test_id || "MFT-1.pdf",
+            testTitle: d.test_id?.startsWith("MFT-")
+              ? `Major Full Test ${d.test_id.match(/MFT-(\d+)/)?.[1] || ""}`
+              : d.test_id?.replace(/_/g, " ") || "JEE Main Mock Test",
+            score: Number(d.score ?? 0),
+            maxScore: Number(d.max_score || 300),
+            percentage: Number(d.percentage || 0),
+            accuracy: Number(d.accuracy || 0),
+            totalQuestions: Number(d.total_questions || 75),
+            attemptedCount: Number(d.attempted_count || 0),
+            correctCount: Number(d.correct_count || 0),
+            incorrectCount: Number(d.incorrect_count || 0),
+            timeSpentSeconds: Number(d.time_spent_seconds || 0),
+            createdAt: d.created_at || new Date().toISOString(),
+          }));
+        }
+      }
+
+      // Merge remote and local attempts
+      const combined = [...remoteAttempts];
+      for (const loc of localAttempts) {
+        const isDuplicate = combined.some(
+          (rem) =>
+            rem.testId === loc.testId &&
+            Math.abs(new Date(rem.createdAt).getTime() - new Date(loc.createdAt).getTime()) < 180000
+        );
+        if (!isDuplicate) {
+          combined.push(loc);
+        }
+      }
+
+      combined.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      setAttempts(combined);
+    } catch (err) {
+      console.warn("Failed to load student mock attempts:", err);
+    } finally {
+      setLoadingAttempts(false);
+    }
+  };
+
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    fetchAttempts();
 
     const currentEmail = profile?.email?.toLowerCase().trim();
 
@@ -273,29 +349,11 @@ export default function DashboardPage() {
           onUpdateRegistration={(updated) => setCandidateRecord(updated)}
         />
 
-        {/* Real TCS iON CBT Test Player Banner */}
-        <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border border-blue-700/40 rounded-3xl p-6 sm:p-7 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
-          <div className="space-y-2 relative z-10 max-w-xl">
-            <div className="inline-flex items-center space-x-2 bg-blue-500/20 border border-blue-400/30 px-2.5 py-0.5 rounded-full text-blue-300 text-[11px] font-bold uppercase tracking-wider">
-              <Sparkles size={13} className="text-amber-300" />
-              <span>Official NTA / TCS iON Engine Active</span>
-            </div>
-            <h3 className="text-lg sm:text-xl font-extrabold tracking-tight">
-              Launch All-India Mock Tests &amp; Practice Arena
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Take full 75-question Major Mocks (MFT 1–10) or 400+ chapter tests in the authentic Computer-Based Test interface. Features live countdown timers, official question palettes, and instant solution reviews.
-            </p>
-          </div>
-          <Link
-            href="/exam"
-            className="shrink-0 py-3 px-6 bg-blue-500 hover:bg-blue-400 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-lg transition-all active:scale-98 flex items-center space-x-2 z-10"
-          >
-            <span>Take Mock Test</span>
-            <ExternalLink size={15} />
-          </Link>
-        </div>
+        {/* All-India Mock Test Updates & Official Examination Briefing */}
+        <AllIndiaMockUpdatesCard />
+
+        {/* Student Mock Performance & Diagnostics */}
+        <MockPerformanceCard attempts={attempts} loading={loadingAttempts} />
 
         {/* 2-Column Dashboard Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

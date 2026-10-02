@@ -100,16 +100,35 @@ function ExamPlayerContent() {
         if (testData) {
           setTest(testData);
 
-          // If there's an ongoing test session in localStorage, jump directly to in_exam
-          try {
-            const savedState = localStorage.getItem(`sf_exam_state_${testData.id}`);
-            if (savedState) {
-              const parsed = JSON.parse(savedState);
-              if (parsed && typeof parsed.secondsLeft === "number" && parsed.secondsLeft > 0) {
-                setPhase("in_exam");
+          // If review mode requested and cached result exists, show results directly
+          const isReview = searchParams.get("review") === "1" || searchParams.get("view") === "result";
+          let reviewLoaded = false;
+          if (isReview) {
+            try {
+              const cachedResult = localStorage.getItem(`sf_exam_result_${testData.id}`);
+              if (cachedResult) {
+                const parsedResult = JSON.parse(cachedResult);
+                if (parsedResult) {
+                  setEvaluationResult(parsedResult);
+                  setPhase("result");
+                  reviewLoaded = true;
+                }
               }
-            }
-          } catch {}
+            } catch {}
+          }
+
+          // If not in review mode and there's an ongoing test session in localStorage, jump directly to in_exam
+          if (!reviewLoaded) {
+            try {
+              const savedState = localStorage.getItem(`sf_exam_state_${testData.id}`);
+              if (savedState) {
+                const parsed = JSON.parse(savedState);
+                if (parsed && typeof parsed.secondsLeft === "number" && parsed.secondsLeft > 0) {
+                  setPhase("in_exam");
+                }
+              }
+            } catch {}
+          }
         } else {
           setError("Failed to load examination.");
         }
@@ -123,7 +142,7 @@ function ExamPlayerContent() {
     if (id) {
       loadTest();
     }
-  }, [id]);
+  }, [id, searchParams]);
 
   const handleSubmitExam = async (
     responses: Record<string, string>,
@@ -153,6 +172,36 @@ function ExamPlayerContent() {
         }
         setEvaluationResult(json.result);
         setPhase("result");
+
+        // Persist attempt & evaluation result for dashboard performance analytics & review
+        try {
+          localStorage.setItem(`sf_exam_result_${test.id}`, JSON.stringify(json.result));
+
+          const existingRaw = localStorage.getItem("sf_recent_attempts");
+          const existingList = existingRaw ? JSON.parse(existingRaw) : [];
+          const newAttemptRecord = {
+            id: `${test.id}_${Date.now()}`,
+            testId: test.id,
+            testTitle: test.title,
+            score: json.result.totalScore ?? json.result.score ?? 0,
+            maxScore: json.result.maxScore || 300,
+            percentage: json.result.percentage || 0,
+            accuracy: json.result.accuracy || 0,
+            totalQuestions: json.result.totalQuestions || 75,
+            attemptedCount: json.result.attemptedCount || 0,
+            correctCount: json.result.correctCount || 0,
+            incorrectCount: json.result.incorrectCount || 0,
+            timeSpentSeconds: timeSpentSeconds,
+            createdAt: new Date().toISOString(),
+          };
+          const updated = [
+            newAttemptRecord,
+            ...existingList.filter((a: any) => a.id !== newAttemptRecord.id),
+          ].slice(0, 30);
+          localStorage.setItem("sf_recent_attempts", JSON.stringify(updated));
+        } catch (storageErr) {
+          console.warn("Could not cache exam attempt locally:", storageErr);
+        }
       } else {
         alert(json.error || "Submission failed. Please try again.");
       }
