@@ -23,10 +23,24 @@ export function TcsIonInstructions({
   const [showWarning, setShowWarning] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
-  const handleProceedClick = () => {
+  const handleProceedClick = async () => {
     if (!agreed) {
       setShowWarning(true);
     } else {
+      try {
+        const elem = document.documentElement as any;
+        if (!document.fullscreenElement && !(document as any).webkitFullscreenElement) {
+          if (elem.requestFullscreen) {
+            await elem.requestFullscreen();
+          } else if (elem.webkitRequestFullscreen) {
+            await elem.webkitRequestFullscreen();
+          } else if (elem.msRequestFullscreen) {
+            await elem.msRequestFullscreen();
+          }
+        }
+      } catch (err) {
+        console.warn("Auto full-screen request error:", err);
+      }
       onProceed();
     }
   };
@@ -99,6 +113,9 @@ export function TcsIonInstructions({
               </li>
               <li>
                 <strong className="text-rose-700">Tab Switching Limit (Maximum 3 Warnings):</strong> Navigating away from the examination window or switching browser tabs is strictly prohibited. You will receive a warning for the first 3 infractions. If you switch tabs or leave the exam portal <strong>more than 3 times (on the 4th violation)</strong>, your examination will be <strong>AUTOMATICALLY SUBMITTED IMMEDIATELY</strong> with no option to re-enter.
+              </li>
+              <li>
+                <strong>Auto Full-Screen Mode Enforced:</strong> Clicking &quot;PROCEED&quot; automatically launches the examination in full-screen mode. Exiting full-screen mode is tracked as an examination violation and will prompt you to return immediately.
               </li>
             </ul>
           </div>

@@ -18,6 +18,8 @@ import {
   AlertTriangle,
   AlertOctagon,
   Lock,
+  Maximize,
+  Minimize,
 } from "lucide-react";
 import { TestDetail, QuestionRecord } from "@/lib/examDb";
 import { formatQuestionText, formatOptionText } from "@/lib/questionFormatter";
@@ -89,6 +91,8 @@ export function TcsIonPlayer({
   const [showSecurityWarningModal, setShowSecurityWarningModal] = useState<boolean>(false);
   const [securityToast, setSecurityToast] = useState<string | null>(null);
   const [isSecuritySubmitting, setIsSecuritySubmitting] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [showFullscreenRequiredModal, setShowFullscreenRequiredModal] = useState<boolean>(false);
 
   // Storage keys for state persistence & violation tracking
   const storageKey = `sf_exam_state_${test.id}`;
@@ -106,11 +110,84 @@ export function TcsIonPlayer({
     }, 3500);
   };
 
+  const enterFullScreen = async () => {
+    try {
+      const elem = document.documentElement as any;
+      if (elem.requestFullscreen) {
+        await elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        await elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        await elem.msRequestFullscreen();
+      }
+      setShowFullscreenRequiredModal(false);
+    } catch (err) {
+      console.warn("Fullscreen request error:", err);
+    }
+  };
+
+  const toggleFullScreen = async () => {
+    try {
+      const isFs = Boolean(
+        document.fullscreenElement || (document as any).webkitFullscreenElement
+      );
+      if (isFs) {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if ((document as any).webkitExitFullscreen) {
+          await (document as any).webkitExitFullscreen();
+        }
+      } else {
+        await enterFullScreen();
+      }
+    } catch (err) {
+      console.warn("Toggle fullscreen error:", err);
+    }
+  };
+
+  // Auto full-screen check and event monitoring
+  useEffect(() => {
+    const checkFs = () =>
+      Boolean(document.fullscreenElement || (document as any).webkitFullscreenElement);
+
+    const initialFs = checkFs();
+    setIsFullscreen(initialFs);
+
+    if (!initialFs && !isExamEndedRef.current && !submitting) {
+      // Proactively attempt full-screen; if blocked without user gesture, show prompt modal
+      enterFullScreen().catch(() => {
+        setShowFullscreenRequiredModal(true);
+      });
+    }
+
+    const handleFsChange = () => {
+      const currentFs = checkFs();
+      setIsFullscreen(currentFs);
+
+      if (!currentFs && !isExamEndedRef.current && !submitting && !isSecuritySubmitting) {
+        setShowFullscreenRequiredModal(true);
+        triggerSecurityToast("Proctoring Alert: Full-screen mode was exited.");
+        recordTabSwitchViolation();
+      } else if (currentFs) {
+        setShowFullscreenRequiredModal(false);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFsChange);
+    document.addEventListener("webkitfullscreenchange", handleFsChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFsChange);
+      document.removeEventListener("webkitfullscreenchange", handleFsChange);
+    };
+  }, [submitting, isSecuritySubmitting]);
+
   const triggerSecurityAutoSubmit = async (finalCount?: number) => {
     if (isExamEndedRef.current) return;
     isExamEndedRef.current = true;
     setIsSecuritySubmitting(true);
     setShowSecurityWarningModal(false);
+    setShowFullscreenRequiredModal(false);
     setIsSubmitModalOpen(false);
 
     const timeSpent = totalDurationSeconds - secondsLeft;
@@ -640,6 +717,30 @@ export function TcsIonPlayer({
               </span>
             </div>
           </div>
+
+          {/* Full-Screen Toggle Button */}
+          <button
+            type="button"
+            onClick={toggleFullScreen}
+            className={`hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-md border text-xs font-semibold transition-all cursor-pointer shadow-2xs ${
+              isFullscreen
+                ? "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300"
+                : "bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-300"
+            }`}
+            title={isFullscreen ? "Exit Full-Screen" : "Enter Full-Screen"}
+          >
+            {isFullscreen ? (
+              <>
+                <Minimize className="w-3.5 h-3.5 text-gray-600" />
+                <span className="hidden md:inline">Full-Screen</span>
+              </>
+            ) : (
+              <>
+                <Maximize className="w-3.5 h-3.5 text-blue-600" />
+                <span className="font-bold text-blue-700">Full-Screen</span>
+              </>
+            )}
+          </button>
 
           {/* Candidate Info Box */}
           <div className="hidden md:flex items-center space-x-2 text-right">
@@ -1252,6 +1353,37 @@ export function TcsIonPlayer({
               <ShieldAlert className="w-3.5 h-3.5" />
             </div>
             <span>{securityToast}</span>
+          </div>
+        </div>
+      )}
+
+      {/* 10. FULL-SCREEN REQUIRED MODAL */}
+      {showFullscreenRequiredModal && !isSecuritySubmitting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 sm:p-8 border-2 border-blue-600 flex flex-col items-center text-center animate-in zoom-in-95 duration-150">
+            <div className="w-16 h-16 rounded-full bg-blue-100 border-2 border-blue-400 flex items-center justify-center text-blue-700 mb-4 animate-pulse">
+              <Maximize className="w-8 h-8" />
+            </div>
+
+            <div className="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider mb-2 bg-blue-100 text-blue-900 border border-blue-300">
+              Exam Requirement
+            </div>
+
+            <h3 className="text-xl font-extrabold text-gray-900 mb-2">
+              Full-Screen Mode Required
+            </h3>
+
+            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6">
+              To preserve test integrity and emulate the official NTA / TCS iON CBT exam environment, this test must be taken in Full-Screen mode. Exiting full-screen mode is recorded as a security violation.
+            </p>
+
+            <button
+              onClick={enterFullScreen}
+              className="w-full py-3 bg-[#1e3a8a] hover:bg-[#172554] text-white font-bold text-sm rounded-lg shadow-md transition-all cursor-pointer active:scale-98 flex items-center justify-center space-x-2"
+            >
+              <Maximize className="w-4 h-4" />
+              <span>Enter Full Screen Mode</span>
+            </button>
           </div>
         </div>
       )}
