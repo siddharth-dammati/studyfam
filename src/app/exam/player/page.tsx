@@ -173,7 +173,8 @@ function ExamPlayerContent() {
   const handleSubmitExam = async (
     responses: Record<string, string>,
     timeSpentSeconds: number,
-    submissionReason?: string
+    submissionReason?: string,
+    questionTimes?: Record<string, number>
   ) => {
     if (!test) return;
 
@@ -184,14 +185,18 @@ function ExamPlayerContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           testId: test.id,
+          testTitle: test.title,
           responses,
           timeSpentSeconds,
           candidateEmail: profile?.email || null,
           submissionReason: submissionReason || null,
+          questionTimes: questionTimes || {},
+          tabViolations: 0, // will be overridden by security auto-submit if triggered
         }),
       });
 
       const json = await res.json();
+
       if (json.success && json.result) {
         if (submissionReason) {
           json.result.submissionReason = submissionReason;
@@ -202,6 +207,9 @@ function ExamPlayerContent() {
         // Persist attempt & evaluation result for dashboard performance analytics & review
         try {
           localStorage.setItem(`sf_exam_result_${test.id}`, JSON.stringify(json.result));
+          if (questionTimes) {
+            localStorage.setItem(`sf_exam_qtimes_${test.id}`, JSON.stringify(questionTimes));
+          }
 
           const existingRaw = localStorage.getItem("sf_recent_attempts");
           const existingList = existingRaw ? JSON.parse(existingRaw) : [];
@@ -218,6 +226,7 @@ function ExamPlayerContent() {
             correctCount: json.result.correctCount || 0,
             incorrectCount: json.result.incorrectCount || 0,
             timeSpentSeconds: timeSpentSeconds,
+            submissionReason: submissionReason || null,
             createdAt: new Date().toISOString(),
           };
           const updated = [
@@ -230,10 +239,18 @@ function ExamPlayerContent() {
           if (profile?.email) {
             try {
               const supabase = createClient();
+              // Build question_times map from the questionTimes argument
+              const questionTimesMap: Record<string, number> = {};
+              if (questionTimes) {
+                for (const [qId, secs] of Object.entries(questionTimes)) {
+                  questionTimesMap[qId] = secs;
+                }
+              }
               await supabase.from("exam_attempts").insert({
                 user_id: profile.id || null,
                 email: profile.email.toLowerCase().trim(),
                 test_id: test.id,
+                test_title: test.title,
                 score: json.result.totalScore ?? json.result.score ?? 0,
                 max_score: json.result.maxScore || 300,
                 percentage: json.result.percentage || 0,
@@ -244,6 +261,10 @@ function ExamPlayerContent() {
                 correct_count: json.result.correctCount || 0,
                 incorrect_count: json.result.incorrectCount || 0,
                 section_breakdown: json.result.sectionBreakdown || [],
+                detailed_results: json.result.detailedResults || [],
+                question_times: questionTimesMap,
+                tab_violations: json.result.tabViolations || 0,
+                submission_reason: submissionReason || null,
               });
             } catch (syncErr) {
               console.warn("Client Supabase attempt sync skipped:", syncErr);

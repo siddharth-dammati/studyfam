@@ -1330,7 +1330,16 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
 
   try {
     const body: any = await request.json().catch(() => ({}));
-    const { responses, timeSpentSeconds, candidateEmail } = body;
+    const {
+      responses,
+      timeSpentSeconds,
+      candidateEmail,
+      questionTimes,    // Record<questionId, seconds> — per-question time
+      tabViolations,    // number
+      submissionReason, // string
+      testTitle,        // string
+      startedAt,        // ISO timestamp
+    } = body;
 
     const paper = await getWorkerActivePaper(env);
 
@@ -1356,6 +1365,7 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
 
         const userAns = (responses[q.id] || "").trim();
         const isAttempted = Boolean(userAns);
+        const timeOnQuestion = (questionTimes && questionTimes[q.id]) ? Number(questionTimes[q.id]) : 0;
 
         let isCorrect = false;
         let marksAwarded = 0;
@@ -1395,8 +1405,10 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
           questionId: q.id,
           questionNumber: q.questionNumber,
           subject: q.subject,
+          chapter: q.chapter || "General",
           section: q.section,
           type: q.type,
+          difficulty: q.difficulty || "Medium",
           questionText: q.questionText,
           optionA: q.optionA || null,
           optionB: q.optionB || null,
@@ -1408,6 +1420,7 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
           isCorrect,
           solution: q.solution,
           marksAwarded,
+          timeSpentSeconds: timeOnQuestion,
         });
       }
 
@@ -1428,6 +1441,7 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
 
     const evaluation = {
       testId: paper.id,
+      testTitle: testTitle || paper.title || paper.id,
       totalQuestions,
       attemptedCount,
       correctCount,
@@ -1440,7 +1454,58 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
       timeSpentSeconds: Number(timeSpentSeconds) || 0,
       sectionBreakdown,
       detailedResults,
+      submissionReason: submissionReason || null,
+      tabViolations: Number(tabViolations) || 0,
     };
+
+    // ── Supabase Persistence (non-fatal) ─────────────────────────────────────
+    const email = (candidateEmail || "").trim().toLowerCase();
+    if (email) {
+      const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
+      const supabaseKey = env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
+
+      // Build per-question time map: { questionId -> seconds }
+      const questionTimesMap: Record<string, number> = {};
+      for (const dr of detailedResults) {
+        questionTimesMap[dr.questionId] = dr.timeSpentSeconds;
+      }
+
+      const attemptPayload = {
+        email,
+        test_id: evaluation.testId,
+        test_title: evaluation.testTitle,
+        score: evaluation.totalScore,
+        max_score: evaluation.maxScore,
+        percentage: evaluation.percentage,
+        accuracy: evaluation.accuracy,
+        time_spent_seconds: evaluation.timeSpentSeconds,
+        total_questions: evaluation.totalQuestions,
+        attempted_count: evaluation.attemptedCount,
+        correct_count: evaluation.correctCount,
+        incorrect_count: evaluation.incorrectCount,
+        section_breakdown: sectionBreakdown,
+        detailed_results: detailedResults,
+        question_times: questionTimesMap,
+        tab_violations: Number(tabViolations) || 0,
+        submission_reason: submissionReason || null,
+        started_at: startedAt || null,
+      };
+
+      try {
+        await fetch(`${supabaseUrl}/rest/v1/exam_attempts`, {
+          method: "POST",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            "Content-Type": "application/json",
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify(attemptPayload),
+        });
+      } catch (syncErr) {
+        console.warn("Supabase exam_attempts sync failed:", syncErr);
+      }
+    }
 
     return new Response(JSON.stringify({ success: true, result: evaluation }), {
       status: 200,

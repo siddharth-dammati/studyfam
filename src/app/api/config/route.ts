@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { DEFAULT_SITE_CONFIG, parseSiteConfig } from "@/lib/siteConfig";
 

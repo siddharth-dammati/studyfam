@@ -41,7 +41,8 @@ interface TcsIonPlayerProps {
   onSubmitExam: (
     responses: Record<string, string>,
     timeSpentSeconds: number,
-    submissionReason?: string
+    submissionReason?: string,
+    questionTimes?: Record<string, number>
   ) => Promise<void>;
   onBackToInstructions?: () => void;
   submitting?: boolean;
@@ -63,6 +64,11 @@ export function TcsIonPlayer({
   // Response & Status maps
   const [responses, setResponses] = useState<Record<string, string>>({});
   const [statuses, setStatuses] = useState<Record<string, QuestionStatus>>({});
+
+  // Per-question time tracking: questionId -> total seconds spent
+  const [questionTimes, setQuestionTimes] = useState<Record<string, number>>({});
+  const questionStartTimeRef = useRef<number>(Date.now()); // when user arrived at current question
+  const examStartedAtRef = useRef<string>(new Date().toISOString());
 
   // Palette collapse state
   const [isPaletteOpen, setIsPaletteOpen] = useState(true);
@@ -191,9 +197,17 @@ export function TcsIonPlayer({
     setIsSubmitModalOpen(false);
 
     const timeSpent = totalDurationSeconds - secondsLeft;
+
+    // Flush last question's time
+    const finalQuestionTimes = { ...questionTimes };
+    if (currentQuestion) {
+      const elapsed = Math.round((Date.now() - questionStartTimeRef.current) / 1000);
+      finalQuestionTimes[currentQuestion.id] = (finalQuestionTimes[currentQuestion.id] || 0) + elapsed;
+    }
+
     try {
       localStorage.removeItem(storageKey);
-      await onSubmitExam(responses, timeSpent, "EXCEEDED_TAB_SWITCH_LIMIT");
+      await onSubmitExam(responses, timeSpent, "EXCEEDED_TAB_SWITCH_LIMIT", finalQuestionTimes);
     } catch (err) {
       console.error("Security auto-submit error:", err);
     }
@@ -488,8 +502,19 @@ export function TcsIonPlayer({
     const targetQ = targetSec.questions[targetQIdx];
     if (!targetQ) return;
 
-    // Mark current question as NOT_ANSWERED if it was NOT_VISITED or unassigned
+    // Flush time spent on current question before leaving
     const curQ = currentQuestion;
+    if (curQ) {
+      const elapsed = Math.round((Date.now() - questionStartTimeRef.current) / 1000);
+      setQuestionTimes((prev) => ({
+        ...prev,
+        [curQ.id]: (prev[curQ.id] || 0) + elapsed,
+      }));
+    }
+    // Reset start time for new question
+    questionStartTimeRef.current = Date.now();
+
+    // Mark current question as NOT_ANSWERED if it was NOT_VISITED or unassigned
     if (curQ && !responses[curQ.id] && (!statuses[curQ.id] || statuses[curQ.id] === "NOT_VISITED")) {
       setStatuses((prev) => ({ ...prev, [curQ.id]: "NOT_ANSWERED" }));
     }
@@ -619,8 +644,17 @@ export function TcsIonPlayer({
     try {
       isExamEndedRef.current = true;
       const timeSpent = totalDurationSeconds - secondsLeft;
-      await onSubmitExam(responses, timeSpent);
+
+      // Flush time on the currently-viewed question before submitting
+      const finalQuestionTimes = { ...questionTimes };
+      if (currentQuestion) {
+        const elapsed = Math.round((Date.now() - questionStartTimeRef.current) / 1000);
+        finalQuestionTimes[currentQuestion.id] = (finalQuestionTimes[currentQuestion.id] || 0) + elapsed;
+      }
+
+      await onSubmitExam(responses, timeSpent, undefined, finalQuestionTimes);
       localStorage.removeItem(storageKey);
+
       localStorage.removeItem(violationsKey);
     } catch (err) {
       console.error("Submit error:", err);

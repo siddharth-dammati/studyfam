@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { evaluateTest } from "@/lib/examDb";
 import { getActiveExamPaper, evaluateActivePaper } from "@/lib/activeExamService";
