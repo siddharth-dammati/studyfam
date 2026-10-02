@@ -1,6 +1,6 @@
-import { Footer } from "@/components/sections/Footer";
+import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
+import { Award, Heart, CheckCircle2, ShieldCheck, Scale, ArrowRight, Clock, HelpCircle, FileText, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
 
 export const metadata = {
   title: "Fee Support & Merit Scholarship Rules | StudyFam JEE 2027",
@@ -9,182 +9,194 @@ export const metadata = {
 
 export default function ScholarshipRulesPage() {
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 sm:pt-6 pointer-events-none">
-        <div className="w-full max-w-[1100px] figma-nav pointer-events-auto px-6 py-3 bg-white/95 backdrop-blur-md shadow-sm border border-slate-200 flex items-center justify-between">
-          <Link href="/" aria-label="Home">
-            <Logo className="h-8" textClassName="text-lg" />
-          </Link>
-          <Link href="/" className="text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors">
-            ← Back to Home
-          </Link>
+    <ExternalPageShell
+      badgeText="Official Policy · Ref: SF-SCH-2027-V1"
+      badgeTone="emerald"
+      title="Fee Support &"
+      titleGradient="Scholarship Rules"
+      subtitle="The legally binding terms, mathematical models, eligibility criteria, and disbursement protocols governing the StudyFam JEE Application Fee Support Pool."
+      metaItems={[
+        { label: "Effective", value: "September 2026" },
+        { label: "Cycle", value: "JEE Main 2027" },
+        { label: "Fee Split", value: "₹18 Escrow / ₹9 Ops" },
+        { label: "Representation", value: "50:50 Gender Parity" },
+        { label: "Disbursement SLA", value: "7 Business Days" },
+      ]}
+      maxWidth="narrow"
+    >
+      <div className="space-y-8">
+        {/* Foundation Banner */}
+        <div className="p-6 sm:p-8 rounded-[20px] bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white shadow-lg space-y-3 relative overflow-hidden">
+          <div
+            className="absolute w-72 h-72 rounded-full -top-20 -right-20 pointer-events-none"
+            style={{ background: "radial-gradient(circle, rgba(16, 185, 129, 0.35), transparent 70%)" }}
+          />
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-300 bg-white/10 border border-white/20 px-3 py-1 rounded-full inline-block">
+            Escrow Trust Architecture
+          </span>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight tokko-font-sora">
+            100% of the ₹18.00 scholarship allocation is held in dedicated trust to reimburse official NTA exam fees.
+          </h2>
+          <p className="text-emerald-100/90 text-sm leading-relaxed max-w-2xl">
+            StudyFam operates on zero profit from the scholarship reserve. Every rupee contributed to the pool is disbursed directly to deserving top rankers and students requiring financial assistance.
+          </p>
         </div>
-      </nav>
 
-      {/* Main Content */}
-      <main className="flex-1 pt-36 pb-24 max-w-[840px] mx-auto px-6 w-full">
-        {/* Header */}
-        <div className="mb-14 border-b border-slate-200 pb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-mono font-bold uppercase tracking-wider mb-5">
-            Official Policy · Document Ref: SF-SCH-2027-V1
+        {/* Section 1: The Statutory Funding Mechanism */}
+        <div id="framework" className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md">
+              1.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              The Statutory Funding Mechanism
+            </h2>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-slate-900 mb-4 leading-tight">
-            JEE Fee Support & Scholarship Governance Rules
-          </h1>
-          <p className="text-slate-600 text-base leading-relaxed max-w-2xl">
-            This document outlines the legally binding terms, mathematical models, eligibility criteria, and disbursement protocols governing the StudyFam JEE Fee Support Pool.
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            1.1 <strong>Allocation of Registration Fees:</strong> For every candidate registered for the StudyFam All-India Mock Test at the standard fee of ₹27 (inclusive of applicable gateway fees), a fixed and non-dilutable sum of exactly <strong>₹18.00 (66.67%)</strong> is mandatorily escrowed into the <em>StudyFam JEE Fee Support Pool</em>.
           </p>
-          <p className="text-xs font-mono text-slate-400 mt-4">
-            Effective Date: September 2026 · Cycle: JEE Main 2027
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            1.2 <strong>Platform &amp; Operations Fee:</strong> The remaining <strong>₹9.00 (33.33%)</strong> is retained by StudyFam Technologies to cover proctoring infrastructure, anti-cheat machine learning pipelines, cloud servers, and question bank development.
+          </p>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            1.3 <strong>Pool Non-Dilution:</strong> The ₹18.00 per candidate reserve is locked in trust exclusively for student fee sponsorships and cannot be diverted to platform operational expenses.
           </p>
         </div>
 
-        {/* Legal Documentation Content */}
-        <div className="space-y-12 text-sm leading-relaxed text-slate-700">
-          
-          {/* Section 1 */}
-          <section id="framework" className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <span className="text-emerald-600 font-mono text-base">1.0</span> The Statutory Funding Mechanism
+        {/* Section 2: Mathematical Scaling & Slot Allocation Model */}
+        <div id="formula" className="tokko-card p-6 sm:p-8 space-y-5">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              2.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Mathematical Scaling &amp; Dual Track Allocation
             </h2>
-            <p>
-              1.1 <strong>Allocation of Registration Fees:</strong> For every candidate registered for the StudyFam All-India Mock Test at the standard fee of ₹27 (inclusive of applicable taxes and payment gateway charges), a fixed and non-dilutable sum of exactly <strong>₹18.00 (66.67%)</strong> is mandatorily escrowed into the <em>StudyFam JEE Fee Support Pool</em>.
-            </p>
-            <p>
-              1.2 <strong>Platform & Operations Fee:</strong> The remaining <strong>₹9.00 (33.33%)</strong> is retained by StudyFam Technologies as the platform and operational fee.
-            </p>
-            <p>
-              1.3 <strong>Scholarship Pool Integrity:</strong> The ₹18.00 allocated per registration is held in trust exclusively for student fee sponsorships and cannot be redirected to cover platform operating deficits.
-            </p>
-          </section>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            2.1 <strong>Dynamic Scale:</strong> The number of scholarship beneficiaries scales directly with candidate participation without arbitrary caps. Official NTA JEE Main application fee benchmarks are:
+          </p>
+          <ul className="space-y-1.5 text-sm text-[#4B5B76] pl-2 font-mono">
+            <li>• <strong>Male Candidates (General / OBC-NCL / EWS):</strong> ₹1,000.00 fee</li>
+            <li>• <strong>Female Candidates (All Categories):</strong> ₹800.00 fee</li>
+          </ul>
 
-          {/* Section 2 */}
-          <section id="formula" className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <span className="text-emerald-600 font-mono text-base">2.0</span> Mathematical Formulation of Top N Beneficiaries
-            </h2>
-            <p>
-              2.1 <strong>Dynamic Scale:</strong> The number of scholarship beneficiaries (N) is mathematically coupled to the total verified participant count (P). As participation expands, N scales proportionally without arbitrary caps.
+          {/* 50k Illustration Card */}
+          <div className="p-5 rounded-2xl bg-[#F6F9FF] border border-[#E3EAF6] space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="font-mono text-xs font-bold text-[#0B1526] uppercase">
+                Projected Scenario: 50,000 Aspirants · 1,000 Winners
+              </span>
+              <span className="text-[10px] font-mono font-bold bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full">
+                Mathematical Model
+              </span>
+            </div>
+            <p className="text-xs text-[#4B5B76] leading-relaxed">
+              At 50,000 registrations: Total Escrow Pool = 50,000 × ₹18 = <strong>₹9,00,000.00</strong>. This funds exactly 1,000 candidates:
             </p>
-            <p>
-              2.2 <strong>Official Benchmark Fees:</strong> Sizing calculations conform to the official examination fee structure promulgated by the National Testing Agency (NTA) for JEE (Main):
-            </p>
-            <ul className="list-disc pl-6 space-y-2 text-slate-600">
-              <li><strong>Male Candidates (General / Gen-EWS / OBC-NCL):</strong> ₹1,000.00 per session.</li>
-              <li><strong>Female Candidates (All Categories):</strong> ₹800.00 per session.</li>
-            </ul>
-            
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 my-4">
-              <div className="flex items-center justify-between">
-                <div className="font-mono text-xs font-bold text-slate-900 uppercase">
-                  Projected Scenario (If 50,000 Aspirants Register · 1,000 Winners)
-                </div>
-                <span className="text-[10px] font-mono font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
-                  Illustration Only
-                </span>
-              </div>
-              <p className="text-xs text-slate-600">
-                <strong>Note:</strong> These numbers are projections based on milestone scale. Actual winner counts are determined dynamically from verified total registrations at the time of results. At 50,000 registrations: Pool = 50,000 × ₹18 = <strong>₹9,00,000.00</strong> → 1,000 Students Fully Sponsored.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
-                <div className="bg-white p-3.5 rounded-xl border border-emerald-200">
-                  <div className="font-bold text-emerald-900 flex items-center gap-1.5 mb-1">
-                    <span>🏆</span> Merit Track (50% of Slots)
-                  </div>
-                  <div className="text-slate-700 font-semibold">At 50k: Top 250 Boys + Top 250 Girls</div>
-                  <p className="text-[11px] text-slate-500 mt-1">100% based on All-India mock rank. No financial-need check. (Count scales proportionally.)</p>
-                  <div className="text-emerald-700 font-mono font-medium mt-1">₹2,50,000 (Boys) + ₹2,00,000 (Girls) = ₹4.5L at 50k</div>
-                </div>
 
-                <div className="bg-white p-3.5 rounded-xl border border-rose-200">
-                  <div className="font-bold text-rose-900 flex items-center gap-1.5 mb-1">
-                    <span>❤️</span> Need-Based Track (50% of Slots)
-                  </div>
-                  <div className="text-slate-700 font-semibold">At 50k: Next 250 Boys + Next 250 Girls</div>
-                  <p className="text-[11px] text-slate-500 mt-1">50% reserved for genuine financial assistance candidates. (Count scales proportionally.)</p>
-                  <div className="text-rose-700 font-mono font-medium mt-1">₹2,50,000 (Boys) + ₹2,00,000 (Girls) = ₹4.5L at 50k</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Merit Track */}
+              <div className="bg-white p-4 rounded-xl border border-emerald-200/90 shadow-2xs space-y-1.5">
+                <div className="font-bold text-emerald-900 text-sm flex items-center gap-1.5">
+                  <Award size={16} className="text-emerald-600" />
+                  <span>Merit Track (50% of Slots)</span>
                 </div>
+                <div className="text-xs font-bold text-[#0B1526]">Top 250 Boys + Top 250 Girls</div>
+                <p className="text-[11px] text-[#4B5B76] leading-relaxed">
+                  100% based on All-India mock test rank. Zero income screening. Sized at ₹2.5L (Boys) + ₹2.0L (Girls) = ₹4.5L.
+                </p>
               </div>
-              <div className="text-xs font-mono font-bold text-slate-900 pt-2 border-t border-slate-200 flex justify-between items-center">
-                <span>At 50k: Total Pool Disbursed: ₹4,50,000 + ₹4,50,000 = ₹9,00,000.00</span>
-                <span className="text-emerald-700">1,000 Students Funded (Projected)</span>
+
+              {/* Need-Based Track */}
+              <div className="bg-white p-4 rounded-xl border border-blue-200/90 shadow-2xs space-y-1.5">
+                <div className="font-bold text-blue-900 text-sm flex items-center gap-1.5">
+                  <Heart size={16} className="text-[#1A5FE0]" />
+                  <span>Need-Based Track (50% of Slots)</span>
+                </div>
+                <div className="text-xs font-bold text-[#0B1526]">Next 250 Boys + Next 250 Girls</div>
+                <p className="text-[11px] text-[#4B5B76] leading-relaxed">
+                  50% reserved for students from economically modest backgrounds with verified financial need. Sized at ₹4.5L.
+                </p>
               </div>
             </div>
 
-            <p>
-              2.3 <strong>🏆 Merit Scholarships Track (50% of Slots):</strong> Fifty percent (50%) of all available scholarship slots are awarded strictly in rank order based on All-India mock test performance (Top 50% boys + Top 50% girls). Selection on this track is 100% merit-based without any financial need screening.
-            </p>
-            <p>
-              2.4 <strong>❤️ Need-Based Support Track (50% of Slots):</strong> Fifty percent (50%) of all available scholarship slots are strictly reserved for aspirants who genuinely need financial assistance. Recipients are selected as the next qualifying boys and girls from a separate eligible pool of economically modest students with verified financial need.
-            </p>
-            <p>
-              2.5 <strong>Gender Parity Mandate:</strong> Within each track, beneficiary allocations are divided equally between male aspirants (NTA fee: ₹1,000.00) and female aspirants (NTA fee: ₹800.00) to support gender inclusion across engineering colleges nationwide.
-            </p>
-          </section>
-
-          {/* Section 3 */}
-          <section id="eligibility" className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <span className="text-emerald-600 font-mono text-base">3.0</span> Eligibility & Candidate Verification Protocol
-            </h2>
-            <p>
-              3.1 <strong>Legitimate Aspirant Requirement:</strong> To claim fee reimbursement, candidate must be enrolled in Class 11, Class 12, or be an active dropper candidate eligible to appear for JEE (Main) 2027 per NTA guidelines.
-            </p>
-            <p>
-              3.2 <strong>Documentation Audit:</strong> Within 14 calendar days of rank declaration, eligible Top N candidates must submit:
-            </p>
-            <ul className="list-disc pl-6 space-y-2 text-slate-600">
-              <li>Government-issued photo identification (Aadhaar Card / School ID / Passport).</li>
-              <li>Official NTA JEE (Main) 2027 application confirmation receipt or admit card showing application number.</li>
-              <li>Active verified Bank Account (in student or legal guardian&apos;s name) or valid UPI VPA.</li>
-            </ul>
-            <p>
-              3.3 <strong>Integrity Screening:</strong> Any attempt to use automated scripts, multiple proxy accounts, browser extensions, or unauthorized assistance will result in instantaneous forfeiture of rank and scholarship eligibility.
-            </p>
-          </section>
-
-          {/* Section 4 */}
-          <section id="rollover" className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <span className="text-emerald-600 font-mono text-base">4.0</span> Voluntary Opt-Out and Waterfall Roll-Over
-            </h2>
-            <p>
-              4.1 <strong>Opt-Out Privilege:</strong> Candidates from affluent backgrounds who do not require fee assistance are explicitly encouraged to select the <em>&quot;Pass the Support&quot;</em> opt-out option upon rank declaration.
-            </p>
-            <p>
-              4.2 <strong>Automated Roll-Down:</strong> Upon receipt of a voluntary decline or in the event of candidate non-responsiveness after 14 calendar days, the scholarship allocation immediately cascades to the next eligible rank holder (e.g. Rank N+1) in the respective category.
-            </p>
-            <p>
-              4.3 <strong>Zero Residual Balance:</strong> All funds accumulated in the pool must be exhausted toward student sponsorships. No unspent surplus shall revert to StudyFam Technologies.
-            </p>
-          </section>
-
-          {/* Section 5 */}
-          <section id="disbursement" className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <span className="text-emerald-600 font-mono text-base">5.0</span> Disbursement Timeline & Public Audit
-            </h2>
-            <p>
-              5.1 <strong>Direct Benefit Transfer (DBT):</strong> Reimbursements are processed directly to verified bank accounts via NEFT/RTGS or UPI within 7 business days following official verification of the candidate&apos;s NTA application confirmation.
-            </p>
-            <p>
-              5.2 <strong>Public Ledger:</strong> A pseudonymized transparency ledger (displaying Roll Numbers, City, Mock Rank, and Bank UTR Transaction References) will be published on the StudyFam portal for public community audit, maintaining data protection compliance.
-            </p>
-          </section>
-
-          {/* Section 6 */}
-          <section id="grievance" className="space-y-4 pt-6 border-t border-slate-200">
-            <h2 className="text-lg font-bold text-slate-900">6.0 Grievance & Arbitration</h2>
-            <p className="text-xs text-slate-600">
-              Any dispute concerning leaderboard scoring or scholarship distribution shall be subject to review by the independent Academic Review Board of StudyFam Technologies. Decisions rendered by the Board upon re-evaluation shall be final and binding. All legal proceedings are subject to the exclusive jurisdiction of the courts of New Delhi, India.
-            </p>
-          </section>
-
+            <div className="pt-3 border-t border-[#E3EAF6] flex flex-wrap items-center justify-between gap-2 text-xs font-mono font-bold text-[#0B1526]">
+              <span>Disbursed: ₹4,50,000 + ₹4,50,000 = ₹9,00,000.00</span>
+              <span className="text-emerald-700">1,000 Candidates Funded</span>
+            </div>
+          </div>
         </div>
-      </main>
 
-      <Footer />
-    </div>
+        {/* Section 3: Eligibility & Verification */}
+        <div id="eligibility" className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              3.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Eligibility &amp; Verification Protocol
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            3.1 <strong>Aspirant Qualification:</strong> Candidates must be currently enrolled in Class 11, Class 12, or be an active dropper preparing for JEE (Main) 2027 under NTA guidelines.
+          </p>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            3.2 <strong>Audit Documentation:</strong> Within 14 calendar days of rank declaration, eligible candidates upload:
+          </p>
+          <ul className="space-y-2 text-sm text-[#4B5B76] pl-2">
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span>Government Photo ID (Aadhaar Card, Passport, or valid School ID)</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span>Official NTA JEE (Main) 2027 Application Confirmation PDF showing application number</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span>Student or Guardian Bank Account details (Account Number, IFSC) or valid UPI VPA</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Section 4: Voluntary Opt-Out & Roll-Down */}
+        <div id="rollover" className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              4.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Voluntary Opt-Out &amp; Waterfall Roll-Down
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            4.1 <strong>Pass the Support:</strong> Rank-holders from affluent backgrounds who do not require fee support may choose the <em>&quot;Pass the Support&quot;</em> option on their dashboard.
+          </p>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            4.2 <strong>Waterfall Allocation:</strong> When a scholarship is declined or if a candidate fails to claim within 14 days, the grant automatically cascades to the next eligible rank-holder (Rank N+1) in the corresponding category. Zero funds revert to the company.
+          </p>
+        </div>
+
+        {/* Section 5: Direct Disbursement Timeline */}
+        <div id="disbursement" className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md">
+              5.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Direct Benefit Transfer (DBT) &amp; Public Ledger
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            Reimbursements are issued directly to verified student bank accounts via NEFT/RTGS or UPI within <strong>7 business days</strong> of verification. A pseudonymized public ledger showing Roll Numbers, Cities, Mock Ranks, and Bank UTR Transaction References is published on our{" "}
+            <Link href="/transparency" className="text-[#1A5FE0] font-bold underline hover:text-[#0A1C96]">
+              Transparency &amp; Governance Page
+            </Link>
+            .
+          </p>
+        </div>
+      </div>
+    </ExternalPageShell>
   );
 }

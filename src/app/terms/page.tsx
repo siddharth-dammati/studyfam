@@ -1,6 +1,6 @@
-import { Footer } from "@/components/sections/Footer";
+import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
+import { ShieldAlert, AlertTriangle, FileText, CheckCircle2, Lock, Scale } from "lucide-react";
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
 
 export const metadata = {
   title: "Terms of Service & Examination Regulations | StudyFam",
@@ -9,98 +9,140 @@ export const metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 sm:pt-6 pointer-events-none">
-        <div className="w-full max-w-[1100px] figma-nav pointer-events-auto px-6 py-3 bg-white/95 backdrop-blur-md shadow-sm border border-slate-200 flex items-center justify-between">
-          <Link href="/" aria-label="Home">
-            <Logo className="h-8" textClassName="text-lg" />
-          </Link>
-          <Link href="/" className="text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors">
-            ← Back to Home
-          </Link>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="flex-1 pt-36 pb-24 max-w-[840px] mx-auto px-6 w-full">
-        {/* Header */}
-        <div className="mb-14 border-b border-slate-200 pb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-[11px] font-mono font-bold uppercase tracking-wider mb-5">
-            Legal Terms · Ref: SF-TOS-2027
+    <ExternalPageShell
+      badgeText="Legal Framework · Ref: SF-TOS-2027"
+      badgeTone="blue"
+      title="Terms of Service &"
+      titleGradient="Test Conduct"
+      subtitle="The comprehensive legal agreement and academic honor code governing candidate participation, diagnostic testing, scholarship eligibility, and anti-cheat enforcement on StudyFam."
+      metaItems={[
+        { label: "Effective", value: "September 2026" },
+        { label: "Jurisdiction", value: "Republic of India" },
+        { label: "Framework", value: "Information Technology Act, 2000" },
+        { label: "Test Cycle", value: "JEE Main 2027" },
+      ]}
+      maxWidth="narrow"
+    >
+      <div className="space-y-8">
+        {/* Statutory Non-Affiliation Disclaimer Banner */}
+        <div className="p-6 rounded-[20px] bg-gradient-to-r from-amber-50/90 to-orange-50/70 border border-amber-200/90 shadow-xs flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs mt-0.5">
+            <AlertTriangle size={20} />
           </div>
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-slate-900 mb-4 leading-tight">
-            Terms of Service & Test Regulations
-          </h1>
-          <p className="text-slate-600 text-base leading-relaxed max-w-2xl">
-            Please read these terms carefully before accessing or registering on the StudyFam platform. By registering or remitting the ₹27 fee, you enter into a legally binding agreement with StudyFam Technologies.
+          <div className="space-y-1 text-xs sm:text-sm text-[#0B1526]">
+            <h4 className="font-bold text-amber-950 text-base">Statutory Non-Affiliation Notice</h4>
+            <p className="text-[#4B5B76] leading-relaxed">
+              StudyFam Technologies is an independent private educational technology initiative. StudyFam is <strong>NOT</strong> affiliated with, endorsed by, sponsored by, or in any way officially associated with the <strong>National Testing Agency (NTA)</strong>, the <strong>Ministry of Education (MoE)</strong>, Government of India, or any <strong>Indian Institute of Technology (IIT)</strong>. References to &quot;JEE Main&quot; and &quot;NTA&quot; are strictly descriptive for curriculum alignment under the doctrine of fair use.
+            </p>
+          </div>
+        </div>
+
+        {/* Section 1: Nature of the Service */}
+        <div className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              1.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Nature of the Service & Academic Benchmark
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            1.1 <strong>Independent Diagnostic Testing:</strong> StudyFam delivers high-fidelity simulated Computer Based Testing (CBT) conforming to the official NTA 75-question syllabus pattern. Its purpose is to provide aspirants with unbiased percentile predictions, chapter-level weakness analytics, and real exam ergonomics.
           </p>
-          <p className="text-xs font-mono text-slate-400 mt-4">
-            Last Updated: September 2026 · Governing Law: Republic of India
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            1.2 <strong>No Guarantee of Real Exam Ranks:</strong> While our statistical percentile engines are calibrated against historical national cohorts, mock scores are diagnostic benchmarks. StudyFam does not guarantee admission to any IIT, NIT, IIIT, or CFTI.
           </p>
         </div>
 
-        {/* Content */}
-        <div className="space-y-10 text-sm leading-relaxed text-slate-700">
-
-          <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">1. Nature of the Service & Legal Disclaimer</h2>
-            <p>
-              1.1 <strong>Independent Educational Testing:</strong> StudyFam is an independent educational technology platform providing benchmark diagnostic evaluations, analytics, and simulated Computer Based Testing (CBT) environments.
-            </p>
-            <p className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs font-medium leading-relaxed">
-              <strong>Statutory Non-Affiliation Disclaimer:</strong> StudyFam is NOT affiliated with, authorized by, sponsored by, or in any way officially associated with the National Testing Agency (NTA), the Ministry of Education, Government of India, or any Indian Institute of Technology (IIT). &quot;JEE (Main)&quot; and &quot;NTA&quot; are registered trademarks of their respective statutory bodies and are used here solely for descriptive and comparative purposes under doctrine of fair use.
-            </p>
-          </section>
-
-          <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">2. Candidate Registration & Representations</h2>
-            <p>
-              2.1 <strong>Truthfulness of Information:</strong> The candidate warrants that all profile details (Name, Grade, Contact Number) submitted during registration are accurate and authentic.
-            </p>
-            <p>
-              2.2 <strong>One Account Per Aspirant:</strong> Each candidate may register only once. Creation of duplicate dummy accounts to test alternative question choices or inflate benchmark samples constitutes fraud and will result in permanent disqualification of all linked accounts.
-            </p>
-          </section>
-
-          <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">3. Examination Conduct & Anti-Cheat Protocols</h2>
-            <p>
-              3.1 <strong>Proctoring Telemetry:</strong> The examination engine utilizes browser telemetry to identify window switching, full-screen violations, automated cursor movements, and unauthorized keystroke patterns.
-            </p>
-            <p>
-              3.2 <strong>Disqualification:</strong> Candidates exhibiting suspicious telemetry or abnormal response speed inconsistencies (e.g. solving complex numerical problems in under 3 seconds) will have their responses submitted for manual scrutiny by our academic integrity panel. The decision of the panel regarding score invalidation is conclusive.
-            </p>
-          </section>
-
-          <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">4. Fee Support & Merit Scholarship Governance</h2>
-            <p>
-              4.1 <strong>Scholarship Contingency:</strong> Sponsorship of official JEE Main exam application fees is contingent upon fulfillment of the official <Link href="/scholarship-rules" className="text-indigo-600 underline font-semibold">Scholarship Rules</Link>, including submission of official NTA registration confirmation receipts.
-            </p>
-            <p>
-              4.2 <strong>No Guarantee of JEE Admission:</strong> Participation in the StudyFam mock and receipt of simulated percentile reports does not constitute a guarantee of rank, admission, or seat allocation in any NIT, IIIT, GFTI, or IIT.
-            </p>
-          </section>
-
-          <section className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">5. Intellectual Property Rights</h2>
-            <p>
-              All mock test questions, answer keys, explanatory solutions, UI components, statistical ranking algorithms, and graphics are the proprietary intellectual property of StudyFam Technologies. Unauthorized recording, commercial redistribution, screen capturing, or sharing on Telegram/YouTube is strictly prohibited and actionable under the Copyright Act, 1957.
-            </p>
-          </section>
-
-          <section className="space-y-3 pt-6 border-t border-slate-200">
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">6. Governing Law & Dispute Jurisdiction</h2>
-            <p className="text-xs text-slate-600">
-              These Terms shall be governed by and construed in accordance with the substantive laws of India. In the event of any legal dispute or claim arising out of or related to these Terms or the Mock Examination, the courts of New Delhi, India shall have sole and exclusive jurisdiction.
-            </p>
-          </section>
-
+        {/* Section 2: Candidate Registration & Representations */}
+        <div className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              2.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Candidate Registration & Integrity Obligations
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            2.1 <strong>Truthfulness of Information:</strong> The candidate warrants that all profile details (Full Name, Contact Number, Academic Status, Family Income Bracket) provided during test registration are authentic and verifiable.
+          </p>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            2.2 <strong>Strict Single-Account Rule:</strong> Each candidate is permitted exactly one registration. Creating multiple dummy accounts with alternate email addresses to preview questions or distort national percentile curves constitutes examination fraud and triggers automatic disqualification across all linked profiles.
+          </p>
         </div>
-      </main>
 
-      <Footer />
-    </div>
+        {/* Section 3: Examination Conduct & Anti-Cheat Protocols */}
+        <div className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              3.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Examination Conduct & Anti-Cheat Protocols
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            3.1 <strong>Client Telemetry Monitoring:</strong> The CBT exam interface continuously logs window-blurring events, tab switches, developer console activations, screen-share software detection, and abnormal answering velocities (e.g., solving complex multi-step numericals in under 3 seconds).
+          </p>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            3.2 <strong>Integrity Scrutiny & Invalidation:</strong> Attempts flagged for high cheating probabilities are automatically sequestered for manual review by our Academic Integrity Panel. The panel reserves absolute right to void suspicious scores from the final national merit leaderboard.
+          </p>
+        </div>
+
+        {/* Section 4: Scholarship Governance */}
+        <div className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md">
+              4.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Fee Support & Merit Scholarship Governance
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            4.1 <strong>Scholarship Contingency:</strong> Direct reimbursement of official JEE Main exam application fees is subject to full compliance with the{" "}
+            <Link href="/scholarship-rules" className="text-[#1A5FE0] font-bold underline hover:text-[#0A1C96]">
+              StudyFam Scholarship Rules & Policy
+            </Link>
+            , including submission of a valid official NTA JEE Main Application Confirmation PDF.
+          </p>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            4.2 <strong>Two Distinct Tracks:</strong> Scholarship slots are divided equally: 50% Pure Merit (determined solely by test ranking) and 50% Need-Based Support (reserved for economically deserving students subject to income criteria verification).
+          </p>
+        </div>
+
+        {/* Section 5: Intellectual Property */}
+        <div className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              5.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Intellectual Property Rights
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            All question papers, detailed textbook solutions, algorithmic scoring models, branding marks, and CBT user interfaces are the proprietary intellectual property of StudyFam Technologies. Unauthorized downloading, scraping, screen recording, commercial repackaging, or unauthorized redistribution on Telegram/YouTube is strictly prohibited and subject to legal prosecution under the Copyright Act, 1957.
+          </p>
+        </div>
+
+        {/* Section 6: Governing Law */}
+        <div className="tokko-card p-6 sm:p-8 space-y-3">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-md">
+              6.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Governing Law & Dispute Jurisdiction
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            These Terms shall be governed by and construed in accordance with the substantive laws of the Republic of India. In the event of any statutory grievance or dispute arising out of or relating to platform usage, the courts of <strong>New Delhi, India</strong> shall possess exclusive territorial jurisdiction.
+          </p>
+        </div>
+      </div>
+    </ExternalPageShell>
   );
 }

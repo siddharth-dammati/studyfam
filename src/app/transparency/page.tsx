@@ -1,6 +1,6 @@
-import { Footer } from "@/components/sections/Footer";
+import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
+import { ShieldCheck, PieChart, CheckCircle2, Lock, ArrowUpRight, Scale, Eye, FileSpreadsheet } from "lucide-react";
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
 
 export const metadata = {
   title: "Financial Transparency & Governance Report | StudyFam",
@@ -8,108 +8,183 @@ export const metadata = {
 };
 
 export default function TransparencyPage() {
+  const milestones = [
+    { candidates: "1,000", pool: "₹18,000", meritSlots: "10 Boys + 10 Girls", totalSponsored: "20 Students" },
+    { candidates: "5,000", pool: "₹90,000", meritSlots: "50 Boys + 50 Girls", totalSponsored: "100 Students" },
+    { candidates: "10,000", pool: "₹1,80,000", meritSlots: "100 Boys + 100 Girls", totalSponsored: "200 Students" },
+    { candidates: "25,000", pool: "₹4,50,000", meritSlots: "250 Boys + 250 Girls", totalSponsored: "500 Students" },
+    { candidates: "50,000", pool: "₹9,00,000", meritSlots: "500 Boys + 500 Girls", totalSponsored: "1,000 Students" },
+    { candidates: "1,00,000", pool: "₹18,00,000", meritSlots: "1,000 Boys + 1,000 Girls", totalSponsored: "2,000 Students" },
+  ];
+
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 sm:pt-6 pointer-events-none">
-        <div className="w-full max-w-[1100px] figma-nav pointer-events-auto px-6 py-3 bg-white/95 backdrop-blur-md shadow-sm border border-slate-200 flex items-center justify-between">
-          <Link href="/" aria-label="Home">
-            <Logo className="h-8" textClassName="text-lg" />
-          </Link>
-          <Link href="/" className="text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors">
-            ← Back to Home
-          </Link>
+    <ExternalPageShell
+      badgeText="Public Statement · Ref: SF-AUDIT-2027"
+      badgeTone="indigo"
+      title="Financial Transparency &"
+      titleGradient="Fund Governance"
+      subtitle="Complete, uncompromising transparency on the student scholarship fund. We publish our exact mathematical allocation, escrow protections, and disbursement verification standards."
+      metaItems={[
+        { label: "Auditing Model", value: "Public Community Ledger" },
+        { label: "Reserve Allocation", value: "66.67% (₹18.00)" },
+        { label: "Operations Retention", value: "33.33% (₹9.00)" },
+        { label: "Accounting Audit", value: "Independent CA Reconciliation" },
+      ]}
+      maxWidth="narrow"
+    >
+      <div className="space-y-8">
+        {/* Foundation Principle Banner */}
+        <div className="p-6 sm:p-8 rounded-[20px] bg-gradient-to-br from-[#0B1526] via-[#122448] to-[#0A1C96] text-white shadow-lg space-y-3 relative overflow-hidden">
+          <div
+            className="absolute w-72 h-72 rounded-full -top-20 -right-20 pointer-events-none"
+            style={{ background: "radial-gradient(circle, rgba(47, 143, 255, 0.35), transparent 70%)" }}
+          />
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-blue-300 bg-white/10 border border-white/20 px-3 py-1 rounded-full inline-block">
+            Open Ledger Commitment
+          </span>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight tokko-font-sora">
+            Zero hidden deductions. Zero marketing siphoning. Every rupee of the scholarship reserve is accounted for.
+          </h2>
+          <p className="text-slate-300 text-sm leading-relaxed max-w-2xl">
+            StudyFam believes an educational institution must be accountable to its students. We maintain a segregated escrow account and publish all disbursement UTRs for community audit.
+          </p>
         </div>
-      </nav>
 
-      {/* Main Content */}
-      <main className="flex-1 pt-36 pb-24 max-w-[840px] mx-auto px-6 w-full">
-        {/* Header */}
-        <div className="mb-14 border-b border-slate-200 pb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-800 text-[11px] font-mono font-bold uppercase tracking-wider mb-5">
-            Public Transparency Statement · Ref: SF-AUDIT-2027
+        {/* Section 1: The ₹27 Registration Allocation Structure */}
+        <div className="tokko-card p-6 sm:p-8 space-y-5">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              1.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              The ₹27 Registration Allocation Structure
+            </h2>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-slate-900 mb-4 leading-tight">
-            Scholarship Pool Transparency & Governance
-          </h1>
-          <p className="text-slate-600 text-base leading-relaxed max-w-2xl">
-            Complete transparency on the student scholarship fund. We openly publish our allocation rules, escrow protections, and disbursement verification standards.
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            From every single ₹27 registration received for the All-India Mock Test, funds are partitioned into two strictly segregated channels:
           </p>
-          <p className="text-xs font-mono text-slate-400 mt-4">
-            Auditing Standard: Social Governance Framework · Cycle: JEE Main 2027
-          </p>
-        </div>
 
-        {/* Content */}
-        <div className="space-y-12 text-sm leading-relaxed text-slate-700">
-
-          {/* Allocation Breakdown */}
-          <section className="space-y-6">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-              1. The ₹27 Registration Allocation Structure
-            </h2>
-            <p>
-              StudyFam operates with complete clarity regarding student fee allocations. From every ₹27 registration, funds are structured into two distinct portions:
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-              <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200">
-                <div className="text-2xl font-bold text-emerald-800 mb-1">₹18.00</div>
-                <div className="text-xs font-mono font-bold uppercase text-emerald-900 mb-3 tracking-wide">
-                  66.67% · Student Fee Support Pool
-                </div>
-                <p className="text-xs text-slate-700 leading-relaxed">
-                  Directly allocated into an independent escrow reserve account. 100% of these funds are dedicated to paying full JEE Main application fees for top-performing eligible students per published merit guidelines.
-                </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* 66.67% Card */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 space-y-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-extrabold text-emerald-800 tokko-font-sora">₹18.00</span>
+                <span className="text-xs font-mono font-bold text-emerald-700 uppercase">66.67% of Fee</span>
               </div>
-
-              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200">
-                <div className="text-2xl font-bold text-slate-900 mb-1">₹9.00</div>
-                <div className="text-xs font-mono font-bold uppercase text-slate-700 mb-3 tracking-wide">
-                  33.33% · StudyFam Platform & Operations
-                </div>
-                <p className="text-xs text-slate-700 leading-relaxed">
-                  Retained by StudyFam Technologies as the platform and operations fee for software hosting, testing infrastructure, candidate management, and operational services.
-                </p>
+              <div className="text-xs font-bold uppercase tracking-wide text-emerald-900 font-mono">
+                Student Fee Support Pool (Escrowed)
               </div>
+              <p className="text-xs text-[#4B5B76] leading-relaxed">
+                Directly locked into a segregated escrow reserve account in India. 100% of these funds are dedicated to refunding full JEE Main application fees for top-performing rankers and students with verified financial need.
+              </p>
             </div>
-          </section>
 
-          {/* Independent Escrow & Disbursement Security */}
-          <section id="escrow" className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-              2. Independent Escrow & Scholarship Disbursement Security
-            </h2>
-            <p>
-              2.1 <strong>Segregated Bank Accounts:</strong> All scholarship pool funds (₹18 per registration) are maintained in a dedicated bank account in India. These funds are held in trust exclusively for eligible candidate disbursements.
-            </p>
-            <p>
-              2.2 <strong>Third-Party Reconciliation:</strong> Following the completion of the 27 December 2026 All India Mock, an independent Chartered Accountant firm will conduct a reconciliation audit verifying that 100% of the scholarship reserve is accounted for and distributed to verified student rankers.
-            </p>
-            <p>
-              2.3 <strong>Public Proof-of-Payout:</strong> An anonymized payout ledger displaying candidate Roll Numbers, Category, Rank, and Bank UTR Transaction References will be published for public community verification upon completion of disbursements.
-            </p>
-          </section>
-
-          {/* Verification Standards */}
-          <section className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-              3. Verification & Governance Safeguards
-            </h2>
-            <p>
-              To ensure scholarship funds reach genuine candidates:
-            </p>
-            <ul className="list-disc pl-6 space-y-2 text-slate-600">
-              <li>Candidates must provide official NTA JEE Main 2027 application receipts showing their application number and fee payment.</li>
-              <li>Aadhaar/Identity verification is completed prior to electronic bank transfer to avoid multi-account fraud.</li>
-              <li>If any candidate declines or fails verification, the scholarship moves immediately to the next eligible student on the leaderboard.</li>
-            </ul>
-          </section>
-
+            {/* 33.33% Card */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-extrabold text-[#0B1526] tokko-font-sora">₹9.00</span>
+                <span className="text-xs font-mono font-bold text-[#7A8CA8] uppercase">33.33% of Fee</span>
+              </div>
+              <div className="text-xs font-bold uppercase tracking-wide text-[#0B1526] font-mono">
+                StudyFam Platform &amp; Operations
+              </div>
+              <p className="text-xs text-[#4B5B76] leading-relaxed">
+                Retained by StudyFam Technologies to cover high-concurrency cloud servers, anti-cheat machine learning pipelines, question bank development by IITians, and payment gateway transaction commissions.
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
 
-      <Footer />
-    </div>
+        {/* Section 2: Milestone Projections Ledger Table */}
+        <div className="tokko-card p-6 sm:p-8 space-y-5">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              2.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Milestone Scaling Projections Ledger
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            The scholarship pool scales dynamically without caps. As candidate enrollment increases, more students receive 100% NTA fee sponsorships:
+          </p>
+
+          <div className="border border-[#E3EAF6] rounded-2xl overflow-hidden shadow-2xs">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead className="bg-[#EFF5FF] text-[#0B1526] font-bold border-b border-[#E3EAF6] font-mono">
+                  <tr>
+                    <th className="py-3 px-4">Participants</th>
+                    <th className="py-3 px-4">Escrow Pool (₹18)</th>
+                    <th className="py-3 px-4">Slot Breakdown (50:50)</th>
+                    <th className="py-3 px-4">Total Sponsored</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#E3EAF6] bg-white text-[#4B5B76]">
+                  {milestones.map((m, idx) => (
+                    <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3 px-4 font-mono font-bold text-[#0B1526]">{m.candidates}</td>
+                      <td className="py-3 px-4 font-mono font-bold text-emerald-700">{m.pool}</td>
+                      <td className="py-3 px-4">{m.meritSlots}</td>
+                      <td className="py-3 px-4 font-bold text-[#0B1526]">{m.totalSponsored}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 3: Escrow & Payout Safeguards */}
+        <div id="escrow" className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md">
+              3.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Independent Escrow &amp; Disbursement Security
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            3.1 <strong>Segregated Bank Accounts:</strong> All scholarship pool funds are maintained in a dedicated bank account in India, legally isolated from company working capital.
+          </p>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            3.2 <strong>Third-Party Reconciliation:</strong> Following the completion of the 27 December 2026 examination, an independent Chartered Accountant firm conducts a comprehensive audit certifying that 100% of the scholarship reserve is disbursed to verified student rankers.
+          </p>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            3.3 <strong>Public Proof-of-Payout:</strong> An anonymized payout ledger displaying candidate Roll Numbers, Category, Rank, and Bank UTR Transaction References will be published for public scrutiny upon completion of disbursements.
+          </p>
+        </div>
+
+        {/* Section 4: Verification Standards */}
+        <div className="tokko-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-xs font-bold text-[#1A5FE0] bg-[#EFF5FF] border border-[#D7E4FA] px-2.5 py-1 rounded-md">
+              4.0
+            </span>
+            <h2 className="text-lg sm:text-xl font-bold text-[#0B1526] tracking-tight">
+              Verification &amp; Governance Safeguards
+            </h2>
+          </div>
+          <p className="text-sm text-[#4B5B76] leading-relaxed">
+            To guarantee that scholarship grants reach genuine, deserving aspirants:
+          </p>
+          <ul className="space-y-2 text-sm text-[#4B5B76] pl-2">
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span>Candidates must supply official NTA JEE (Main) 2027 application receipts displaying their official application number and fee debit.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span>Aadhaar/Identity verification is completed prior to electronic bank transfer to prevent dummy or proxy claims.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span>If any candidate declines or fails verification, the scholarship moves immediately to the next eligible rank-holder on the leaderboard.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </ExternalPageShell>
   );
 }
