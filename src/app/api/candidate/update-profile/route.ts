@@ -1,4 +1,5 @@
-﻿import { NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
+import { NextResponse } from "next/server";
 import { hydrateCandidateRecord, serializeDossier } from "@/lib/candidateUtils";
 
 export async function POST(request: Request) {

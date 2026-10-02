@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { isAuthorizedAdmin } from "@/lib/adminAuth";
 import { hydrateCandidateRecord } from "@/lib/candidateUtils";
