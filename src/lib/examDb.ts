@@ -75,6 +75,8 @@ function normalizeImagePaths(raw: string | null): string[] {
   return [];
 }
 
+import { getCustomTest, listCustomTests } from "@/lib/customTestService";
+
 export function getAvailableTests(): { fullMocks: TestSummary[]; chapterTests: TestSummary[] } {
   const db = getDb();
   const query = `
@@ -100,6 +102,20 @@ export function getAvailableTests(): { fullMocks: TestSummary[]; chapterTests: T
 
   const fullMocks: TestSummary[] = [];
   const chapterTests: TestSummary[] = [];
+
+  // Add custom tests first
+  try {
+    const customSummaries = listCustomTests();
+    for (const c of customSummaries) {
+      if (c.is_full_mock) {
+        fullMocks.push(c);
+      } else {
+        chapterTests.push(c);
+      }
+    }
+  } catch (e) {
+    console.warn("Failed to list custom tests in getAvailableTests:", e);
+  }
 
   for (const r of rows) {
     const isMft = r.source_file.startsWith("MFT-");
@@ -128,8 +144,22 @@ export function getAvailableTests(): { fullMocks: TestSummary[]; chapterTests: T
 }
 
 export function getTestById(testId: string): TestDetail | null {
+  const cleanId = decodeURIComponent(testId);
+
+  // 1. Check if it is a custom created/curated test or active paper
+  try {
+    const custom = getCustomTest(cleanId);
+    if (custom) return custom;
+  } catch (e) {
+    console.warn("Error checking custom test in getTestById:", e);
+  }
+
   const db = getDb();
-  const decodedFile = decodeURIComponent(testId);
+  let decodedFile = cleanId;
+  const mftMatch = cleanId.match(/^MFT-0?(\d+)(\.pdf)?$/i);
+  if (mftMatch) {
+    decodedFile = `MFT-${mftMatch[1]}.pdf`;
+  }
 
   const query = `
     SELECT 
@@ -137,7 +167,7 @@ export function getTestById(testId: string): TestDetail | null {
       question_number, question_text, option_a, option_b, option_c, option_d, 
       correct_answer, solution, difficulty, has_image, image_paths
     FROM questions 
-    WHERE source_file = ?
+    WHERE source_file = ? OR source_file = ? OR source_file = ?
     ORDER BY 
       CASE 
         WHEN subject = 'Physics' THEN 1
@@ -148,7 +178,7 @@ export function getTestById(testId: string): TestDetail | null {
       question_number ASC
   `;
 
-  const rows = db.prepare(query).all(decodedFile) as any[];
+  const rows = db.prepare(query).all(decodedFile, cleanId, `${cleanId}.pdf`) as any[];
 
   if (!rows || rows.length === 0) {
     return null;
@@ -250,6 +280,7 @@ export interface EvaluationResult {
     solution: string;
     marksAwarded: number;
   }[];
+  submissionReason?: string;
 }
 
 export function evaluateTest(

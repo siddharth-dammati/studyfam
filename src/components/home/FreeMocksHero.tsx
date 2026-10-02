@@ -18,6 +18,9 @@ import {
   HelpCircle,
   PlayCircle,
   FileText,
+  Calendar,
+  Layers,
+  Award,
 } from "lucide-react";
 import { FREE_MOCKS_DATA, FreeMockTestItem } from "@/lib/freeMocksData";
 
@@ -41,55 +44,59 @@ export function FreeMocksHero() {
   });
 
   return (
-    <section className="relative pt-6 pb-20 sm:pb-28 overflow-hidden bg-gradient-to-b from-slate-50/80 via-white to-slate-50/40 border-b border-slate-200">
-      {/* Background Grid Pattern */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
-      <div className="absolute -top-32 right-0 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/3 -left-32 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative pt-10 pb-20 sm:pb-28 overflow-hidden bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC] text-slate-900 border-b border-slate-200/90">
+      {/* Soft Ambient Light Gradient Illumination */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.08),transparent_70%)] pointer-events-none" />
+      <div className="absolute top-48 right-[-80px] w-[450px] h-[450px] bg-[radial-gradient(circle,rgba(16,185,129,0.06),transparent_70%)] pointer-events-none" />
+      <div className="absolute bottom-10 left-[-80px] w-[450px] h-[450px] bg-[radial-gradient(circle,rgba(56,189,248,0.05),transparent_70%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-        {/* Hero Top Badges & Announcement Hook */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/90 text-emerald-800 text-xs font-semibold shadow-xs">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+        {/* Hero Top Badges & Announcement Hooks */}
+        <div className="flex flex-wrap items-center justify-center gap-2.5 mb-8 text-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/90 text-emerald-800 text-xs font-medium shadow-xs">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600" />
             </span>
-            <span>10 Full-Length Mocks Available Free</span>
-            <span className="text-emerald-300">·</span>
-            <span className="font-mono font-bold text-emerald-900">0 Fees / No Sign-up Barrier</span>
+            <span className="font-semibold">10 Full-Length Mocks Live</span>
+            <span className="text-emerald-400">·</span>
+            <span className="text-emerald-900 font-semibold">100% Free / Zero Paywall</span>
           </div>
 
           <Link
-            href="/all-india-mock"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-semibold transition-colors shadow-xs"
+            href="#all-india-mock"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium transition-all shadow-xs group"
           >
-            <Trophy size={13} className="text-indigo-600" />
-            <span>National Scholarship Mock (27 Dec)</span>
-            <ArrowRight size={12} />
+            <Trophy size={13} className="text-amber-500" />
+            <span>All-India Major Mock Test (27 Dec)</span>
+            <span className="text-amber-800 font-mono text-[10px] font-bold px-1.5 py-0.2 bg-amber-100 rounded-full border border-amber-200">
+              Registrations Open 20 Oct
+            </span>
+            <ArrowRight size={12} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
 
-        {/* Main H1 Headline for SEO */}
-        <div className="text-center max-w-4xl mx-auto mb-10">
-          <h1 className="text-[clamp(2.3rem,5vw,4.2rem)] font-extrabold tracking-tight text-slate-900 leading-[1.08] mb-5">
-            Free JEE Main 2027 Mock Test Series{" "}
+        {/* Main H1 Headline for SEO & High-End Startup Hero */}
+        <div className="text-center max-w-4xl mx-auto mb-12">
+          <h1 className="text-[clamp(2.4rem,5.5vw,4.5rem)] font-extrabold tracking-tight text-slate-900 leading-[1.08] mb-6">
+            The Modern CBT Test Series for{" "}
             <br className="hidden sm:inline" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-blue-600 to-emerald-600">
-              with Authentic NTA CBT Interface &amp; Solutions
+              JEE Main 2027 Aspirants.
             </span>
           </h1>
 
-          <p className="text-slate-600 text-base sm:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-8">
-            Practice <strong>10 full-length JEE Main mock tests</strong> designed strictly on the latest NTA syllabus &amp; 75-question pattern. Experience real TCS iON exam simulation, instant All-India percentile rank, and detailed step-by-step solutions.
+          <p className="text-slate-600 text-base sm:text-xl font-normal leading-relaxed max-w-3xl mx-auto mb-10">
+            Practice <strong>10 full-length JEE Main mock tests</strong> crafted strictly to the revised NTA 75-question syllabus. Experience 100% pixel-perfect TCS iON CBT simulation, instant All-India percentile prediction, and step-by-step textbook solutions — zero paywalls.
           </p>
 
-          {/* 4 Feature Pills */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto text-left">
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-3.5 shadow-xs flex items-start gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 mt-0.5">
-                <CheckCircle2 size={16} />
+          {/* 4 Feature Spec Badges */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 max-w-3xl mx-auto text-left">
+            <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 shadow-xs hover:shadow-sm transition-all flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 mt-0.5">
+                <CheckCircle2 size={18} />
               </div>
               <div>
                 <div className="text-xs font-bold text-slate-900">75 Questions Each</div>
@@ -97,49 +104,49 @@ export function FreeMocksHero() {
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-3.5 shadow-xs flex items-start gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
-                <Clock size={16} />
+            <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 shadow-xs hover:shadow-sm transition-all flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                <Clock size={18} />
               </div>
               <div>
-                <div className="text-xs font-bold text-slate-900">180 Minutes (3 Hrs)</div>
-                <div className="text-[11px] text-slate-500">Authentic countdown timer</div>
+                <div className="text-xs font-bold text-slate-900">180 Mins (3 Hrs)</div>
+                <div className="text-[11px] text-slate-500">Authentic NTA timer</div>
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-3.5 shadow-xs flex items-start gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
-                <BarChart3 size={16} />
+            <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 shadow-xs hover:shadow-sm transition-all flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center shrink-0 mt-0.5">
+                <BarChart3 size={18} />
               </div>
               <div>
                 <div className="text-xs font-bold text-slate-900">+4 / -1 Marking</div>
-                <div className="text-[11px] text-slate-500">Sec A (MCQ) &amp; Sec B (Num)</div>
+                <div className="text-[11px] text-slate-500">Sec A MCQ &amp; Sec B Num</div>
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-3.5 shadow-xs flex items-start gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
-                <Sparkles size={16} />
+            <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl p-4 shadow-xs hover:shadow-sm transition-all flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
+                <Sparkles size={18} />
               </div>
               <div>
                 <div className="text-xs font-bold text-slate-900">100% Free Forever</div>
-                <div className="text-[11px] text-slate-500">No paywall, full solutions</div>
+                <div className="text-[11px] text-slate-500">Full textbook solutions</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 10 FREE MOCKS SHOWCASE SECTION (Hero Core) */}
-        <div id="free-mocks" className="scroll-mt-24 mt-12 pt-6">
+        {/* 10 FREE MOCKS SHOWCASE SECTION (Hero Core - Kept right at the beginning!) */}
+        <div id="free-mocks" className="scroll-mt-24 mt-8 pt-4">
 
           {/* Filter & Search Bar */}
           <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-indigo-600" />
-              <h2 className="text-base sm:text-lg font-bold text-slate-900">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                 10 Official Full-Length Mock Tests (MFT-01 to MFT-10)
               </h2>
-              <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-mono font-bold">
+              <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-700 text-xs font-mono font-bold">
                 {filteredMocks.length} Tests
               </span>
             </div>
@@ -163,14 +170,14 @@ export function FreeMocksHero() {
               </div>
 
               {/* Search Box */}
-              <div className="relative flex-1 sm:w-60">
+              <div className="relative flex-1 sm:w-64">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search test or chapter..."
-                  className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                  className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                 />
               </div>
             </div>
@@ -181,12 +188,12 @@ export function FreeMocksHero() {
             {filteredMocks.map((mock) => (
               <div
                 key={mock.id}
-                className="bg-white border border-slate-200/90 hover:border-indigo-400/80 rounded-3xl p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group relative overflow-hidden"
+                className="bg-white border border-slate-200/90 hover:border-indigo-400/80 rounded-3xl p-6 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
               >
                 {/* Top Pill Row */}
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[11px] font-mono font-extrabold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-mono font-extrabold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-full">
                       {mock.code}
                     </span>
 
@@ -195,7 +202,7 @@ export function FreeMocksHero() {
                         mock.difficulty === "Standard"
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                           : mock.difficulty === "Moderate"
-                          ? "bg-blue-50 text-blue-700 border border-blue-200"
+                          ? "bg-sky-50 text-sky-700 border border-sky-200"
                           : "bg-purple-50 text-purple-700 border border-purple-200"
                       }`}>
                         {mock.difficulty} Level
@@ -224,7 +231,7 @@ export function FreeMocksHero() {
                       {mock.focusTopics.map((topic) => (
                         <span
                           key={topic}
-                          className="text-[11px] font-medium bg-slate-50 text-slate-700 border border-slate-200/70 px-2 py-0.5 rounded-lg"
+                          className="text-[11px] font-medium bg-slate-50 text-slate-700 border border-slate-200/80 px-2 py-0.5 rounded-lg"
                         >
                           {topic}
                         </span>
@@ -236,7 +243,7 @@ export function FreeMocksHero() {
                 {/* Card Bottom: Specs & CTA */}
                 <div>
                   {/* Pattern Breakdown */}
-                  <div className="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 text-center font-mono text-xs mb-4 bg-slate-50/60 rounded-xl">
+                  <div className="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 text-center font-mono text-xs mb-4 bg-slate-50/70 rounded-xl">
                     <div>
                       <div className="text-slate-400 text-[10px] uppercase">Questions</div>
                       <div className="font-bold text-slate-800">75 Qs</div>
@@ -255,7 +262,7 @@ export function FreeMocksHero() {
                   <div className="flex items-center gap-2">
                     <Link
                       href={mock.playerUrl}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs hover:shadow-sm transition-all active:scale-[0.98]"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs hover:shadow transition-all active:scale-[0.98]"
                     >
                       <PlayCircle size={15} />
                       <span>Start Free CBT Mock</span>
@@ -276,13 +283,13 @@ export function FreeMocksHero() {
           </div>
 
           {filteredMocks.length === 0 && (
-            <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center max-w-md mx-auto my-8">
+            <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center max-w-md mx-auto my-8 shadow-xs">
               <Search size={32} className="mx-auto text-slate-300 mb-3" />
               <h4 className="text-base font-bold text-slate-900 mb-1">No matching tests found</h4>
               <p className="text-xs text-slate-500 mb-4">Try clearing your search query or selecting &quot;All Levels&quot;.</p>
               <button
                 onClick={() => { setSelectedDifficulty("ALL"); setSearchQuery(""); }}
-                className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold"
+                className="px-4 py-2 bg-slate-900 text-white font-bold rounded-xl text-xs hover:bg-slate-800 transition-colors"
               >
                 Reset Filters
               </button>
@@ -296,7 +303,7 @@ export function FreeMocksHero() {
                 <BookOpen size={14} />
                 <span>300+ Topic &amp; Chapter Tests Available</span>
               </div>
-              <h3 className="text-lg sm:text-xl font-bold tracking-tight">
+              <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white">
                 Want to practice individual chapters first?
               </h3>
               <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
@@ -322,10 +329,10 @@ export function FreeMocksHero() {
       {/* Test Structure Preview Modal */}
       {activeModalTest && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-xl relative animate-scaleUp">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative text-slate-900">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">
                   {activeModalTest.code} · Structure &amp; Syllabus
                 </span>
                 <h3 className="text-xl font-bold text-slate-900 mt-1">
@@ -354,14 +361,14 @@ export function FreeMocksHero() {
                 </ul>
               </div>
 
-              <div className="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100 text-xs">
+              <div className="p-3 bg-indigo-50/70 rounded-xl border border-indigo-100 text-xs">
                 <div className="font-bold text-indigo-950 mb-1">Marking Scheme (NTA Standard)</div>
-                <div className="text-indigo-800 text-[11px] leading-relaxed">
+                <div className="text-indigo-900 text-[11px] leading-relaxed">
                   +4 Marks for each correct answer · -1 Mark penalty for incorrect answers · 0 for unattempted questions. Maximum marks: 300.
                 </div>
               </div>
 
-              <div className="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100 text-xs">
+              <div className="p-3 bg-emerald-50/70 rounded-xl border border-emerald-100 text-xs">
                 <div className="font-bold text-emerald-950 mb-1">Core Topics Tested</div>
                 <div className="flex flex-wrap gap-1.5 mt-1">
                   {activeModalTest.focusTopics.map((t) => (

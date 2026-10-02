@@ -3,6 +3,7 @@
 import React from "react";
 import { X, FileText } from "lucide-react";
 import { TestSection } from "@/lib/examDb";
+import { formatQuestionText, formatOptionText } from "@/lib/questionFormatter";
 
 interface TcsIonQuestionPaperModalProps {
   isOpen: boolean;
@@ -54,8 +55,8 @@ export function TcsIonQuestionPaperModal({
                     </div>
 
                     {/* Question Text */}
-                    <div className="text-sm sm:text-[15px] font-medium leading-relaxed whitespace-pre-line text-gray-900">
-                      {q.question_text}
+                    <div className="text-sm sm:text-[15px] font-medium leading-relaxed whitespace-pre-wrap text-gray-900">
+                      {formatQuestionText(q.question_text)}
                     </div>
 
                     {/* Images if any */}
@@ -78,26 +79,26 @@ export function TcsIonQuestionPaperModal({
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-2 text-xs sm:text-sm">
                         {q.option_a && (
                           <div className="p-2.5 bg-gray-50 rounded border border-gray-200 flex items-start space-x-2">
-                            <span className="font-bold text-blue-700">(A)</span>
-                            <span className="whitespace-pre-line">{q.option_a}</span>
+                            <span className="font-bold text-blue-700 shrink-0">(A)</span>
+                            <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(q.option_a)}</span>
                           </div>
                         )}
                         {q.option_b && (
                           <div className="p-2.5 bg-gray-50 rounded border border-gray-200 flex items-start space-x-2">
-                            <span className="font-bold text-blue-700">(B)</span>
-                            <span className="whitespace-pre-line">{q.option_b}</span>
+                            <span className="font-bold text-blue-700 shrink-0">(B)</span>
+                            <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(q.option_b)}</span>
                           </div>
                         )}
                         {q.option_c && (
                           <div className="p-2.5 bg-gray-50 rounded border border-gray-200 flex items-start space-x-2">
-                            <span className="font-bold text-blue-700">(C)</span>
-                            <span className="whitespace-pre-line">{q.option_c}</span>
+                            <span className="font-bold text-blue-700 shrink-0">(C)</span>
+                            <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(q.option_c)}</span>
                           </div>
                         )}
                         {q.option_d && (
                           <div className="p-2.5 bg-gray-50 rounded border border-gray-200 flex items-start space-x-2">
-                            <span className="font-bold text-blue-700">(D)</span>
-                            <span className="whitespace-pre-line">{q.option_d}</span>
+                            <span className="font-bold text-blue-700 shrink-0">(D)</span>
+                            <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(q.option_d)}</span>
                           </div>
                         )}
                       </div>

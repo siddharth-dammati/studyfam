@@ -1,29 +1,31 @@
 import type { Metadata } from "next";
 import { HomeNavbar } from "@/components/home/HomeNavbar";
 import { FreeMocksHero } from "@/components/home/FreeMocksHero";
-import { CbtExperienceSection } from "@/components/home/CbtExperienceSection";
-import { SyllabusCoverageSection } from "@/components/home/SyllabusCoverageSection";
-import { ChapterPracticeSpotlight } from "@/components/home/ChapterPracticeSpotlight";
-import { TestSeriesComparison } from "@/components/home/TestSeriesComparison";
 import { ScholarshipMockBanner } from "@/components/home/ScholarshipMockBanner";
+import { CbtExperienceSection } from "@/components/home/CbtExperienceSection";
+import { ChapterPracticeSpotlight } from "@/components/home/ChapterPracticeSpotlight";
+import { SyllabusCoverageSection } from "@/components/home/SyllabusCoverageSection";
+import { TestSeriesComparison } from "@/components/home/TestSeriesComparison";
 import { HomeFAQ } from "@/components/home/HomeFAQ";
 import { HOME_FAQS } from "@/lib/faqData";
 import { HomeFooter } from "@/components/home/HomeFooter";
 import { FREE_MOCKS_DATA } from "@/lib/freeMocksData";
 
 export const metadata: Metadata = {
-  title: "Free JEE Main Mock Test 2027 | 10 Full-Length NTA CBT Tests with Solutions",
-  description: "Practice 10 free full-length JEE Main 2027 mock tests (MFT-1 to MFT-10) with authentic NTA / TCS iON CBT interface, instant All-India percentile prediction, and step-by-step solutions. 100% free.",
+  title: "Free JEE Main Mock Test 2027 | 10 Full-Length NTA CBT Tests & All-India Scholarship Mock",
+  description: "Practice 10 free full-length JEE Main 2027 mock tests (MFT-1 to MFT-10) with authentic NTA TCS iON CBT interface, instant All-India percentile prediction, and step-by-step solutions. Compete in the All-India Major Mock Test on 27 Dec 2026 (Registrations open 20 Oct 2026). 100% free forever.",
   keywords: [
     "free jee mock test",
     "jee main 2027 mock test free",
+    "all india jee mock test",
     "online cbt test series for jee",
     "nta jee main mock test with solutions",
+    "tcs ion cbt mock test replica",
     "full syllabus jee mock test free",
     "jee main cbt simulation",
     "studyfam jee mock",
-    "jee main free online practice",
     "jee test series 75 questions",
+    "jee scholarship mock test",
   ],
   authors: [{ name: "StudyFAM Education" }],
   creator: "StudyFAM",
@@ -33,8 +35,8 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Free JEE Main Mock Test 2027 | 10 Full-Length NTA CBT Tests with Solutions",
-    description: "Take 10 free full-length JEE Main mock tests (750 questions) with real NTA CBT simulation, All-India rank predictor, and step-by-step solutions. 100% free forever.",
+    title: "Free JEE Main Mock Test 2027 | 10 Full-Length NTA CBT Tests & Scholarship Mock",
+    description: "Take 10 free full-length JEE Main mock tests (750 questions) with official TCS iON CBT simulation, All-India rank predictor, and step-by-step solutions. Compete in the 27 Dec All-India Mock (Registrations start 20 Oct 2026).",
     url: "https://studyfam.in",
     siteName: "StudyFAM",
     locale: "en_IN",
@@ -51,7 +53,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Free JEE Main Mock Test 2027 | 10 Full-Length NTA CBT Tests",
-    description: "Practice 10 free full-length JEE Main mock tests on official TCS iON CBT interface with instant solutions.",
+    description: "Practice 10 free full-length JEE Main mock tests on official TCS iON CBT interface with instant solutions. 27 Dec All-India Mock Registrations open 20 Oct 2026.",
     images: ["/icon.png"],
   },
   robots: {
@@ -68,7 +70,7 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  // Structured JSON-LD Data for Rich Google Results
+  // Comprehensive Structured JSON-LD Data for Rich Google Results & SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -103,6 +105,31 @@ export default function HomePage() {
         })),
       },
       {
+        "@type": "Event",
+        "@id": "https://studyfam.in/#all-india-mock-event",
+        name: "All-India Major Mock Test 2027 (National Scholarship Examination)",
+        description: "Nationwide JEE Main 2027 CBT mock exam where ₹18 of every ₹27 registration fee funds 100% NTA application fee refunds for top rankers across Merit and Need-based tracks.",
+        startDate: "2026-12-27T09:00:00+05:30",
+        endDate: "2026-12-27T12:00:00+05:30",
+        eventStatus: "https://schema.org/EventScheduled",
+        eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+        location: {
+          "@type": "VirtualLocation",
+          url: "https://studyfam.in/all-india-mock",
+        },
+        offers: {
+          "@type": "Offer",
+          price: "27",
+          priceCurrency: "INR",
+          validFrom: "2026-10-20T00:00:00+05:30",
+          availability: "https://schema.org/PreOrder",
+          url: "https://studyfam.in/all-india-mock",
+        },
+        organizer: {
+          "@id": "https://studyfam.in/#organization",
+        },
+      },
+      {
         "@type": "FAQPage",
         mainEntity: HOME_FAQS.map((faq) => ({
           "@type": "Question",
@@ -128,13 +155,19 @@ export default function HomePage() {
             name: "Free JEE Main Mock Tests",
             item: "https://studyfam.in/#free-mocks",
           },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: "All-India Mock (27 Dec)",
+            item: "https://studyfam.in/#all-india-mock",
+          },
         ],
       },
     ],
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-[#F8FAFC] text-slate-900 selection:bg-indigo-600 selection:text-white font-sans antialiased">
       {/* Semantic JSON-LD Schema for Search Engines */}
       <script
         type="application/ld+json"
@@ -145,29 +178,29 @@ export default function HomePage() {
       <HomeNavbar />
 
       <main>
-        {/* Hero Section with 10 Free Full Mocks Showcase */}
+        {/* 1. Hero Section with 10 Free Full Mocks Showcase (Kept right at the beginning) */}
         <FreeMocksHero />
 
-        {/* Authentic NTA / TCS iON CBT Engine Simulation */}
-        <CbtExperienceSection />
-
-        {/* 300+ Chapter-wise & Subject Practice Spotlight */}
-        <ChapterPracticeSpotlight />
-
-        {/* Official NTA 2027 Exam Pattern & High-Yield Weightage */}
-        <SyllabusCoverageSection />
-
-        {/* Transparent Comparison: StudyFAM Free Mocks vs Paid Coaching */}
-        <TestSeriesComparison />
-
-        {/* Upcoming Flagship 27 Dec National Scholarship Mock Spotlight */}
+        {/* 2. Flagship All-India Major Mock Test 2027 Spotlight (Registrations Start 20 Oct 2026 · Exam 27 Dec 2026) */}
         <ScholarshipMockBanner />
 
-        {/* SEO-Optimized High-Intent FAQ Section */}
+        {/* 3. Special Features Bento Grid: Authentic TCS iON CBT Engine, AIR Predictor, Solutions, Anti-Cheat */}
+        <CbtExperienceSection />
+
+        {/* 4. 300+ Chapter-wise Diagnostic Practice Tests Spotlight */}
+        <ChapterPracticeSpotlight />
+
+        {/* 5. Official NTA 2027 Exam Pattern & High-Yield Weightage Breakdown */}
+        <SyllabusCoverageSection />
+
+        {/* 6. Transparent Comparison: StudyFAM Free Mocks vs Paid Coaching */}
+        <TestSeriesComparison />
+
+        {/* 7. SEO-Optimized High-Intent FAQ Section */}
         <HomeFAQ />
       </main>
 
-      {/* Rich Semantic Footer */}
+      {/* 8. Rich Semantic Modern Light Footer */}
       <HomeFooter />
     </div>
   );

@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { testId, responses, timeSpentSeconds, candidateEmail } = body;
+    const { testId, responses, timeSpentSeconds, candidateEmail, submissionReason } = body;
 
     if (!testId || typeof responses !== "object") {
       return NextResponse.json(
@@ -31,6 +31,10 @@ export async function POST(request: NextRequest) {
         { success: false, error: "Test not found for evaluation" },
         { status: 404 }
       );
+    }
+
+    if (submissionReason) {
+      evaluation.submissionReason = submissionReason;
     }
 
     // Try saving attempt to Supabase if candidate is logged in or provides email

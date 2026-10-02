@@ -7,6 +7,7 @@ import { DEFAULT_SITE_CONFIG, SiteConfig, FAQItem } from "@/lib/siteConfig";
 import { ALLOWED_ADMIN_EMAILS, DEFAULT_ADMIN_PASSCODE } from "@/lib/adminAuth";
 import { CandidateRecord } from "@/components/dashboard/CandidateRegistrationCard";
 import Link from "next/link";
+import AdminExamManagerPage from "@/app/admin/exam/page";
 import {
   Shield,
   Key,
@@ -44,6 +45,7 @@ import {
   Database,
   Share2,
   BookOpen,
+  Zap,
   Heart,
   HeartHandshake,
   CheckSquare,
@@ -74,10 +76,29 @@ export default function AdminSuperPowerPage() {
   const [authError, setAuthError] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Active Tab: 'overview' | 'cms' | 'registration' | 'admitCard' | 'announcements'
+  // Active Tab: 'overview' | 'examStudio' | 'cms' | 'registration' | 'admitCard' | 'announcements'
   const [activeTab, setActiveTab] = useState<
-    "overview" | "cms" | "registration" | "admitCard" | "announcements"
+    "overview" | "examStudio" | "cms" | "registration" | "admitCard" | "announcements"
   >("overview");
+
+  // Dense / Compact View Mode for power-admin workflow
+  const [isCompactMode, setIsCompactMode] = useState(false);
+
+  // Selected Studio Test & Live Exam Stats
+  const [selectedStudioTestId, setSelectedStudioTestId] = useState<string>("active");
+  const [examOverview, setExamOverview] = useState<{
+    activeTitle: string;
+    totalQuestions: number;
+    durationMinutes: number;
+    customMocksCount: number;
+    mftList: any[];
+  }>({
+    activeTitle: "Official All India Active Mock",
+    totalQuestions: 75,
+    durationMinutes: 180,
+    customMocksCount: 0,
+    mftList: [],
+  });
 
   // Editable Site Config Clone
   const [editableConfig, setEditableConfig] = useState<SiteConfig>(globalConfig);
@@ -208,9 +229,61 @@ export default function AdminSuperPowerPage() {
     }
   };
 
+  // Fetch live exam & question bank overview
+  const fetchExamOverview = async () => {
+    try {
+      const res = await fetch("/api/admin/exam", {
+        method: "POST",
+        headers: {
+          ...getAuthHeaders(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "list_tests" }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setExamOverview({
+          activeTitle: data.activePaper?.title || "Official All India Active Mock",
+          totalQuestions: data.activePaper?.totalQuestions || 75,
+          durationMinutes: data.activePaper?.durationMinutes || 180,
+          customMocksCount: (data.customMocks || []).length,
+          mftList: data.mftSuite || [],
+        });
+      }
+    } catch (e) {
+      console.error("Failed to load exam overview:", e);
+    }
+  };
+
+  const handlePromoteMftToActive = async (mftId: string, mftTitle: string) => {
+    if (!confirm(`Are you sure you want to promote '${mftTitle}' to be the LIVE ACTIVE national exam paper for all students?`)) {
+      return;
+    }
+    try {
+      const res = await fetch("/api/admin/exam", {
+        method: "POST",
+        headers: {
+          ...getAuthHeaders(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "set_active", id: mftId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(`Successfully set '${mftTitle}' as the live active exam paper!`);
+        fetchExamOverview();
+      } else {
+        alert(data.error || "Failed to activate exam");
+      }
+    } catch (e: any) {
+      alert(e.message || "Failed to activate exam");
+    }
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchRegistrations();
+      fetchExamOverview();
     }
   }, [isAuthenticated, statusFilter, trackFilter, genderFilter, streamFilter]);
 
@@ -461,15 +534,33 @@ export default function AdminSuperPowerPage() {
           </div>
 
           {/* Center/Right Actions */}
-          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-            {/* 75-Q Test Paper Editor */}
-            <Link
-              href="/admin/exam"
-              className="px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-300 hover:text-white text-xs font-semibold transition-all flex items-center gap-1.5"
+          <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end flex-wrap">
+            {/* Dense / Compact View Toggle */}
+            <button
+              onClick={() => setIsCompactMode(!isCompactMode)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
+                isCompactMode
+                  ? "bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-600/30"
+                  : "bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white"
+              }`}
+              title="Toggle dense compact portal layout"
             >
-              <BookOpen size={13} />
-              <span>75-Q Test Paper Editor</span>
-            </Link>
+              <Sliders size={13} className={isCompactMode ? "text-white" : "text-indigo-400"} />
+              <span>{isCompactMode ? "Dense: ON" : "Dense View"}</span>
+            </button>
+
+            {/* Mock Test Studio & Question Bank Quick Tab Switcher */}
+            <button
+              onClick={() => setActiveTab("examStudio")}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer ${
+                activeTab === "examStudio"
+                  ? "bg-indigo-600 text-white shadow-indigo-600/30"
+                  : "bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/50 text-indigo-200 hover:text-white"
+              }`}
+            >
+              <Sparkles size={14} className="text-amber-400" />
+              <span>Mock Tests &amp; Studio</span>
+            </button>
 
             {/* Live site link */}
             <Link
@@ -496,7 +587,7 @@ export default function AdminSuperPowerPage() {
               ) : (
                 <Save size={14} />
               )}
-              <span>{hasUnsavedChanges ? "Publish Unsaved Changes" : "Save / Publish"}</span>
+              <span>{hasUnsavedChanges ? "Publish Changes" : "Save / Publish"}</span>
             </button>
 
             {/* Logout button */}
@@ -530,6 +621,7 @@ export default function AdminSuperPowerPage() {
         <div className="max-w-7xl mx-auto flex overflow-x-auto no-scrollbar gap-1 py-2">
           {[
             { id: "overview", label: "Overview & Registrations", icon: Users },
+            { id: "examStudio", label: "Mock Tests & Studio", icon: Sparkles, badge: "9,395 Qs" },
             { id: "cms", label: "Landing Page CMS", icon: Layers },
             { id: "registration", label: "Registration Module", icon: Sliders },
             { id: "admitCard", label: "Hall Ticket & Admit Card", icon: FileText },
@@ -541,7 +633,7 @@ export default function AdminSuperPowerPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
+                className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 cursor-pointer ${
                   active
                     ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
@@ -552,6 +644,11 @@ export default function AdminSuperPowerPage() {
                 {tab.id === "overview" && stats && (
                   <span className="ml-1 px-1.5 py-0.2 rounded-full bg-indigo-950 text-[10px] font-mono text-indigo-200 border border-indigo-500/30">
                     {stats.totalRegistrations}
+                  </span>
+                )}
+                {tab.id === "examStudio" && (
+                  <span className="ml-1 px-1.5 py-0.2 rounded-full bg-indigo-500/20 text-[10px] font-mono text-indigo-300 border border-indigo-500/30">
+                    9,395 Qs
                   </span>
                 )}
               </button>
@@ -567,106 +664,357 @@ export default function AdminSuperPowerPage() {
         {/* ============================================================== */}
         {activeTab === "overview" && (
           <div className="space-y-6 animate-fadeIn">
-            {/* AGGREGATED STAT CARDS */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-              {/* Total Registrations */}
-              <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
-                  Total Registrations
-                </span>
-                <div className="text-2xl font-black text-white font-mono">
-                  {stats ? stats.totalRegistrations : "..."}
+            {/* AGGREGATED STAT CARDS (COMPACTABLE) */}
+            {isCompactMode ? (
+              <div className="bg-[#0f172a] border border-slate-800 rounded-xl p-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 divide-y sm:divide-y-0 sm:divide-x divide-slate-800/80 text-xs shadow-md">
+                <div className="px-2">
+                  <span className="text-[10px] font-mono uppercase text-slate-400 block mb-0.5">
+                    Registrations
+                  </span>
+                  <div className="text-xl font-black text-white font-mono">
+                    {stats ? stats.totalRegistrations : "..."}
+                  </div>
                 </div>
-                <div className="text-[11px] text-slate-500 mt-1">Live Candidates in DB</div>
+                <div className="px-2 pt-2 sm:pt-0">
+                  <span className="text-[10px] font-mono uppercase text-emerald-400 block mb-0.5">
+                    Confirmed Paid
+                  </span>
+                  <div className="text-xl font-black text-emerald-400 font-mono">
+                    {stats ? stats.confirmedCount : "..."}
+                  </div>
+                </div>
+                <div className="px-2 pt-2 sm:pt-0">
+                  <span className="text-[10px] font-mono uppercase text-amber-400 block mb-0.5">
+                    Waitlist / Unpaid
+                  </span>
+                  <div className="text-xl font-black text-amber-400 font-mono">
+                    {stats ? stats.waitlistCount : "..."}
+                  </div>
+                </div>
+                <div className="px-2 pt-2 sm:pt-0">
+                  <span className="text-[10px] font-mono uppercase text-slate-400 block mb-0.5">
+                    Total Revenue
+                  </span>
+                  <div className="text-xl font-black text-white font-mono">
+                    ₹{stats ? stats.totalRevenue.toLocaleString() : "..."}
+                  </div>
+                </div>
+                <div className="px-2 pt-2 sm:pt-0">
+                  <span className="text-[10px] font-mono uppercase text-indigo-400 block mb-0.5">
+                    Scholarship Pool
+                  </span>
+                  <div className="text-xl font-black text-indigo-400 font-mono">
+                    ₹{stats ? stats.scholarshipPool.toLocaleString() : "..."}
+                  </div>
+                </div>
+                <div className="px-2 pt-2 sm:pt-0">
+                  <span className="text-[10px] font-mono uppercase text-purple-400 block mb-0.5">
+                    Funded Aspirants
+                  </span>
+                  <div className="text-xl font-black text-purple-400 font-mono">
+                    {stats ? stats.fundedStudents : "..."}
+                  </div>
+                </div>
               </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+                {/* Total Registrations */}
+                <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
+                    Total Registrations
+                  </span>
+                  <div className="text-2xl font-black text-white font-mono">
+                    {stats ? stats.totalRegistrations : "..."}
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-1">Live Candidates in DB</div>
+                </div>
 
-              {/* Confirmed Paid */}
-              <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 block mb-1">
-                  Confirmed Seats
-                </span>
-                <div className="text-2xl font-black text-emerald-400 font-mono">
-                  {stats ? stats.confirmedCount : "..."}
+                {/* Confirmed Paid */}
+                <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 block mb-1">
+                    Confirmed Seats
+                  </span>
+                  <div className="text-2xl font-black text-emerald-400 font-mono">
+                    {stats ? stats.confirmedCount : "..."}
+                  </div>
+                  <div className="text-[11px] text-emerald-500/70 mt-1">Paid ₹27 Fee</div>
                 </div>
-                <div className="text-[11px] text-emerald-500/70 mt-1">Paid ₹27 Fee</div>
-              </div>
 
-              {/* Waitlist */}
-              <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 block mb-1">
-                  Waitlist / Unpaid
-                </span>
-                <div className="text-2xl font-black text-amber-400 font-mono">
-                  {stats ? stats.waitlistCount : "..."}
+                {/* Waitlist */}
+                <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 block mb-1">
+                    Waitlist / Unpaid
+                  </span>
+                  <div className="text-2xl font-black text-amber-400 font-mono">
+                    {stats ? stats.waitlistCount : "..."}
+                  </div>
+                  <div className="text-[11px] text-amber-500/70 mt-1">Pending payment</div>
                 </div>
-                <div className="text-[11px] text-amber-500/70 mt-1">Pending payment</div>
-              </div>
 
-              {/* Total Revenue */}
-              <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
-                  Total Revenue
-                </span>
-                <div className="text-2xl font-black text-white font-mono">
-                  ₹{stats ? stats.totalRevenue.toLocaleString() : "..."}
+                {/* Total Revenue */}
+                <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
+                    Total Revenue
+                  </span>
+                  <div className="text-2xl font-black text-white font-mono">
+                    ₹{stats ? stats.totalRevenue.toLocaleString() : "..."}
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-1">Gross ₹27 collections</div>
                 </div>
-                <div className="text-[11px] text-slate-500 mt-1">Gross ₹27 collections</div>
-              </div>
 
-              {/* Scholarship Pool */}
-              <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-indigo-400 block mb-1">
-                  Scholarship Pool
-                </span>
-                <div className="text-2xl font-black text-indigo-400 font-mono">
-                  ₹{stats ? stats.scholarshipPool.toLocaleString() : "..."}
+                {/* Scholarship Pool */}
+                <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-indigo-400 block mb-1">
+                    Scholarship Pool
+                  </span>
+                  <div className="text-2xl font-black text-indigo-400 font-mono">
+                    ₹{stats ? stats.scholarshipPool.toLocaleString() : "..."}
+                  </div>
+                  <div className="text-[11px] text-indigo-400/70 mt-1">₹18/seat dedicated</div>
                 </div>
-                <div className="text-[11px] text-indigo-400/70 mt-1">₹18/seat dedicated</div>
-              </div>
 
-              {/* Funded Students */}
-              <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-purple-400 block mb-1">
-                  Funded Aspirants
-                </span>
-                <div className="text-2xl font-black text-purple-400 font-mono">
-                  {stats ? stats.fundedStudents : "..."}
+                {/* Funded Students */}
+                <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 shadow-sm">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-purple-400 block mb-1">
+                    Funded Aspirants
+                  </span>
+                  <div className="text-2xl font-black text-purple-400 font-mono">
+                    {stats ? stats.fundedStudents : "..."}
+                  </div>
+                  <div className="text-[11px] text-purple-400/70 mt-1">100% JEE Fees Covered</div>
                 </div>
-                <div className="text-[11px] text-purple-400/70 mt-1">100% JEE Fees Covered</div>
               </div>
-            </div>
+            )}
 
             {/* TRACK & GENDER BREAKDOWN PILLS */}
             {stats && (
-              <div className="bg-[#0e1628] border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 text-xs">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-slate-400 font-mono uppercase text-[11px] font-semibold mr-1">
-                    Track Distribution:
+              <div className={`bg-[#0e1628] border border-slate-800 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs ${
+                isCompactMode ? "p-2.5" : "p-4"
+              }`}>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-slate-400 font-mono uppercase text-[10px] font-semibold mr-1">
+                    Tracks:
                   </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 font-medium">
+                  <span className="px-2 py-0.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 font-medium text-[11px]">
                     🏆 Merit: <strong>{stats.meritCount}</strong>
                   </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 font-medium">
+                  <span className="px-2 py-0.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 font-medium text-[11px]">
                     ❤️ Need-Based: <strong>{stats.needCount}</strong>
                   </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 font-medium">
+                  <span className="px-2 py-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 font-medium text-[11px]">
                     💖 Opt-Out: <strong>{stats.optOutCount}</strong>
                   </span>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-slate-400 font-mono uppercase text-[11px] font-semibold mr-1">
-                    Gender Demographics:
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-slate-400 font-mono uppercase text-[10px] font-semibold mr-1">
+                    Gender:
                   </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-300 font-medium">
+                  <span className="px-2 py-0.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-300 font-medium text-[11px]">
                     Boys: <strong>{stats.boysCount}</strong>
                   </span>
-                  <span className="px-2.5 py-1 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-300 font-medium">
+                  <span className="px-2 py-0.5 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-300 font-medium text-[11px]">
                     Girls: <strong>{stats.girlsCount}</strong>
                   </span>
                 </div>
               </div>
             )}
+
+            {/* LIVE MOCK EXAM & QUESTION BANK COMMAND CARD */}
+            <div className={`bg-gradient-to-r from-blue-950/60 via-indigo-950/50 to-purple-950/60 border border-indigo-500/30 rounded-2xl shadow-xl transition-all relative overflow-hidden ${
+              isCompactMode ? "p-4" : "p-5 sm:p-6"
+            }`}>
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="space-y-1.5 max-w-2xl">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] font-mono font-bold uppercase tracking-wider">
+                      <Sparkles size={11} className="text-amber-400" />
+                      <span>Active Mock Exam &amp; Question Studio</span>
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-mono font-bold">
+                      Live: {examOverview.activeTitle}
+                    </span>
+                  </div>
+                  <h3 className={`font-black text-white tracking-tight ${isCompactMode ? "text-base sm:text-lg" : "text-lg sm:text-xl"}`}>
+                    Curate &amp; Customize Mock Tests from 9,395 Questions Bank
+                  </h3>
+                  {!isCompactMode && (
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      Customize every question &amp; option for any mock test, build brand new tests from scratch, and filter the question bank <strong className="text-blue-300">Subject-wise</strong>, <strong className="text-purple-300">Question Type-wise</strong>, <strong className="text-emerald-300">Difficulty-wise</strong>, and <strong className="text-amber-300">Chapter-wise</strong>.
+                    </p>
+                  )}
+                  <div className="flex flex-wrap gap-2 pt-1 text-[11px] font-mono text-slate-400">
+                    <span className="bg-slate-900/80 px-2 py-0.5 rounded border border-slate-700/80">
+                      ⚛️ Physics: <strong className="text-blue-400">3,235 Qs</strong>
+                    </span>
+                    <span className="bg-slate-900/80 px-2 py-0.5 rounded border border-slate-700/80">
+                      🧪 Chemistry: <strong className="text-emerald-400">2,855 Qs</strong>
+                    </span>
+                    <span className="bg-slate-900/80 px-2 py-0.5 rounded border border-slate-700/80">
+                      📐 Mathematics: <strong className="text-purple-400">3,305 Qs</strong>
+                    </span>
+                    <span className="bg-slate-900/80 px-2 py-0.5 rounded border border-slate-700/80">
+                      🎯 Major MFTs: <strong className="text-amber-400">10 Full Mocks</strong>
+                    </span>
+                    {examOverview.customMocksCount > 0 && (
+                      <span className="bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">
+                        🛠️ Custom Overrides: <strong>{examOverview.customMocksCount}</strong>
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 z-10 w-full md:w-auto shrink-0">
+                  <button
+                    onClick={() => setActiveTab("examStudio")}
+                    className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 cursor-pointer active:scale-98"
+                  >
+                    <BookOpen size={14} />
+                    <span>Manage in Studio</span>
+                  </button>
+                  <Link
+                    href="/exam/player?id=active"
+                    target="_blank"
+                    className="px-3.5 py-2.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <ExternalLink size={13} className="text-amber-400" />
+                    <span>Test in Player</span>
+                  </Link>
+                  <Link
+                    href="/admin/exam"
+                    target="_blank"
+                    className="px-3.5 py-2.5 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5"
+                    title="Open standalone studio in new browser tab"
+                  >
+                    <span>Full Window ↗</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* ALL 10 MAJOR FULL MOCK TESTS (MFT SUITE) CUSTOMIZATION HUB */}
+            <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <BookOpen className="w-5 h-5 text-indigo-400" />
+                    <h3 className="text-base font-extrabold text-white">
+                      All 10 Major Full Mock Tests (MFT-01 to MFT-10) Customizer
+                    </h3>
+                    <span className="text-[10px] font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-bold">
+                      10 Full Tests · 75 Qs Each
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400">
+                    Customize every single question and option for any of the 10 MFTs using our 9,395 questions database, test them live in the authentic CBT Player, or set any MFT as the live nationwide mock.
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setSelectedStudioTestId("MFT-1.pdf");
+                    setActiveTab("examStudio");
+                  }}
+                  className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/20 shrink-0 cursor-pointer"
+                >
+                  <Sparkles size={13} className="text-amber-300" />
+                  <span>Open MFT Studio</span>
+                </button>
+              </div>
+
+              {/* Grid of All 10 MFTs */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                {(examOverview.mftList && examOverview.mftList.length > 0
+                  ? examOverview.mftList
+                  : Array.from({ length: 10 }, (_, i) => ({
+                      num: i + 1,
+                      code: `MFT-${i + 1 < 10 ? "0" + (i + 1) : i + 1}`,
+                      id: `MFT-${i + 1}.pdf`,
+                      title: `JEE Main — MFT-${i + 1 < 10 ? "0" + (i + 1) : i + 1}`,
+                      totalQuestions: 75,
+                      durationMinutes: 180,
+                      isCustomized: false,
+                      playerUrl: `/exam/player?id=MFT-${i + 1}.pdf`,
+                    }))
+                ).map((mft: any) => (
+                  <div
+                    key={mft.num}
+                    className={`bg-slate-900/80 border rounded-xl p-3.5 flex flex-col justify-between space-y-3 transition-all hover:border-slate-700 shadow-xs ${
+                      mft.isCustomized
+                        ? "border-amber-500/40 bg-gradient-to-b from-slate-900 to-amber-950/20"
+                        : "border-slate-800"
+                    }`}
+                  >
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="font-extrabold text-sm text-white flex items-center gap-1.5">
+                          <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
+                          <span>{mft.code}</span>
+                        </span>
+                        {mft.isCustomized ? (
+                          <span className="text-[9px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                            Custom
+                          </span>
+                        ) : (
+                          <span className="text-[9px] font-mono text-slate-500 bg-slate-800/80 px-1.5 py-0.2 rounded border border-slate-700">
+                            Default
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="text-[11px] text-slate-300 font-medium">
+                        Major Full Mock Test {mft.num}
+                      </div>
+
+                      <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400 pt-0.5">
+                        <span className="bg-slate-800/80 px-1.5 py-0.5 rounded border border-slate-700/60">
+                          {mft.totalQuestions || 75} Qs (25P·25C·25M)
+                        </span>
+                        <span className="bg-slate-800/80 px-1.5 py-0.5 rounded border border-slate-700/60">
+                          180m
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5 pt-1 border-t border-slate-800/60">
+                      <button
+                        onClick={() => {
+                          setSelectedStudioTestId(mft.id);
+                          setActiveTab("examStudio");
+                        }}
+                        className="w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer"
+                        title={`Customize all 75 questions in ${mft.code}`}
+                      >
+                        <Edit3 size={11} />
+                        <span>Customize 75 Qs</span>
+                      </button>
+
+                      <div className="grid grid-cols-2 gap-1.5">
+                        <Link
+                          href={mft.playerUrl || `/exam/player?id=${encodeURIComponent(mft.id)}`}
+                          target="_blank"
+                          className="py-1 px-1.5 bg-slate-800 hover:bg-slate-750 text-slate-300 hover:text-white rounded-lg text-[10px] font-medium transition-all flex items-center justify-center gap-1 border border-slate-700"
+                          title={`Test ${mft.code} in student CBT player`}
+                        >
+                          <ExternalLink size={10} className="text-amber-400" />
+                          <span>Player ↗</span>
+                        </Link>
+
+                        <button
+                          onClick={() => handlePromoteMftToActive(mft.id, mft.title || mft.code)}
+                          className="py-1 px-1.5 bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 rounded-lg text-[10px] font-medium transition-all flex items-center justify-center gap-1 border border-purple-500/30 cursor-pointer"
+                          title={`Promote ${mft.code} to become the nationwide Live Active mock`}
+                        >
+                          <Zap size={10} className="text-purple-400" />
+                          <span>Make Live</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* SEARCH, FILTERS & EXPORT TOOLBAR */}
             <div className="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 space-y-4">
@@ -778,15 +1126,15 @@ export default function AdminSuperPowerPage() {
                 <table className="w-full text-left text-xs">
                   <thead className="bg-[#0A101D] text-slate-400 font-mono text-[10px] uppercase border-b border-slate-800">
                     <tr>
-                      <th className="py-3 px-4">Candidate & Email</th>
-                      <th className="py-3 px-4">Phone</th>
-                      <th className="py-3 px-4">Cohort</th>
-                      <th className="py-3 px-4">Gender</th>
-                      <th className="py-3 px-4">Track</th>
-                      <th className="py-3 px-4">Income Bracket</th>
-                      <th className="py-3 px-4">Status & Paid</th>
-                      <th className="py-3 px-4">Order Ref</th>
-                      <th className="py-3 px-4 text-right">Date</th>
+                      <th className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>Candidate & Email</th>
+                      <th className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>Phone</th>
+                      <th className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>Cohort</th>
+                      <th className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>Gender</th>
+                      <th className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>Track</th>
+                      <th className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>Income Bracket</th>
+                      <th className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>Status & Paid</th>
+                      <th className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>Order Ref</th>
+                      <th className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"} text-right`}>Date</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800 text-slate-300">
@@ -808,16 +1156,16 @@ export default function AdminSuperPowerPage() {
                         const isPaid = r.status === "confirmed" || (r.amount_paid && r.amount_paid > 0);
                         return (
                           <tr key={r.id || idx} className="hover:bg-slate-800/40 transition-colors">
-                            <td className="py-3 px-4">
+                            <td className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>
                               <div className="font-bold text-white text-xs">{r.full_name || "Anonymous"}</div>
                               <div className="text-[11px] text-slate-400 font-mono truncate max-w-[200px]">
                                 {r.email}
                               </div>
                             </td>
-                            <td className="py-3 px-4 font-mono text-slate-300">
+                            <td className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"} font-mono text-slate-300`}>
                               {r.phone || "—"}
                             </td>
-                            <td className="py-3 px-4">
+                            <td className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>
                               <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] font-mono">
                                 {r.jee_status === "class-11"
                                   ? "Class 11"
@@ -828,7 +1176,7 @@ export default function AdminSuperPowerPage() {
                                   : r.jee_status || "—"}
                               </span>
                             </td>
-                            <td className="py-3 px-4 font-medium capitalize">
+                            <td className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"} font-medium capitalize`}>
                               {r.gender ? (
                                 <span
                                   className={`px-2 py-0.5 rounded text-[10px] font-bold ${
@@ -845,7 +1193,7 @@ export default function AdminSuperPowerPage() {
                                 <span className="text-slate-500 text-[10px]">Open</span>
                               )}
                             </td>
-                            <td className="py-3 px-4">
+                            <td className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>
                               {r.scholarship_track === "opt_out" ? (
                                 <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold flex items-center gap-1 w-fit">
                                   <HeartHandshake size={11} /> Opt-Out
@@ -860,10 +1208,10 @@ export default function AdminSuperPowerPage() {
                                 </span>
                               )}
                             </td>
-                            <td className="py-3 px-4 text-slate-400 text-[11px] font-mono">
+                            <td className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"} text-slate-400 text-[11px] font-mono`}>
                               {r.family_income ? r.family_income.replace("_", " – ").replace("l", "L") : "—"}
                             </td>
-                            <td className="py-3 px-4">
+                            <td className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"}`}>
                               {isPaid ? (
                                 <span className="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold text-[10px] flex items-center gap-1 w-fit">
                                   <Check size={11} /> Confirmed (₹{r.amount_paid || 27})
@@ -874,10 +1222,10 @@ export default function AdminSuperPowerPage() {
                                 </span>
                               )}
                             </td>
-                            <td className="py-3 px-4 font-mono text-[10px] text-slate-400 truncate max-w-[120px]">
+                            <td className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"} font-mono text-[10px] text-slate-400 truncate max-w-[120px]`}>
                               {r.order_id || r.referral_code || "—"}
                             </td>
-                            <td className="py-3 px-4 text-right text-slate-500 font-mono text-[10px]">
+                            <td className={`${isCompactMode ? "py-1.5 px-3" : "py-3 px-4"} text-right text-slate-500 font-mono text-[10px]`}>
                               {r.created_at ? new Date(r.created_at).toLocaleDateString("en-IN") : "—"}
                             </td>
                           </tr>
@@ -888,6 +1236,19 @@ export default function AdminSuperPowerPage() {
                 </table>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB 2: MOCK TEST STUDIO & QUESTION BANK                       */}
+        {/* ============================================================== */}
+        {activeTab === "examStudio" && (
+          <div className="animate-fadeIn">
+            <AdminExamManagerPage
+              embedded={true}
+              externalPasscode={passcode}
+              initialTestId={selectedStudioTestId}
+            />
           </div>
         )}
 

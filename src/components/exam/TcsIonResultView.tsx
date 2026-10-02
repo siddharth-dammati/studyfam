@@ -13,8 +13,11 @@ import {
   RotateCcw,
   ChevronDown,
   ChevronUp,
+  AlertOctagon,
+  ShieldAlert,
 } from "lucide-react";
 import { EvaluationResult } from "@/lib/examDb";
+import { formatQuestionText, formatOptionText, formatSolutionText } from "@/lib/questionFormatter";
 
 interface TcsIonResultViewProps {
   testTitle: string;
@@ -91,6 +94,28 @@ export function TcsIonResultView({
       </header>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 space-y-8">
+        {/* Security Auto-Submit Warning Banner */}
+        {result.submissionReason === "EXCEEDED_TAB_SWITCH_LIMIT" && (
+          <div className="bg-rose-50 border-2 border-rose-500 rounded-xl p-5 shadow-sm flex items-start space-x-4 animate-in fade-in">
+            <div className="w-11 h-11 rounded-full bg-rose-100 border border-rose-300 flex items-center justify-center text-rose-600 shrink-0 mt-0.5">
+              <AlertOctagon className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-base font-extrabold text-rose-900">
+                  Examination Auto-Submitted Due to Security Violation
+                </h3>
+                <span className="px-2.5 py-0.5 bg-rose-200 text-rose-900 text-[10px] font-black uppercase tracking-wider rounded-full border border-rose-300">
+                  Tab Switch Limit Exceeded (&gt; 3 Times)
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-rose-800 mt-1.5 leading-relaxed">
+                This test was automatically locked and submitted by the proctoring engine because the candidate switched tabs or left the active examination window more than 3 times. All responses recorded prior to auto-submission have been graded and evaluated below.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Scorecard Hero Banner */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -273,8 +298,8 @@ export function TcsIonResultView({
                   </div>
 
                   {/* Question Text */}
-                  <div className="text-sm leading-relaxed whitespace-pre-line text-gray-900 font-medium">
-                    {q.questionText}
+                  <div className="text-sm leading-relaxed whitespace-pre-wrap text-gray-900 font-medium">
+                    {formatQuestionText(q.questionText)}
                   </div>
 
                   {/* Diagrams / Images */}
@@ -321,8 +346,8 @@ export function TcsIonResultView({
                             key={opt.key}
                             className={`p-3 rounded-lg border flex items-start space-x-2 ${optClass}`}
                           >
-                            <span className="font-bold">({opt.key})</span>
-                            <span className="whitespace-pre-line flex-1">{opt.val}</span>
+                            <span className="font-bold shrink-0">({opt.key})</span>
+                            <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(opt.val)}</span>
                             {isChosen && (
                               <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">
                                 Your Choice
@@ -371,8 +396,8 @@ export function TcsIonResultView({
                             <span className="font-bold text-blue-950 block mb-1">
                               Step-by-step Solution:
                             </span>
-                            <div className="whitespace-pre-line leading-relaxed text-gray-800 bg-white p-3 rounded border border-blue-100 font-mono text-xs">
-                              {q.solution}
+                            <div className="whitespace-pre-wrap leading-relaxed text-gray-800 bg-white p-3 rounded border border-blue-100 font-mono text-xs">
+                              {formatSolutionText(q.solution)}
                             </div>
                           </div>
                         ) : (

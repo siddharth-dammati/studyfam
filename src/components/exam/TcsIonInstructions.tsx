@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { User, Home, AlertCircle, ArrowUp, ArrowDown } from "lucide-react";
+import { User, Home, AlertCircle, ArrowUp, ArrowDown, ShieldAlert, Lock } from "lucide-react";
 
 interface TcsIonInstructionsProps {
   testTitle: string;
@@ -78,6 +78,30 @@ export function TcsIonInstructions({
           <span className="inline-block font-bold text-base sm:text-lg text-gray-900 border-b-2 border-blue-600 pb-1">
             Please read the instructions carefully
           </span>
+        </div>
+
+        {/* Anti-Malpractice & Strict Proctoring Protocol Notice */}
+        <div className="bg-rose-50 border-2 border-rose-300 rounded-xl p-4 sm:p-5 text-rose-950 space-y-3 mb-6">
+          <div className="flex items-center space-x-2.5 font-extrabold text-rose-800 text-sm sm:text-base border-b border-rose-200 pb-2">
+            <ShieldAlert className="w-5 h-5 text-rose-600 shrink-0" />
+            <span>EXAMINATION SECURITY &amp; ANTI-MALPRACTICE PROTOCOL</span>
+          </div>
+          <div className="text-xs sm:text-sm text-gray-800 space-y-2">
+            <p className="font-semibold text-rose-900">
+              Please note that this examination environment is strictly monitored with real-time browser integrity checks:
+            </p>
+            <ul className="list-disc pl-5 space-y-1.5 leading-relaxed text-gray-700">
+              <li>
+                <strong>Copy-Paste &amp; Right-Click Prohibited:</strong> Copying question text, pasting answers, right-click context menus, and text dragging are permanently blocked.
+              </li>
+              <li>
+                <strong>External Tools &amp; Keyboard Shortcuts Blocked:</strong> Developer Tools (F12, Inspect Element), viewing page source (Ctrl+U), saving/printing (Ctrl+S, Ctrl+P), and clipboard shortcuts are completely disabled.
+              </li>
+              <li>
+                <strong className="text-rose-700">Tab Switching Limit (Maximum 3 Warnings):</strong> Navigating away from the examination window or switching browser tabs is strictly prohibited. You will receive a warning for the first 3 infractions. If you switch tabs or leave the exam portal <strong>more than 3 times (on the 4th violation)</strong>, your examination will be <strong>AUTOMATICALLY SUBMITTED IMMEDIATELY</strong> with no option to re-enter.
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div className="space-y-6 text-sm sm:text-[15px] leading-relaxed text-gray-800">
@@ -260,11 +284,10 @@ export function TcsIonInstructions({
               className="mt-1 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
             />
             <span className="text-xs sm:text-sm text-gray-700 leading-normal">
-              I have read and understood the instructions. All computer hardware allotted to me are in proper working
-              condition. I declare that I am not in possession of / not wearing / not carrying any prohibited gadget
-              like mobile phone, bluetooth devices etc. /any prohibited material with me into the Examination Hall. I
-              agree that in case of not adhering to the instructions, I shall be liable to be debarred from this Test
-              and/or to disciplinary action, which may include ban from future Tests / Examinations.
+              I have read and understood all the instructions above. All computer hardware allotted to me are in proper working
+              condition. I agree to adhere strictly to all examination rules. I acknowledge that copy-pasting, right-clicking,
+              developer tools, and keyboard shortcuts are disabled. I understand that tab switching and window deviations are monitored,
+              and leaving or switching browser tabs more than 3 times will result in immediate, irrevocable automatic submission of my exam.
             </span>
           </label>
 

@@ -125,7 +125,11 @@ function ExamPlayerContent() {
     }
   }, [id]);
 
-  const handleSubmitExam = async (responses: Record<string, string>, timeSpentSeconds: number) => {
+  const handleSubmitExam = async (
+    responses: Record<string, string>,
+    timeSpentSeconds: number,
+    submissionReason?: string
+  ) => {
     if (!test) return;
 
     setSubmitting(true);
@@ -138,11 +142,15 @@ function ExamPlayerContent() {
           responses,
           timeSpentSeconds,
           candidateEmail: profile?.email || null,
+          submissionReason: submissionReason || null,
         }),
       });
 
       const json = await res.json();
       if (json.success && json.result) {
+        if (submissionReason) {
+          json.result.submissionReason = submissionReason;
+        }
         setEvaluationResult(json.result);
         setPhase("result");
       } else {
@@ -158,6 +166,7 @@ function ExamPlayerContent() {
   const handleRetakeExam = () => {
     if (!test) return;
     localStorage.removeItem(`sf_exam_state_${test.id}`);
+    localStorage.removeItem(`sf_exam_violations_${test.id}`);
     setEvaluationResult(null);
     setPhase("instructions");
   };

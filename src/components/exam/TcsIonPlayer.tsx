@@ -12,8 +12,15 @@ import {
   Info,
   HelpCircle,
   RotateCcw,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  AlertTriangle,
+  AlertOctagon,
+  Lock,
 } from "lucide-react";
 import { TestDetail, QuestionRecord } from "@/lib/examDb";
+import { formatQuestionText, formatOptionText } from "@/lib/questionFormatter";
 import { TcsIonSubmitModal, SectionSummaryStat } from "./TcsIonSubmitModal";
 import { TcsIonQuestionPaperModal } from "./TcsIonQuestionPaperModal";
 
@@ -29,7 +36,11 @@ interface TcsIonPlayerProps {
   candidateName?: string;
   candidateRoll?: string;
   candidateAvatar?: string;
-  onSubmitExam: (responses: Record<string, string>, timeSpentSeconds: number) => Promise<void>;
+  onSubmitExam: (
+    responses: Record<string, string>,
+    timeSpentSeconds: number,
+    submissionReason?: string
+  ) => Promise<void>;
   onBackToInstructions?: () => void;
   submitting?: boolean;
 }
@@ -73,8 +84,253 @@ export function TcsIonPlayer({
   const currentSection = test.sections[currentSecIdx] || test.sections[0];
   const currentQuestion = currentSection?.questions[currentQIdx] || currentSection?.questions[0];
 
-  // Storage key for state persistence
+  // Security & Proctoring State
+  const [tabViolations, setTabViolations] = useState<number>(0);
+  const [showSecurityWarningModal, setShowSecurityWarningModal] = useState<boolean>(false);
+  const [securityToast, setSecurityToast] = useState<string | null>(null);
+  const [isSecuritySubmitting, setIsSecuritySubmitting] = useState<boolean>(false);
+
+  // Storage keys for state persistence & violation tracking
   const storageKey = `sf_exam_state_${test.id}`;
+  const violationsKey = `sf_exam_violations_${test.id}`;
+
+  const lastViolationTimeRef = useRef<number>(0);
+  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isExamEndedRef = useRef<boolean>(false);
+
+  const triggerSecurityToast = (message: string) => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    setSecurityToast(message);
+    toastTimeoutRef.current = setTimeout(() => {
+      setSecurityToast(null);
+    }, 3500);
+  };
+
+  const triggerSecurityAutoSubmit = async (finalCount?: number) => {
+    if (isExamEndedRef.current) return;
+    isExamEndedRef.current = true;
+    setIsSecuritySubmitting(true);
+    setShowSecurityWarningModal(false);
+    setIsSubmitModalOpen(false);
+
+    const timeSpent = totalDurationSeconds - secondsLeft;
+    try {
+      localStorage.removeItem(storageKey);
+      await onSubmitExam(responses, timeSpent, "EXCEEDED_TAB_SWITCH_LIMIT");
+    } catch (err) {
+      console.error("Security auto-submit error:", err);
+    }
+  };
+
+  const recordTabSwitchViolation = () => {
+    if (isExamEndedRef.current || isSecuritySubmitting || submitting) return;
+
+    const now = Date.now();
+    // 1500ms debounce to prevent multiple triggers from blur + visibilitychange firing together
+    if (now - lastViolationTimeRef.current < 1500) return;
+    lastViolationTimeRef.current = now;
+
+    let current = 0;
+    try {
+      const saved = localStorage.getItem(violationsKey);
+      current = saved ? parseInt(saved, 10) : tabViolations;
+      if (isNaN(current)) current = 0;
+    } catch {
+      current = tabViolations;
+    }
+
+    const nextCount = current + 1;
+    try {
+      localStorage.setItem(violationsKey, String(nextCount));
+    } catch {}
+    setTabViolations(nextCount);
+
+    if (nextCount > 3) {
+      triggerSecurityAutoSubmit(nextCount);
+    } else {
+      setShowSecurityWarningModal(true);
+    }
+  };
+
+  // Restore tab violations from localStorage
+  useEffect(() => {
+    try {
+      const savedViolations = localStorage.getItem(violationsKey);
+      if (savedViolations) {
+        const parsed = parseInt(savedViolations, 10);
+        if (!isNaN(parsed) && parsed > 0) {
+          setTabViolations(parsed);
+          if (parsed > 3) {
+            triggerSecurityAutoSubmit(parsed);
+          }
+        }
+      }
+    } catch {}
+  }, [violationsKey]);
+
+  // Tab switch & focus monitoring
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        recordTabSwitchViolation();
+      } else {
+        try {
+          const saved = localStorage.getItem(violationsKey);
+          const count = saved ? parseInt(saved, 10) : tabViolations;
+          if (count > 3) {
+            triggerSecurityAutoSubmit(count);
+          } else if (count > 0 && !isExamEndedRef.current && !submitting) {
+            setShowSecurityWarningModal(true);
+          }
+        } catch {}
+      }
+    };
+
+    const handleBlur = () => {
+      recordTabSwitchViolation();
+    };
+
+    const handleFocus = () => {
+      try {
+        const saved = localStorage.getItem(violationsKey);
+        const count = saved ? parseInt(saved, 10) : tabViolations;
+        if (count > 3) {
+          triggerSecurityAutoSubmit(count);
+        } else if (count > 0 && !isExamEndedRef.current && !submitting) {
+          setShowSecurityWarningModal(true);
+        }
+      } catch {}
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("blur", handleBlur);
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("blur", handleBlur);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [tabViolations, isSecuritySubmitting, submitting, violationsKey, storageKey, totalDurationSeconds, secondsLeft, responses]);
+
+  // Anti-cheat clipboard, right-click, selection, drag & keyboard shortcut block
+  useEffect(() => {
+    const handleCopy = (e: ClipboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      triggerSecurityToast("Proctoring Alert: Copying text is strictly disabled during the exam.");
+    };
+
+    const handleCut = (e: ClipboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      triggerSecurityToast("Proctoring Alert: Cutting text is strictly disabled during the exam.");
+    };
+
+    const handlePaste = (e: ClipboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      triggerSecurityToast("Proctoring Alert: Pasting clipboard content is disabled during the exam.");
+    };
+
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      triggerSecurityToast("Proctoring Alert: Right-click context menu is disabled in the exam portal.");
+    };
+
+    const handleSelectStart = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
+        return;
+      }
+      e.preventDefault();
+    };
+
+    const handleDragStart = (e: DragEvent) => {
+      e.preventDefault();
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // F12 or Inspect / Developer tools
+      if (e.key === "F12") {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerSecurityToast("Proctoring Alert: Developer Tools (F12) are blocked.");
+        return;
+      }
+
+      // Ctrl+Shift+I / J / C / K (Developer Tools)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && ["I", "i", "J", "j", "C", "c", "K", "k"].includes(e.key)) {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerSecurityToast("Proctoring Alert: Inspect Element & DevTools are strictly prohibited.");
+        return;
+      }
+
+      // Ctrl+U (View Page Source)
+      if ((e.ctrlKey || e.metaKey) && (e.key === "u" || e.key === "U")) {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerSecurityToast("Proctoring Alert: Viewing Page Source is disabled.");
+        return;
+      }
+
+      // Ctrl+S (Save Page) or Ctrl+P (Print)
+      if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "S" || e.key === "p" || e.key === "P")) {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerSecurityToast("Proctoring Alert: Saving / Printing the exam page is disabled.");
+        return;
+      }
+
+      // Ctrl+A (Select All) - unless inside an input
+      if ((e.ctrlKey || e.metaKey) && (e.key === "a" || e.key === "A")) {
+        const target = e.target as HTMLElement;
+        if (!target || (target.tagName !== "INPUT" && target.tagName !== "TEXTAREA")) {
+          e.preventDefault();
+          e.stopPropagation();
+          triggerSecurityToast("Proctoring Alert: Select All is disabled.");
+          return;
+        }
+      }
+
+      // Ctrl+C, Ctrl+V, Ctrl+X
+      if ((e.ctrlKey || e.metaKey) && ["c", "C", "v", "V", "x", "X"].includes(e.key)) {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerSecurityToast("Proctoring Alert: Clipboard shortcuts (Copy/Paste/Cut) are disabled.");
+        return;
+      }
+
+      // PrintScreen Key
+      if (e.key === "PrintScreen") {
+        e.preventDefault();
+        if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText("").catch(() => {});
+        }
+        triggerSecurityToast("Proctoring Alert: Screenshots and PrintScreen are prohibited.");
+      }
+    };
+
+    window.addEventListener("copy", handleCopy, true);
+    window.addEventListener("cut", handleCut, true);
+    window.addEventListener("paste", handlePaste, true);
+    window.addEventListener("contextmenu", handleContextMenu, true);
+    window.addEventListener("selectstart", handleSelectStart, true);
+    window.addEventListener("dragstart", handleDragStart, true);
+    window.addEventListener("keydown", handleKeyDown, true);
+
+    return () => {
+      window.removeEventListener("copy", handleCopy, true);
+      window.removeEventListener("cut", handleCut, true);
+      window.removeEventListener("paste", handlePaste, true);
+      window.removeEventListener("contextmenu", handleContextMenu, true);
+      window.removeEventListener("selectstart", handleSelectStart, true);
+      window.removeEventListener("dragstart", handleDragStart, true);
+      window.removeEventListener("keydown", handleKeyDown, true);
+    };
+  }, []);
 
   // 1. Initialize or restore state from localStorage
   useEffect(() => {
@@ -284,9 +540,11 @@ export function TcsIonPlayer({
 
   const handleFinalSubmit = async () => {
     try {
+      isExamEndedRef.current = true;
       const timeSpent = totalDurationSeconds - secondsLeft;
       await onSubmitExam(responses, timeSpent);
       localStorage.removeItem(storageKey);
+      localStorage.removeItem(violationsKey);
     } catch (err) {
       console.error("Submit error:", err);
     }
@@ -334,7 +592,10 @@ export function TcsIonPlayer({
   };
 
   return (
-    <div className="flex flex-col h-screen bg-[#f1f5f9] text-[#1e293b] font-sans select-none overflow-hidden">
+    <div
+      style={{ userSelect: "none", WebkitUserSelect: "none" }}
+      className="flex flex-col h-screen bg-[#f1f5f9] text-[#1e293b] font-sans select-none overflow-hidden"
+    >
       {/* 1. TOP HEADER */}
       <header className="bg-white border-b border-gray-300 px-4 py-2 flex items-center justify-between shrink-0 shadow-2xs z-30">
         <div className="flex items-center space-x-3">
@@ -349,7 +610,37 @@ export function TcsIonPlayer({
         </div>
 
         {/* Candidate details & Countdown Timer */}
-        <div className="flex items-center space-x-4 sm:space-x-6">
+        <div className="flex items-center space-x-3 sm:space-x-4">
+          {/* Proctoring Status Monitor Badge */}
+          <div
+            className={`hidden sm:flex items-center space-x-2 px-2.5 py-1 rounded-md border text-xs font-bold transition-all shadow-2xs ${
+              tabViolations === 0
+                ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                : tabViolations < 3
+                ? "bg-amber-50 text-amber-900 border-amber-300 animate-pulse"
+                : "bg-rose-50 text-rose-900 border-rose-400 font-extrabold animate-bounce"
+            }`}
+            title="Real-time Anti-Cheat & Proctoring Engine"
+          >
+            {tabViolations === 0 ? (
+              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+            ) : tabViolations < 3 ? (
+              <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0" />
+            ) : (
+              <AlertOctagon className="w-4 h-4 text-rose-600 shrink-0" />
+            )}
+            <div className="flex flex-col leading-none">
+              <span className="text-[9px] uppercase tracking-wider text-gray-500">Security</span>
+              <span>
+                {tabViolations === 0
+                  ? "Proctored (0/3 Switches)"
+                  : tabViolations < 3
+                  ? `Warning: ${tabViolations}/3 Switches`
+                  : `Final Warning: 3/3`}
+              </span>
+            </div>
+          </div>
+
           {/* Candidate Info Box */}
           <div className="hidden md:flex items-center space-x-2 text-right">
             <div className="flex flex-col text-xs">
@@ -478,8 +769,8 @@ export function TcsIonPlayer({
             <div ref={topAnchorRef} />
 
             {/* Question Text */}
-            <div className="text-sm sm:text-base font-medium leading-relaxed whitespace-pre-line">
-              {currentQuestion?.question_text}
+            <div className="text-sm sm:text-base font-medium leading-relaxed whitespace-pre-wrap">
+              {formatQuestionText(currentQuestion?.question_text)}
             </div>
 
             {/* Question Diagrams / Images */}
@@ -507,18 +798,25 @@ export function TcsIonPlayer({
                   <div className="flex items-center space-x-2">
                     <input
                       type="text"
+                      inputMode="decimal"
                       value={responses[currentQuestion?.id || ""] || ""}
                       onChange={(e) => {
                         if (!currentQuestion) return;
                         const val = e.target.value;
-                        setResponses((prev) => ({ ...prev, [currentQuestion.id]: val }));
-                        setStatuses((prev) => ({
-                          ...prev,
-                          [currentQuestion.id]: val.trim() ? "ANSWERED" : "NOT_ANSWERED",
-                        }));
+                        if (/^[0-9.-]*$/.test(val)) {
+                          setResponses((prev) => ({ ...prev, [currentQuestion.id]: val }));
+                          setStatuses((prev) => ({
+                            ...prev,
+                            [currentQuestion.id]: val.trim() ? "ANSWERED" : "NOT_ANSWERED",
+                          }));
+                        }
+                      }}
+                      onPaste={(e) => {
+                        e.preventDefault();
+                        triggerSecurityToast("Proctoring Alert: Pasting into answers is disabled.");
                       }}
                       placeholder="Type or click keypad"
-                      className="flex-1 text-lg font-mono font-bold px-3.5 py-2 border-2 border-blue-600 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      className="flex-1 text-lg font-mono font-bold px-3.5 py-2 border-2 border-blue-600 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400 select-text"
                     />
                     <button
                       type="button"
@@ -613,9 +911,9 @@ export function TcsIonPlayer({
                           {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
                         </div>
                       </div>
-                      <div className="flex-1 text-xs sm:text-sm text-gray-800 leading-normal">
+                      <div className="flex-1 text-xs sm:text-sm text-gray-800 leading-normal break-words whitespace-normal">
                         <span className="font-bold mr-2">({opt.key})</span>
-                        <span className="whitespace-pre-line">{opt.label || `Option ${opt.key}`}</span>
+                        <span className="break-words">{formatOptionText(opt.label) || `Option ${opt.key}`}</span>
                       </div>
                     </label>
                   );
@@ -859,6 +1157,101 @@ export function TcsIonPlayer({
                 Close
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. TAB SWITCH WARNING MODAL (WARNINGS 1, 2, 3) */}
+      {showSecurityWarningModal && !isSecuritySubmitting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 sm:p-7 border-2 border-amber-500 flex flex-col items-center text-center animate-in zoom-in-95 duration-150">
+            <div className="w-16 h-16 rounded-full bg-amber-100 border-2 border-amber-400 flex items-center justify-center text-amber-600 mb-4 animate-pulse">
+              <ShieldAlert className="w-8 h-8" />
+            </div>
+
+            <div className="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider mb-2 bg-amber-100 text-amber-900 border border-amber-300">
+              Security Warning {tabViolations} of 3
+            </div>
+
+            <h3 className="text-xl font-extrabold text-gray-900 mb-2">
+              Tab Switch / Window Deviation Detected!
+            </h3>
+
+            <div className="text-xs sm:text-sm text-gray-700 space-y-3 leading-relaxed mb-6">
+              <p>
+                You have navigated away, switched browser tabs, or minimized the examination window.
+                Proctored examination rules strictly prohibit leaving the active exam window.
+              </p>
+              <div className="p-3 bg-amber-50 rounded-lg border border-amber-200 text-amber-900 font-semibold text-xs text-left">
+                <p className="font-bold mb-1">
+                  ⚠️ Warning Status: {tabViolations} / 3 Violations Registered
+                </p>
+                <p>
+                  {tabViolations < 3
+                    ? `You have ${3 - tabViolations} warning(s) remaining. If you switch tabs or leave more than 3 times, your exam will be automatically submitted immediately.`
+                    : "This is your FINAL WARNING (3 of 3). ANY FURTHER TAB SWITCH OR LEAVING THE TEST WINDOW WILL CAUSE IMMEDIATE AND PERMANENT AUTO-SUBMISSION!"}
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                setShowSecurityWarningModal(false);
+                window.focus();
+              }}
+              className="w-full py-3 bg-[#1e3a8a] hover:bg-[#172554] text-white font-bold text-sm rounded-lg shadow-md transition-all cursor-pointer active:scale-98"
+            >
+              I Understand &amp; Resume Examination
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 8. AUTO-SUBMISSION DUE TO SECURITY VIOLATION OVERLAY */}
+      {isSecuritySubmitting && (
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-8 border-4 border-rose-600 flex flex-col items-center text-center space-y-5 animate-in zoom-in-95 duration-150">
+            <div className="w-20 h-20 rounded-full bg-rose-100 border-4 border-rose-400 flex items-center justify-center text-rose-600 animate-bounce">
+              <AlertOctagon className="w-10 h-10" />
+            </div>
+
+            <div>
+              <span className="inline-block px-3 py-1 bg-rose-600 text-white text-xs font-black uppercase tracking-widest rounded-full mb-2">
+                Security Disqualification
+              </span>
+              <h2 className="text-2xl font-black text-gray-900">
+                Examination Auto-Submitted!
+              </h2>
+            </div>
+
+            <div className="bg-rose-50 border border-rose-200 rounded-lg p-4 text-xs sm:text-sm text-rose-900 leading-relaxed text-left space-y-2">
+              <p className="font-bold">
+                Maximum tab switch limit exceeded (more than 3 times).
+              </p>
+              <p>
+                You have switched tabs or left the examination portal 4 or more times. As per anti-cheating regulations, your examination has been locked and automatically submitted.
+              </p>
+              <p className="text-gray-600 text-xs">
+                Your answers submitted up to this moment are being evaluated...
+              </p>
+            </div>
+
+            <div className="flex items-center space-x-2 text-rose-700 font-bold text-sm">
+              <div className="w-4 h-4 border-2 border-rose-600 border-t-transparent rounded-full animate-spin" />
+              <span>Submitting &amp; Scoring Exam...</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 9. SECURITY TOAST NOTIFICATION */}
+      {securityToast && (
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-60 animate-in fade-in slide-in-from-top-4 duration-200 pointer-events-none">
+          <div className="bg-gray-900/95 text-white px-5 py-3 rounded-lg shadow-2xl border border-red-500/50 flex items-center space-x-3 text-xs sm:text-sm font-semibold max-w-lg pointer-events-auto">
+            <div className="w-6 h-6 rounded-full bg-red-600/30 border border-red-500 flex items-center justify-center text-red-400 shrink-0">
+              <ShieldAlert className="w-3.5 h-3.5" />
+            </div>
+            <span>{securityToast}</span>
           </div>
         </div>
       )}

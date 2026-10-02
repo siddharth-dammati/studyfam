@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { ChevronDown, HelpCircle, Sparkles } from "lucide-react";
 import { HOME_FAQS } from "@/lib/faqData";
 
 export function HomeFAQ() {
@@ -12,8 +12,8 @@ export function HomeFAQ() {
   };
 
   return (
-    <section id="faq" className="py-20 sm:py-28 bg-white border-b border-slate-200 scroll-mt-20">
-      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="faq" className="py-20 sm:py-28 bg-white text-slate-900 border-b border-slate-200/90 scroll-mt-20 relative overflow-hidden">
+      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-14">
@@ -24,7 +24,7 @@ export function HomeFAQ() {
             </span>
           </div>
 
-          <h2 className="text-[clamp(1.9rem,3.8vw,3.2rem)] font-extrabold tracking-tight text-slate-900 leading-tight mb-4">
+          <h2 className="text-[clamp(2.1rem,4.2vw,3.6rem)] font-extrabold tracking-tight text-slate-900 leading-tight mb-4">
             Everything You Need to Know About{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-emerald-600">
               Free JEE Main Mocks.
@@ -32,7 +32,7 @@ export function HomeFAQ() {
           </h2>
 
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Clear answers to common questions about our free test series, NTA pattern alignment, solutions, and CBT player.
+            Clear answers to common questions about our 10 free full tests, NTA CBT simulation, step-by-step solutions, and the December 27 Scholarship Mock.
           </p>
         </div>
 
@@ -43,7 +43,11 @@ export function HomeFAQ() {
             return (
               <div
                 key={idx}
-                className="bg-slate-50/70 border border-slate-200/90 rounded-2xl overflow-hidden transition-all"
+                className={`border rounded-2xl overflow-hidden transition-all duration-200 ${
+                  isOpen
+                    ? "bg-white border-indigo-300 shadow-sm"
+                    : "bg-slate-50 border-slate-200/80 hover:border-slate-300"
+                }`}
               >
                 <button
                   onClick={() => toggle(idx)}
@@ -60,7 +64,7 @@ export function HomeFAQ() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                  <div className="px-5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3.5">
                     {faq.a}
                   </div>
                 )}

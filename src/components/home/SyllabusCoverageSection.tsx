@@ -11,6 +11,8 @@ import {
   Percent,
   Layers,
   ArrowRight,
+  Clock,
+  Award,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -20,8 +22,8 @@ export function SyllabusCoverageSection() {
   const syllabusData = {
     physics: {
       subject: "Physics",
-      icon: <Atom className="w-5 h-5 text-blue-600" />,
-      color: "blue",
+      icon: <Atom className="w-5 h-5 text-sky-600" />,
+      color: "sky",
       totalUnits: "10 Core Units",
       questionDistribution: "25 Questions (20 MCQ + 5 Numerical)",
       highYield: [
@@ -45,7 +47,7 @@ export function SyllabusCoverageSection() {
         { name: "Physical Chemistry (Equilibrium, Thermo, Kinetics)", weight: "30–34%", questions: "7–8 Qs" },
         { name: "Coordination Compounds & d-Block Elements", weight: "14–18%", questions: "4–5 Qs" },
         { name: "Chemical Bonding & Molecular Structure", weight: "8–12%", questions: "2–3 Qs" },
-        { name: "Periodic Properties & Metallurgy", weight: "8–10%", questions: "2 Qs" },
+        { name: "Periodic Properties & Trends", weight: "8–10%", questions: "2 Qs" },
         { name: "Biomolecules & Everyday Chemistry", weight: "4–6%", questions: "1–2 Qs" },
       ],
       description: "Carefully calibrated to mirror NTA's revised syllabus guidelines with complete NCERT line-by-line verification.",
@@ -71,8 +73,8 @@ export function SyllabusCoverageSection() {
   const current = syllabusData[activeSubject];
 
   return (
-    <section id="pattern" className="py-20 sm:py-28 bg-slate-50/70 border-b border-slate-200 scroll-mt-20">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="pattern" className="py-20 sm:py-28 bg-white text-slate-900 border-b border-slate-200/90 scroll-mt-20 relative overflow-hidden">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
@@ -83,10 +85,10 @@ export function SyllabusCoverageSection() {
             </span>
           </div>
 
-          <h2 className="text-[clamp(1.9rem,3.8vw,3.2rem)] font-extrabold tracking-tight text-slate-900 leading-tight mb-4">
+          <h2 className="text-[clamp(2.1rem,4.2vw,3.6rem)] font-extrabold tracking-tight text-slate-900 leading-tight mb-4">
             100% Aligned with Latest NTA Syllabus &amp;{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
-              Exam Pattern Specifications.
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600">
+              Exam Specifications.
             </span>
           </h2>
 
@@ -97,101 +99,100 @@ export function SyllabusCoverageSection() {
 
         {/* Exam Structure Fast Facts Banner */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs text-center">
-            <div className="text-[10px] font-mono uppercase font-bold text-slate-400 mb-1">Total Marks</div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-mono">300 M</div>
-            <div className="text-[11px] text-slate-500 mt-0.5">100 marks per subject</div>
+          <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 text-center shadow-xs">
+            <div className="text-[10px] font-mono uppercase text-slate-500 font-bold mb-1">Total Questions</div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">75 Qs</div>
+            <div className="text-[11px] text-slate-500 mt-1">25 Phys · 25 Chem · 25 Math</div>
           </div>
 
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs text-center">
-            <div className="text-[10px] font-mono uppercase font-bold text-slate-400 mb-1">Duration</div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 font-mono">180 Mins</div>
-            <div className="text-[11px] text-slate-500 mt-0.5">3 hours continuous CBT</div>
+          <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 text-center shadow-xs">
+            <div className="text-[10px] font-mono uppercase text-slate-500 font-bold mb-1">Exam Duration</div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">180 Mins</div>
+            <div className="text-[11px] text-slate-500 mt-1">3 Hours Continuous Shift</div>
           </div>
 
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs text-center">
-            <div className="text-[10px] font-mono uppercase font-bold text-slate-400 mb-1">Total Questions</div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 font-mono">75 Qs</div>
-            <div className="text-[11px] text-slate-500 mt-0.5">60 MCQs + 15 Numericals</div>
+          <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 text-center shadow-xs">
+            <div className="text-[10px] font-mono uppercase text-slate-500 font-bold mb-1">Maximum Score</div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">300 M</div>
+            <div className="text-[11px] text-slate-500 mt-1">100 Marks per Subject</div>
           </div>
 
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs text-center">
-            <div className="text-[10px] font-mono uppercase font-bold text-slate-400 mb-1">Marking Scheme</div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-purple-600 font-mono">+4 / -1</div>
-            <div className="text-[11px] text-slate-500 mt-0.5">-1 negative for both Sec A &amp; B</div>
-          </div>
-        </div>
-
-        {/* Subject Tab Selector */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex bg-slate-200/80 p-1.5 rounded-2xl gap-1">
-            {(["physics", "chemistry", "maths"] as const).map((sub) => (
-              <button
-                key={sub}
-                onClick={() => setActiveSubject(sub)}
-                className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all capitalize flex items-center gap-2 ${
-                  activeSubject === sub
-                    ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                {sub === "physics" && <Atom size={14} className="text-blue-600" />}
-                {sub === "chemistry" && <FlaskConical size={14} className="text-emerald-600" />}
-                {sub === "maths" && <Calculator size={14} className="text-purple-600" />}
-                <span>{sub} Weightage</span>
-              </button>
-            ))}
+          <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 text-center shadow-xs">
+            <div className="text-[10px] font-mono uppercase text-slate-500 font-bold mb-1">Marking Policy</div>
+            <div className="text-2xl sm:text-3xl font-black text-emerald-600 font-mono">+4 / -1</div>
+            <div className="text-[11px] text-slate-500 mt-1">Applicable to MCQs &amp; Numericals</div>
           </div>
         </div>
 
-        {/* Subject Breakdown Card */}
-        <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs max-w-4xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-3 mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center">
-                {current.icon}
-              </div>
+        {/* Interactive Subject Tabs & High-Yield Breakdown */}
+        <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs">
+          {/* Tab Selector */}
+          <div className="flex items-center justify-center gap-2 mb-8 border-b border-slate-100 pb-4">
+            {(["physics", "chemistry", "maths"] as const).map((subKey) => {
+              const sub = syllabusData[subKey];
+              const isActive = activeSubject === subKey;
+              return (
+                <button
+                  key={subKey}
+                  onClick={() => setActiveSubject(subKey)}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+                    isActive
+                      ? "bg-slate-900 text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  }`}
+                >
+                  {sub.icon}
+                  <span>{sub.subject}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active Subject High-Yield List */}
+          <div>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
               <div>
-                <h3 className="text-lg font-bold text-slate-900">{current.subject} Unit Breakdown</h3>
-                <p className="text-xs text-slate-500">{current.totalUnits} · {current.questionDistribution}</p>
+                <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <span>{current.subject} Weightage Breakdown</span>
+                  <span className="text-xs font-mono font-normal text-slate-500">
+                    ({current.questionDistribution})
+                  </span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">{current.description}</p>
               </div>
+
+              <Link
+                href="/exam"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 transition-colors"
+              >
+                <span>Practice {current.subject} Chapter Tests</span>
+                <ArrowRight size={13} />
+              </Link>
             </div>
 
-            <Link
-              href="#free-mocks"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-xl transition-colors"
-            >
-              <span>Practice in 10 Full Mocks</span>
-              <ArrowRight size={13} />
-            </Link>
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              {current.highYield.map((item, idx) => (
+                <div
+                  key={item.name}
+                  className="bg-slate-50 border border-slate-200/80 hover:border-slate-300 rounded-2xl p-4 transition-all flex items-center justify-between gap-4"
+                >
+                  <div className="space-y-1">
+                    <div className="text-xs font-bold text-slate-900">
+                      {idx + 1}. {item.name}
+                    </div>
+                    <div className="text-[11px] text-slate-500 font-mono">
+                      Expected in JEE: <span className="text-slate-800 font-semibold">{item.questions}</span>
+                    </div>
+                  </div>
 
-          {/* High-Yield Units Table */}
-          <div className="space-y-2.5 mb-6">
-            {current.highYield.map((item, i) => (
-              <div
-                key={item.name}
-                className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 rounded-2xl bg-slate-50/70 border border-slate-100 hover:border-slate-200 transition-colors text-xs gap-2"
-              >
-                <div className="flex items-center gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-[10px]">
-                    {i + 1}
-                  </span>
-                  <span className="font-bold text-slate-800">{item.name}</span>
+                  <div className="text-right shrink-0">
+                    <span className="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-md">
+                      {item.weight}
+                    </span>
+                  </div>
                 </div>
-
-                <div className="flex items-center gap-4 text-right">
-                  <span className="text-slate-500 font-mono text-[11px]">{item.questions}</span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-slate-200/80 font-mono font-bold text-slate-800 text-[11px]">
-                    {item.weight}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70 text-xs text-slate-600 leading-relaxed">
-            <strong>StudyFAM Preparation Tip:</strong> {current.description}
+              ))}
+            </div>
           </div>
         </div>
 
