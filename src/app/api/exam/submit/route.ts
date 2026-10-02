@@ -148,6 +148,8 @@ function evaluateActivePaper(
         questionId: q.id,
         questionNumber: q.questionNumber,
         subject: q.subject,
+        chapter: q.chapter || "General",
+        difficulty: q.difficulty || "Medium",
         section: q.section,
         type: q.type,
         questionText: q.questionText,

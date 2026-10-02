@@ -268,6 +268,8 @@ export interface EvaluationResult {
     questionId: string;
     questionNumber: number;
     subject: string;
+    chapter?: string;
+    difficulty?: string;
     questionText: string;
     optionA: string | null;
     optionB: string | null;
@@ -345,6 +347,8 @@ export function evaluateTest(
         questionId: q.id,
         questionNumber: q.question_number,
         subject: q.subject,
+        chapter: q.chapter || "General",
+        difficulty: q.difficulty || "Medium",
         questionText: q.question_text,
         optionA: q.option_a,
         optionB: q.option_b,
