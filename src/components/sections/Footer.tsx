@@ -6,30 +6,30 @@ import { ShieldCheck, HeartHandshake } from "lucide-react";
 
 const links = {
   "Mock Examination": [
-    { label: "Why This Mock", href: "/#why-mock" },
-    { label: "Exam Pattern (NTA Aligned)", href: "/#exam-pattern" },
-    { label: "Predicted Percentile Engine", href: "/#why-mock" },
+    { label: "10 Free Mocks (MFT 1–10)", href: "/#mfts" },
+    { label: "Exam Pattern (NTA Aligned)", href: "/all-india-mock#exam-pattern" },
+    { label: "Predicted Percentile Engine", href: "/#stories" },
     { label: "Frequently Asked Questions", href: "/#faq" },
   ],
   "Scholarship & Impact": [
+    { label: "All-India Mock (27 Dec)", href: "/all-india-mock" },
     { label: "Fee Support Rules & Policy", href: "/scholarship-rules" },
     { label: "Financial Audit & Transparency", href: "/transparency" },
     { label: "Top N Eligibility & Verification", href: "/scholarship-rules#eligibility" },
-    { label: "Gender Parity Model (1000 Math)", href: "/scholarship-rules#formula" },
-    { label: "Live Milestone Ledger", href: "/#impact" },
+    { label: "Gender Parity Model (50:50)", href: "/scholarship-rules#formula" },
   ],
   "Legal & Compliance": [
     { label: "Privacy Policy (DPDP Act 2023)", href: "/privacy" },
     { label: "Terms of Service & Test Conduct", href: "/terms" },
     { label: "Cancellation & Refund Policy", href: "/refund-policy" },
-    { label: "Statutory Grievance Redressal", href: "/contact#grievance" },
-    { label: "NTA Non-Affiliation Notice", href: "/terms#disclaimer" },
+    { label: "Statutory Grievance Redressal", href: "/contact" },
+    { label: "NTA Non-Affiliation Notice", href: "/terms" },
   ],
   "Organization": [
     { label: "About StudyFam Technologies", href: "/about" },
+    { label: "Candidate Dashboard", href: "/dashboard" },
     { label: "Candidate Support Desk", href: "/contact" },
-    { label: "Academic Advisory Board", href: "/about#advisory" },
-    { label: "Escrow Reserve Statement", href: "/transparency#escrow" },
+    { label: "Admit Card Specimen", href: "/admit-card" },
   ],
 };
 

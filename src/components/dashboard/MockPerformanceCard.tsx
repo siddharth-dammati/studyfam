@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { FREE_MOCKS_DATA } from "@/lib/freeMocksData";
 import {
   Trophy,
   Target,
@@ -44,19 +45,6 @@ interface MockPerformanceCardProps {
   attempts: MockAttemptRecord[];
   loading?: boolean;
 }
-
-const MFT_TESTS = [
-  { id: "MFT-1.pdf", title: "Major Full Test 1", desc: "Official All-India Mock Blueprint · Full Syllabus", questions: 75, duration: 180 },
-  { id: "MFT-2.pdf", title: "Major Full Test 2", desc: "High-Yield NTA JEE Main Pattern · Class 11 & 12", questions: 75, duration: 180 },
-  { id: "MFT-3.pdf", title: "Major Full Test 3", desc: "Calculus & Organic Heavy Mock Assessment", questions: 75, duration: 180 },
-  { id: "MFT-4.pdf", title: "Major Full Test 4", desc: "Mechanics & Electromagnetism Deep Dive Paper", questions: 75, duration: 180 },
-  { id: "MFT-5.pdf", title: "Major Full Test 5", desc: "Speed & Accuracy Stress Test CBT Session", questions: 75, duration: 180 },
-  { id: "MFT-6.pdf", title: "Major Full Test 6", desc: "Standard NTA Full Length Diagnostic Paper", questions: 75, duration: 180 },
-  { id: "MFT-7.pdf", title: "Major Full Test 7", desc: "Physical Chemistry & Coordinate Geometry Focus", questions: 75, duration: 180 },
-  { id: "MFT-8.pdf", title: "Major Full Test 8", desc: "JEE Main Previous Benchmark Alignment Paper", questions: 75, duration: 180 },
-  { id: "MFT-9.pdf", title: "Major Full Test 9", desc: "Final Lap All-India Prep Mock", questions: 75, duration: 180 },
-  { id: "MFT-10.pdf", title: "Major Full Test 10", desc: "Grand Final Mock Simulation (300 Marks)", questions: 75, duration: 180 },
-];
 
 export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardProps) {
   const [showAllAttempts, setShowAllAttempts] = useState(false);
@@ -108,14 +96,17 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
   const highestBracket = getPercentileBracket(highestScore);
 
   const displayedAttempts = showAllAttempts ? attempts : attempts.slice(0, 5);
-  const displayedMfts = showAllMfts ? MFT_TESTS : MFT_TESTS.slice(0, 4);
+  const displayedMfts = showAllMfts ? FREE_MOCKS_DATA : FREE_MOCKS_DATA.slice(0, 4);
 
   const formatTestTitle = (title: string, testId: string) => {
+    const match = testId.match(/MFT-0?(\d+)/i);
+    if (match) {
+      const num = parseInt(match[1]);
+      const found = FREE_MOCKS_DATA.find((m) => m.mockNumber === num);
+      if (found) return `${found.code} · ${found.title}`;
+      return `MFT-${match[1].padStart(2, "0")} · Full Mock`;
+    }
     if (!title || title.trim() === "") {
-      if (testId.includes("MFT-")) {
-        const match = testId.match(/MFT-(\d+)/i);
-        return match ? `Major Full Test ${match[1]} (JEE Main)` : "Major Full Mock Test";
-      }
       return "JEE Main Mock Test";
     }
     return title.replace(/\.pdf$/i, "").replace(/_/g, " ");
@@ -265,34 +256,39 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-          {displayedMfts.map((mft, idx) => (
+          {displayedMfts.map((mft) => (
             <div
               key={mft.id}
               className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:border-indigo-200 hover:shadow-xs transition-all flex items-center justify-between gap-4"
             >
               <div className="space-y-1 min-w-0">
                 <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded-md">
+                    {mft.code}
+                  </span>
                   <span className="font-bold text-sm text-slate-900 truncate">
                     {mft.title}
                   </span>
-                  {idx === 0 && (
+                  {mft.badge && (
                     <span className="text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                      Recommended
+                      {mft.badge}
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-slate-500 truncate">{mft.desc}</p>
+                <p className="text-xs text-slate-500 truncate">{mft.keyHighlights}</p>
                 <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono">
-                  <span>{mft.questions} Questions</span>
+                  <span>{mft.totalQuestions} Questions</span>
                   <span>•</span>
-                  <span>{mft.duration} Mins</span>
+                  <span>{mft.durationMinutes} Mins</span>
                   <span>•</span>
-                  <span>300 Marks</span>
+                  <span>{mft.totalMarks} Marks</span>
+                  <span>•</span>
+                  <span className="text-emerald-600 font-semibold">100% Free</span>
                 </div>
               </div>
 
               <Link
-                href={`/exam/player?id=${encodeURIComponent(mft.id)}`}
+                href={mft.playerUrl}
                 className="shrink-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
               >
                 <Play size={12} className="fill-current" />

@@ -3,6 +3,7 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { createClient } from "@/utils/supabase/client";
 import { TestDetail, EvaluationResult } from "@/lib/examDb";
 import { TcsIonInstructions } from "@/components/exam/TcsIonInstructions";
 import { TcsIonPlayer } from "@/components/exam/TcsIonPlayer";
@@ -100,12 +101,15 @@ function ExamPlayerContent() {
         if (testData) {
           setTest(testData);
 
-          // If review mode requested and cached result exists, show results directly
+          // If review mode requested, show results directly (from cache or API)
           const isReview = searchParams.get("review") === "1" || searchParams.get("view") === "result";
           let reviewLoaded = false;
           if (isReview) {
             try {
-              const cachedResult = localStorage.getItem(`sf_exam_result_${testData.id}`);
+              const cachedResult =
+                localStorage.getItem(`sf_exam_result_${testData.id}`) ||
+                localStorage.getItem(`sf_exam_result_${id}`) ||
+                localStorage.getItem(`sf_exam_result_${decodeURIComponent(id)}`);
               if (cachedResult) {
                 const parsedResult = JSON.parse(cachedResult);
                 if (parsedResult) {
@@ -115,6 +119,28 @@ function ExamPlayerContent() {
                 }
               }
             } catch {}
+
+            // If not found in local cache, load solutions and chapter diagnostics from server
+            if (!reviewLoaded) {
+              try {
+                const solRes = await fetch("/api/exam/solutions", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ id }),
+                });
+                const solJson = await solRes.json();
+                if (solJson.success && solJson.result) {
+                  setEvaluationResult(solJson.result);
+                  setPhase("result");
+                  reviewLoaded = true;
+                  try {
+                    localStorage.setItem(`sf_exam_result_${testData.id}`, JSON.stringify(solJson.result));
+                  } catch {}
+                }
+              } catch (solErr) {
+                console.warn("Could not fetch remote solutions:", solErr);
+              }
+            }
           }
 
           // If not in review mode and there's an ongoing test session in localStorage, jump directly to in_exam
@@ -199,6 +225,30 @@ function ExamPlayerContent() {
             ...existingList.filter((a: any) => a.id !== newAttemptRecord.id),
           ].slice(0, 30);
           localStorage.setItem("sf_recent_attempts", JSON.stringify(updated));
+
+          // Guaranteed direct Supabase sync for authenticated candidate
+          if (profile?.email) {
+            try {
+              const supabase = createClient();
+              await supabase.from("exam_attempts").insert({
+                user_id: profile.id || null,
+                email: profile.email.toLowerCase().trim(),
+                test_id: test.id,
+                score: json.result.totalScore ?? json.result.score ?? 0,
+                max_score: json.result.maxScore || 300,
+                percentage: json.result.percentage || 0,
+                accuracy: json.result.accuracy || 0,
+                time_spent_seconds: timeSpentSeconds,
+                total_questions: json.result.totalQuestions || 75,
+                attempted_count: json.result.attemptedCount || 0,
+                correct_count: json.result.correctCount || 0,
+                incorrect_count: json.result.incorrectCount || 0,
+                section_breakdown: json.result.sectionBreakdown || [],
+              });
+            } catch (syncErr) {
+              console.warn("Client Supabase attempt sync skipped:", syncErr);
+            }
+          }
         } catch (storageErr) {
           console.warn("Could not cache exam attempt locally:", storageErr);
         }

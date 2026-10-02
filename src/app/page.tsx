@@ -1,19 +1,12 @@
 import type { Metadata } from "next";
-import { HomeNavbar } from "@/components/home/HomeNavbar";
-import { FreeMocksHero } from "@/components/home/FreeMocksHero";
-import { ScholarshipMockBanner } from "@/components/home/ScholarshipMockBanner";
-import { CbtExperienceSection } from "@/components/home/CbtExperienceSection";
-import { ChapterPracticeSpotlight } from "@/components/home/ChapterPracticeSpotlight";
-import { SyllabusCoverageSection } from "@/components/home/SyllabusCoverageSection";
-import { TestSeriesComparison } from "@/components/home/TestSeriesComparison";
-import { HomeFAQ } from "@/components/home/HomeFAQ";
+import { StudyFamTokkoPage } from "@/components/home/StudyFamTokkoPage";
 import { HOME_FAQS } from "@/lib/faqData";
-import { HomeFooter } from "@/components/home/HomeFooter";
 import { FREE_MOCKS_DATA } from "@/lib/freeMocksData";
 
 export const metadata: Metadata = {
-  title: "Free JEE Main Mock Test 2027 | 10 Full-Length NTA CBT Tests & All-India Scholarship Mock",
-  description: "Practice 10 free full-length JEE Main 2027 mock tests (MFT-1 to MFT-10) with authentic NTA TCS iON CBT interface, instant All-India percentile prediction, and step-by-step solutions. Compete in the All-India Major Mock Test on 27 Dec 2026 (Registrations open 20 Oct 2026). 100% free forever.",
+  title: "StudyFam — India's Free JEE Main CBT Platform & ₹27 National Scholarship Exam",
+  description:
+    "Practice 10 free full-length JEE Main mock tests (MFT-01 to MFT-10) with authentic NTA TCS iON CBT interface, chapter-lag diagnostics, and compete on Dec 27 for a ₹15 Lakhs scholarship pool. 100% free forever.",
   keywords: [
     "free jee mock test",
     "jee main 2027 mock test free",
@@ -35,8 +28,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Free JEE Main Mock Test 2027 | 10 Full-Length NTA CBT Tests & Scholarship Mock",
-    description: "Take 10 free full-length JEE Main mock tests (750 questions) with official TCS iON CBT simulation, All-India rank predictor, and step-by-step solutions. Compete in the 27 Dec All-India Mock (Registrations start 20 Oct 2026).",
+    title: "StudyFam — Free JEE Main CBT Platform & ₹27 National Scholarship Exam",
+    description:
+      "Take 10 free full-length JEE Main mock tests (750 questions) with official TCS iON CBT simulation, All-India rank predictor, and step-by-step solutions. Compete in the 27 Dec All-India Mock (Registrations start 20 Oct 2026).",
     url: "https://studyfam.in",
     siteName: "StudyFAM",
     locale: "en_IN",
@@ -52,8 +46,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free JEE Main Mock Test 2027 | 10 Full-Length NTA CBT Tests",
-    description: "Practice 10 free full-length JEE Main mock tests on official TCS iON CBT interface with instant solutions. 27 Dec All-India Mock Registrations open 20 Oct 2026.",
+    title: "StudyFam — Free JEE Main CBT Platform",
+    description:
+      "Practice 10 free full-length JEE Main mock tests on official TCS iON CBT interface with instant solutions. 27 Dec All-India Mock Registrations open 20 Oct 2026.",
     images: ["/icon.png"],
   },
   robots: {
@@ -94,7 +89,8 @@ export default function HomePage() {
       {
         "@type": "ItemList",
         name: "10 Free Full-Length JEE Main Mock Tests (Official NTA CBT Pattern)",
-        description: "Comprehensive full syllabus mock tests for JEE Main 2027 aspirants featuring 75 questions each, 180 minutes, and detailed step-by-step solutions.",
+        description:
+          "Comprehensive full syllabus mock tests for JEE Main 2027 aspirants featuring 75 questions each, 180 minutes, and detailed step-by-step solutions.",
         numberOfItems: FREE_MOCKS_DATA.length,
         itemListElement: FREE_MOCKS_DATA.map((mock, index) => ({
           "@type": "ListItem",
@@ -108,7 +104,8 @@ export default function HomePage() {
         "@type": "Event",
         "@id": "https://studyfam.in/#all-india-mock-event",
         name: "All-India Major Mock Test 2027 (National Scholarship Examination)",
-        description: "Nationwide JEE Main 2027 CBT mock exam where ₹18 of every ₹27 registration fee funds 100% NTA application fee refunds for top rankers across Merit and Need-based tracks.",
+        description:
+          "Nationwide JEE Main 2027 CBT mock exam where ₹18 of every ₹27 registration fee funds 100% NTA application fee refunds for top rankers across Merit and Need-based tracks.",
         startDate: "2026-12-27T09:00:00+05:30",
         endDate: "2026-12-27T12:00:00+05:30",
         eventStatus: "https://schema.org/EventScheduled",
@@ -167,41 +164,14 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8FAFC] text-slate-900 selection:bg-indigo-600 selection:text-white font-sans antialiased">
+    <>
       {/* Semantic JSON-LD Schema for Search Engines */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-
-      {/* Floating Sticky Home Navigation */}
-      <HomeNavbar />
-
-      <main>
-        {/* 1. Hero Section with 10 Free Full Mocks Showcase (Kept right at the beginning) */}
-        <FreeMocksHero />
-
-        {/* 2. Flagship All-India Major Mock Test 2027 Spotlight (Registrations Start 20 Oct 2026 · Exam 27 Dec 2026) */}
-        <ScholarshipMockBanner />
-
-        {/* 3. Special Features Bento Grid: Authentic TCS iON CBT Engine, AIR Predictor, Solutions, Anti-Cheat */}
-        <CbtExperienceSection />
-
-        {/* 4. 300+ Chapter-wise Diagnostic Practice Tests Spotlight */}
-        <ChapterPracticeSpotlight />
-
-        {/* 5. Official NTA 2027 Exam Pattern & High-Yield Weightage Breakdown */}
-        <SyllabusCoverageSection />
-
-        {/* 6. Transparent Comparison: StudyFAM Free Mocks vs Paid Coaching */}
-        <TestSeriesComparison />
-
-        {/* 7. SEO-Optimized High-Intent FAQ Section */}
-        <HomeFAQ />
-      </main>
-
-      {/* 8. Rich Semantic Modern Light Footer */}
-      <HomeFooter />
-    </div>
+      {/* StudyFAM Main High-Converting Landing Page */}
+      <StudyFamTokkoPage />
+    </>
   );
 }

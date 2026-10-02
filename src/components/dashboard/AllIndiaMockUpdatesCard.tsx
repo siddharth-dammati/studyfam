@@ -94,17 +94,25 @@ export function AllIndiaMockUpdatesCard({
               All-India JEE Main 2027 Mock Test
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-              Authentic Computer-Based Test (CBT) with auto full-screen proctoring, live All-India Ranks &amp; ₹15 Lakhs scholarship pool.
+              Sunday, 27 Dec 2026 · 09:00 AM – 12:00 PM IST · ₹27 Entry (₹18 prize pool + ₹9 ops) · Registrations open 20 Oct 2026.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {!isConfirmed && (
+              <Link
+                href="/all-india-mock"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer active:scale-98"
+              >
+                <span>Register for ₹27 →</span>
+              </Link>
+            )}
             <Link
               href="/admit-card"
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer active:scale-98"
             >
               <FileText size={16} />
-              <span>Download Admit Card</span>
+              <span>{isConfirmed ? "Download Admit Card" : "Admit Card Specimen"}</span>
             </Link>
           </div>
         </div>
@@ -207,15 +215,15 @@ export function AllIndiaMockUpdatesCard({
           {/* Card 3: Merit Pool & Rewards */}
           <div className="bg-gradient-to-br from-emerald-50/70 to-teal-50/50 border border-emerald-200/80 rounded-2xl p-4 flex flex-col justify-between">
             <div className="flex items-center justify-between text-emerald-700 text-xs mb-2">
-              <span className="font-mono text-[11px] uppercase tracking-wider font-bold">Scholarship Pool</span>
+              <span className="font-mono text-[11px] uppercase tracking-wider font-bold">100% Fee Refund Prize</span>
               <Trophy size={15} className="text-emerald-600" />
             </div>
             <div>
               <div className="text-lg sm:text-xl font-bold font-mono text-emerald-950">
-                ₹15,00,000 Pool
+                ₹18 of ₹27 Pooled
               </div>
               <div className="text-xs text-emerald-700 mt-1 font-medium">
-                Top 100 Rankers Funded (50% Merit + 50% Need)
+                Top 20 to Top 1,000 Winners (50% Merit + 50% Need)
               </div>
             </div>
           </div>
