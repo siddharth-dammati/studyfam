@@ -12,7 +12,18 @@ import { RegistrationModal } from "@/components/ui/RegistrationModal";
 import { GoogleSignInButton } from "@/components/ui/GoogleSignInButton";
 import { Footer } from "@/components/sections/Footer";
 import { useRegistrationState } from "@/hooks/useRegistrationState";
-import { HelpCircle, ExternalLink, BookOpen, Sparkles, Loader2 } from "lucide-react";
+import {
+  HelpCircle,
+  ExternalLink,
+  BookOpen,
+  Sparkles,
+  Loader2,
+  Trophy,
+  Activity,
+  UserCheck,
+  CheckCircle2,
+  FileText,
+} from "lucide-react";
 import Link from "next/link";
 import { verifyCashfreeOrder } from "@/services/paymentService";
 import { hydrateCandidateRecord } from "@/lib/candidateUtils";
@@ -28,6 +39,7 @@ export default function DashboardPage() {
   const [loadingData, setLoadingData] = useState(true);
   const [attempts, setAttempts] = useState<MockAttemptRecord[]>([]);
   const [loadingAttempts, setLoadingAttempts] = useState(true);
+  const [activeTab, setActiveTab] = useState<"all-india" | "practice" | "profile">("all-india");
   const [isRegModalOpen, setIsRegModalOpen] = useState(false);
   const [isDossierModalOpen, setIsDossierModalOpen] = useState(false);
   const [dossierPrompted, setDossierPrompted] = useState(false);
@@ -297,6 +309,20 @@ export default function DashboardPage() {
   const displayName = profile?.fullName || candidateRecord?.full_name || "Candidate";
   const firstName = displayName.split(" ")[0];
 
+  const isConfirmed = Boolean(
+    (candidateRecord?.amount_paid && candidateRecord.amount_paid >= 27) ||
+    candidateRecord?.status === "confirmed" ||
+    candidateRecord?.status === "registered"
+  );
+
+  const rollNumber = candidateRecord?.order_id
+    ? `SF-${candidateRecord.order_id.slice(-6).toUpperCase()}`
+    : candidateRecord?.id
+    ? `SF-${candidateRecord.id.slice(0, 6).toUpperCase()}`
+    : "SF-CANDIDATE";
+
+  const highestScore = attempts.reduce((max, a) => Math.max(max, a.score), 0);
+
   // 3. Authenticated or order-verified state
   return (
     <div className="min-h-screen bg-slate-50/70 flex flex-col">
@@ -317,7 +343,7 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={() => setIsJustConfirmed(false)}
-              className="text-white/80 hover:text-white text-xs font-semibold px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors shrink-0"
+              className="text-white/80 hover:text-white text-xs font-semibold px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors shrink-0 cursor-pointer"
             >
               Dismiss
             </button>
@@ -331,7 +357,7 @@ export default function DashboardPage() {
               Welcome back, {firstName} 👋
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Your official StudyFam candidate portal for the All-India JEE Main 2027 Mock.
+              Your centralized StudyFam portal for the All-India JEE Main 2027 Mock.
             </p>
           </div>
           {!profile && candidateRecord && (
@@ -341,64 +367,171 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Candidate Registration Card */}
-        <CandidateRegistrationCard
-          registration={candidateRecord}
-          loading={loadingData}
-          onOpenRegister={() => setIsRegModalOpen(true)}
-          onUpdateRegistration={(updated) => setCandidateRecord(updated)}
-        />
-
-        {/* All-India Mock Test Updates & Official Examination Briefing */}
-        <AllIndiaMockUpdatesCard />
-
-        {/* Student Mock Performance & Diagnostics */}
-        <MockPerformanceCard attempts={attempts} loading={loadingAttempts} />
-
-        {/* 2-Column Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <MockCountdownCard />
-          <MeritPoolStatusCard />
-        </div>
-
-        {/* Invite & Syllabus Links */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <InviteAndShareCard />
-          </div>
-
-          <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-xs flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-slate-500 mb-3">
-                <BookOpen size={14} className="text-indigo-600" />
-                <span>Candidate Resources</span>
+        {/* Top Quick-Status Ribbon */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+          <div className="p-3.5 bg-white border border-slate-200/90 rounded-2xl flex items-center gap-3 shadow-2xs">
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <CheckCircle2 size={16} />
+            </div>
+            <div className="min-w-0">
+              <div className="text-[10px] font-mono uppercase text-slate-400">Mock Status</div>
+              <div className="text-xs font-bold text-slate-900 truncate">
+                {isConfirmed ? "Seat Locked" : "Registered"} · 27 Dec
               </div>
-              <h4 className="text-base font-bold text-slate-900 tracking-tight mb-2">
-                Questions or Assistance?
-              </h4>
-              <p className="text-xs text-slate-600 leading-relaxed mb-4">
-                Need help with browser compatibility, receipt re-issues, or scholarship criteria?
-              </p>
             </div>
+          </div>
 
-            <div className="space-y-2 pt-4 border-t border-slate-100">
-              <Link
-                href="/scholarship-rules"
-                className="flex items-center justify-between text-xs font-semibold text-slate-700 hover:text-indigo-600 p-2 rounded-xl hover:bg-slate-50 transition-colors"
-              >
-                <span>Scholarship & Payout Rules</span>
-                <ExternalLink size={14} />
-              </Link>
-              <Link
-                href="/contact"
-                className="flex items-center justify-between text-xs font-semibold text-slate-700 hover:text-indigo-600 p-2 rounded-xl hover:bg-slate-50 transition-colors"
-              >
-                <span>Helpdesk & Grievance Desk</span>
-                <HelpCircle size={14} />
-              </Link>
+          <div className="p-3.5 bg-white border border-slate-200/90 rounded-2xl flex items-center gap-3 shadow-2xs">
+            <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+              <FileText size={16} />
+            </div>
+            <div className="min-w-0">
+              <div className="text-[10px] font-mono uppercase text-slate-400">Candidate Roll</div>
+              <div className="text-xs font-bold font-mono text-slate-900 truncate">
+                {rollNumber}
+              </div>
+            </div>
+          </div>
+
+          <div className="p-3.5 bg-white border border-slate-200/90 rounded-2xl flex items-center gap-3 shadow-2xs">
+            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+              <Activity size={16} />
+            </div>
+            <div className="min-w-0">
+              <div className="text-[10px] font-mono uppercase text-slate-400">Mocks Practiced</div>
+              <div className="text-xs font-bold text-slate-900 truncate">
+                {attempts.length > 0 ? `${attempts.length} Attempted` : "10 Tests Ready"}
+              </div>
+            </div>
+          </div>
+
+          <div className="p-3.5 bg-white border border-slate-200/90 rounded-2xl flex items-center gap-3 shadow-2xs">
+            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+              <Trophy size={16} />
+            </div>
+            <div className="min-w-0">
+              <div className="text-[10px] font-mono uppercase text-slate-400">Best Score</div>
+              <div className="text-xs font-bold text-slate-900 truncate">
+                {highestScore > 0 ? `${highestScore} / 300` : "No attempts yet"}
+              </div>
             </div>
           </div>
         </div>
+
+        {/* 3 Main Hubs Navigation Selector */}
+        <div className="flex items-center gap-1.5 p-1.5 bg-slate-200/70 rounded-2xl w-full sm:w-auto">
+          <button
+            onClick={() => setActiveTab("all-india")}
+            className={`flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              activeTab === "all-india"
+                ? "bg-white text-indigo-700 shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <Trophy size={15} className={activeTab === "all-india" ? "text-indigo-600" : "text-slate-400"} />
+            <span>All-India Mock (Dec 27)</span>
+            <span className="hidden sm:inline text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold">
+              Official Hub
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("practice")}
+            className={`flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              activeTab === "practice"
+                ? "bg-white text-indigo-700 shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <Activity size={15} className={activeTab === "practice" ? "text-indigo-600" : "text-slate-400"} />
+            <span>My Practice &amp; Scores</span>
+            {attempts.length > 0 && (
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold">
+                {attempts.length}
+              </span>
+            )}
+          </button>
+
+          <button
+            onClick={() => setActiveTab("profile")}
+            className={`flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              activeTab === "profile"
+                ? "bg-white text-indigo-700 shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <UserCheck size={15} className={activeTab === "profile" ? "text-indigo-600" : "text-slate-400"} />
+            <span>Profile &amp; Slip</span>
+          </button>
+        </div>
+
+        {/* Tab 1: All-India Mock Test 2026 Event Hub */}
+        {activeTab === "all-india" && (
+          <div className="space-y-6">
+            <AllIndiaMockUpdatesCard
+              candidateRecord={candidateRecord}
+              onSwitchToPractice={() => setActiveTab("practice")}
+            />
+            <MeritPoolStatusCard />
+          </div>
+        )}
+
+        {/* Tab 2: Student Practice, MFT Test Launcher & Recent Attempts */}
+        {activeTab === "practice" && (
+          <div className="space-y-6">
+            <MockPerformanceCard attempts={attempts} loading={loadingAttempts} />
+          </div>
+        )}
+
+        {/* Tab 3: Candidate Registration, Slip, Dossier & Support */}
+        {activeTab === "profile" && (
+          <div className="space-y-6">
+            <CandidateRegistrationCard
+              registration={candidateRecord}
+              loading={loadingData}
+              onOpenRegister={() => setIsRegModalOpen(true)}
+              onUpdateRegistration={(updated) => setCandidateRecord(updated)}
+            />
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <InviteAndShareCard />
+              </div>
+
+              <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-xs flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-slate-500 mb-3">
+                    <BookOpen size={14} className="text-indigo-600" />
+                    <span>Candidate Resources</span>
+                  </div>
+                  <h4 className="text-base font-bold text-slate-900 tracking-tight mb-2">
+                    Questions or Assistance?
+                  </h4>
+                  <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                    Need help with browser compatibility, receipt re-issues, or scholarship criteria?
+                  </p>
+                </div>
+
+                <div className="space-y-2 pt-4 border-t border-slate-100">
+                  <Link
+                    href="/scholarship-rules"
+                    className="flex items-center justify-between text-xs font-semibold text-slate-700 hover:text-indigo-600 p-2 rounded-xl hover:bg-slate-50 transition-colors"
+                  >
+                    <span>Scholarship &amp; Payout Rules</span>
+                    <ExternalLink size={14} />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="flex items-center justify-between text-xs font-semibold text-slate-700 hover:text-indigo-600 p-2 rounded-xl hover:bg-slate-50 transition-colors"
+                  >
+                    <span>Helpdesk &amp; Grievance Desk</span>
+                    <HelpCircle size={14} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />
