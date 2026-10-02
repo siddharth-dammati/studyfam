@@ -15,6 +15,7 @@ import {
   Zap,
 } from "lucide-react";
 import { TestSummary } from "@/lib/examDb";
+import { Footer } from "@/components/sections/Footer";
 
 export default function ExamCatalogPage() {
   const [activeTab, setActiveTab] = useState<"full" | "chapter">("full");
@@ -275,6 +276,8 @@ export default function ExamCatalogPage() {
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   );
 }

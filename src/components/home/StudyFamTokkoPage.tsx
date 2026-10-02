@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
+import { Footer } from "@/components/sections/Footer";
 
 export function StudyFamTokkoPage() {
   const { user, profile, loading, signInWithGoogle, signOut } = useAuth();
@@ -1081,60 +1082,8 @@ export function StudyFamTokkoPage() {
         </section>
       </main>
 
-      {/* 16. Footer */}
-      <footer>
-        <div className="foot-grid">
-          <div className="foot-brand">
-            <Link className="logo" href="/" aria-label="StudyFAM home">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-light.png" alt="StudyFAM" className="logo-img" style={{ height: "34px" }} />
-            </Link>
-            <p>StudyFAM helps JEE Main 2027 aspirants practise with clarity, consistency, and purpose — free.</p>
-            <form
-              className="news"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const btn = (e.target as HTMLFormElement).querySelector("button");
-                if (btn) btn.textContent = "✓ Joined";
-              }}
-            >
-              <input type="email" required placeholder="Email for seat alerts" aria-label="Email for seat alerts" />
-              <button type="submit">Join</button>
-            </form>
-          </div>
-          <div>
-            <h4>Menu</h4>
-            <a href="#mfts">MFTs</a>
-            <a href="#scholarship">Scholarship</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#faq">FAQ</a>
-          </div>
-          <div>
-            <h4>Support</h4>
-            <Link href="/contact">Contact us</Link>
-            <Link href="/about">About us</Link>
-            <Link href="/refund-policy">Refund policy</Link>
-            <Link href="/privacy">Privacy policy</Link>
-            <Link href="/terms">Terms</Link>
-          </div>
-          <div>
-            <h4>Explore</h4>
-            <Link href="/dashboard">Candidate Dashboard</Link>
-            <Link href="/all-india-mock">All-India Mock (27 Dec)</Link>
-            <Link href="/scholarship-rules">Scholarship Rules</Link>
-            <Link href="/transparency">Escrow &amp; Audit</Link>
-            <Link href="/admit-card">Admit Card Specimen</Link>
-          </div>
-        </div>
-        <div className="bottom">
-          <span>© 2026 StudyFAM · All rights reserved · Not affiliated with NTA or TCS iON</span>
-          <span>
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/terms">Terms</Link>
-            <a href="#" style={{ color: "var(--lav)" }}>Back to top ↑</a>
-          </span>
-        </div>
-      </footer>
+      {/* 16. Canonical Tokko Footer */}
+      <Footer />
 
       {/* 17. Sticky CTA on Mobile */}
       <div className="sticky-cta">

@@ -1,134 +1,244 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
-import { ShieldCheck, HeartHandshake } from "lucide-react";
-
-const links = {
-  "Mock Examination": [
-    { label: "10 Free Mocks (MFT 1–10)", href: "/#mfts" },
-    { label: "Exam Pattern (NTA Aligned)", href: "/all-india-mock#exam-pattern" },
-    { label: "Predicted Percentile Engine", href: "/#stories" },
-    { label: "Frequently Asked Questions", href: "/#faq" },
-  ],
-  "Scholarship & Impact": [
-    { label: "All-India Mock (27 Dec)", href: "/all-india-mock" },
-    { label: "Fee Support Rules & Policy", href: "/scholarship-rules" },
-    { label: "Financial Audit & Transparency", href: "/transparency" },
-    { label: "Top N Eligibility & Verification", href: "/scholarship-rules#eligibility" },
-    { label: "Gender Parity Model (50:50)", href: "/scholarship-rules#formula" },
-  ],
-  "Legal & Compliance": [
-    { label: "Privacy Policy (DPDP Act 2023)", href: "/privacy" },
-    { label: "Terms of Service & Test Conduct", href: "/terms" },
-    { label: "Cancellation & Refund Policy", href: "/refund-policy" },
-    { label: "Statutory Grievance Redressal", href: "/contact" },
-    { label: "NTA Non-Affiliation Notice", href: "/terms" },
-  ],
-  "Organization": [
-    { label: "About StudyFam Technologies", href: "/about" },
-    { label: "Candidate Dashboard", href: "/dashboard" },
-    { label: "Candidate Support Desk", href: "/contact" },
-    { label: "Admit Card Specimen", href: "/admit-card" },
-  ],
-};
+import { HeartHandshake, ShieldCheck, ArrowUp } from "lucide-react";
 
 export function Footer() {
+  const [subscribed, setSubscribed] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setSubscribed(true);
+      try {
+        const stored = localStorage.getItem("sf_newsletter_subscribers") || "[]";
+        const list = JSON.parse(stored);
+        list.push({ email, date: new Date().toISOString() });
+        localStorage.setItem("sf_newsletter_subscribers", JSON.stringify(list));
+      } catch {}
+    }
+  };
+
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
-    <footer className="relative text-white overflow-hidden bg-[#032575] border-t-2 border-cyan-300/50 shadow-[0_-12px_45px_rgba(2,80,163,0.35)]">
-      {/* LinkedIn Theme Vibrant Blue Background Asset */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
-        style={{ backgroundImage: "url('/footer-theme-bg.png')" }}
-      />
-      
-      {/* Deep-blue contrast enhancement layer ensuring 100% razor-sharp readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#021748]/65 via-[#032470]/40 to-[#011442]/80 pointer-events-none" />
+    <footer
+      style={{
+        background: "linear-gradient(180deg, #0a1c96, #060d4d)",
+        color: "#ffffff",
+        marginTop: "88px",
+        borderRadius: "36px 36px 0 0",
+      }}
+      className="relative text-white overflow-hidden print:hidden"
+    >
+      {/* Scoped CSS for Tokko Footer Layout */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .tokko-foot-grid {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 64px 24px 28px;
+          display: grid;
+          grid-template-columns: 1.6fr 1fr 1fr 1fr;
+          gap: 32px;
+        }
+        .tokko-foot-grid h4 {
+          font-size: 13px;
+          text-transform: uppercase;
+          letter-spacing: .1em;
+          color: rgba(255, 255, 255, .55);
+          margin-bottom: 16px;
+          font-weight: 700;
+          font-family: 'Sora', sans-serif;
+        }
+        .tokko-foot-grid a {
+          display: block;
+          font-size: 15px;
+          color: rgba(255, 255, 255, .8);
+          margin: 10px 0;
+          text-decoration: none;
+          transition: color 0.18s ease;
+        }
+        .tokko-foot-grid a:hover {
+          color: #ffffff;
+        }
+        .tokko-foot-brand p {
+          font-size: 15px;
+          color: rgba(255, 255, 255, .68);
+          margin: 16px 0;
+          max-width: 320px;
+          line-height: 1.5;
+        }
+        .tokko-news {
+          display: flex;
+          border-radius: 9999px;
+          background: #ffffff;
+          padding: 4px 6px 4px 16px;
+          max-width: 340px;
+          border: 1px solid rgba(255, 255, 255, .25);
+          margin-top: 18px;
+        }
+        .tokko-news input {
+          border: none;
+          outline: none;
+          background: transparent;
+          font-size: 14px;
+          flex: 1;
+          color: #0B1526;
+          min-width: 0;
+        }
+        .tokko-news input::placeholder {
+          color: #7A8CA8;
+        }
+        .tokko-news button {
+          background: #0B1526;
+          color: #ffffff;
+          border: none;
+          border-radius: 9999px;
+          padding: 8px 18px;
+          font-weight: 700;
+          font-size: 13px;
+          cursor: pointer;
+          transition: background 0.2s ease;
+        }
+        .tokko-news button:hover {
+          background: #1A5FE0;
+        }
+        .tokko-foot-bottom {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 24px;
+          border-top: 1px solid rgba(255, 255, 255, .12);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 16px;
+          flex-wrap: wrap;
+          font-size: 13.5px;
+          color: rgba(255, 255, 255, .65);
+        }
+        .tokko-foot-bottom a {
+          color: rgba(255, 255, 255, .8);
+          margin-left: 20px;
+          text-decoration: none;
+          transition: color 0.18s ease;
+        }
+        .tokko-foot-bottom a:hover {
+          color: #ffffff;
+        }
+        @media (max-width: 900px) {
+          .tokko-foot-grid {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+        @media (max-width: 600px) {
+          .tokko-foot-grid {
+            grid-template-columns: 1fr;
+            padding: 48px 20px 24px;
+          }
+          footer {
+            padding-bottom: 78px;
+          }
+        }
+      `}} />
 
-      {/* Radiant ambient glow accents */}
-      <div className="absolute top-0 right-1/4 w-[600px] h-80 bg-[radial-gradient(ellipse_at_top,rgba(0,210,255,0.3)_0%,transparent_70%)] pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-[500px] h-64 bg-[radial-gradient(ellipse_at_bottom_left,rgba(0,255,210,0.2)_0%,transparent_70%)] pointer-events-none" />
-
-      <div className="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10">
-        
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 py-16">
-          
-          {/* Brand & Mission Statement Col (Span 2) */}
-          <div className="lg:col-span-2 space-y-5">
-            <div className="inline-block">
-              <Logo className="h-8" textClassName="text-xl text-white" inverted={true} />
-            </div>
-            
-            <p className="text-white text-sm leading-relaxed max-w-sm font-medium drop-shadow-[0_1px_2px_rgba(0,10,35,0.7)]">
-              The national-scale JEE Main 2027 mock test platform. Predict your All-India Rank with statistically robust sample sizes while powering 100% exam fee scholarships for deserving peers.
-            </p>
-
-            <div className="space-y-2.5 pt-1">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#021B5A]/85 border border-cyan-300/50 text-white text-xs font-mono font-semibold shadow-md backdrop-blur-sm">
-                <HeartHandshake className="w-4 h-4 text-cyan-300" />
-                <span className="drop-shadow-[0_1px_1px_rgba(0,10,35,0.8)]">₹18 of ₹27 → Escrowed Fee Support Pool</span>
-              </div>
-              
-              <div className="flex items-center gap-2 text-xs font-mono text-cyan-100 pt-0.5 font-semibold drop-shadow-[0_1px_1px_rgba(0,10,35,0.8)]">
-                <ShieldCheck className="w-4 h-4 text-cyan-300" />
-                <span>Audited Social Enterprise Model · DPDP Act Compliant</span>
-              </div>
-            </div>
-
-            <div className="pt-2 text-xs font-mono text-white space-y-1.5 drop-shadow-[0_1px_2px_rgba(0,10,35,0.7)]">
-              <p>National Exam Slot: <strong className="text-cyan-200 font-bold ml-1">27 December 2026 · 9:00 AM – 12:00 PM IST</strong></p>
-              <p>Standard Entry Fee: <strong className="text-cyan-200 font-bold ml-1">₹27 Only (All Taxes Included)</strong></p>
-            </div>
-          </div>
-
-          {/* 4 Link Columns (1 col each) */}
-          {Object.entries(links).map(([category, items]) => (
-            <div key={category} className="space-y-4">
-              <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2 drop-shadow-[0_1px_2px_rgba(0,10,35,0.9)]">
-                <span className="w-2 h-2 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(103,232,249,1)] shrink-0" />
-                <span>{category}</span>
-              </h4>
-              <ul className="space-y-2.5">
-                {items.map((item) => (
-                  <li key={item.label}>
-                    <Link
-                      href={item.href}
-                      className="text-xs text-white hover:text-cyan-200 hover:underline hover:decoration-cyan-300 transition-colors duration-150 inline-block leading-relaxed font-medium drop-shadow-[0_1px_1px_rgba(0,10,35,0.6)]"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-        </div>
-
-        {/* Statutory Disclaimers Bar */}
-        <div className="py-6 border-t-2 border-white/25 text-xs text-white leading-relaxed space-y-2 drop-shadow-[0_1px_2px_rgba(0,10,35,0.7)] font-normal">
+      {/* Main Grid */}
+      <div className="tokko-foot-grid">
+        {/* Brand & Newsletter Column */}
+        <div className="tokko-foot-brand">
+          <Link href="/" aria-label="StudyFAM Home" className="inline-flex items-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo-light.png"
+              alt="StudyFAM"
+              style={{ height: "34px", width: "auto", objectFit: "contain" }}
+            />
+          </Link>
           <p>
-            <strong className="text-white font-bold underline decoration-cyan-400/50 underline-offset-2">Statutory Non-Affiliation Disclaimer:</strong> StudyFam is an independent testing and analytics platform operated by StudyFam Technologies Pvt. Ltd. StudyFam is not affiliated, endorsed, or associated with the National Testing Agency (NTA), the Ministry of Education, or the Joint Entrance Examination (JEE) board. All trade names, acronyms, and exam pattern standards are cited solely under statutory fair use doctrine for preparatory reference.
+            StudyFAM helps JEE Main 2027 aspirants practise with clarity, consistency, and purpose — free.
           </p>
-        </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t-2 border-white/25 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white font-mono drop-shadow-[0_1px_1px_rgba(0,10,35,0.6)]">
-          <p className="font-semibold text-white">© 2027 StudyFam Technologies Private Limited. All rights reserved.</p>
-          <div className="flex flex-wrap items-center gap-5 text-xs">
-            <Link href="/privacy" className="text-white hover:text-cyan-200 hover:underline transition-colors font-medium">Privacy</Link>
-            <Link href="/terms" className="text-white hover:text-cyan-200 hover:underline transition-colors font-medium">Terms</Link>
-            <Link href="/refund-policy" className="text-white hover:text-cyan-200 hover:underline transition-colors font-medium">Refunds</Link>
-            <Link href="/scholarship-rules" className="text-white hover:text-cyan-200 hover:underline transition-colors font-medium">Scholarship Rules</Link>
-            <Link href="/transparency" className="text-white hover:text-cyan-200 hover:underline transition-colors font-medium">Transparency</Link>
-            <Link href="/contact" className="text-white hover:text-cyan-200 hover:underline transition-colors font-medium">Grievance</Link>
-            <span className="text-white font-bold bg-[#021B5A]/90 px-3 py-1 rounded-full border border-cyan-300/40 text-[11px] shadow-sm">
-              🇮🇳 Pan-India Initiative
-            </span>
+          {/* Seat Alerts Form */}
+          <form className="tokko-news" onSubmit={handleSubscribe}>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email for seat alerts"
+              aria-label="Email for seat alerts"
+            />
+            <button type="submit">
+              {subscribed ? "✓ Joined" : "Join"}
+            </button>
+          </form>
+
+          {/* Micro trust badges */}
+          <div className="mt-4 space-y-1.5 text-xs text-blue-200/80 font-mono">
+            <div className="flex items-center gap-1.5">
+              <HeartHandshake size={13} className="text-cyan-300 shrink-0" />
+              <span>₹18 of ₹27 → Escrowed Fee Support Pool</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck size={13} className="text-emerald-400 shrink-0" />
+              <span>DPDP Act 2023 · Zero Data Monetization</span>
+            </div>
           </div>
         </div>
 
+        {/* Column 1: Mock Tests */}
+        <div>
+          <h4>Practice</h4>
+          <Link href="/#mfts">10 Free Mocks (MFT 1–10)</Link>
+          <Link href="/all-india-mock#exam-pattern">Exam Pattern (NTA 75-Q)</Link>
+          <Link href="/exam">Chapter Tests (400+)</Link>
+          <Link href="/#faq">Frequently Asked Questions</Link>
+        </div>
+
+        {/* Column 2: Legal & Support */}
+        <div>
+          <h4>Support &amp; Legal</h4>
+          <Link href="/contact">Candidate Support Desk</Link>
+          <Link href="/about">About StudyFam</Link>
+          <Link href="/refund-policy">Cancellation &amp; Refund</Link>
+          <Link href="/privacy">Privacy Policy (DPDP Act)</Link>
+          <Link href="/terms">Terms of Service</Link>
+        </div>
+
+        {/* Column 3: Explore & Transparency */}
+        <div>
+          <h4>Explore</h4>
+          <Link href="/dashboard">Candidate Dashboard</Link>
+          <Link href="/all-india-mock">All-India Mock (27 Dec)</Link>
+          <Link href="/scholarship-rules">Scholarship Rules &amp; Policy</Link>
+          <Link href="/transparency">Escrow &amp; Audit Report</Link>
+          <Link href="/admit-card">Admit Card Specimen</Link>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="tokko-foot-bottom">
+        <span>© 2026 StudyFAM Technologies · All rights reserved · Not affiliated with NTA or TCS iON</span>
+        <span className="flex items-center flex-wrap gap-y-2">
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/terms">Terms</Link>
+          <Link href="/refund-policy">Refunds</Link>
+          <a
+            href="#"
+            onClick={scrollToTop}
+            style={{ color: "#d6aef2" }}
+            className="inline-flex items-center gap-1 font-semibold"
+          >
+            <span>Back to top</span>
+            <ArrowUp size={13} />
+          </a>
+        </span>
       </div>
     </footer>
   );
