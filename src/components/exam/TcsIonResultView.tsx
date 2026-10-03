@@ -36,6 +36,8 @@ import {
 } from "lucide-react";
 import { EvaluationResult } from "@/lib/examDb";
 import { formatQuestionText, formatOptionText, formatSolutionText } from "@/lib/questionFormatter";
+import { analyzeJeeScore, formatIndianNumber } from "@/lib/jeePercentileAnalyzer";
+import { JeePercentileAnalyzerCard } from "@/components/exam/JeePercentileAnalyzerCard";
 
 interface TcsIonResultViewProps {
   testTitle: string;
@@ -72,71 +74,12 @@ export function TcsIonResultView({
     return `${mins}m ${remainingSecs}s`;
   };
 
-  // 1. JEE Main Percentile & All-India Rank (AIR) Prediction Engine
+  // 1. JEE Main Percentile & All-India Rank (AIR) Prediction Engine (2026 Reference Feed)
   const jeePrediction = useMemo(() => {
     const rawScore = result.totalScore;
     const maxScore = result.maxScore || 300;
     const scaledScore = Math.max(-75, Math.min(300, Math.round((rawScore / maxScore) * 300)));
-
-    let percentile = 0;
-    let rankRange = "";
-    let collegeTier = "";
-    let advancedEligible = false;
-
-    if (scaledScore >= 270) {
-      percentile = 99.95;
-      rankRange = "AIR 1 - 400";
-      collegeTier = "Top 3 NITs (Trichy, Surathkal, Warangal) Computer Science Guaranteed";
-      advancedEligible = true;
-    } else if (scaledScore >= 240) {
-      percentile = 99.60;
-      rankRange = "AIR 400 - 2,500";
-      collegeTier = "Top 5 NITs (CSE / ECE) & IIIT Hyderabad / Allahabad";
-      advancedEligible = true;
-    } else if (scaledScore >= 210) {
-      percentile = 99.05;
-      rankRange = "AIR 2,500 - 8,000";
-      collegeTier = "Premier NITs (Mechanical, EEE, CSE in Tier-2 NITs)";
-      advancedEligible = true;
-    } else if (scaledScore >= 180) {
-      percentile = 98.10;
-      rankRange = "AIR 8,000 - 18,000";
-      collegeTier = "Core branches in Top 10 NITs & Reputed IIITs";
-      advancedEligible = true;
-    } else if (scaledScore >= 150) {
-      percentile = 96.20;
-      rankRange = "AIR 18,000 - 38,000";
-      collegeTier = "Mid-tier NITs / Top State Government Engineering Colleges";
-      advancedEligible = true;
-    } else if (scaledScore >= 120) {
-      percentile = 92.40;
-      rankRange = "AIR 38,000 - 75,000";
-      collegeTier = "Safe for JEE Advanced Qualification | Regional NITs & Top GFTIs";
-      advancedEligible = true;
-    } else if (scaledScore >= 90) {
-      percentile = 86.80;
-      rankRange = "AIR 75,000 - 1,45,000";
-      collegeTier = "Near General Category Cutoff | Reputed State Universities & GFTIs";
-      advancedEligible = true;
-    } else if (scaledScore >= 60) {
-      percentile = 74.50;
-      rankRange = "AIR 1,45,000 - 2,60,000";
-      collegeTier = "Push 35+ more marks in high-yield chapters to comfortably clear cutoff";
-      advancedEligible = false;
-    } else {
-      percentile = Math.max(15, Math.round((Math.max(0, scaledScore) / 60) * 60 * 10) / 10);
-      rankRange = "AIR > 2,60,000";
-      collegeTier = "High-priority syllabus completion & formula revision needed";
-      advancedEligible = false;
-    }
-
-    return {
-      scaledScore,
-      percentile,
-      rankRange,
-      collegeTier,
-      advancedEligible,
-    };
+    return analyzeJeeScore(scaledScore, { mode: "quick" });
   }, [result.totalScore, result.maxScore]);
 
   // 2. Chapter-wise Performance & "Chapters Lagging Behind" Diagnostic
@@ -416,17 +359,17 @@ export function TcsIonResultView({
 
             {/* JEE Prediction Badges */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full lg:w-auto">
-              {/* Predicted Percentile */}
+              {/* Estimated Percentile */}
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 p-4 rounded-xl text-center shadow-2xs">
                 <div className="flex items-center justify-center space-x-1.5 text-blue-700 font-bold text-xs uppercase tracking-wider mb-1">
                   <TrendingUp className="w-4 h-4" />
-                  <span>Predicted Percentile</span>
+                  <span>Estimated Percentile</span>
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-blue-950">
-                  {jeePrediction.percentile.toFixed(2)}
-                  <span className="text-sm font-semibold text-blue-600">%ile</span>
+                <div className="text-xl sm:text-2xl font-black text-blue-950">
+                  {jeePrediction.percentileMin.toFixed(2)} - {jeePrediction.percentileMax.toFixed(2)}
+                  <span className="text-xs font-semibold text-blue-600 ml-1">%ile</span>
                 </div>
-                <span className="text-[10px] text-gray-500 block mt-0.5">Based on official NTA shifts</span>
+                <span className="text-[10px] text-gray-500 block mt-0.5">2026 Normalisation Baseline</span>
               </div>
 
               {/* Projected AIR */}
@@ -435,10 +378,10 @@ export function TcsIonResultView({
                   <Target className="w-4 h-4" />
                   <span>Projected AIR Range</span>
                 </div>
-                <div className="text-lg sm:text-xl font-black text-purple-950">
-                  {jeePrediction.rankRange}
+                <div className="text-sm sm:text-base font-black text-purple-950">
+                  AIR {formatIndianNumber(jeePrediction.airMin)} - {formatIndianNumber(jeePrediction.airMax)}
                 </div>
-                <span className="text-[10px] text-purple-600 font-semibold block mt-0.5">All India Ranking</span>
+                <span className="text-[10px] text-purple-600 font-semibold block mt-0.5">15.38 Lakh Candidate Pool</span>
               </div>
 
               {/* JEE Advanced Eligibility */}
@@ -464,7 +407,7 @@ export function TcsIonResultView({
                     </span>
                   )}
                 </div>
-                <span className="text-[10px] text-gray-500 block mt-0.5">General Cutoff ~92%ile</span>
+                <span className="text-[10px] text-gray-500 block mt-0.5">General Cutoff ~93.2%ile</span>
               </div>
             </div>
           </div>
@@ -539,6 +482,16 @@ export function TcsIonResultView({
         {/* TAB 1: IN-DEPTH JEE DIAGNOSTIC & CHAPTERS LACKING BEHIND */}
         {activeTab === "diagnostic" && (
           <div className="space-y-6">
+            {/* 1. OFFICIAL JEE MAIN 2026 PERCENTILE & SHIFT ANALYZER ENGINE */}
+            <JeePercentileAnalyzerCard
+              rawScore={result.totalScore}
+              maxScore={result.maxScore || 300}
+              incorrectCount={result.incorrectCount}
+              correctCount={result.correctCount}
+              unattemptedCount={result.unattemptedCount}
+              subjectBreakdown={result.sectionBreakdown}
+            />
+
             {/* A. CRITICAL SCORE LEAKAGE & NEGATIVE MARKING DIAGNOSTIC */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
               <div className="flex items-center justify-between border-b pb-3">

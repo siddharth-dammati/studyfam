@@ -21,10 +21,10 @@ export function HomeNavbar() {
 
   const navLinks = [
     { label: "10 Free Mocks", href: "#free-mocks", highlight: true },
+    { label: "Percentile Analyzer", href: "/percentile-analyzer", badge: "2026" },
     { label: "All-India Mock (27 Dec)", href: "#all-india-mock", badge: "Win Fees" },
     { label: "Special Features", href: "#special-features" },
     { label: "300+ Chapter Tests", href: "/exam" },
-    { label: "Pattern & Weightage", href: "#pattern" },
     { label: "FAQ", href: "#faq" },
   ];
 
