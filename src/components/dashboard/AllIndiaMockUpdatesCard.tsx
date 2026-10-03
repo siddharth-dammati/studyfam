@@ -94,7 +94,7 @@ export function AllIndiaMockUpdatesCard({
               All-India JEE Main 2027 Mock Test
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-              Sunday, 27 Dec 2026 · 09:00 AM – 12:00 PM IST · ₹27 Entry (₹18 prize pool + ₹9 ops) · Registrations open 20 Oct 2026.
+              Sunday, 27 Dec 2026 · 09:00 AM – 12:00 PM IST · ₹27 Entry (₹18 scholarship pool + ₹9 ops) · Registrations open 20 Oct 2026.
             </p>
           </div>
 
@@ -207,7 +207,7 @@ export function AllIndiaMockUpdatesCard({
                 <span className="font-mono text-indigo-700 font-extrabold">03:00 PM – 06:00 PM</span>
               </div>
               <div className="text-[11px] text-slate-500 pt-0.5">
-                Reporting: 45 mins prior to slot start
+                Reporting: 08:00 AM · Gate Closes: 08:30 AM
               </div>
             </div>
           </div>
@@ -215,7 +215,7 @@ export function AllIndiaMockUpdatesCard({
           {/* Card 3: Merit Pool & Rewards */}
           <div className="bg-gradient-to-br from-emerald-50/70 to-teal-50/50 border border-emerald-200/80 rounded-2xl p-4 flex flex-col justify-between">
             <div className="flex items-center justify-between text-emerald-700 text-xs mb-2">
-              <span className="font-mono text-[11px] uppercase tracking-wider font-bold">100% Fee Refund Prize</span>
+              <span className="font-mono text-[11px] uppercase tracking-wider font-bold">100% Fee Refund Scholarship</span>
               <Trophy size={15} className="text-emerald-600" />
             </div>
             <div>
@@ -223,7 +223,7 @@ export function AllIndiaMockUpdatesCard({
                 ₹18 of ₹27 Pooled
               </div>
               <div className="text-xs text-emerald-700 mt-1 font-medium">
-                Top 20 to Top 1,000 Winners (50% Merit + 50% Need)
+                Top 20 to Top 1,000 Winners (50% Merit + 50% Need-Based)
               </div>
             </div>
           </div>

@@ -24,7 +24,7 @@ export function HomeNavbar() {
     { label: "Percentile Analyzer", href: "/percentile-analyzer", badge: "2026" },
     { label: "All-India Mock (27 Dec)", href: "#all-india-mock", badge: "Win Fees" },
     { label: "Special Features", href: "#special-features" },
-    { label: "300+ Chapter Tests", href: "/exam" },
+    { label: "400+ Chapter Tests", href: "/exam" },
     { label: "FAQ", href: "#faq" },
   ];
 

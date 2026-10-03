@@ -14,7 +14,9 @@ import {
   Layers,
   Zap,
   RotateCcw,
+  Trophy,
 } from "lucide-react";
+import { Logo } from "@/components/ui/Logo";
 import { TestSummary } from "@/lib/examDb";
 import { Footer } from "@/components/sections/Footer";
 
@@ -87,40 +89,77 @@ export default function ExamCatalogPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0d14] text-slate-100 font-sans">
-      {/* Header */}
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 py-3.5 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <Link href="/" className="font-extrabold text-lg sm:text-xl text-white tracking-tight flex items-center space-x-2">
-            <span className="text-blue-500">Study</span>FAM
+      {/* Canonical Header */}
+      <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 py-3 flex items-center justify-between">
+        <div className="flex items-center space-x-3 sm:space-x-4">
+          <Link href="/" className="flex items-center shrink-0">
+            <Logo inverted className="h-7 w-auto" />
           </Link>
-          <span className="text-slate-600">|</span>
-          <span className="text-xs sm:text-sm font-semibold text-slate-300">
+          <span className="text-slate-700 hidden sm:inline">|</span>
+          <span className="text-xs sm:text-sm font-semibold text-slate-400 hidden sm:inline">
             All India Mock Test Series &amp; Question Bank
           </span>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 sm:space-x-4">
           <Link
-            href="/dashboard"
-            className="text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-colors"
+            href="/"
+            className="text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-colors hidden sm:inline"
           >
-            Dashboard
+            Home
+          </Link>
+          <Link
+            href="/all-india-mock"
+            className="text-xs sm:text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors flex items-center space-x-1"
+          >
+            <Trophy className="w-3.5 h-3.5 text-amber-400" />
+            <span>National Mock (27 Dec)</span>
           </Link>
           <Link
             href="/dashboard"
             className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all shadow-xs"
           >
-            My Account
+            Candidate Dashboard
           </Link>
         </div>
       </header>
 
+      {/* Continuity Banner: 27 Dec All-India Mock Connection */}
+      <div className="bg-gradient-to-r from-blue-950/80 via-indigo-950/90 to-purple-950/80 border-b border-indigo-800/40 px-4 sm:px-8 py-2.5">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+          <div className="flex items-center space-x-2 text-slate-200">
+            <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono font-bold text-[10px] uppercase shrink-0">
+              National Stage
+            </span>
+            <span>
+              All-India Scholarship Mock: <strong>Sunday, 27 Dec 2026</strong> (09:00 AM IST) · Entry ₹27 (₹18 Scholarship Pool) · 100% NTA Fee Refund
+            </span>
+          </div>
+          <div className="flex items-center space-x-3 shrink-0">
+            <Link
+              href="/all-india-mock"
+              className="text-indigo-300 hover:text-white font-bold flex items-center space-x-1 transition-colors"
+            >
+              <span>View Exam Details</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
+            <span className="text-slate-600 hidden sm:inline">|</span>
+            <Link
+              href="/dashboard"
+              className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
+            >
+              Candidate Portal
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Banner */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-8">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-6">
         <div className="bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border border-blue-500/20 rounded-2xl p-6 sm:p-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="max-w-2xl relative z-10 space-y-4">
+          <div className="max-w-3xl relative z-10 space-y-4">
             <div className="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/30 px-3 py-1 rounded-full text-blue-400 text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Authentic TCS iON / NTA Exam Simulation</span>
@@ -133,13 +172,13 @@ export default function ExamCatalogPage() {
             <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
               Experience the authentic NTA Computer Based Test interface with real countdown timers, official marking
               scheme (+4 / -1), collapsible 5-state question palettes, and step-by-step solutions from our 9,395+
-              curated question bank.
+              curated question bank. Master all 10 MFTs and chapter banks to benchmark your preparation for the 27 Dec All-India Mock.
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2 text-xs font-medium text-slate-300">
               <div className="flex items-center space-x-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>10 Full 75-Q Major Mocks (MFT)</span>
+                <span>10 Major Full Tests (MFT Series)</span>
               </div>
               <div className="flex items-center space-x-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -147,7 +186,11 @@ export default function ExamCatalogPage() {
               </div>
               <div className="flex items-center space-x-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Instant Scorecard &amp; Solutions</span>
+                <span>Instant Scorecard &amp; Pacing Solutions</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>100% Free Forever</span>
               </div>
             </div>
           </div>
@@ -171,7 +214,7 @@ export default function ExamCatalogPage() {
               }`}
             >
               <Award className="w-4 h-4" />
-              <span>Full Mock Tests ({fullMocks.length})</span>
+              <span>10 Major Full Tests (MFT Series)</span>
             </button>
 
             <button
@@ -183,7 +226,7 @@ export default function ExamCatalogPage() {
               }`}
             >
               <Layers className="w-4 h-4" />
-              <span>Chapter Practice Tests ({chapterTests.length})</span>
+              <span>400+ Chapter Practice Tests {chapterTests.length > 0 ? `(${chapterTests.length})` : ""}</span>
             </button>
           </div>
 
@@ -255,7 +298,7 @@ export default function ExamCatalogPage() {
                                 : "bg-blue-500/10 text-blue-400 border border-blue-500/30"
                             }`}
                           >
-                            {isMft ? "Official 300 Marks" : test.subject}
+                            {isMft ? "Official 300 Marks · Full Mock" : `${test.subject} · Chapter Practice`}
                           </span>
 
                           <span className="text-[11px] text-slate-400 flex items-center space-x-1 font-mono">

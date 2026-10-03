@@ -66,7 +66,7 @@ export function ChapterPracticeSpotlight() {
             <h2 className="text-[clamp(2.1rem,4.2vw,3.6rem)] font-extrabold tracking-tight text-slate-900 leading-tight mb-4">
               Beyond Full Mocks:{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600">
-                300+ Chapter-wise Diagnostic Tests.
+                400+ Chapter-wise Diagnostic Tests.
               </span>
             </h2>
 
@@ -79,7 +79,7 @@ export function ChapterPracticeSpotlight() {
             href="/exam"
             className="inline-flex items-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold transition-all shadow-xs hover:shadow shrink-0 active:scale-95"
           >
-            <span>Explore 9,300+ Question Bank</span>
+            <span>Explore 9,395+ Question Bank</span>
             <ArrowRight size={14} />
           </Link>
         </div>

@@ -605,7 +605,7 @@ export function StudyFamLandingPage() {
             {/* Bento 4 */}
             <div className="relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-[#92400E] to-[#F59E0B] text-white shadow-lg hover:-translate-y-1.5 transition-all group">
               <span className="text-xs font-bold uppercase tracking-wider text-amber-200">National Scholarship</span>
-              <h3 className="text-2xl font-black text-white mt-2 mb-3">₹15 Lakhs Merit Pool</h3>
+              <h3 className="text-2xl font-black text-white mt-2 mb-3">100% Fee Refund Pool</h3>
               <p className="text-sm text-white/80 leading-relaxed">
                 Top rankers in the 27 Dec All-India Mock receive a 100% refund of their official NTA JEE Main Application Fees (₹1,000 Boys / ₹800 Girls).
               </p>

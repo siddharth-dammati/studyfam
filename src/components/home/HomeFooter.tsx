@@ -18,7 +18,7 @@ export function HomeFooter() {
             </Link>
 
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-sm">
-              StudyFAM is India&apos;s premier community-driven JEE Main preparation portal. We provide 10 full-length NTA CBT mock tests and 300+ chapter-wise practice tests 100% free with complete step-by-step textbook solutions.
+              StudyFAM is India&apos;s premier community-driven JEE Main preparation portal. We provide 10 full-length NTA CBT mock tests and 400+ chapter-wise practice tests 100% free with complete step-by-step textbook solutions.
             </p>
 
             <div className="inline-flex items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-200 text-[11px] text-slate-700 shadow-xs">

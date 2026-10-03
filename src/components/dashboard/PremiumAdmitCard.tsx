@@ -110,7 +110,7 @@ export function PremiumAdmitCard({
 
   const handleWhatsAppShare = () => {
     if (typeof window !== "undefined") {
-      const text = `🏆 *My Official StudyFAM All-India JEE Main 2027 Mock Admit Card*\n\nCandidate: *${registration.full_name}*\nRoll No: *${rollNumber}*\nExam Date: *Sunday, 27 Dec 2026 (9:00 AM IST)*\nCompete for the ₹5,000+ Merit & Need-Based Scholarship pool!\n\nRegister & verify your admit card at: https://studyfam.com`;
+      const text = `🏆 *My Official StudyFAM All-India JEE Main 2027 Mock Admit Card*\n\nCandidate: *${registration.full_name}*\nRoll No: *${rollNumber}*\nExam Date: *Sunday, 27 Dec 2026 (9:00 AM IST)*\nCompete for 100% NTA Application Fee Refund Scholarships (50% Merit + 50% Need-Based)!\n\nRegister & verify your admit card at: https://studyfam.in`;
       window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
     }
   };

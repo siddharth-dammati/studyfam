@@ -360,7 +360,7 @@ export function FreeMocksHero() {
                 href="/exam"
                 className="inline-flex items-center gap-2 px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl text-xs font-bold transition-all shadow-sm shrink-0"
               >
-                <span>Browse 300+ Chapter Tests</span>
+                <span>Browse 400+ Chapter Tests</span>
                 <ArrowRight size={14} />
               </Link>
             </div>

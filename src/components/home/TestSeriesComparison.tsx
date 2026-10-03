@@ -20,7 +20,7 @@ export function TestSeriesComparison() {
     },
     {
       feature: "Chapter-wise Diagnostic Tests",
-      studyfam: "300+ Chapter Tests (9,300+ Qs)",
+      studyfam: "400+ Chapter Tests (9,395+ Qs)",
       coaching: "Often restricted to expensive batch packages",
       advantage: true,
     },

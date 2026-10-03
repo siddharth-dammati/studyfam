@@ -457,7 +457,8 @@ export function StudyFamTokkoPage() {
           </Link>
 
           <div className="nav-links">
-            <a href="#mfts">MFTs</a>
+            <a href="#mfts">10 MFTs</a>
+            <Link href="/exam">400+ Chapter Tests</Link>
             <a href="#scholarship">Scholarship</a>
             <a href="#pricing">Pricing</a>
             <a href="#faq">FAQ</a>
@@ -512,7 +513,8 @@ export function StudyFamTokkoPage() {
 
         {/* Mobile Nav Drawer */}
         <div className={`mnav ${mobileOpen ? "open" : ""}`} id="mnav">
-          <a href="#mfts" onClick={() => setMobileOpen(false)}>MFTs</a>
+          <a href="#mfts" onClick={() => setMobileOpen(false)}>10 MFTs</a>
+          <Link href="/exam" onClick={() => setMobileOpen(false)}>400+ Chapter Tests</Link>
           <a href="#scholarship" onClick={() => setMobileOpen(false)}>Scholarship</a>
           <a href="#pricing" onClick={() => setMobileOpen(false)}>Pricing</a>
           <a href="#faq" onClick={() => setMobileOpen(false)}>FAQ</a>
@@ -553,16 +555,17 @@ export function StudyFamTokkoPage() {
               </span>
             </h1>
             <p className="sub">
-              <strong>10 full-length CBT mocks (MFT-01 → MFT-10)</strong> — 75 questions · 300 marks · 180 minutes · +4/−1 — plus a <strong>₹27 All-India Scholarship Exam</strong> that refunds your full NTA fee.
+              <strong>10 full-length CBT mocks (MFT-01 → MFT-10) &amp; 400+ chapter tests</strong> — 75 questions · 300 marks · 180 minutes · +4/−1 — plus a <strong>₹27 All-India Scholarship Exam</strong> that refunds your full NTA fee.
             </p>
             <div className="cta-row">
               <a className="btn btn-blue" href="/exam/player?id=MFT-1.pdf">Start Free →</a>
+              <Link className="btn btn-ghost" href="/exam">Browse 400+ Tests</Link>
               <a className="btn btn-ghost" href="#scholarship">₹27 Scholarship</a>
             </div>
             <p className="cta-note">Free forever · No credit card · 24/7 access</p>
             <div className="hero-stats" ref={statsContainerRef}>
               <div><b><span className="num" data-to="10">10</span></b><span>Full mocks, free</span></div>
-              <div><b><span className="num" data-to="750">750</span></b><span>Curated questions</span></div>
+              <div><b><span className="num" data-to="400">400</span>+</b><span>Chapter tests</span></div>
               <div><b><span className="num" data-to="300">300</span></b><span>Marks per paper</span></div>
               <div><b><span className="num" data-to="27" data-pre="₹">₹27</span></b><span>Scholarship entry</span></div>
             </div>
@@ -936,7 +939,7 @@ export function StudyFamTokkoPage() {
                 <span style={{ color: "rgba(255,255,255,.6)" }}>entry · 27 Dec 2026</span>
                 <ul>
                   <li>All-India synchronized mock</li>
-                  <li>100% NTA fee refund prize</li>
+                  <li>100% NTA fee refund scholarship</li>
                   <li>Merit + need tracks, 50:50 slots</li>
                   <li>E-admit card + 48-hr ranks</li>
                 </ul>
@@ -950,7 +953,7 @@ export function StudyFamTokkoPage() {
                 <div className="amount" style={{ fontSize: "44px" }}>Fair &amp; open</div>
                 <span style={{ color: "var(--mut2)" }}>our guarantee</span>
                 <ul>
-                  <li>₹18 of ₹27 pooled to prizes</li>
+                  <li>₹18 of ₹27 pooled to scholarships</li>
                   <li>More students = more winners</li>
                   <li>Opt-outs roll to next ranker</li>
                   <li>Full refund policy published</li>
@@ -958,7 +961,7 @@ export function StudyFamTokkoPage() {
                 <Link className="btn btn-ghost" href="/refund-policy">Read policy →</Link>
               </div>
             </div>
-            <p className="guar">Free mocks forever · <b>Transparent ₹18 pool + ₹9 ops split</b> · Payouts in 7 days</p>
+            <p className="guar">Free mocks forever · <b>Transparent ₹18 scholarship pool + ₹9 ops split</b> · Payouts in 7 days</p>
           </div>
         </section>
 
@@ -980,7 +983,7 @@ export function StudyFamTokkoPage() {
               </details>
               <details>
                 <summary>When is the Scholarship Mock?</summary>
-                <p>27 Dec 2026, 9:00 AM–12:00 PM IST (report 8:00 AM, gate closes 8:30 AM). Entry ₹27 — ₹18 to the prize pool, ₹9 to platform &amp; proctoring. Registration opens 20 Oct 2026.</p>
+                <p>27 Dec 2026, 9:00 AM–12:00 PM IST (report 8:00 AM, gate closes 8:30 AM). Entry ₹27 — ₹18 to the scholarship pool, ₹9 to platform &amp; proctoring. Registration opens 20 Oct 2026.</p>
               </details>
               <details>
                 <summary>Who wins the scholarship?</summary>

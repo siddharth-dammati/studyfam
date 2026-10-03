@@ -260,27 +260,37 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
 
       {/* 2. Major Full Test Series (MFT 1–10) Launcher */}
       <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
-                10 Major Tests Active
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded-full">
+                100% Free Practice Suite
               </span>
+              <span className="text-xs text-slate-400 font-mono">10 Major Tests + 400+ Chapter Tests</span>
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
               Start Full-Length Mock Test (MFT Series)
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Exact 75-question NTA format (300 Marks, 3.0 Hours, +4/-1) with proctoring &amp; full solutions.
+              Exact 75-question NTA format (300 Marks, 3.0 Hours, +4/-1) with proctoring &amp; full solutions. Official benchmark for the 27 Dec 2026 All-India Mock.
             </p>
           </div>
 
-          <button
-            onClick={() => setShowAllMfts(!showAllMfts)}
-            className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer shrink-0"
-          >
-            {showAllMfts ? "Show Less" : `View All 10 MFTs`}
-          </button>
+          <div className="flex items-center gap-2.5 self-start sm:self-center">
+            <Link
+              href="/exam"
+              className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 transition-colors px-2 py-1 rounded-lg hover:bg-indigo-50"
+            >
+              <span>Browse 400+ Chapter Tests</span>
+              <ExternalLink size={12} />
+            </Link>
+            <button
+              onClick={() => setShowAllMfts(!showAllMfts)}
+              className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer shrink-0"
+            >
+              {showAllMfts ? "Show Less" : `View All 10 MFTs`}
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
