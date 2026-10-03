@@ -11,7 +11,19 @@ function AuthCallbackContent() {
   const [candidateName, setCandidateName] = useState<string | undefined>(undefined);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const nextDestination = searchParams.get("next") || "/dashboard";
+  const [nextDestination, setNextDestination] = useState<string>("/dashboard");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = sessionStorage.getItem("sf_auth_next");
+        const fromParam = searchParams.get("next");
+        const resolved = saved || fromParam || "/dashboard";
+        setNextDestination(resolved);
+        if (saved) sessionStorage.removeItem("sf_auth_next");
+      } catch {}
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     let mounted = true;

@@ -117,14 +117,27 @@ export function useAuth() {
   const signInWithGoogle = async (nextPathOrEvent?: any) => {
     try {
       const supabase: any = createClient();
-      const origin = typeof window !== "undefined" ? window.location.origin : "https://studyfam.in";
       const targetNext =
         typeof nextPathOrEvent === "string"
           ? nextPathOrEvent
           : typeof window !== "undefined"
           ? window.location.pathname
           : "/dashboard";
-      const redirectTo = `${origin}/auth/callback?next=${encodeURIComponent(targetNext)}`;
+
+      if (typeof window !== "undefined") {
+        try {
+          sessionStorage.setItem("sf_auth_next", targetNext);
+        } catch {}
+      }
+
+      // Always prioritize the official studyfam domain so users are never redirected to localhost
+      const origin =
+        typeof window !== "undefined" && window.location.origin.includes("studyfam")
+          ? window.location.origin
+          : "https://studyfam.in";
+
+      // Clean callback URL without query params to avoid Supabase strict whitelist rejection
+      const redirectTo = `${origin}/auth/callback`;
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
