@@ -77,24 +77,24 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
         : "JEE Dropper / Repeater";
 
     return (
-      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
+      <div className="bg-white border border-[rgba(26,26,26,0.08)] rounded-[32px] p-6 sm:p-8 shadow-[0_20px_50px_-25px_rgba(10,28,150,0.06)] relative overflow-hidden">
         {/* Subtle accent bar */}
         <div
           className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${
             isConfirmed
-              ? "from-emerald-500 via-indigo-500 to-indigo-600"
-              : "from-amber-400 via-amber-500 to-indigo-500"
+              ? "from-[#0a1c96] via-[#1a5fe0] to-[#16a34a]"
+              : "from-amber-400 via-amber-500 to-[#1a5fe0]"
           }`}
         />
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
+            <div className="flex items-center gap-2 mb-2">
               <span
                 className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
                   isConfirmed
-                    ? "bg-emerald-100 text-emerald-800"
-                    : "bg-amber-100 text-amber-800"
+                    ? "bg-[#dcfce7] text-[#16a34a] border border-[#86efac]/80"
+                    : "bg-amber-100 text-amber-800 border border-amber-200"
                 }`}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-current" />
@@ -104,16 +104,16 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
                 {isConfirmed ? `₹${registration.amount_paid || 27} Paid` : "₹0 Paid"}
               </span>
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#1a1a1a] tracking-tight">
               {registration.full_name}
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Candidate Enrolled · {streamLabel}
             </p>
           </div>
 
           {/* Reference ID Pill */}
-          <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 flex items-center justify-between sm:justify-start gap-3">
+          <div className="bg-[#fafafa] border border-[rgba(26,26,26,0.08)] rounded-full px-4 py-2 flex items-center justify-between sm:justify-start gap-3 shadow-2xs">
             <div>
               <div className="text-[10px] uppercase font-mono font-bold text-slate-400">
                 Candidate Ref ID
@@ -124,18 +124,18 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
             </div>
             <button
               onClick={() => handleCopy(registration.id)}
-              className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-white rounded-xl transition-all shadow-2xs border border-transparent hover:border-slate-200"
+              className="p-1.5 text-slate-500 hover:text-[#0a1c96] hover:bg-white rounded-full transition-all shadow-2xs border border-transparent hover:border-slate-200 cursor-pointer"
               title="Copy Full Reference ID"
             >
-              {copied ? <Check size={16} className="text-emerald-600" /> : <Copy size={16} />}
+              {copied ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
             </button>
           </div>
         </div>
 
         {/* Candidate Detail Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-4 border-t border-slate-100 text-xs">
-          <div className="p-3 bg-slate-50/70 rounded-2xl border border-slate-100">
-            <div className="text-slate-400 text-[10px] font-mono uppercase mb-1 flex items-center gap-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-4 border-t border-[rgba(26,26,26,0.08)] text-xs">
+          <div className="p-3.5 bg-[#fafafa] rounded-[18px] border border-[rgba(26,26,26,0.07)]">
+            <div className="text-slate-400 text-[10px] font-mono uppercase mb-1 flex items-center gap-1 font-bold">
               <Mail size={12} /> Registered Email
             </div>
             <div className="font-semibold text-slate-900 truncate" title={registration.email}>
@@ -143,8 +143,8 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
             </div>
           </div>
 
-          <div className="p-3 bg-slate-50/70 rounded-2xl border border-slate-100">
-            <div className="text-slate-400 text-[10px] font-mono uppercase mb-1 flex items-center gap-1">
+          <div className="p-3.5 bg-[#fafafa] rounded-[18px] border border-[rgba(26,26,26,0.07)]">
+            <div className="text-slate-400 text-[10px] font-mono uppercase mb-1 flex items-center gap-1 font-bold">
               <Phone size={12} /> WhatsApp / Phone
             </div>
             <div className="font-semibold text-slate-900">
@@ -152,8 +152,8 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
             </div>
           </div>
 
-          <div className="p-3 bg-slate-50/70 rounded-2xl border border-slate-100">
-            <div className="text-slate-400 text-[10px] font-mono uppercase mb-1 flex items-center gap-1">
+          <div className="p-3.5 bg-[#fafafa] rounded-[18px] border border-[rgba(26,26,26,0.07)]">
+            <div className="text-slate-400 text-[10px] font-mono uppercase mb-1 flex items-center gap-1 font-bold">
               <Award size={12} /> Target Batch
             </div>
             <div className="font-semibold text-slate-900">
@@ -161,8 +161,8 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
             </div>
           </div>
 
-          <div className="p-3 bg-slate-50/70 rounded-2xl border border-slate-100">
-            <div className="text-slate-400 text-[10px] font-mono uppercase mb-1 flex items-center gap-1">
+          <div className="p-3.5 bg-[#fafafa] rounded-[18px] border border-[rgba(26,26,26,0.07)]">
+            <div className="text-slate-400 text-[10px] font-mono uppercase mb-1 flex items-center gap-1 font-bold">
               <Calendar size={12} /> Exam Date
             </div>
             <div className="font-semibold text-slate-900">
@@ -173,28 +173,28 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
 
         {/* Scholarship Dossier Bar / Action Banner */}
         {registration.gender && registration.family_income && registration.scholarship_track ? (
-          <div className="mt-4 p-3 bg-slate-50/80 border border-slate-200/90 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="mt-4 p-3.5 bg-[#fafafa] border border-[rgba(26,26,26,0.08)] rounded-[20px] flex flex-wrap items-center justify-between gap-3 text-xs">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-slate-600">
               <span>Gender: <strong className="text-slate-900">{registration.gender === "boy" ? "👦 Boy (Male)" : registration.gender === "girl" ? "👧 Girl (Female)" : "⚪ Other"}</strong></span>
               <span>Income: <strong className="text-slate-900 font-mono">{registration.family_income === "below_1.5l" ? "< ₹1.5L" : registration.family_income === "1.5l_3l" ? "₹1.5L–3L" : registration.family_income === "3l_6l" ? "₹3L–6L" : registration.family_income === "6l_8l" ? "₹6L–8L" : "> ₹8L"}</strong></span>
-              <span>Track: <strong className="text-indigo-700 font-bold">{registration.scholarship_track === "opt_out" ? "💖 Opted Out (Donated Slot)" : registration.scholarship_track === "need_based" ? "❤️ Need-Based Support" : "🏆 Merit Track"}</strong></span>
+              <span>Track: <strong className="text-[#0a1c96] font-bold">{registration.scholarship_track === "opt_out" ? "💖 Opted Out (Donated Slot)" : registration.scholarship_track === "need_based" ? "❤️ Need-Based Support" : "🏆 Merit Track"}</strong></span>
             </div>
             <button
               onClick={() => setShowDossierModal(true)}
-              className="flex items-center gap-1 text-[11px] text-indigo-600 hover:text-indigo-800 font-bold px-2.5 py-1 rounded-lg hover:bg-white transition-all shadow-2xs border border-transparent hover:border-slate-200 cursor-pointer"
+              className="flex items-center gap-1 text-[11px] text-[#0a1c96] hover:text-[#1a5fe0] font-bold px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 transition-all shadow-2xs border border-[rgba(26,26,26,0.08)] cursor-pointer active:scale-95"
             >
               <Edit3 size={12} />
               <span>Edit Dossier</span>
             </button>
           </div>
         ) : (
-          <div className="mt-4 p-4 rounded-2xl bg-indigo-50/90 border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+          <div className="mt-4 p-4 rounded-[22px] bg-[#e9f1fd]/80 border border-[#1a5fe0]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-[#0a1c96] to-[#1f6ff2] text-white flex items-center justify-center shrink-0 shadow-xs">
                 <Sparkles size={16} />
               </div>
               <div>
-                <div className="font-bold text-indigo-950 text-xs">Action Required: Complete Your Scholarship Dossier</div>
+                <div className="font-bold text-[#0a1c96] text-xs">Action Required: Complete Your Scholarship Dossier</div>
                 <p className="text-slate-600 mt-0.5 text-[11px]">
                   Specify your gender, family income, and scholarship track to be placed in the Merit or Need-Based pool (slots scale dynamically with total registrations).
                 </p>
@@ -202,7 +202,7 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
             </div>
             <button
               onClick={() => setShowDossierModal(true)}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shrink-0 shadow-xs transition-transform active:scale-95 cursor-pointer"
+              className="px-5 py-2 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] hover:shadow-[0_10px_24px_-8px_rgba(26,95,224,0.5)] text-white font-semibold rounded-full text-xs shrink-0 shadow-xs transition-all active:scale-95 cursor-pointer hover:-translate-y-0.5"
             >
               Complete Dossier →
             </button>
@@ -212,13 +212,13 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
         {/* Payment Confirmation Banner & Action Toolbar */}
         {isConfirmed ? (
           <div className="mt-5 space-y-3">
-            <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
+            <div className="p-5 rounded-[22px] bg-[#dcfce7]/60 border border-[#86efac]/80 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-emerald-950 font-bold text-sm">
-                  <ShieldCheck size={18} className="text-emerald-600 shrink-0" />
+                  <ShieldCheck size={18} className="text-[#16a34a] shrink-0" />
                   <span>Payment Verified · Official CBT Seat Guaranteed</span>
                 </div>
-                <p className="text-emerald-800 leading-relaxed text-xs">
+                <p className="text-emerald-850 leading-relaxed text-xs">
                   Your seat for the All-India Mock on <strong>27 Dec 2026 (9:00 AM – 12:00 PM IST)</strong> is locked. Admit card and test portal access credentials will be delivered to your WhatsApp (<strong>{registration.phone}</strong>) 24 hours prior.
                 </p>
                 <div className="pt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-emerald-900">
@@ -235,7 +235,7 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
                 <button
                   onClick={() => setShowAdmitSlipModal(true)}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-95"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] hover:shadow-[0_10px_24px_-8px_rgba(26,95,224,0.5)] text-white font-semibold text-xs transition-all shadow-xs cursor-pointer active:scale-95 hover:-translate-y-0.5"
                   title="View Official E-Admit Card & Candidate Slip"
                 >
                   <FileText size={15} />
@@ -244,7 +244,7 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
                 <Link
                   href={`/admit-card?order_id=${encodeURIComponent(registration.order_id || registration.payment_id || registration.id)}`}
                   target="_blank"
-                  className="flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 font-semibold text-xs transition-colors shadow-2xs"
+                  className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full bg-white border border-[rgba(26,26,26,0.1)] text-[#0a1c96] hover:bg-slate-50 font-semibold text-xs transition-colors shadow-2xs hover:-translate-y-0.5 active:scale-95"
                   title="Open Dedicated Printable Hall Ticket"
                 >
                   <Printer size={14} />
@@ -255,19 +255,22 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
             </div>
           </div>
         ) : (
-          <div className="mt-4 p-4 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="mt-4 p-4 rounded-[22px] bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 text-amber-900 font-bold text-xs">
                 <Sparkles size={15} className="text-amber-600 shrink-0" />
                 <span>Mock Registrations are Open!</span>
               </div>
               <p className="text-xs text-amber-800 mt-1 leading-relaxed">
-                You are on the waitlist. Pay <strong>₹27</strong> to lock your official All-India CBT seat and compete for the ₹5,000+ fee scholarship pool.
+                You are on the waitlist. Pay <strong>₹27</strong> to lock your official All-India CBT seat and compete for the fee scholarship pool.
               </p>
             </div>
-            <Button size="sm" onClick={onOpenRegister} className="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white">
+            <button
+              onClick={onOpenRegister}
+              className="shrink-0 px-5 py-2.5 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] hover:shadow-[0_10px_24px_-8px_rgba(26,95,224,0.5)] text-white rounded-full text-xs font-semibold transition-all active:scale-95"
+            >
               Complete Registration — ₹27
-            </Button>
+            </button>
           </div>
         )}
 
@@ -282,7 +285,7 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
               >
                 <X size={18} />
               </button>
-              <div className="max-h-[90vh] overflow-y-auto rounded-2xl bg-slate-100/95 p-2 sm:p-4 shadow-2xl">
+              <div className="max-h-[90vh] overflow-y-auto rounded-[28px] bg-slate-100/95 p-2 sm:p-4 shadow-2xl">
                 <PremiumAdmitCard
                   registration={registration}
                   onClose={() => setShowAdmitSlipModal(false)}
@@ -310,21 +313,24 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
 
   // Not yet registered
   return (
-    <div className="bg-gradient-to-br from-indigo-50/70 via-white to-emerald-50/40 border border-indigo-100 rounded-3xl p-6 sm:p-8 shadow-xs">
+    <div className="bg-white border border-[rgba(26,26,26,0.08)] rounded-[32px] p-6 sm:p-8 shadow-[0_20px_50px_-25px_rgba(10,28,150,0.06)] relative overflow-hidden">
       <div className="max-w-xl">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-900 rounded-full text-xs font-semibold mb-3">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200/80 rounded-full text-xs font-semibold mb-3">
           <AlertCircle size={14} />
           <span>Registration Pending</span>
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight mb-2">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#1a1a1a] tracking-tight mb-2">
           Reserve Your All-India Mock Spot
         </h2>
-        <p className="text-sm text-slate-600 mb-6 leading-relaxed">
+        <p className="text-sm text-slate-500 mb-6 leading-relaxed">
           You are signed in with Google, but have not yet completed candidate enrollment. Enter your mobile number and JEE target stream to lock in your spot for <strong>₹27</strong>.
         </p>
-        <Button size="lg" onClick={onOpenRegister}>
-          Complete Registration — ₹27
-        </Button>
+        <button
+          onClick={onOpenRegister}
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] hover:shadow-[0_12px_28px_-10px_rgba(26,95,224,0.5)] text-white rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5 active:scale-95"
+        >
+          <span>Complete Registration — ₹27</span>
+        </button>
       </div>
     </div>
   );

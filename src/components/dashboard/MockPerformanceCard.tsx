@@ -159,119 +159,130 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
   return (
     <div className="space-y-6">
       {/* 1. Performance Overview & KPIs */}
-      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
+      <div className="bg-white border border-[rgba(26,26,26,0.08)] rounded-[32px] p-6 sm:p-8 shadow-[0_20px_50px_-25px_rgba(10,28,150,0.06)] relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="p-1 rounded-md bg-indigo-50 text-indigo-600">
-                <Activity size={16} />
-              </span>
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
-                Performance Dashboard
-              </span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f3e9fd] text-[#7c3aed] border border-[#d6aef2]/60 text-xs font-mono font-bold uppercase tracking-wider mb-2">
+              <Activity size={14} />
+              <span>Performance Analytics Hub</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1a1a1a] tracking-tight">
               My Mock Practice &amp; Solutions
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Real-time analytics across all attempted Major Full Tests (MFT 1–10).
             </p>
           </div>
 
           <Link
             href="/exam"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer active:scale-98"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] hover:shadow-[0_12px_28px_-10px_rgba(26,95,224,0.5)] text-white rounded-full text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer hover:-translate-y-0.5 active:scale-95"
           >
             <span>Explore All 10 Full Mocks</span>
             <ArrowRight size={14} />
           </Link>
         </div>
 
-        {/* 4 Summary KPIs */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {/* 4 Summary KPIs - Tokko Bento Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {/* KPI 1: Tests Attempted */}
-          <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-4">
-            <div className="flex items-center justify-between text-slate-500 text-xs mb-1">
-              <span className="font-mono text-[11px] uppercase tracking-wider">Mocks Taken</span>
-              <Trophy size={14} className="text-indigo-600" />
+          <div className="bg-[#fafafa] border border-[rgba(26,26,26,0.08)] rounded-[22px] p-5 hover:border-[#1a5fe0]/30 transition-all flex flex-col justify-between">
+            <div className="flex items-center justify-between text-slate-500 text-xs mb-2">
+              <span className="font-mono text-[11px] uppercase tracking-wider font-bold text-slate-400">Mocks Taken</span>
+              <div className="w-7 h-7 rounded-xl bg-[#e9f1fd] text-[#1a5fe0] flex items-center justify-center">
+                <Trophy size={14} />
+              </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-mono font-extrabold text-slate-900 tabular-nums">
-              {totalAttempts}
-            </div>
-            <div className="text-[11px] text-slate-500 mt-1">
-              {totalAttempts > 0 ? (
-                <span className="text-indigo-600 font-semibold">{totalQuestionsSolved} Qs attempted</span>
-              ) : (
-                <span>10 Full Mocks ready</span>
-              )}
+            <div>
+              <div className="text-2xl sm:text-3xl font-mono font-extrabold text-[#1a1a1a] tabular-nums tracking-tight">
+                {totalAttempts}
+              </div>
+              <div className="text-[11px] text-slate-500 mt-1 font-medium">
+                {totalAttempts > 0 ? (
+                  <span className="text-[#0a1c96] font-semibold">{totalQuestionsSolved} Qs attempted</span>
+                ) : (
+                  <span>10 Full Mocks ready</span>
+                )}
+              </div>
             </div>
           </div>
 
           {/* KPI 2: Highest Score */}
-          <div className="bg-gradient-to-br from-indigo-50/70 to-blue-50/50 border border-indigo-100 rounded-2xl p-4">
-            <div className="flex items-center justify-between text-indigo-900 text-xs mb-1">
-              <span className="font-mono text-[11px] uppercase tracking-wider text-indigo-600">
+          <div className="bg-gradient-to-br from-[#e9f1fd]/80 to-[#f3e9fd]/60 border border-[#1a5fe0]/20 rounded-[22px] p-5 hover:shadow-xs transition-all flex flex-col justify-between">
+            <div className="flex items-center justify-between text-indigo-900 text-xs mb-2">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-[#0a1c96] font-bold">
                 Highest Score
               </span>
-              <Sparkles size={14} className="text-amber-500" />
+              <div className="w-7 h-7 rounded-xl bg-white text-amber-500 flex items-center justify-center shadow-2xs">
+                <Sparkles size={14} />
+              </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-mono font-extrabold text-indigo-950 tabular-nums">
-              {totalAttempts > 0 ? highestScore : "—"}
-              <span className="text-xs font-normal text-indigo-400 ml-1">/ 300</span>
-            </div>
-            <div className="text-[11px] text-indigo-700 mt-1 font-semibold truncate">
-              {totalAttempts > 0 ? highestBracket.pct : "Score benchmark ready"}
+            <div>
+              <div className="text-2xl sm:text-3xl font-mono font-extrabold text-[#0a1c96] tabular-nums tracking-tight">
+                {totalAttempts > 0 ? highestScore : "—"}
+                <span className="text-xs font-normal text-indigo-500 ml-1">/ 300</span>
+              </div>
+              <div className="text-[11px] text-[#7c3aed] mt-1 font-bold truncate">
+                {totalAttempts > 0 ? highestBracket.pct : "Score benchmark ready"}
+              </div>
             </div>
           </div>
 
           {/* KPI 3: Accuracy Rate */}
-          <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-4">
-            <div className="flex items-center justify-between text-slate-500 text-xs mb-1">
-              <span className="font-mono text-[11px] uppercase tracking-wider">Accuracy Rate</span>
-              <Target size={14} className="text-emerald-600" />
+          <div className="bg-[#fafafa] border border-[rgba(26,26,26,0.08)] rounded-[22px] p-5 hover:border-[#1a5fe0]/30 transition-all flex flex-col justify-between">
+            <div className="flex items-center justify-between text-slate-500 text-xs mb-2">
+              <span className="font-mono text-[11px] uppercase tracking-wider font-bold text-slate-400">Accuracy Rate</span>
+              <div className="w-7 h-7 rounded-xl bg-[#dcfce7] text-[#16a34a] flex items-center justify-center">
+                <Target size={14} />
+              </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-mono font-extrabold text-slate-900 tabular-nums">
-              {totalAttempts > 0 ? `${avgAccuracy}%` : "—"}
-            </div>
-            <div className="text-[11px] text-slate-500 mt-1">
-              {totalAttempts > 0 ? (
-                <span className="text-emerald-600 font-semibold">{totalCorrect} correct answers</span>
-              ) : (
-                <span>Target: &gt;80% for 99%ile</span>
-              )}
+            <div>
+              <div className="text-2xl sm:text-3xl font-mono font-extrabold text-[#1a1a1a] tabular-nums tracking-tight">
+                {totalAttempts > 0 ? `${avgAccuracy}%` : "—"}
+              </div>
+              <div className="text-[11px] text-slate-500 mt-1 font-medium">
+                {totalAttempts > 0 ? (
+                  <span className="text-emerald-700 font-semibold">{totalCorrect} correct answers</span>
+                ) : (
+                  <span>Target: &gt;80% for 99%ile</span>
+                )}
+              </div>
             </div>
           </div>
 
           {/* KPI 4: Practice Time */}
-          <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-4">
-            <div className="flex items-center justify-between text-slate-500 text-xs mb-1">
-              <span className="font-mono text-[11px] uppercase tracking-wider">Practice Time</span>
-              <Clock size={14} className="text-amber-600" />
+          <div className="bg-[#fafafa] border border-[rgba(26,26,26,0.08)] rounded-[22px] p-5 hover:border-[#1a5fe0]/30 transition-all flex flex-col justify-between">
+            <div className="flex items-center justify-between text-slate-500 text-xs mb-2">
+              <span className="font-mono text-[11px] uppercase tracking-wider font-bold text-slate-400">Practice Time</span>
+              <div className="w-7 h-7 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <Clock size={14} />
+              </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-mono font-extrabold text-slate-900 tabular-nums">
-              {totalAttempts > 0 ? timeFormatted : "0m"}
-            </div>
-            <div className="text-[11px] text-slate-500 mt-1">
-              {totalAttempts > 0 ? "Under CBT conditions" : "3h authentic timer"}
+            <div>
+              <div className="text-2xl sm:text-3xl font-mono font-extrabold text-[#1a1a1a] tabular-nums tracking-tight">
+                {totalAttempts > 0 ? timeFormatted : "0m"}
+              </div>
+              <div className="text-[11px] text-slate-500 mt-1 font-medium">
+                {totalAttempts > 0 ? "Under CBT conditions" : "3h authentic timer"}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* 2. Major Full Test Series (MFT 1–10) Launcher */}
-      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+      <div className="bg-white border border-[rgba(26,26,26,0.08)] rounded-[32px] p-6 sm:p-8 shadow-[0_20px_50px_-25px_rgba(10,28,150,0.06)]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded-full">
-                100% Free Practice Suite
-              </span>
-              <span className="text-xs text-slate-400 font-mono">10 Full-Length Mocks (MFT-01 to MFT-10)</span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e9f1fd] text-[#1a5fe0] border border-[#1a5fe0]/20 text-xs font-mono font-bold uppercase tracking-wider mb-2">
+              <span>100% Free Practice Suite</span>
+              <span className="text-slate-300">·</span>
+              <span>10 Full-Length Mocks</span>
             </div>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1a1a1a] tracking-tight">
               Start Full-Length Mock Test (MFT Series)
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Exact 75-question NTA format (300 Marks, 3.0 Hours, +4/-1) with proctoring &amp; full solutions. Official benchmark for the 27 Dec 2026 All-India Mock.
             </p>
           </div>
@@ -279,14 +290,14 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
           <div className="flex items-center gap-2.5 self-start sm:self-center">
             <button
               onClick={() => setShowAllMfts(!showAllMfts)}
-              className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer shrink-0"
+              className="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-[#fafafa] hover:bg-slate-100 text-slate-700 border border-[rgba(26,26,26,0.08)] transition-all cursor-pointer shrink-0 shadow-2xs active:scale-95"
             >
               {showAllMfts ? "Show Less" : `View All 10 MFTs`}
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
           {displayedMfts.map((mft) => {
             const isAttempted = attempts.some((a) => {
               const normA = a.testId.toLowerCase();
@@ -301,28 +312,28 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
             return (
               <div
                 key={mft.id}
-                className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:border-indigo-200 hover:shadow-xs transition-all flex items-center justify-between gap-4"
+                className="p-4 sm:p-5 rounded-[22px] border border-[rgba(26,26,26,0.08)] bg-[#fafafa] hover:bg-white hover:border-[#1a5fe0]/40 hover:shadow-[0_12px_30px_-12px_rgba(10,28,150,0.1)] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div className="space-y-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded-md">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-mono text-xs font-bold text-[#0a1c96] bg-[#e9f1fd] border border-[#1a5fe0]/20 px-2.5 py-0.5 rounded-full">
                       {mft.code}
                     </span>
-                    <span className="font-bold text-sm text-slate-900 truncate">
+                    <span className="font-bold text-sm sm:text-base text-slate-900 truncate">
                       {mft.title}
                     </span>
                     {isAttempted ? (
-                      <span className="text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                      <span className="text-[10px] font-bold uppercase font-mono px-2.5 py-0.5 rounded-full bg-[#dcfce7] text-[#16a34a] border border-[#86efac]/80">
                         Attempted
                       </span>
                     ) : mft.badge ? (
-                      <span className="text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                      <span className="text-[10px] font-bold uppercase font-mono px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">
                         {mft.badge}
                       </span>
                     ) : null}
                   </div>
                   <p className="text-xs text-slate-500 truncate">{mft.keyHighlights}</p>
-                  <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono">
+                  <div className="flex items-center gap-2.5 text-[11px] text-slate-400 font-mono pt-1">
                     <span>{mft.totalQuestions} Questions</span>
                     <span>•</span>
                     <span>{mft.durationMinutes} Mins</span>
@@ -336,19 +347,19 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                 {isAttempted ? (
                   <Link
                     href={mft.playerUrl}
-                    className="shrink-0 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                    className="shrink-0 px-4 py-2 bg-[#1a1a1a] hover:bg-black text-white rounded-full text-xs font-semibold transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 hover:-translate-y-0.5"
                     title="Reattempt this test"
                   >
-                    <RotateCcw size={12} />
+                    <RotateCcw size={13} />
                     <span>Reattempt</span>
                   </Link>
                 ) : (
                   <Link
                     href={mft.playerUrl}
-                    className="shrink-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                    className="shrink-0 px-5 py-2 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] hover:shadow-[0_10px_24px_-8px_rgba(26,95,224,0.5)] text-white rounded-full text-xs font-semibold transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 hover:-translate-y-0.5"
                   >
                     <Play size={12} className="fill-current" />
-                    <span>Start</span>
+                    <span>Start Test</span>
                   </Link>
                 )}
               </div>
@@ -358,14 +369,17 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
       </div>
 
       {/* 3. Recent Attempt History & Solution Logs */}
-      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs">
+      <div className="bg-white border border-[rgba(26,26,26,0.08)] rounded-[32px] p-6 sm:p-8 shadow-[0_20px_50px_-25px_rgba(10,28,150,0.06)]">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
           <div>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <BarChart3 size={18} className="text-indigo-600" />
-              <span>Completed Tests &amp; Instant Solutions</span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f3e9fd] text-[#7c3aed] border border-[#d6aef2]/60 text-xs font-mono font-bold uppercase tracking-wider mb-2">
+              <BarChart3 size={13} />
+              <span>Diagnostic Logs</span>
+            </div>
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1a1a1a] tracking-tight">
+              Completed Tests &amp; Instant Solutions
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Review your answers for every attempt, see step-by-step solutions, and inspect question pacing.
             </p>
           </div>
@@ -373,7 +387,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
           {attempts.length > 5 && (
             <button
               onClick={() => setShowAllAttempts(!showAllAttempts)}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer self-start sm:self-center"
+              className="text-xs font-semibold text-[#0a1c96] hover:text-[#1a5fe0] transition-colors cursor-pointer self-start sm:self-center px-3.5 py-1.5 rounded-full bg-[#fafafa] border border-[rgba(26,26,26,0.08)] shadow-2xs"
             >
               {showAllAttempts ? "Show Less" : `View All (${filteredAttempts.length})`}
             </button>
@@ -383,13 +397,13 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
         {/* Filter Pills / Dropdown */}
         {attempts.length > 0 && (
           <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1 text-xs">
-            <span className="text-slate-400 font-mono text-[11px] shrink-0">Filter:</span>
+            <span className="text-slate-400 font-mono text-[11px] shrink-0 font-bold uppercase">Filter:</span>
             <button
               onClick={() => setSelectedTestFilter("ALL")}
-              className={`px-3 py-1 rounded-full font-semibold transition-all cursor-pointer shrink-0 ${
+              className={`px-4 py-1.5 rounded-full font-semibold transition-all cursor-pointer shrink-0 text-xs active:scale-95 ${
                 selectedTestFilter === "ALL"
-                  ? "bg-indigo-600 text-white shadow-xs"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  ? "bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] text-white shadow-xs"
+                  : "bg-[#fafafa] text-slate-600 hover:bg-slate-100 border border-[rgba(26,26,26,0.08)]"
               }`}
             >
               All Tests ({attempts.length})
@@ -397,10 +411,10 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
 
             <button
               onClick={() => setSelectedTestFilter("MFT")}
-              className={`px-3 py-1 rounded-full font-semibold transition-all cursor-pointer shrink-0 ${
+              className={`px-4 py-1.5 rounded-full font-semibold transition-all cursor-pointer shrink-0 text-xs active:scale-95 ${
                 selectedTestFilter === "MFT"
-                  ? "bg-indigo-600 text-white shadow-xs"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  ? "bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] text-white shadow-xs"
+                  : "bg-[#fafafa] text-slate-600 hover:bg-slate-100 border border-[rgba(26,26,26,0.08)]"
               }`}
             >
               MFT Series ({attempts.filter((a) => a.testId.toLowerCase().includes("mft")).length})
@@ -410,7 +424,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
               <select
                 value={selectedTestFilter}
                 onChange={(e) => setSelectedTestFilter(e.target.value)}
-                className="bg-slate-100 border border-slate-200 text-slate-700 rounded-full px-3 py-1 text-xs outline-none cursor-pointer"
+                className="bg-[#fafafa] border border-[rgba(26,26,26,0.08)] text-slate-700 rounded-full px-3.5 py-1.5 text-xs outline-none cursor-pointer shadow-2xs"
               >
                 <option value="ALL">Specific Test...</option>
                 {uniqueAttemptedTestIds.map((tId) => (
@@ -424,7 +438,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
         )}
 
         {filteredAttempts.length > 0 ? (
-          <div className="divide-y divide-slate-100 border border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/40">
+          <div className="space-y-2.5">
             {displayedAttempts.map((attempt) => {
               const title = formatTestTitle(attempt.testTitle, attempt.testId);
               const scorePct = Math.round((attempt.score / (attempt.maxScore || 300)) * 100);
@@ -435,9 +449,9 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
 
               let badgeColor = "bg-rose-50 text-rose-700 border-rose-200";
               if (attempt.score >= 180) {
-                badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200";
+                badgeColor = "bg-[#dcfce7] text-[#16a34a] border-[#86efac]/80";
               } else if (attempt.score >= 120) {
-                badgeColor = "bg-blue-50 text-blue-700 border-blue-200";
+                badgeColor = "bg-[#e9f1fd] text-[#1a5fe0] border-[#1a5fe0]/20";
               } else if (attempt.score >= 80) {
                 badgeColor = "bg-amber-50 text-amber-700 border-amber-200";
               }
@@ -445,7 +459,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
               return (
                 <div
                   key={`${attempt.id}_${attempt.createdAt}_${attempt.score}`}
-                  className="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/80 transition-colors"
+                  className="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#fafafa] hover:bg-white border border-[rgba(26,26,26,0.07)] hover:border-[#1a5fe0]/30 rounded-[20px] shadow-2xs hover:shadow-xs transition-all"
                 >
                   <div className="space-y-1.5 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
@@ -453,14 +467,14 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                         {title}
                       </span>
                       <span
-                        className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${badgeColor}`}
+                        className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${badgeColor}`}
                       >
                         {attempt.score} / {attempt.maxScore || 300} Marks ({scorePct}%)
                       </span>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
-                      <span className="flex items-center gap-1">
+                      <span className="flex items-center gap-1 font-mono">
                         <Clock size={12} className="text-slate-400" />
                         {formatDate(attempt.createdAt)}
                       </span>
@@ -488,7 +502,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                       {avgPaceSecs > 0 && (
                         <>
                           <span className="text-slate-300">·</span>
-                          <span className="text-indigo-600 font-mono text-[11px]">
+                          <span className="text-[#0a1c96] font-mono text-[11px] font-semibold">
                             ~{formatDuration(avgPaceSecs)}/Q
                           </span>
                         </>
@@ -500,7 +514,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                     {/* Quick Review Modal Button */}
                     <button
                       onClick={() => setInspectAttempt(attempt)}
-                      className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                      className="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-[rgba(26,26,26,0.1)] rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95"
                       title="Quick Review Summary"
                     >
                       <Eye size={13} className="text-slate-500" />
@@ -510,7 +524,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                     {/* Direct Player Solutions Review */}
                     <Link
                       href={`/exam/player?id=${encodeURIComponent(attempt.testId)}&review=1&attemptId=${encodeURIComponent(attempt.id)}`}
-                      className="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                      className="px-4 py-1.5 bg-[#e9f1fd] hover:bg-[#d8e8fc] text-[#0a1c96] border border-[#1a5fe0]/25 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95"
                     >
                       <span>Analyze &amp; Solutions</span>
                       <ExternalLink size={13} />
@@ -519,7 +533,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                     {/* Retake */}
                     <Link
                       href={`/exam/player?id=${encodeURIComponent(attempt.testId)}`}
-                      className="px-3 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                      className="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-[rgba(26,26,26,0.1)] rounded-full text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95"
                       title="Retake Test"
                     >
                       <RotateCcw size={12} />
@@ -531,12 +545,12 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
             })}
           </div>
         ) : (
-          <div className="p-6 text-center border border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto">
+          <div className="p-8 text-center border border-dashed border-[rgba(26,26,26,0.12)] rounded-[26px] bg-[#fafafa] space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#e9f1fd] text-[#1a5fe0] flex items-center justify-center mx-auto shadow-2xs">
               <FileQuestion size={24} />
             </div>
             <div className="max-w-md mx-auto">
-              <h4 className="font-bold text-sm text-slate-900">
+              <h4 className="font-bold text-sm text-[#1a1a1a]">
                 {attempts.length > 0 ? "No attempts match the selected filter" : "No mock attempts logged yet"}
               </h4>
               <p className="text-xs text-slate-500 mt-1">
@@ -548,14 +562,14 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
             {attempts.length > 0 ? (
               <button
                 onClick={() => setSelectedTestFilter("ALL")}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-5 py-2 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] text-white rounded-full text-xs font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
               >
                 <span>View All Tests</span>
               </button>
             ) : (
               <Link
                 href="/exam/player?id=MFT-1.pdf"
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs"
+                className="inline-flex items-center gap-1.5 px-5 py-2 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] text-white rounded-full text-xs font-semibold transition-all shadow-xs active:scale-95"
               >
                 <span>Take Free Mock (MFT-1)</span>
                 <ArrowRight size={13} />
@@ -567,29 +581,28 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
 
       {/* 4. Quick Review Modal */}
       {inspectAttempt && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/70 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white border border-[rgba(26,26,26,0.08)] rounded-[32px] w-full max-w-2xl max-h-[90vh] flex flex-col shadow-[0_30px_70px_-20px_rgba(10,28,150,0.25)] overflow-hidden text-slate-900">
             {/* Modal Header */}
-            <div className="p-5 sm:p-6 border-b border-slate-100 flex items-start justify-between gap-4 bg-slate-50/60">
+            <div className="p-5 sm:p-6 border-b border-[rgba(26,26,26,0.08)] flex items-start justify-between gap-4 bg-[#fafafa]">
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded-md">
-                    Attempt Review
-                  </span>
-                  <span className="text-xs text-slate-400 font-mono">
+                <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#e9f1fd] text-[#0a1c96] border border-[#1a5fe0]/20 text-xs font-mono font-bold uppercase tracking-wider mb-1.5">
+                  <span>Attempt Review</span>
+                  <span className="text-slate-300">·</span>
+                  <span className="font-mono text-slate-500 font-normal">
                     {formatDate(inspectAttempt.createdAt)}
                   </span>
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] tracking-tight">
                   {formatTestTitle(inspectAttempt.testTitle, inspectAttempt.testId)}
                 </h3>
               </div>
 
               <button
                 onClick={() => setInspectAttempt(null)}
-                className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
+                className="p-2 rounded-full bg-white hover:bg-slate-100 border border-[rgba(26,26,26,0.08)] text-slate-600 transition-colors cursor-pointer shadow-2xs active:scale-95"
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
 
@@ -597,11 +610,11 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
             <div className="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
               {/* Score & KPIs */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-100">
-                  <div className="text-[11px] font-mono text-indigo-700 uppercase tracking-wider mb-0.5">
+                <div className="p-4 rounded-[20px] bg-[#e9f1fd]/70 border border-[#1a5fe0]/20">
+                  <div className="text-[11px] font-mono text-[#0a1c96] uppercase tracking-wider font-bold mb-0.5">
                     Score
                   </div>
-                  <div className="text-2xl font-mono font-extrabold text-indigo-950">
+                  <div className="text-2xl font-mono font-extrabold text-[#0a1c96]">
                     {inspectAttempt.score}
                     <span className="text-xs font-normal text-indigo-500"> / {inspectAttempt.maxScore || 300}</span>
                   </div>
@@ -610,23 +623,23 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-100">
-                  <div className="text-[11px] font-mono text-emerald-700 uppercase tracking-wider mb-0.5">
+                <div className="p-4 rounded-[20px] bg-[#dcfce7]/70 border border-[#86efac]/80">
+                  <div className="text-[11px] font-mono text-emerald-800 uppercase tracking-wider font-bold mb-0.5">
                     Accuracy
                   </div>
                   <div className="text-2xl font-mono font-extrabold text-emerald-950">
                     {inspectAttempt.accuracy}%
                   </div>
-                  <div className="text-[10px] text-emerald-700 mt-1 font-semibold">
+                  <div className="text-[10px] text-emerald-800 mt-1 font-semibold">
                     {inspectAttempt.correctCount} Correct / {inspectAttempt.attemptedCount} Solved
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                  <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider mb-0.5">
+                <div className="p-4 rounded-[20px] bg-[#fafafa] border border-[rgba(26,26,26,0.08)]">
+                  <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider font-bold mb-0.5">
                     Time Spent
                   </div>
-                  <div className="text-2xl font-mono font-extrabold text-slate-900">
+                  <div className="text-2xl font-mono font-extrabold text-[#1a1a1a]">
                     {formatDuration(inspectAttempt.timeSpentSeconds)}
                   </div>
                   <div className="text-[10px] text-slate-500 mt-1 font-mono">
@@ -634,11 +647,11 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                  <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider mb-0.5">
+                <div className="p-4 rounded-[20px] bg-[#fafafa] border border-[rgba(26,26,26,0.08)]">
+                  <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider font-bold mb-0.5">
                     Avg Pace / Q
                   </div>
-                  <div className="text-2xl font-mono font-extrabold text-slate-900">
+                  <div className="text-2xl font-mono font-extrabold text-[#1a1a1a]">
                     {inspectAttempt.attemptedCount > 0
                       ? formatDuration(Math.round(inspectAttempt.timeSpentSeconds / inspectAttempt.attemptedCount))
                       : "—"}
@@ -651,7 +664,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
 
               {/* Subject Breakdown if available */}
               {Array.isArray(inspectAttempt.sectionBreakdown) && inspectAttempt.sectionBreakdown.length > 0 && (
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                     Subject Performance
                   </h4>
@@ -659,14 +672,14 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                     {inspectAttempt.sectionBreakdown.map((sec: any, idx: number) => (
                       <div
                         key={idx}
-                        className="p-3 rounded-2xl bg-slate-50/80 border border-slate-200/90"
+                        className="p-3.5 rounded-[18px] bg-[#fafafa] border border-[rgba(26,26,26,0.08)]"
                       >
                         <div className="font-bold text-xs text-slate-900 capitalize mb-1">
                           {sec.name || sec.subject || `Subject ${idx + 1}`}
                         </div>
                         <div className="flex justify-between items-center text-xs font-mono">
                           <span className="text-slate-500">Score:</span>
-                          <span className="font-bold text-indigo-600">
+                          <span className="font-bold text-[#0a1c96]">
                             {sec.score ?? 0} Marks
                           </span>
                         </div>
@@ -684,12 +697,12 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
 
               {/* Pacing Diagnostic Summary */}
               {inspectAttempt.questionTimes && Object.keys(inspectAttempt.questionTimes).length > 0 && (
-                <div className="p-3.5 rounded-2xl bg-indigo-50/40 border border-indigo-100 space-y-1">
-                  <div className="text-xs font-bold text-indigo-900 flex items-center gap-1.5">
-                    <Clock size={14} className="text-indigo-600" />
+                <div className="p-4 rounded-[20px] bg-[#e9f1fd]/60 border border-[#1a5fe0]/20 space-y-1">
+                  <div className="text-xs font-bold text-[#0a1c96] flex items-center gap-1.5">
+                    <Clock size={14} className="text-[#1a5fe0]" />
                     <span>Per-Question Pacing Captured</span>
                   </div>
-                  <p className="text-xs text-indigo-700 leading-relaxed">
+                  <p className="text-xs text-slate-600 leading-relaxed">
                     Time logs recorded for {Object.keys(inspectAttempt.questionTimes).length} questions.
                     Click &apos;Open Full Solutions&apos; below to inspect question-by-question time breakdowns and time sink diagnostics.
                   </p>
@@ -698,17 +711,17 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 sm:p-5 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between gap-3">
+            <div className="p-4 sm:p-5 border-t border-[rgba(26,26,26,0.08)] bg-[#fafafa] flex items-center justify-between gap-3">
               <button
                 onClick={() => setInspectAttempt(null)}
-                className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
+                className="px-5 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-[rgba(26,26,26,0.1)] rounded-full text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-95"
               >
                 Close
               </button>
 
               <Link
                 href={`/exam/player?id=${encodeURIComponent(inspectAttempt.testId)}&review=1&attemptId=${encodeURIComponent(inspectAttempt.id)}`}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                className="px-5 py-2 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] hover:shadow-[0_10px_24px_-8px_rgba(26,95,224,0.5)] text-white rounded-full text-xs font-semibold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
               >
                 <span>Open Full Interactive Solutions</span>
                 <ExternalLink size={13} />

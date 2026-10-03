@@ -25,42 +25,51 @@ export function InviteAndShareCard() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
+    <div className="bg-gradient-to-br from-[#081680] via-[#0a1c96] to-[#1a5fe0] text-white rounded-[32px] p-6 sm:p-8 shadow-[0_20px_50px_-20px_rgba(10,28,150,0.35)] relative overflow-hidden">
+      {/* Subtle dot matrix overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-30 -z-0"
+        style={{
+          backgroundImage: "radial-gradient(rgba(214,174,242,.3) 1.2px, transparent 1.8px)",
+          backgroundSize: "16px 16px",
+        }}
+      />
+
       <div className="relative z-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 border border-white/10 rounded-full text-xs font-mono font-bold tracking-wider uppercase mb-4">
-          <Trophy size={12} className="text-amber-300" />
-          <span>Top Rankers Win Full Exam Fees</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-xs border border-white/15 rounded-full text-xs font-mono font-bold tracking-wider uppercase mb-3">
+          <Trophy size={13} className="text-amber-300" />
+          <span>Top Rankers Win 100% Exam Fees</span>
         </div>
 
-        <h3 className="text-xl font-bold tracking-tight mb-2">
-          Compete on the All-India Mock & Win Your Fees
+        <h3 className="text-xl sm:text-2xl font-bold tracking-tight mb-2 text-white">
+          Compete on the All-India Mock &amp; Win Your Fees
         </h3>
-        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 max-w-lg">
+        <p className="text-xs sm:text-sm text-blue-100 leading-relaxed mb-6 max-w-lg">
           Top performers on the All-India Mock leaderboard receive 100% of their official NTA JEE Main application fees refunded (₹1,000 for Boys / ₹800 for Girls). Invite your study groups and coaching friends to see who ranks on top of the list!
         </p>
 
         <div className="flex flex-wrap items-center gap-2.5">
           <button
             onClick={handleWhatsApp}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-full text-xs font-semibold transition-all shadow-xs cursor-pointer hover:-translate-y-0.5 active:scale-95"
           >
-            <MessageSquare size={15} />
+            <MessageSquare size={14} />
             <span>Share on WhatsApp</span>
           </button>
 
           <button
             onClick={handleTelegram}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#229ED9] hover:bg-[#1d8bc0] text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#229ED9] hover:bg-[#1d8bc0] text-white rounded-full text-xs font-semibold transition-all shadow-xs cursor-pointer hover:-translate-y-0.5 active:scale-95"
           >
-            <Send size={15} />
+            <Send size={14} />
             <span>Telegram</span>
           </button>
 
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl text-xs font-semibold transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 bg-white/15 hover:bg-white/25 text-white border border-white/20 rounded-full text-xs font-semibold transition-all cursor-pointer hover:-translate-y-0.5 active:scale-95"
           >
-            {copied ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
+            {copied ? <Check size={14} className="text-emerald-300" /> : <Copy size={14} />}
             <span>{copied ? "Copied Link & Text!" : "Copy Share Link"}</span>
           </button>
         </div>
