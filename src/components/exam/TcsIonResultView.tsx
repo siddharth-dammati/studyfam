@@ -30,9 +30,7 @@ import {
   TrendingDown,
   BarChart3,
   AlertTriangle,
-  Flame,
   Zap,
-  Compass,
 } from "lucide-react";
 import { EvaluationResult } from "@/lib/examDb";
 import { formatQuestionText, formatOptionText, formatSolutionText } from "@/lib/questionFormatter";
@@ -82,96 +80,7 @@ export function TcsIonResultView({
     return analyzeJeeScore(scaledScore, { mode: "quick" });
   }, [result.totalScore, result.maxScore]);
 
-  // 2. Chapter-wise Performance & "Chapters Lagging Behind" Diagnostic
-  const chapterBreakdown = useMemo(() => {
-    const map = new Map<
-      string,
-      {
-        chapter: string;
-        subject: string;
-        total: number;
-        attempted: number;
-        correct: number;
-        incorrect: number;
-        unattempted: number;
-        score: number;
-        marksLost: number;
-      }
-    >();
-
-    for (const q of result.detailedResults) {
-      const ch = q.chapter?.trim() || "General / Mixed";
-      const key = `${q.subject}:::${ch}`;
-      if (!map.has(key)) {
-        map.set(key, {
-          chapter: ch,
-          subject: q.subject,
-          total: 0,
-          attempted: 0,
-          correct: 0,
-          incorrect: 0,
-          unattempted: 0,
-          score: 0,
-          marksLost: 0,
-        });
-      }
-      const entry = map.get(key)!;
-      entry.total += 1;
-
-      if (q.userResponse) {
-        entry.attempted += 1;
-        if (q.isCorrect) {
-          entry.correct += 1;
-          entry.score += 4;
-        } else {
-          entry.incorrect += 1;
-          entry.score -= 1;
-          entry.marksLost += 5; // 4 missed + 1 negative mark
-        }
-      } else {
-        entry.unattempted += 1;
-        entry.marksLost += 4; // Missed opportunity
-      }
-    }
-
-    return Array.from(map.values())
-      .map((entry) => {
-        const accuracy =
-          entry.attempted > 0 ? Math.round((entry.correct / entry.attempted) * 100) : 0;
-        let status: "WEAK" | "AVERAGE" | "STRONG" = "AVERAGE";
-
-        if (entry.incorrect > 0 && entry.correct === 0) {
-          status = "WEAK";
-        } else if (accuracy < 50 && entry.attempted > 0) {
-          status = "WEAK";
-        } else if (accuracy >= 75 && entry.correct >= 1) {
-          status = "STRONG";
-        }
-
-        return {
-          ...entry,
-          accuracy,
-          status,
-        };
-      })
-      .sort((a, b) => {
-        // Priority to chapters with highest mistakes / negative marks
-        if (b.incorrect !== a.incorrect) return b.incorrect - a.incorrect;
-        return b.marksLost - a.marksLost;
-      });
-  }, [result.detailedResults]);
-
-  // Distinct Weak and Strong chapters
-  const weakChapters = useMemo(
-    () => chapterBreakdown.filter((c) => c.status === "WEAK" || c.incorrect > 0),
-    [chapterBreakdown]
-  );
-  const strongChapters = useMemo(
-    () => chapterBreakdown.filter((c) => c.status === "STRONG"),
-    [chapterBreakdown]
-  );
-
-  // 3. Negative Marking & Silly Mistakes Leakage Diagnostic
+  // 2. Negative Marking & Silly Mistakes Leakage Diagnostic
   const marksLostToNegatives = result.incorrectCount * 1;
   const marksLostOpportunity = result.incorrectCount * 5;
   const potentialScoreWithoutNegatives = result.totalScore + marksLostToNegatives;
@@ -244,15 +153,6 @@ export function TcsIonResultView({
       newMap[q.questionId] = nextState;
     }
     setExpandedSolutions(newMap);
-  };
-
-  // Jump to review a specific chapter
-  const handleReviewChapter = (chapterName: string, subjectName: string) => {
-    setFilterSubject(subjectName);
-    setFilterChapter(chapterName);
-    setFilterStatus("ALL");
-    setSelectedQIndex(0);
-    setActiveTab("interactive");
   };
 
   return (
@@ -451,7 +351,7 @@ export function TcsIonResultView({
             }`}
           >
             <BarChart3 className="w-4 h-4" />
-            <span>Deep Diagnostic &amp; Chapters Lagging Behind</span>
+            <span>Deep Diagnostic &amp; Performance Analytics</span>
           </button>
 
           <button
@@ -559,107 +459,7 @@ export function TcsIonResultView({
               </div>
             </div>
 
-            {/* B. CHAPTERS LACKING BEHIND (WEAK CHAPTERS REQUIRING IMMEDIATE ATTENTION) */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3">
-                <div className="flex items-center space-x-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
-                    <Compass className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h2 className="text-base font-extrabold text-gray-900">
-                      Topic &amp; Chapter Mastery: Chapters Lagging Behind
-                    </h2>
-                    <p className="text-xs text-gray-500">
-                      Identified based on incorrect questions, low accuracy, and marks lost in this mock
-                    </p>
-                  </div>
-                </div>
-
-                <div className="text-xs font-semibold text-gray-600">
-                  <span className="font-bold text-rose-600">{weakChapters.length}</span> Chapters Need Revision
-                </div>
-              </div>
-
-              {weakChapters.length === 0 ? (
-                <div className="p-8 text-center bg-emerald-50 rounded-xl border border-emerald-200">
-                  <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto mb-2" />
-                  <h3 className="text-sm font-bold text-emerald-900">Outstanding Chapter Mastery!</h3>
-                  <p className="text-xs text-emerald-700 mt-1">
-                    You did not have significant score leakage in any chapter. Keep up the high accuracy!
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <p className="text-xs font-bold text-rose-900 uppercase tracking-wide">
-                    ⚠️ High-Priority Weak Chapters (Click to Review Questions &amp; Solutions):
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {weakChapters.map((ch) => (
-                      <div
-                        key={`${ch.subject}-${ch.chapter}`}
-                        className="p-4 rounded-xl border-2 border-rose-200 bg-rose-50/40 hover:bg-rose-50 hover:border-rose-400 transition-all flex flex-col justify-between space-y-3 shadow-2xs"
-                      >
-                        <div>
-                          <div className="flex items-start justify-between gap-2">
-                            <span className="text-xs font-bold px-2 py-0.5 rounded bg-white text-gray-700 border border-gray-200">
-                              {ch.subject}
-                            </span>
-                            <span className="text-xs font-black text-rose-700 bg-rose-100 px-2 py-0.5 rounded-full">
-                              -{ch.marksLost} Marks Leakage
-                            </span>
-                          </div>
-                          <h4 className="text-sm font-bold text-gray-900 mt-2">
-                            {ch.chapter}
-                          </h4>
-                          <div className="flex items-center space-x-3 text-xs text-gray-600 mt-1">
-                            <span>Accuracy: <strong className="text-rose-600">{ch.accuracy}%</strong></span>
-                            <span>•</span>
-                            <span>{ch.incorrect} Wrong</span>
-                            <span>•</span>
-                            <span>{ch.correct} Correct of {ch.total} Qs</span>
-                          </div>
-                        </div>
-
-                        <button
-                          onClick={() => handleReviewChapter(ch.chapter, ch.subject)}
-                          className="w-full py-1.5 px-3 bg-white hover:bg-rose-600 hover:text-white border border-rose-300 text-rose-800 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center justify-center space-x-1.5 shadow-2xs"
-                        >
-                          <span>Review {ch.chapter} Questions</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Strong Chapters */}
-              {strongChapters.length > 0 && (
-                <div className="pt-4 border-t border-gray-100">
-                  <p className="text-xs font-bold text-emerald-900 uppercase tracking-wide mb-2 flex items-center space-x-1">
-                    <Flame className="w-4 h-4 text-emerald-600" />
-                    <span>Strong Chapters (High Accuracy &amp; Solid Retention):</span>
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {strongChapters.map((ch) => (
-                      <div
-                        key={`${ch.subject}-${ch.chapter}`}
-                        className="px-3 py-1.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-900 text-xs font-bold flex items-center space-x-2"
-                      >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>{ch.chapter} ({ch.subject})</span>
-                        <span className="text-[10px] bg-white px-1.5 py-0.2 rounded text-emerald-700">
-                          {ch.accuracy}%
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* C. SUBJECT-WISE DETAILED MATRIX */}
+            {/* B. SUBJECT-WISE DETAILED MATRIX */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
               <h2 className="text-base font-extrabold text-gray-900 flex items-center space-x-2">
                 <BookOpen className="w-5 h-5 text-blue-600" />
@@ -731,11 +531,10 @@ export function TcsIonResultView({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs leading-relaxed">
                 <div className="bg-white/10 rounded-lg p-4 border border-white/10 space-y-1.5">
                   <span className="font-extrabold text-amber-300 uppercase tracking-wider block">
-                    Step 1: Fix High-Leakage Chapters
+                    Step 1: Fix High-Leakage Questions
                   </span>
                   <p className="text-gray-200">
-                    Immediately review the solutions for{" "}
-                    <strong>{weakChapters.slice(0, 2).map((c) => c.chapter).join(", ") || "your mistakes"}</strong>.
+                    Immediately review the solutions for <strong>all missed and incorrect questions</strong>.
                     Re-derive formulas and do 15 targeted practice problems.
                   </p>
                 </div>

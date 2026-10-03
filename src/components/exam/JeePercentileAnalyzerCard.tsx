@@ -4,20 +4,12 @@ import React, { useState, useMemo } from "react";
 import {
   TrendingUp,
   Target,
-  Zap,
   Info,
-  ChevronDown,
-  ChevronUp,
   Sparkles,
   ShieldCheck,
   Sliders,
-  CheckCircle2,
-  AlertTriangle,
-  Award,
-  ArrowRight,
   HelpCircle,
   BarChart2,
-  Compass,
 } from "lucide-react";
 import {
   analyzeJeeScore,
@@ -329,50 +321,7 @@ export function JeePercentileAnalyzerCard({
           </div>
         )}
 
-        {/* 4. COLLEGE ADMISSION & JEE ADVANCED CUTOFF MATRIX */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <h3 className="text-sm font-extrabold text-gray-900 flex items-center space-x-2">
-                <Award className="w-4 h-4 text-amber-600" />
-                <span>Projected College &amp; Branch Eligibility</span>
-              </h3>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Based on historical Joint Seat Allocation Authority (JoSAA) closing ranks
-              </p>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="text-xs font-bold text-gray-600">Category Cutoffs:</span>
-              <div className="flex flex-wrap gap-1">
-                {analysis.categoryCutoffs.map((c) => (
-                  <span
-                    key={c.category}
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
-                      c.qualified
-                        ? "bg-emerald-100 text-emerald-800 border-emerald-300"
-                        : "bg-gray-100 text-gray-500 border-gray-300"
-                    }`}
-                    title={`${c.label} Cutoff: ~${c.minPercentile}%ile (${c.qualified ? "Qualified" : "Needs push"})`}
-                  >
-                    {c.category}: {c.qualified ? "✓" : "✗"}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white p-4 rounded-xl border border-gray-200 space-y-1.5">
-            <div className="flex items-center space-x-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-              <span className="text-sm font-black text-gray-900">{analysis.collegeTier}</span>
-            </div>
-            <p className="text-xs text-gray-600 pl-4.5 leading-relaxed">
-              {analysis.collegeTierDescription}
-            </p>
-          </div>
-        </div>
-
-        {/* 5. STRATEGIC SCORE LEAP SIMULATOR (WHAT-IF ANALYSIS) */}
+        {/* 4. STRATEGIC SCORE LEAP SIMULATOR (WHAT-IF ANALYSIS) */}
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
