@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { TestDetail, QuestionRecord, TestSummary } from "@/lib/examDb";
 import { formatQuestionText, formatOptionText, formatSolutionText } from "@/lib/questionFormatter";
+import { MathRenderer } from "@/components/exam/MathRenderer";
 
 interface FilterMetadata {
   subjects: string[];
@@ -1306,7 +1307,7 @@ export default function AdminExamManagerPage({
 
                 {/* Question Statement */}
                 <div className={isCompactView ? "text-xs font-medium leading-snug line-clamp-3 hover:line-clamp-none transition-all text-slate-200" : "text-xs sm:text-sm font-medium leading-relaxed whitespace-pre-wrap text-slate-200"}>
-                  {formatQuestionText(q.question_text)}
+                  <MathRenderer text={formatQuestionText(q.question_text)} />
                 </div>
 
                 {/* Question Diagrams / Images */}
@@ -1347,7 +1348,9 @@ export default function AdminExamManagerPage({
                           }`}
                         >
                           <span className="font-bold shrink-0">({opt.key})</span>
-                          <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(opt.val) || `Option ${opt.key}`}</span>
+                          <span className="flex-1 break-words whitespace-normal leading-relaxed">
+                            <MathRenderer inline text={formatOptionText(opt.val) || `Option ${opt.key}`} />
+                          </span>
                           {isCorrect && (
                             <span className="text-[9px] font-bold uppercase px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-400 shrink-0">
                               ✓
@@ -1910,9 +1913,9 @@ export default function AdminExamManagerPage({
                       </div>
 
                       {/* Question Text */}
-                      <p className="text-slate-200 whitespace-pre-wrap leading-relaxed text-xs">
-                        {formatQuestionText(q.questionText)}
-                      </p>
+                      <div className="text-slate-200 whitespace-pre-wrap leading-relaxed text-xs">
+                        <MathRenderer text={formatQuestionText(q.questionText)} />
+                      </div>
 
                       {/* Diagram preview */}
                       {q.imagePaths && q.imagePaths.length > 0 && (
@@ -1949,7 +1952,7 @@ export default function AdminExamManagerPage({
                               >
                                 <span className="flex-1 break-words whitespace-normal leading-relaxed">
                                   <strong className="font-bold mr-1">({opt.k})</strong>
-                                  {formatOptionText(opt.v)}
+                                  <MathRenderer inline text={formatOptionText(opt.v)} />
                                 </span>
                                 {isCorrect && <Check className="w-3 h-3 text-emerald-400 shrink-0" />}
                               </div>

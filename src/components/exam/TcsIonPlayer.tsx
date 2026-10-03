@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { TestDetail, QuestionRecord } from "@/lib/examDb";
 import { formatQuestionText, formatOptionText } from "@/lib/questionFormatter";
+import { MathRenderer } from "./MathRenderer";
 import { TcsIonSubmitModal, SectionSummaryStat } from "./TcsIonSubmitModal";
 import { TcsIonQuestionPaperModal } from "./TcsIonQuestionPaperModal";
 
@@ -905,7 +906,7 @@ export function TcsIonPlayer({
 
             {/* Question Text */}
             <div className="text-sm sm:text-base font-medium leading-relaxed whitespace-pre-wrap">
-              {formatQuestionText(currentQuestion?.question_text)}
+              <MathRenderer text={formatQuestionText(currentQuestion?.question_text)} />
             </div>
 
             {/* Question Diagrams / Images */}
@@ -1048,7 +1049,9 @@ export function TcsIonPlayer({
                       </div>
                       <div className="flex-1 text-xs sm:text-sm text-gray-800 leading-normal break-words whitespace-normal">
                         <span className="font-bold mr-2">({opt.key})</span>
-                        <span className="break-words">{formatOptionText(opt.label) || `Option ${opt.key}`}</span>
+                        <span className="break-words">
+                          <MathRenderer inline text={formatOptionText(opt.label) || `Option ${opt.key}`} />
+                        </span>
                       </div>
                     </label>
                   );

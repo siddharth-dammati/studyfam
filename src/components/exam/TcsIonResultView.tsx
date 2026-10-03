@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { EvaluationResult } from "@/lib/examDb";
 import { formatQuestionText, formatOptionText, formatSolutionText } from "@/lib/questionFormatter";
+import { MathRenderer } from "./MathRenderer";
 import { analyzeJeeScore, formatIndianNumber } from "@/lib/jeePercentileAnalyzer";
 import { JeePercentileAnalyzerCard } from "@/components/exam/JeePercentileAnalyzerCard";
 
@@ -730,7 +731,7 @@ export function TcsIonResultView({
                     <div className="p-5 sm:p-6 space-y-4">
                       {/* Text */}
                       <div className="text-sm sm:text-base leading-relaxed whitespace-pre-wrap text-gray-900 font-medium select-text">
-                        {formatQuestionText(activeQuestion?.questionText)}
+                        <MathRenderer text={formatQuestionText(activeQuestion?.questionText)} />
                       </div>
 
                       {/* Images */}
@@ -806,7 +807,7 @@ export function TcsIonResultView({
                                       {opt.key}
                                     </span>
                                     <span className="break-words leading-relaxed whitespace-normal pt-0.5">
-                                      {formatOptionText(opt.val)}
+                                      <MathRenderer inline text={formatOptionText(opt.val)} />
                                     </span>
                                   </div>
                                   {badge}
@@ -866,7 +867,7 @@ export function TcsIonResultView({
 
                         {activeQuestion?.solution ? (
                           <div className="text-xs sm:text-sm text-gray-800 leading-relaxed bg-white p-4 rounded-lg border border-blue-100 whitespace-pre-wrap font-sans select-text">
-                            {formatSolutionText(activeQuestion.solution)}
+                            <MathRenderer text={formatSolutionText(activeQuestion.solution)} />
                           </div>
                         ) : (
                           <div className="text-xs text-gray-500 italic bg-white p-3 rounded border border-gray-200">
@@ -1048,7 +1049,7 @@ export function TcsIonResultView({
 
                     {/* Question Text */}
                     <div className="text-sm leading-relaxed whitespace-pre-wrap text-gray-900 font-medium select-text">
-                      {formatQuestionText(q.questionText)}
+                      <MathRenderer text={formatQuestionText(q.questionText)} />
                     </div>
 
                     {/* Diagrams */}
@@ -1097,7 +1098,7 @@ export function TcsIonResultView({
                             >
                               <span className="font-bold shrink-0">({opt.key})</span>
                               <span className="flex-1 break-words whitespace-normal leading-relaxed">
-                                {formatOptionText(opt.val)}
+                                <MathRenderer inline text={formatOptionText(opt.val)} />
                               </span>
                               {isChosen && (
                                 <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">
@@ -1164,7 +1165,7 @@ export function TcsIonResultView({
                                 Step-by-step Solution:
                               </span>
                               <div className="whitespace-pre-wrap leading-relaxed text-gray-800 bg-white p-3 rounded border border-blue-100 font-sans text-xs select-text">
-                                {formatSolutionText(q.solution)}
+                                <MathRenderer text={formatSolutionText(q.solution)} />
                               </div>
                             </div>
                           ) : (

@@ -191,15 +191,66 @@ export function formatMathSymbols(text?: string | null): string {
   t = t.replace(/F\s*∝\s*A\s*a\s*v\s*b\s*d\s*c/gi, "F ∝ Aᵃ vᵇ dᶜ");
   t = t.replace(/F\s*∝\s*Aavbdc/gi, "F ∝ Aᵃ vᵇ dᶜ");
 
-  // 15. Known mangled expressions from PDF extractions
-  // Missing radicals in determinant MFT-1 Q53
-  t = t.replace(/5\(\s*6\s*−\s*5\)/g, "5(√6 − √5)");
-  t = t.replace(/5\s+3\(\s*6\s*−\s*5\)/g, "5√3(√6 − √5)");
-  t = t.replace(/5\(\s*6\s*−\s*3\)/g, "5(√6 − √3)");
-  t = t.replace(/2\(\s*7\s*−\s*5\)/g, "2(√7 − √5)");
-  t = t.replace(/13\s*\+\s*3\s*2\s*5\s*5/g, "√13 + 3√2   √5   √5");
-  t = t.replace(/15\s*\+\s*26\s*5\s*10/g, "√15 + √26   5   √10");
-  t = t.replace(/3\s*\+\s*65\s*15\s*5/g, "3 + √65   √15   5");
+  // 15. Known mangled expressions & Determinant / Matrix Reconstructions
+  // MFT-1 Q53: 3x3 determinant with square roots
+  if (
+    /The value of the determinant/i.test(t) &&
+    (/13/i.test(t) || /√13/i.test(t) || /\\sqrt\{13\}/i.test(t)) &&
+    (/65/i.test(t) || /√65/i.test(t) || /\\sqrt\{65\}/i.test(t))
+  ) {
+    t = "The value of the determinant $$\\begin{vmatrix} \\sqrt{13} + 3\\sqrt{2} & \\sqrt{5} & \\sqrt{5} \\\\ \\sqrt{15} + \\sqrt{26} & 5 & \\sqrt{10} \\\\ 3 + \\sqrt{65} & \\sqrt{15} & 5 \\end{vmatrix}$$ is equal to:";
+  }
+
+  // MFT-1 Q60: direction cosines & cofactor matrix
+  if (/A\s*=\s*l2\s*m2/i.test(t) || (/l1\s*m1\s*n1/i.test(t) && /direction cosines/i.test(t))) {
+    t = "Let $A = \\begin{bmatrix} l_1 & m_1 & n_1 \\\\ l_2 & m_2 & n_2 \\\\ l_3 & m_3 & n_3 \\end{bmatrix}$ and $B = \\begin{bmatrix} p_1 & q_1 & r_1 \\\\ p_2 & q_2 & r_2 \\\\ p_3 & q_3 & r_3 \\end{bmatrix}$, where $p_i, q_i, r_i$ are the cofactors of the elements $l_i, m_i, n_i$ for $i = 1, 2, 3$. If $(l_1, m_1, n_1)$, $(l_2, m_2, n_2)$ and $(l_3, m_3, n_3)$ are the direction cosines of three mutually perpendicular lines, then $(p_1, q_1, r_1)$, $(p_2, q_2, r_2)$ and $(p_3, q_3, r_3)$ are:";
+  }
+
+  // MFT-2 Q75: trigonometric determinant
+  if (/Let Δ\(x\)\s*=/i.test(t) && /sin⁴/i.test(t) && /cos⁴/i.test(t)) {
+    t = "Let $\\Delta(x) = \\begin{vmatrix} 3 + 2\\sin^4 x & 2\\cos^4 x & \\sin^2 2x \\\\ 2\\sin^4 x & 3 + 2\\cos^4 x & \\sin^2 2x \\\\ 2\\sin^4 x & 2\\cos^4 x & 3 + \\sin^2 2x \\end{vmatrix}$. Then $\\int_{-\\pi/2}^{\\pi/2} x \\Delta(x) dx$ equals:";
+  }
+
+  // MFT-3 Q74: roots determinant
+  if (/where a,\s*b,\s*c\s*∈\s*R/i.test(t) && (/∣A\s*−\s*xI∣/i.test(t) || /|A - xI|/i.test(t))) {
+    t = "Let $A = \\begin{bmatrix} 1 & a^3 & 0 \\\\ 0 & 1 & b^3 \\\\ c^3 & 0 & 1 \\end{bmatrix}$ where $a, b, c \\in \\mathbb{R}$. If the sum of all non-real roots of the equation $|A - xI| = 0$ is $k - mabc$, $\\forall k, m \\in \\mathbb{Z}$, then the value of $k + m$ is:";
+  }
+
+  // MFT-4 Q56: matrix product
+  if (/Tr\(\(adjQ\)P\)/i.test(t) || /Tr\(adj\(Q\) P\)/i.test(t)) {
+    t = "Let $Z = \\begin{bmatrix} 1 & 1 & 3 \\\\ 5 & 1 & 2 \\\\ 3 & 1 & 0 \\end{bmatrix}$ and $P = \\begin{bmatrix} 1 & 0 & 2 \\\\ 2 & 1 & 0 \\\\ 3 & 0 & 1 \\end{bmatrix}$. If $Z = P Q^{-1}$, where $Q$ is a square matrix of order 3, then the value of $\\text{Tr}(\\text{adj}(Q) P)$ is:";
+  }
+
+  // MFT-4 Q67: divisible determinant
+  if (/divisible by 72/i.test(t) && /determinant/i.test(t)) {
+    t = "The digits $A, B$ and $C$ are such that the three-digit numbers $A88, 6B8, 86C$ are divisible by 72. Then the determinant $\\begin{vmatrix} A & 6 & 8 \\\\ 8 & B & 6 \\\\ 8 & 8 & C \\end{vmatrix}$ is divisible by:";
+  }
+
+  // MFT-7 Q63: 2x2 matrix
+  if (/Consider the matrix A/i.test(t) && /BBT/i.test(t) && /BABT/i.test(t)) {
+    t = "Consider the matrix $A = \\begin{bmatrix} 3 & -2 \\\\ 0 & 1 \\end{bmatrix}$ and let $B$ be a square matrix of order 2 such that $B B^T = B^T B = I$. Let $C = B A B^T$ and $D = [d_{ij}]_{2 \\times 2} = B^T C^6 B$. Then the value of $d_{11} + d_{22}$ is equal to:";
+  }
+
+  // MFT-8 Q52: trace of matrix
+  if (/tr\(Aadj\(adj A\)\)/i.test(t) || /tr\(A · adj\(adj A\)\)/i.test(t)) {
+    t = "If $A = \\begin{bmatrix} 2 & 1 & -1 \\\\ 3 & 5 & 2 \\\\ 1 & 6 & 1 \\end{bmatrix}$, then $\\text{tr}(A \\cdot \\text{adj}(\\text{adj } A))$ is equal to (where $\\text{tr}(P)$ denotes the trace of matrix $P$):";
+  }
+
+  // MFT-10 Q67: functional determinant
+  if (/log10 x/i.test(t) && /eπix/i.test(t) && /ϕ\(10\)/i.test(t)) {
+    t = "Given $f(x) = \\log_{10} x$ and $g(x) = e^{\\pi i x}$, where $i = \\sqrt{-1}$. If $\\phi(x) = \\begin{vmatrix} f(x)g(x) & (f(x))^{g(x)} & 1 \\\\ f(x^2)g(x^2) & (f(x^2))^{g(x^2)} & 0 \\\\ f(x^3)g(x^3) & (f(x^3))^{g(x^3)} & 1 \\end{vmatrix}$, then the value of $\\phi(10)$ is:";
+  }
+
+  // MFT-10 Q72: 3x3 matrix
+  if (/matrix A\s*=\s*1\s*2\s*3/i.test(t) && /48\s*⋅\s*516/i.test(t)) {
+    t = "Let matrix $A = \\begin{bmatrix} x & y & -z \\\\ 1 & 2 & 3 \\\\ 1 & 1 & 2 \\end{bmatrix}$, where $x, y, z \\in \\mathbb{N}$. If $|\\text{adj}(\\text{adj}(\\text{adj}(\\text{adj } A)))| = 4^8 \\cdot 5^{16}$, then the number of such matrices $A$ is equal to:";
+  }
+
+  // Missing radicals in options
+  t = t.replace(/5\s*\(\s*[√]?\s*6\s*[-−]\s*[√]?\s*5\s*\)/g, "$5(\\sqrt{6} - \\sqrt{5})$");
+  t = t.replace(/5\s*[√]?\s*3\s*\(\s*[√]?\s*6\s*[-−]\s*[√]?\s*5\s*\)/g, "$5\\sqrt{3}(\\sqrt{6} - \\sqrt{5})$");
+  t = t.replace(/5\s*\(\s*[√]?\s*6\s*[-−]\s*[√]?\s*3\s*\)/g, "$5(\\sqrt{6} - \\sqrt{3})$");
+  t = t.replace(/2\s*\(\s*[√]?\s*7\s*[-−]\s*[√]?\s*5\s*\)/g, "$2(\\sqrt{7} - \\sqrt{5})$");
 
   // MFT-1 Q54 exponent sum
   t = t.replace(/233x−2\s*\+\s*211x\+2\s*=\s*222x\+1\s*\+\s*1/g, "2^(33x−2) + 2^(11x+2) = 2^(22x+1) + 1");

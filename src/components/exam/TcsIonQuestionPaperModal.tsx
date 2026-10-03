@@ -4,6 +4,7 @@ import React from "react";
 import { X, FileText } from "lucide-react";
 import { TestSection } from "@/lib/examDb";
 import { formatQuestionText, formatOptionText } from "@/lib/questionFormatter";
+import { MathRenderer } from "./MathRenderer";
 
 interface TcsIonQuestionPaperModalProps {
   isOpen: boolean;
@@ -56,7 +57,7 @@ export function TcsIonQuestionPaperModal({
 
                     {/* Question Text */}
                     <div className="text-sm sm:text-[15px] font-medium leading-relaxed whitespace-pre-wrap text-gray-900">
-                      {formatQuestionText(q.question_text)}
+                      <MathRenderer text={formatQuestionText(q.question_text)} />
                     </div>
 
                     {/* Images if any */}
@@ -80,25 +81,33 @@ export function TcsIonQuestionPaperModal({
                         {q.option_a && (
                           <div className="p-2.5 bg-gray-50 rounded border border-gray-200 flex items-start space-x-2">
                             <span className="font-bold text-blue-700 shrink-0">(A)</span>
-                            <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(q.option_a)}</span>
+                            <span className="flex-1 break-words whitespace-normal leading-relaxed">
+                              <MathRenderer inline text={formatOptionText(q.option_a)} />
+                            </span>
                           </div>
                         )}
                         {q.option_b && (
                           <div className="p-2.5 bg-gray-50 rounded border border-gray-200 flex items-start space-x-2">
                             <span className="font-bold text-blue-700 shrink-0">(B)</span>
-                            <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(q.option_b)}</span>
+                            <span className="flex-1 break-words whitespace-normal leading-relaxed">
+                              <MathRenderer inline text={formatOptionText(q.option_b)} />
+                            </span>
                           </div>
                         )}
                         {q.option_c && (
                           <div className="p-2.5 bg-gray-50 rounded border border-gray-200 flex items-start space-x-2">
                             <span className="font-bold text-blue-700 shrink-0">(C)</span>
-                            <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(q.option_c)}</span>
+                            <span className="flex-1 break-words whitespace-normal leading-relaxed">
+                              <MathRenderer inline text={formatOptionText(q.option_c)} />
+                            </span>
                           </div>
                         )}
                         {q.option_d && (
                           <div className="p-2.5 bg-gray-50 rounded border border-gray-200 flex items-start space-x-2">
                             <span className="font-bold text-blue-700 shrink-0">(D)</span>
-                            <span className="flex-1 break-words whitespace-normal leading-relaxed">{formatOptionText(q.option_d)}</span>
+                            <span className="flex-1 break-words whitespace-normal leading-relaxed">
+                              <MathRenderer inline text={formatOptionText(q.option_d)} />
+                            </span>
                           </div>
                         )}
                       </div>
