@@ -58,12 +58,14 @@ export function GoogleSignInButton({
             });
 
             if (error) {
-              console.error("Supabase signInWithIdToken error:", error.message, error);
+              console.warn("Supabase signInWithIdToken error, falling back to standard OAuth:", error.message);
+              signInWithGoogle();
             } else if (data?.user) {
               window.location.reload();
             }
           } catch (err) {
-            console.error("Supabase signInWithIdToken error:", err);
+            console.error("Supabase signInWithIdToken exception, falling back to standard OAuth:", err);
+            signInWithGoogle();
           }
         },
         auto_select: false,

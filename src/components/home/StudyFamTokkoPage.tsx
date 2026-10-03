@@ -485,7 +485,7 @@ export function StudyFamTokkoPage() {
               </div>
             ) : (
               <button
-                onClick={() => signInWithGoogle()}
+                onClick={() => signInWithGoogle("/dashboard")}
                 className="btn btn-dark btn-sm"
                 style={{ display: "inline-flex", alignItems: "center", gap: "8px", flexShrink: 0 }}
                 aria-label="Sign in with Google"
@@ -523,7 +523,7 @@ export function StudyFamTokkoPage() {
             </>
           ) : (
             <button
-              onClick={() => { signInWithGoogle(); setMobileOpen(false); }}
+              onClick={() => { signInWithGoogle("/dashboard"); setMobileOpen(false); }}
               style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--b1)" }}
             >
               <svg width="15" height="15" viewBox="0 0 24 24">

@@ -29,10 +29,36 @@ export function useAuth() {
 
   useEffect(() => {
     try {
-      const supabase = createClient();
+      const supabase: any = createClient();
+
+      // Check if URL has OAuth code or error to process immediately
+      if (typeof window !== "undefined") {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get("code");
+        const authErr = urlParams.get("error_description") || urlParams.get("error");
+
+        if (authErr) {
+          console.error("Supabase OAuth error in URL:", authErr);
+        } else if (code) {
+          // Explicitly exchange the code on mount
+          supabase.auth.exchangeCodeForSession(code).then(({ data, error }: any) => {
+            if (error) {
+              console.warn("Could not exchange code in useAuth (may have been handled by callback):", error.message);
+            } else if (data?.session?.user) {
+              setUser(data.session.user);
+              setProfile(extractProfile(data.session.user));
+            }
+            // Clean code query param so refreshes don't re-attempt
+            const cleanUrl = window.location.pathname + (window.location.hash || "");
+            window.history.replaceState({}, document.title, cleanUrl);
+          }).catch((err: any) => {
+            console.warn("Exchange code exception in useAuth:", err);
+          });
+        }
+      }
 
       // Fast local session restore
-      supabase.auth.getSession().then(({ data: { session } }) => {
+      supabase.auth.getSession().then(({ data: { session } }: any) => {
         const currentUser = session?.user || null;
         if (currentUser) {
           setUser(currentUser);
@@ -47,7 +73,7 @@ export function useAuth() {
       });
 
       // Listen for auth state changes
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event: any, session: any) => {
         const currentUser = session?.user || null;
         const newProfile = extractProfile(currentUser);
         setUser(currentUser);
@@ -88,12 +114,19 @@ export function useAuth() {
     }
   }, []);
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (nextPathOrEvent?: any) => {
     try {
-      const supabase = createClient();
-      const redirectTo = typeof window !== "undefined" ? window.location.origin : undefined;
+      const supabase: any = createClient();
+      const origin = typeof window !== "undefined" ? window.location.origin : "https://studyfam.in";
+      const targetNext =
+        typeof nextPathOrEvent === "string"
+          ? nextPathOrEvent
+          : typeof window !== "undefined"
+          ? window.location.pathname
+          : "/dashboard";
+      const redirectTo = `${origin}/auth/callback?next=${encodeURIComponent(targetNext)}`;
 
-      await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo,
@@ -103,8 +136,19 @@ export function useAuth() {
           },
         },
       });
-    } catch (err) {
+
+      if (error) {
+        console.error("Failed to sign in with Google:", error);
+        alert("Google sign in error: " + error.message);
+        return;
+      }
+
+      if (data?.url && typeof window !== "undefined") {
+        window.location.href = data.url;
+      }
+    } catch (err: any) {
       console.error("Failed to sign in with Google:", err);
+      alert("Error initiating Google sign in: " + (err?.message || "Unknown error"));
     }
   };
 

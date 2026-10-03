@@ -2,6 +2,7 @@ import { DEFAULT_SITE_CONFIG, parseSiteConfig } from "./lib/siteConfig";
 import { ALLOWED_ADMIN_EMAILS, DEFAULT_ADMIN_PASSCODE } from "./lib/adminAuth";
 import DEFAULT_ACTIVE_EXAM_PAPER from "../questions_database/active_exam_paper.json";
 import CURATED_QUESTION_BANK from "../questions_database/curated_question_bank.json";
+import MFT_QUESTIONS_BY_FILE from "../questions_database/mft_questions.json";
 
 export interface Env {
   ASSETS: {
@@ -143,7 +144,22 @@ export default {
       return handleExamSubmit(request, env);
     }
 
-    // 12. Default: Serve Next.js static export from ASSETS binding
+    // 12. Get exam detail by ID (used by exam player to load test)
+    if (pathname === "/api/exam/detail" && request.method === "POST") {
+      return handleExamDetail(request, env);
+    }
+
+    // 13. List available tests (full mocks + chapter tests)
+    if (pathname === "/api/exam/tests") {
+      return handleExamTests(request, env);
+    }
+
+    // 14. Exam solutions / review data
+    if (pathname === "/api/exam/solutions" && request.method === "POST") {
+      return handleExamSolutions(request, env);
+    }
+
+    // 15. Default: Serve Next.js static export from ASSETS binding
     return env.ASSETS.fetch(request);
   },
 };
@@ -1516,5 +1532,251 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
       status: 500,
       headers: jsonHeaders,
     });
+  }
+}
+
+// ── Exam Detail: load a test by ID ────────────────────────────────────────────
+async function handleExamDetail(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" };
+
+  try {
+    const body: any = await request.json().catch(() => ({}));
+    const rawId = (body.id || "").toString().trim();
+
+    if (!rawId) {
+      return new Response(JSON.stringify({ success: false, error: "Test ID is required" }), { status: 400, headers: jsonHeaders });
+    }
+
+    // Decode and normalise: "MFT-1.pdf", "MFT-1", "MFT-01" all resolve to "MFT-1.pdf"
+    const cleanId = decodeURIComponent(rawId);
+    const mftMatch = cleanId.match(/^MFT-0*(\d+)(\.pdf)?$/i);
+    const resolvedFile = mftMatch ? `MFT-${mftMatch[1]}.pdf` : cleanId.endsWith(".pdf") ? cleanId : `${cleanId}.pdf`;
+
+    const db = MFT_QUESTIONS_BY_FILE as Record<string, any[]>;
+    const rows = db[resolvedFile];
+
+    if (!rows || rows.length === 0) {
+      // Try fallback without .pdf
+      const rowsNoPdf = db[cleanId];
+      if (!rowsNoPdf || rowsNoPdf.length === 0) {
+        return new Response(JSON.stringify({ success: false, error: `Test not found: ${cleanId}` }), { status: 404, headers: jsonHeaders });
+      }
+    }
+
+    const questions = (rows || db[cleanId] || []) as any[];
+    const isMft = resolvedFile.startsWith("MFT-");
+    const cleanTitle = resolvedFile.replace(/\.pdf$/i, "").replace(/_/g, " ");
+
+    // Group questions into sections by subject, order: Physics → Chemistry → Mathematics
+    const sectionMap = new Map<string, any[]>();
+    for (const q of questions) {
+      const sec = q.subject || "General";
+      if (!sectionMap.has(sec)) sectionMap.set(sec, []);
+      sectionMap.get(sec)!.push(q);
+    }
+
+    const preferredOrder = ["Physics", "Chemistry", "Mathematics"];
+    const sections: any[] = [];
+    for (const p of preferredOrder) {
+      if (sectionMap.has(p)) {
+        sections.push({ name: p, questions: sectionMap.get(p)!.map(sanitizeQuestion) });
+        sectionMap.delete(p);
+      }
+    }
+    for (const [name, qs] of sectionMap.entries()) {
+      sections.push({ name, questions: qs.map(sanitizeQuestion) });
+    }
+
+    const test = {
+      id: encodeURIComponent(resolvedFile),
+      title: isMft ? `JEE Main - ${cleanTitle}` : cleanTitle,
+      source_file: resolvedFile,
+      total_questions: questions.length,
+      duration_minutes: isMft ? 180 : Math.max(30, Math.round(questions.length * 2.4)),
+      marks_per_question: 4,
+      negative_marks: 1,
+      sections,
+    };
+
+    return new Response(JSON.stringify({ success: true, test }), { status: 200, headers: jsonHeaders });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500, headers: jsonHeaders });
+  }
+}
+
+// Strip correct_answer and solution for the player (candidates shouldn't see answers)
+function sanitizeQuestion(q: any) {
+  return {
+    id: q.id,
+    subject: q.subject,
+    unit_id: q.unit_id,
+    unit_name: q.unit_name,
+    chapter: q.chapter,
+    source_file: q.source_file,
+    question_number: q.question_number,
+    question_text: q.question_text,
+    option_a: q.option_a,
+    option_b: q.option_b,
+    option_c: q.option_c,
+    option_d: q.option_d,
+    difficulty: q.difficulty,
+    has_image: q.has_image,
+    image_paths: q.image_paths,
+  };
+}
+
+// ── Exam Tests: list available full mock tests ────────────────────────────────
+async function handleExamTests(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" };
+
+  try {
+    const db = MFT_QUESTIONS_BY_FILE as Record<string, any[]>;
+    const fullMocks = Object.entries(db)
+      .filter(([file]) => file.startsWith("MFT-"))
+      .sort(([a], [b]) => {
+        const na = parseInt(a.match(/\d+/)?.[0] || "0");
+        const nb = parseInt(b.match(/\d+/)?.[0] || "0");
+        return na - nb;
+      })
+      .map(([file, questions]) => {
+        const cleanTitle = file.replace(/\.pdf$/i, "").replace(/_/g, " ");
+        return {
+          id: encodeURIComponent(file),
+          title: `JEE Main - ${cleanTitle} (Official Pattern)`,
+          source_file: file,
+          subject: "All Subjects",
+          question_count: questions.length,
+          duration_minutes: 180,
+          is_full_mock: true,
+        };
+      });
+
+    return new Response(JSON.stringify({ success: true, fullMocks, chapterTests: [] }), { status: 200, headers: jsonHeaders });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500, headers: jsonHeaders });
+  }
+}
+
+// ── Exam Solutions: load test with answers for review mode ───────────────────
+async function handleExamSolutions(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" };
+
+  try {
+    const body: any = await request.json().catch(() => ({}));
+    const rawId = (body.id || "").toString().trim();
+
+    if (!rawId) {
+      return new Response(JSON.stringify({ success: false, error: "Test ID is required" }), { status: 400, headers: jsonHeaders });
+    }
+
+    const cleanId = decodeURIComponent(rawId);
+    const mftMatch = cleanId.match(/^MFT-0*(\d+)(\.pdf)?$/i);
+    const resolvedFile = mftMatch ? `MFT-${mftMatch[1]}.pdf` : cleanId.endsWith(".pdf") ? cleanId : `${cleanId}.pdf`;
+
+    const db = MFT_QUESTIONS_BY_FILE as Record<string, any[]>;
+    const questions = (db[resolvedFile] || db[cleanId] || []) as any[];
+
+    if (!questions.length) {
+      return new Response(JSON.stringify({ success: false, error: `Test not found: ${cleanId}` }), { status: 404, headers: jsonHeaders });
+    }
+
+    // Build evaluation result from userResponses + correct answers
+    const userResponses: Record<string, string> = body.responses || {};
+    const isMft = resolvedFile.startsWith("MFT-");
+    const marksPerQ = 4;
+    const negativeMarks = 1;
+
+    let totalScore = 0, correct = 0, incorrect = 0, attempted = 0;
+    const detailedResults: any[] = [];
+    const sectionMap = new Map<string, { total: number; attempted: number; correct: number; incorrect: number; score: number }>();
+
+    for (const q of questions) {
+      const sec = q.subject || "General";
+      if (!sectionMap.has(sec)) sectionMap.set(sec, { total: 0, attempted: 0, correct: 0, incorrect: 0, score: 0 });
+      const s = sectionMap.get(sec)!;
+      s.total++;
+
+      const userAns = (userResponses[q.id] || "").trim();
+      const isAttempted = Boolean(userAns);
+      let isCorrect = false;
+      let marksAwarded = 0;
+
+      if (isAttempted) {
+        attempted++;
+        s.attempted++;
+        isCorrect = userAns.toUpperCase() === (q.correct_answer || "").trim().toUpperCase();
+        if (isCorrect) {
+          correct++;
+          s.correct++;
+          marksAwarded = marksPerQ;
+          totalScore += marksPerQ;
+          s.score += marksPerQ;
+        } else {
+          incorrect++;
+          s.incorrect++;
+          marksAwarded = -negativeMarks;
+          totalScore -= negativeMarks;
+          s.score -= negativeMarks;
+        }
+      }
+
+      detailedResults.push({
+        questionId: q.id,
+        questionNumber: q.question_number,
+        subject: q.subject,
+        chapter: q.chapter || "General",
+        difficulty: q.difficulty || "Medium",
+        questionText: q.question_text,
+        optionA: q.option_a || null,
+        optionB: q.option_b || null,
+        optionC: q.option_c || null,
+        optionD: q.option_d || null,
+        imagePaths: q.image_paths || [],
+        userResponse: isAttempted ? userAns : null,
+        correctAnswer: q.correct_answer,
+        isCorrect,
+        solution: q.solution,
+        marksAwarded,
+      });
+    }
+
+    const maxScore = questions.length * marksPerQ;
+    const percentage = maxScore > 0 ? Math.max(0, Math.round((totalScore / maxScore) * 1000) / 10) : 0;
+    const accuracy = attempted > 0 ? Math.round((correct / attempted) * 1000) / 10 : 0;
+    const cleanTitle = resolvedFile.replace(/\.pdf$/i, "").replace(/_/g, " ");
+
+    const preferredOrder = ["Physics", "Chemistry", "Mathematics"];
+    const sectionBreakdown: any[] = [];
+    for (const p of preferredOrder) {
+      if (sectionMap.has(p)) {
+        const s = sectionMap.get(p)!;
+        sectionBreakdown.push({ sectionName: p, ...s });
+        sectionMap.delete(p);
+      }
+    }
+    for (const [name, s] of sectionMap.entries()) {
+      sectionBreakdown.push({ sectionName: name, ...s });
+    }
+
+    const result = {
+      testId: encodeURIComponent(resolvedFile),
+      testTitle: isMft ? `JEE Main - ${cleanTitle}` : cleanTitle,
+      totalQuestions: questions.length,
+      attemptedCount: attempted,
+      correctCount: correct,
+      incorrectCount: incorrect,
+      unattemptedCount: questions.length - attempted,
+      totalScore,
+      maxScore,
+      percentage,
+      accuracy,
+      timeSpentSeconds: Number(body.timeSpentSeconds) || 0,
+      sectionBreakdown,
+      detailedResults,
+    };
+
+    return new Response(JSON.stringify({ success: true, result }), { status: 200, headers: jsonHeaders });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500, headers: jsonHeaders });
   }
 }
