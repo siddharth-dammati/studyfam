@@ -8,6 +8,7 @@ import { ALLOWED_ADMIN_EMAILS, DEFAULT_ADMIN_PASSCODE } from "@/lib/adminAuth";
 import { CandidateRecord } from "@/components/dashboard/CandidateRegistrationCard";
 import Link from "next/link";
 import AdminExamManagerPage from "@/app/admin/exam/page";
+import { AdminUserAttemptsView } from "@/components/admin/AdminUserAttemptsView";
 import {
   Shield,
   Key,
@@ -76,9 +77,9 @@ export default function AdminSuperPowerPage() {
   const [authError, setAuthError] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Active Tab: 'overview' | 'examStudio' | 'cms' | 'registration' | 'admitCard' | 'announcements'
+  // Active Tab: 'overview' | 'userAttempts' | 'examStudio' | 'cms' | 'registration' | 'admitCard' | 'announcements'
   const [activeTab, setActiveTab] = useState<
-    "overview" | "examStudio" | "cms" | "registration" | "admitCard" | "announcements"
+    "overview" | "userAttempts" | "examStudio" | "cms" | "registration" | "admitCard" | "announcements"
   >("overview");
 
   // Dense / Compact View Mode for power-admin workflow
@@ -549,6 +550,19 @@ export default function AdminSuperPowerPage() {
               <span>{isCompactMode ? "Dense: ON" : "Dense View"}</span>
             </button>
 
+            {/* Student Attempts Quick Tab Switcher */}
+            <button
+              onClick={() => setActiveTab("userAttempts")}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer ${
+                activeTab === "userAttempts"
+                  ? "bg-indigo-600 text-white shadow-indigo-600/30"
+                  : "bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/50 text-indigo-200 hover:text-white"
+              }`}
+            >
+              <Award size={14} className="text-amber-400" />
+              <span>User Attempts</span>
+            </button>
+
             {/* Mock Test Studio & Question Bank Quick Tab Switcher */}
             <button
               onClick={() => setActiveTab("examStudio")}
@@ -621,6 +635,7 @@ export default function AdminSuperPowerPage() {
         <div className="max-w-7xl mx-auto flex overflow-x-auto no-scrollbar gap-1 py-2">
           {[
             { id: "overview", label: "Overview & Registrations", icon: Users },
+            { id: "userAttempts", label: "User Attempts & Students", icon: Award, badge: "Live" },
             { id: "examStudio", label: "Mock Tests & Studio", icon: Sparkles, badge: "9,395 Qs" },
             { id: "cms", label: "Landing Page CMS", icon: Layers },
             { id: "registration", label: "Registration Module", icon: Sliders },
@@ -1236,6 +1251,15 @@ export default function AdminSuperPowerPage() {
                 </table>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB: USER ATTEMPTS & STUDENT DEEP DIVE                        */}
+        {/* ============================================================== */}
+        {activeTab === "userAttempts" && (
+          <div className="animate-fadeIn">
+            <AdminUserAttemptsView getAuthHeaders={getAuthHeaders} />
           </div>
         )}
 

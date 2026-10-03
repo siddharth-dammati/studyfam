@@ -4,7 +4,7 @@ import { getActiveExamPaper, evaluateActivePaper } from "@/lib/activeExamService
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
-async function getSolutionsForTest(testId: string) {
+async function getSolutionsForTest(testId: string, attemptId?: string | null, candidateEmail?: string | null) {
   let evaluation: any = null;
 
   if (testId === "active" || testId === "jee_main_75_official_mock" || testId.startsWith("jee_main_75")) {
@@ -18,42 +18,57 @@ async function getSolutionsForTest(testId: string) {
     return null;
   }
 
-  // Attempt to enrich with past attempt score if student is authenticated in Supabase
+  // Attempt to enrich with past attempt score if student is authenticated in Supabase or attemptId is provided
   try {
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
     const userRes = await supabase.auth.getUser();
     const user = userRes.data?.user;
+    const email = (user?.email || candidateEmail || "").toLowerCase().trim();
 
-    if (user?.email) {
-      const { data: pastAttempt } = await supabase
+    let pastAttempt: any = null;
+
+    if (attemptId) {
+      const { data } = await supabase
         .from("exam_attempts")
         .select("*")
-        .eq("email", user.email.toLowerCase().trim())
+        .eq("id", attemptId)
+        .maybeSingle();
+      pastAttempt = data;
+    }
+
+    if (!pastAttempt && email) {
+      const { data } = await supabase
+        .from("exam_attempts")
+        .select("*")
+        .eq("email", email)
         .or(`test_id.eq.${testId},test_id.eq.${decodeURIComponent(testId)}`)
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle();
+      pastAttempt = data;
+    }
 
-      if (pastAttempt) {
-        evaluation.totalScore = pastAttempt.score ?? evaluation.totalScore;
-        evaluation.maxScore = pastAttempt.max_score ?? evaluation.maxScore;
-        evaluation.accuracy = pastAttempt.accuracy ?? evaluation.accuracy;
-        evaluation.percentage = pastAttempt.percentage ?? evaluation.percentage;
-        evaluation.attemptedCount = pastAttempt.attempted_count ?? evaluation.attemptedCount;
-        evaluation.correctCount = pastAttempt.correct_count ?? evaluation.correctCount;
-        evaluation.incorrectCount = pastAttempt.incorrect_count ?? evaluation.incorrectCount;
-        evaluation.timeSpentSeconds = pastAttempt.time_spent_seconds ?? evaluation.timeSpentSeconds;
-        if (pastAttempt.section_breakdown && Array.isArray(pastAttempt.section_breakdown)) {
-          evaluation.sectionBreakdown = pastAttempt.section_breakdown;
-        }
-        if (pastAttempt.detailed_results && Array.isArray(pastAttempt.detailed_results)) {
-          evaluation.detailedResults = pastAttempt.detailed_results;
-        }
-        if (pastAttempt.question_times) {
-          evaluation.questionTimes = pastAttempt.question_times;
-        }
+    if (pastAttempt) {
+      evaluation.id = pastAttempt.id;
+      evaluation.totalScore = pastAttempt.score ?? evaluation.totalScore;
+      evaluation.maxScore = pastAttempt.max_score ?? evaluation.maxScore;
+      evaluation.accuracy = pastAttempt.accuracy ?? evaluation.accuracy;
+      evaluation.percentage = pastAttempt.percentage ?? evaluation.percentage;
+      evaluation.attemptedCount = pastAttempt.attempted_count ?? evaluation.attemptedCount;
+      evaluation.correctCount = pastAttempt.correct_count ?? evaluation.correctCount;
+      evaluation.incorrectCount = pastAttempt.incorrect_count ?? evaluation.incorrectCount;
+      evaluation.timeSpentSeconds = pastAttempt.time_spent_seconds ?? evaluation.timeSpentSeconds;
+      if (pastAttempt.section_breakdown && Array.isArray(pastAttempt.section_breakdown)) {
+        evaluation.sectionBreakdown = pastAttempt.section_breakdown;
       }
+      if (pastAttempt.detailed_results && Array.isArray(pastAttempt.detailed_results)) {
+        evaluation.detailedResults = pastAttempt.detailed_results;
+      }
+      if (pastAttempt.question_times) {
+        evaluation.questionTimes = pastAttempt.question_times;
+      }
+      evaluation.createdAt = pastAttempt.created_at;
     }
   } catch (e) {
     // ignore
@@ -66,12 +81,14 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({}));
     const id = body.id || body.testId;
+    const attemptId = body.attemptId || null;
+    const candidateEmail = body.email || body.candidateEmail || null;
 
-    if (!id) {
-      return NextResponse.json({ success: false, error: "Test ID is required" }, { status: 400 });
+    if (!id && !attemptId) {
+      return NextResponse.json({ success: false, error: "Test ID or Attempt ID is required" }, { status: 400 });
     }
 
-    const evaluation = await getSolutionsForTest(id);
+    const evaluation = await getSolutionsForTest(id || "", attemptId, candidateEmail);
     if (!evaluation) {
       return NextResponse.json({ success: false, error: "Test not found" }, { status: 404 });
     }

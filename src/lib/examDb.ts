@@ -245,7 +245,10 @@ export function getTestById(testId: string): TestDetail | null {
 }
 
 export interface EvaluationResult {
+  id?: string;
   testId: string;
+  testTitle?: string;
+  createdAt?: string;
   totalQuestions: number;
   attemptedCount: number;
   correctCount: number;
@@ -281,7 +284,9 @@ export interface EvaluationResult {
     isCorrect: boolean;
     solution: string;
     marksAwarded: number;
+    timeSpentSeconds?: number;
   }[];
+  questionTimes?: Record<string, number>;
   submissionReason?: string;
 }
 

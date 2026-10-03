@@ -124,6 +124,11 @@ export default {
       return handleAdminRegistrations(request, env);
     }
 
+    // 7b. Admin User Attempts & Student Analytics
+    if (pathname === "/api/admin/attempts") {
+      return handleAdminAttempts(request, env);
+    }
+
     // 8. Active Exam Paper
     if (pathname === "/api/exam/active") {
       return handleActiveExam(request, env);
@@ -1130,6 +1135,272 @@ async function handleAdminRegistrations(request: Request, env: Env): Promise<Res
   }
 }
 
+async function handleAdminAttempts(request: Request, env: Env): Promise<Response> {
+  const jsonHeaders = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  };
+
+  if (!isWorkerAdmin(request, env)) {
+    return new Response(
+      JSON.stringify({ error: "Unauthorized access. Valid admin credentials required." }),
+      { status: 401, headers: jsonHeaders }
+    );
+  }
+
+  try {
+    let search = "";
+    let testFilter = "all";
+    let sortBy = "latest";
+
+    if (request.method === "POST") {
+      const body: any = await request.json().catch(() => ({}));
+      search = (body.search || "").trim().toLowerCase();
+      testFilter = (body.testFilter || "all").trim().toLowerCase();
+      sortBy = body.sortBy || "latest";
+    } else {
+      const url = new URL(request.url);
+      search = (url.searchParams.get("search") || "").trim().toLowerCase();
+      testFilter = (url.searchParams.get("testFilter") || "all").trim().toLowerCase();
+      sortBy = url.searchParams.get("sortBy") || "latest";
+    }
+
+    const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
+    const supabaseKey =
+      env.SUPABASE_SERVICE_ROLE_KEY ||
+      env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+      "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
+
+    const fetchHeaders = {
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
+    };
+
+    // 1. Fetch Registrations
+    const regRes = await fetch(
+      `${supabaseUrl}/rest/v1/registrations?email=neq.system_config@studyfam.org&order=created_at.desc&limit=1500`,
+      { headers: fetchHeaders }
+    );
+    const rawRegistrations = regRes.ok ? await regRes.json() : [];
+
+    // 2. Fetch Exam Attempts
+    const attemptsRes = await fetch(
+      `${supabaseUrl}/rest/v1/exam_attempts?order=created_at.desc&limit=3000`,
+      { headers: fetchHeaders }
+    );
+    const rawAttempts = attemptsRes.ok ? await attemptsRes.json() : [];
+
+    const regMap = new Map<string, any>();
+    for (const r of Array.isArray(rawRegistrations) ? rawRegistrations : []) {
+      const email = (r.email || "").toLowerCase().trim();
+      if (email) {
+        regMap.set(email, hydrateRecord(r));
+      }
+    }
+
+    const attemptsByUser = new Map<string, any[]>();
+    for (const a of Array.isArray(rawAttempts) ? rawAttempts : []) {
+      const email = (a.email || "").toLowerCase().trim();
+      if (!email) continue;
+
+      const item = {
+        id: String(a.id || ""),
+        testId: a.test_id || "MFT-1.pdf",
+        testTitle: a.test_title || a.test_id || "JEE Main Mock Test",
+        score: Number(a.score ?? 0),
+        maxScore: Number(a.max_score || 300),
+        percentage: Number(a.percentage || 0),
+        accuracy: Number(a.accuracy || 0),
+        timeSpentSeconds: Number(a.time_spent_seconds || 0),
+        totalQuestions: Number(a.total_questions || 75),
+        attemptedCount: Number(a.attempted_count || 0),
+        correctCount: Number(a.correct_count || 0),
+        incorrectCount: Number(a.incorrect_count || 0),
+        sectionBreakdown: a.section_breakdown || [],
+        detailedResults: a.detailed_results || [],
+        questionTimes: a.question_times || {},
+        tabViolations: Number(a.tab_violations || 0),
+        submissionReason: a.submission_reason || undefined,
+        startedAt: a.started_at || undefined,
+        createdAt: a.created_at || new Date().toISOString(),
+      };
+
+      if (!attemptsByUser.has(email)) {
+        attemptsByUser.set(email, []);
+      }
+      attemptsByUser.get(email)!.push(item);
+    }
+
+    const allEmails = new Set<string>([...regMap.keys(), ...attemptsByUser.keys()]);
+    const studentList: any[] = [];
+
+    for (const email of allEmails) {
+      const reg = regMap.get(email);
+      const userAttempts = (attemptsByUser.get(email) || []).sort(
+        (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      const totalAttempts = userAttempts.length;
+      let bestMarks = 0;
+      let bestPercentage = 0;
+      let totalScoreSum = 0;
+      let totalAccSum = 0;
+      let totalTimeSpentSeconds = 0;
+
+      const mftMatrix: Record<string, any> = {};
+      for (let i = 1; i <= 10; i++) {
+        const code = `MFT-${i.toString().padStart(2, "0")}`;
+        mftMatrix[code] = {
+          code,
+          title: `Major Full Test ${i}`,
+          testId: `MFT-${i}.pdf`,
+          attempted: false,
+          attemptsCount: 0,
+          bestScore: null,
+          latestScore: null,
+          latestPercentage: null,
+          latestAccuracy: null,
+          latestTimeSeconds: null,
+          latestAttemptedAt: null,
+        };
+      }
+      mftMatrix["ACTIVE_MOCK"] = {
+        code: "ACTIVE",
+        title: "All India Active Mock",
+        testId: "active",
+        attempted: false,
+        attemptsCount: 0,
+        bestScore: null,
+        latestScore: null,
+        latestPercentage: null,
+        latestAccuracy: null,
+        latestTimeSeconds: null,
+        latestAttemptedAt: null,
+      };
+
+      for (const att of userAttempts) {
+        if (att.score > bestMarks) bestMarks = att.score;
+        if (att.percentage > bestPercentage) bestPercentage = att.percentage;
+        totalScoreSum += att.score;
+        totalAccSum += att.accuracy;
+        totalTimeSpentSeconds += att.timeSpentSeconds;
+
+        let slotKey: string | null = null;
+        const match = att.testId.match(/MFT[-_ ]*0?(\d+)/i);
+        if (match) {
+          const num = parseInt(match[1]);
+          if (num >= 1 && num <= 10) {
+            slotKey = `MFT-${num.toString().padStart(2, "0")}`;
+          }
+        } else if (att.testId.toLowerCase().includes("active")) {
+          slotKey = "ACTIVE_MOCK";
+        }
+
+        if (slotKey && mftMatrix[slotKey]) {
+          const slot = mftMatrix[slotKey];
+          slot.attempted = true;
+          slot.attemptsCount += 1;
+          if (slot.bestScore === null || att.score > slot.bestScore) {
+            slot.bestScore = att.score;
+          }
+          if (slot.latestScore === null) {
+            slot.latestScore = att.score;
+            slot.latestPercentage = att.percentage;
+            slot.latestAccuracy = att.accuracy;
+            slot.latestTimeSeconds = att.timeSpentSeconds;
+            slot.latestAttemptedAt = att.createdAt;
+          }
+        }
+      }
+
+      const averageMarks = totalAttempts > 0 ? Math.round((totalScoreSum / totalAttempts) * 10) / 10 : 0;
+      const averageAccuracy = totalAttempts > 0 ? Math.round(totalAccSum / totalAttempts) : 0;
+      const latestAttempt = userAttempts.length > 0 ? userAttempts[0] : null;
+
+      studentList.push({
+        id: reg?.id || email,
+        email,
+        fullName: reg?.full_name || (email.split("@")[0].replace(/[._-]/g, " ") || "Student Candidate"),
+        phone: reg?.phone || "—",
+        rollNo: reg?.roll_no || undefined,
+        jeeStatus: reg?.jee_status || undefined,
+        gender: reg?.gender || undefined,
+        scholarshipTrack: reg?.scholarship_track || undefined,
+        registrationStatus: reg?.status || (totalAttempts > 0 ? "attempted_only" : "registered"),
+        registeredAt: reg?.created_at || (latestAttempt ? latestAttempt.createdAt : undefined),
+        totalAttempts,
+        bestMarks,
+        bestPercentage,
+        averageMarks,
+        averageAccuracy,
+        totalTimeSpentSeconds,
+        latestAttempt,
+        mftMatrix,
+        attempts: userAttempts,
+      });
+    }
+
+    let filteredStudents = studentList;
+    if (testFilter !== "all") {
+      filteredStudents = filteredStudents.filter((s: any) => {
+        if (testFilter === "mft") {
+          return s.attempts.some((a: any) => a.testId.toLowerCase().includes("mft"));
+        }
+        return s.attempts.some((a: any) => a.testId.toLowerCase().includes(testFilter));
+      });
+    }
+
+    if (search) {
+      filteredStudents = filteredStudents.filter((s: any) => {
+        const pool = [
+          s.fullName,
+          s.email,
+          s.phone,
+          s.rollNo || "",
+          s.jeeStatus || "",
+          s.scholarshipTrack || "",
+        ].join(" ").toLowerCase();
+        return pool.includes(search);
+      });
+    }
+
+    filteredStudents.sort((a: any, b: any) => {
+      if (sortBy === "best_marks") return b.bestMarks - a.bestMarks;
+      if (sortBy === "attempts") return b.totalAttempts - a.totalAttempts;
+      if (sortBy === "name") return a.fullName.localeCompare(b.fullName);
+      const timeA = a.latestAttempt ? new Date(a.latestAttempt.createdAt).getTime() : (a.registeredAt ? new Date(a.registeredAt).getTime() : 0);
+      const timeB = b.latestAttempt ? new Date(b.latestAttempt.createdAt).getTime() : (b.registeredAt ? new Date(b.registeredAt).getTime() : 0);
+      return timeB - timeA;
+    });
+
+    const totalAttemptingStudents = studentList.filter((s: any) => s.totalAttempts > 0).length;
+    const totalAttemptsLogged = Array.isArray(rawAttempts) ? rawAttempts.length : 0;
+    const allScores = (Array.isArray(rawAttempts) ? rawAttempts : []).map((a: any) => Number(a.score || 0));
+    const highestScoreLogged = allScores.length > 0 ? Math.max(...allScores) : 0;
+    const avgScoreLogged = allScores.length > 0 ? Math.round(allScores.reduce((sum: number, s: number) => sum + s, 0) / allScores.length) : 0;
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        stats: {
+          totalRegistered: regMap.size,
+          totalAttemptingStudents,
+          totalAttemptsLogged,
+          highestScoreLogged,
+          avgScoreLogged,
+        },
+        students: filteredStudents,
+      }),
+      { status: 200, headers: jsonHeaders }
+    );
+  } catch (error: any) {
+    return new Response(
+      JSON.stringify({ error: error.message || "Internal server error" }),
+      { status: 500, headers: jsonHeaders }
+    );
+  }
+}
+
 async function getWorkerActivePaper(env: Env): Promise<any> {
   const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
   const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
@@ -1964,7 +2235,7 @@ async function handleExamSolutions(request: Request, env: Env): Promise<Response
       sectionBreakdown.push({ sectionName: name, ...s });
     }
 
-    const result = {
+    const result: any = {
       testId: encodeURIComponent(resolvedFile),
       testTitle: isMft ? `JEE Main - ${cleanTitle}` : cleanTitle,
       totalQuestions: questions.length,
@@ -1981,24 +2252,31 @@ async function handleExamSolutions(request: Request, env: Env): Promise<Response
       detailedResults,
     };
 
-    // If candidate email is provided, enrich with past attempt data from Supabase
+    // If attemptId or candidate email is provided, enrich with past attempt data from Supabase
+    const attemptId = body.attemptId || null;
     const email = (body.email || body.candidateEmail || "").toLowerCase().trim();
-    if (email) {
+    if (attemptId || email) {
       try {
         const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
         const supabaseKey = env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
-        const pastRes = await fetch(
-          `${supabaseUrl}/rest/v1/exam_attempts?email=eq.${encodeURIComponent(email)}&test_id=eq.${encodeURIComponent(resolvedFile)}&order=created_at.desc&limit=1`,
-          { headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` } }
-        );
+        
+        let endpoint = attemptId
+          ? `${supabaseUrl}/rest/v1/exam_attempts?id=eq.${encodeURIComponent(attemptId)}&limit=1`
+          : `${supabaseUrl}/rest/v1/exam_attempts?email=eq.${encodeURIComponent(email)}&test_id=eq.${encodeURIComponent(resolvedFile)}&order=created_at.desc&limit=1`;
+
+        const pastRes = await fetch(endpoint, {
+          headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` }
+        });
         if (pastRes.ok) {
           const pastList = await pastRes.json();
           if (Array.isArray(pastList) && pastList.length > 0) {
             const past = pastList[0];
+            result.id = past.id;
             if (past.detailed_results && Array.isArray(past.detailed_results)) {
               result.detailedResults = past.detailed_results;
             }
             result.totalScore = past.score ?? result.totalScore;
+            result.maxScore = past.max_score ?? result.maxScore;
             result.accuracy = past.accuracy ?? result.accuracy;
             result.percentage = past.percentage ?? result.percentage;
             result.timeSpentSeconds = past.time_spent_seconds ?? result.timeSpentSeconds;
@@ -2006,6 +2284,8 @@ async function handleExamSolutions(request: Request, env: Env): Promise<Response
             result.correctCount = past.correct_count ?? result.correctCount;
             result.incorrectCount = past.incorrect_count ?? result.incorrectCount;
             if (past.section_breakdown) result.sectionBreakdown = past.section_breakdown;
+            if (past.question_times) result.questionTimes = past.question_times;
+            if (past.created_at) result.createdAt = past.created_at;
           }
         }
       } catch (err) {

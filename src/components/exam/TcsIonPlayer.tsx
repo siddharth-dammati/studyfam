@@ -432,6 +432,7 @@ export function TcsIonPlayer({
         const parsed = JSON.parse(saved);
         if (parsed.responses) setResponses(parsed.responses);
         if (parsed.statuses) setStatuses(parsed.statuses);
+        if (parsed.questionTimes) setQuestionTimes(parsed.questionTimes);
         if (typeof parsed.secondsLeft === "number" && parsed.secondsLeft > 0) {
           setSecondsLeft(parsed.secondsLeft);
         }
@@ -456,13 +457,14 @@ export function TcsIonPlayer({
         JSON.stringify({
           responses,
           statuses,
+          questionTimes,
           secondsLeft,
           secIdx: currentSecIdx,
           qIdx: currentQIdx,
         })
       );
     } catch {}
-  }, [responses, statuses, secondsLeft, currentSecIdx, currentQIdx, storageKey]);
+  }, [responses, statuses, questionTimes, secondsLeft, currentSecIdx, currentQIdx, storageKey]);
 
   // 3. Countdown timer
   useEffect(() => {

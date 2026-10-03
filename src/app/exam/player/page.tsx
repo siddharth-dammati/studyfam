@@ -103,13 +103,20 @@ function ExamPlayerContent() {
 
           // If review mode requested, show results directly (from cache or API)
           const isReview = searchParams.get("review") === "1" || searchParams.get("view") === "result";
+          const attemptIdParam = searchParams.get("attemptId");
           let reviewLoaded = false;
           if (isReview) {
             try {
-              const cachedResult =
-                localStorage.getItem(`sf_exam_result_${testData.id}`) ||
-                localStorage.getItem(`sf_exam_result_${id}`) ||
-                localStorage.getItem(`sf_exam_result_${decodeURIComponent(id)}`);
+              let cachedResult: string | null = null;
+              if (attemptIdParam) {
+                cachedResult = localStorage.getItem(`sf_exam_result_attempt_${attemptIdParam}`);
+              }
+              if (!cachedResult) {
+                cachedResult =
+                  localStorage.getItem(`sf_exam_result_${testData.id}`) ||
+                  localStorage.getItem(`sf_exam_result_${id}`) ||
+                  localStorage.getItem(`sf_exam_result_${decodeURIComponent(id)}`);
+              }
               if (cachedResult) {
                 const parsedResult = JSON.parse(cachedResult);
                 if (parsedResult) {
@@ -120,13 +127,17 @@ function ExamPlayerContent() {
               }
             } catch {}
 
-            // If not found in local cache, load solutions and chapter diagnostics from server
+            // If not found in local cache, load solutions and past attempt diagnostics from server
             if (!reviewLoaded) {
               try {
                 const solRes = await fetch("/api/exam/solutions", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ id, email: profile?.email || null }),
+                  body: JSON.stringify({
+                    id,
+                    attemptId: attemptIdParam || null,
+                    email: profile?.email || null,
+                  }),
                 });
                 const solJson = await solRes.json();
                 if (solJson.success && solJson.result) {
@@ -135,6 +146,9 @@ function ExamPlayerContent() {
                   reviewLoaded = true;
                   try {
                     localStorage.setItem(`sf_exam_result_${testData.id}`, JSON.stringify(solJson.result));
+                    if (attemptIdParam) {
+                      localStorage.setItem(`sf_exam_result_attempt_${attemptIdParam}`, JSON.stringify(solJson.result));
+                    }
                   } catch {}
                 }
               } catch (solErr) {
@@ -206,15 +220,19 @@ function ExamPlayerContent() {
 
         // Persist attempt & evaluation result for dashboard performance analytics & review
         try {
+          const attemptId = json.result.id || `${test.id}_${Date.now()}`;
+          json.result.id = attemptId;
           localStorage.setItem(`sf_exam_result_${test.id}`, JSON.stringify(json.result));
+          localStorage.setItem(`sf_exam_result_attempt_${attemptId}`, JSON.stringify(json.result));
           if (questionTimes) {
             localStorage.setItem(`sf_exam_qtimes_${test.id}`, JSON.stringify(questionTimes));
+            localStorage.setItem(`sf_exam_qtimes_attempt_${attemptId}`, JSON.stringify(questionTimes));
           }
 
           const existingRaw = localStorage.getItem("sf_recent_attempts");
           const existingList = existingRaw ? JSON.parse(existingRaw) : [];
           const newAttemptRecord = {
-            id: `${test.id}_${Date.now()}`,
+            id: attemptId,
             testId: test.id,
             testTitle: test.title,
             score: json.result.totalScore ?? json.result.score ?? 0,
@@ -226,13 +244,14 @@ function ExamPlayerContent() {
             correctCount: json.result.correctCount || 0,
             incorrectCount: json.result.incorrectCount || 0,
             timeSpentSeconds: timeSpentSeconds,
+            questionTimes: questionTimes || {},
             submissionReason: submissionReason || null,
             createdAt: new Date().toISOString(),
           };
           const updated = [
             newAttemptRecord,
             ...existingList.filter((a: any) => a.id !== newAttemptRecord.id),
-          ].slice(0, 30);
+          ].slice(0, 50);
           localStorage.setItem("sf_recent_attempts", JSON.stringify(updated));
 
           // Guaranteed direct Supabase sync for authenticated candidate

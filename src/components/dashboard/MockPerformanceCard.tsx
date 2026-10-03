@@ -23,6 +23,8 @@ import {
   Play,
   FileQuestion,
   Filter,
+  X,
+  Eye,
 } from "lucide-react";
 
 export interface MockAttemptRecord {
@@ -38,6 +40,8 @@ export interface MockAttemptRecord {
   correctCount: number;
   incorrectCount: number;
   timeSpentSeconds: number;
+  sectionBreakdown?: any[];
+  questionTimes?: Record<string, number>;
   createdAt: string;
 }
 
@@ -49,6 +53,8 @@ interface MockPerformanceCardProps {
 export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardProps) {
   const [showAllAttempts, setShowAllAttempts] = useState(false);
   const [showAllMfts, setShowAllMfts] = useState(false);
+  const [selectedTestFilter, setSelectedTestFilter] = useState<string>("ALL");
+  const [inspectAttempt, setInspectAttempt] = useState<MockAttemptRecord | null>(null);
 
   if (loading) {
     return (
@@ -95,8 +101,30 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
 
   const highestBracket = getPercentileBracket(highestScore);
 
-  const displayedAttempts = showAllAttempts ? attempts : attempts.slice(0, 5);
+  // Filter attempts based on selected filter tab
+  const filteredAttempts = attempts.filter((att) => {
+    if (selectedTestFilter === "ALL") return true;
+    if (selectedTestFilter === "MFT") {
+      return att.testId.toLowerCase().includes("mft");
+    }
+    return att.testId.toLowerCase() === selectedTestFilter.toLowerCase();
+  });
+
+  const displayedAttempts = showAllAttempts ? filteredAttempts : filteredAttempts.slice(0, 5);
   const displayedMfts = showAllMfts ? FREE_MOCKS_DATA : FREE_MOCKS_DATA.slice(0, 4);
+
+  // Extract unique tests taken by student for dropdown filtering
+  const uniqueAttemptedTestIds = Array.from(new Set(attempts.map((a) => a.testId)));
+
+  const formatDuration = (totalSecs: number) => {
+    if (!totalSecs || totalSecs <= 0) return "0m";
+    const hrs = Math.floor(totalSecs / 3600);
+    const mins = Math.floor((totalSecs % 3600) / 60);
+    const secs = totalSecs % 60;
+    if (hrs > 0) return `${hrs}h ${mins}m ${secs > 0 ? `${secs}s` : ""}`.trim();
+    if (mins > 0) return `${mins}m ${secs}s`;
+    return `${secs}s`;
+  };
 
   const formatTestTitle = (title: string, testId: string) => {
     const match = testId.match(/MFT-0?(\d+)/i);
@@ -301,32 +329,79 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
 
       {/* 3. Recent Attempt History & Solution Logs */}
       <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
           <div>
             <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
               <BarChart3 size={18} className="text-indigo-600" />
               <span>Completed Tests &amp; Instant Solutions</span>
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Review your answers, see step-by-step solutions, and identify lagging chapters.
+              Review your answers for every attempt, see step-by-step solutions, and inspect question pacing.
             </p>
           </div>
 
           {attempts.length > 5 && (
             <button
               onClick={() => setShowAllAttempts(!showAllAttempts)}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer"
+              className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer self-start sm:self-center"
             >
-              {showAllAttempts ? "Show Less" : `View All (${attempts.length})`}
+              {showAllAttempts ? "Show Less" : `View All (${filteredAttempts.length})`}
             </button>
           )}
         </div>
 
-        {totalAttempts > 0 ? (
+        {/* Filter Pills / Dropdown */}
+        {attempts.length > 0 && (
+          <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1 text-xs">
+            <span className="text-slate-400 font-mono text-[11px] shrink-0">Filter:</span>
+            <button
+              onClick={() => setSelectedTestFilter("ALL")}
+              className={`px-3 py-1 rounded-full font-semibold transition-all cursor-pointer shrink-0 ${
+                selectedTestFilter === "ALL"
+                  ? "bg-indigo-600 text-white shadow-xs"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+              }`}
+            >
+              All Tests ({attempts.length})
+            </button>
+
+            <button
+              onClick={() => setSelectedTestFilter("MFT")}
+              className={`px-3 py-1 rounded-full font-semibold transition-all cursor-pointer shrink-0 ${
+                selectedTestFilter === "MFT"
+                  ? "bg-indigo-600 text-white shadow-xs"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+              }`}
+            >
+              MFT Series ({attempts.filter((a) => a.testId.toLowerCase().includes("mft")).length})
+            </button>
+
+            {uniqueAttemptedTestIds.length > 2 && (
+              <select
+                value={selectedTestFilter}
+                onChange={(e) => setSelectedTestFilter(e.target.value)}
+                className="bg-slate-100 border border-slate-200 text-slate-700 rounded-full px-3 py-1 text-xs outline-none cursor-pointer"
+              >
+                <option value="ALL">Specific Test...</option>
+                {uniqueAttemptedTestIds.map((tId) => (
+                  <option key={tId} value={tId}>
+                    {formatTestTitle(tId, tId)}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+        )}
+
+        {filteredAttempts.length > 0 ? (
           <div className="divide-y divide-slate-100 border border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/40">
             {displayedAttempts.map((attempt) => {
               const title = formatTestTitle(attempt.testTitle, attempt.testId);
               const scorePct = Math.round((attempt.score / (attempt.maxScore || 300)) * 100);
+              const avgPaceSecs =
+                attempt.attemptedCount > 0
+                  ? Math.round(attempt.timeSpentSeconds / attempt.attemptedCount)
+                  : 0;
 
               let badgeColor = "bg-rose-50 text-rose-700 border-rose-200";
               if (attempt.score >= 180) {
@@ -376,21 +451,42 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
                         <>
                           <span className="text-slate-300">·</span>
                           <span className="text-slate-600 font-mono text-[11px]">
-                            {Math.round(attempt.timeSpentSeconds / 60)} mins
+                            {formatDuration(attempt.timeSpentSeconds)}
+                          </span>
+                        </>
+                      )}
+                      {avgPaceSecs > 0 && (
+                        <>
+                          <span className="text-slate-300">·</span>
+                          <span className="text-indigo-600 font-mono text-[11px]">
+                            ~{formatDuration(avgPaceSecs)}/Q
                           </span>
                         </>
                       )}
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                    {/* Quick Review Modal Button */}
+                    <button
+                      onClick={() => setInspectAttempt(attempt)}
+                      className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                      title="Quick Review Summary"
+                    >
+                      <Eye size={13} className="text-slate-500" />
+                      <span>Quick Review</span>
+                    </button>
+
+                    {/* Direct Player Solutions Review */}
                     <Link
-                      href={`/exam/player?id=${encodeURIComponent(attempt.testId)}&review=1`}
+                      href={`/exam/player?id=${encodeURIComponent(attempt.testId)}&review=1&attemptId=${encodeURIComponent(attempt.id)}`}
                       className="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
                     >
                       <span>Analyze &amp; Solutions</span>
                       <ExternalLink size={13} />
                     </Link>
+
+                    {/* Retake */}
                     <Link
                       href={`/exam/player?id=${encodeURIComponent(attempt.testId)}`}
                       className="px-3 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
@@ -410,21 +506,187 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
               <FileQuestion size={24} />
             </div>
             <div className="max-w-md mx-auto">
-              <h4 className="font-bold text-sm text-slate-900">No mock attempts logged yet</h4>
+              <h4 className="font-bold text-sm text-slate-900">
+                {attempts.length > 0 ? "No attempts match the selected filter" : "No mock attempts logged yet"}
+              </h4>
               <p className="text-xs text-slate-500 mt-1">
-                Start with Major Full Test 1 above. Upon completion, full question-by-question solutions and chapter lag diagnostics will appear here automatically.
+                {attempts.length > 0
+                  ? "Switch the filter tab back to 'All Tests' to see all your past mock evaluations."
+                  : "Start with Major Full Test 1 above. Upon completion, full question-by-question solutions and chapter lag diagnostics will appear here automatically."}
               </p>
             </div>
-            <Link
-              href="/exam/player?id=MFT-1.pdf"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs"
-            >
-              <span>Take Free Mock (MFT-1)</span>
-              <ArrowRight size={13} />
-            </Link>
+            {attempts.length > 0 ? (
+              <button
+                onClick={() => setSelectedTestFilter("ALL")}
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
+              >
+                <span>View All Tests</span>
+              </button>
+            ) : (
+              <Link
+                href="/exam/player?id=MFT-1.pdf"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs"
+              >
+                <span>Take Free Mock (MFT-1)</span>
+                <ArrowRight size={13} />
+              </Link>
+            )}
           </div>
         )}
       </div>
+
+      {/* 4. Quick Review Modal */}
+      {inspectAttempt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/70 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-slate-900">
+            {/* Modal Header */}
+            <div className="p-5 sm:p-6 border-b border-slate-100 flex items-start justify-between gap-4 bg-slate-50/60">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded-md">
+                    Attempt Review
+                  </span>
+                  <span className="text-xs text-slate-400 font-mono">
+                    {formatDate(inspectAttempt.createdAt)}
+                  </span>
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                  {formatTestTitle(inspectAttempt.testTitle, inspectAttempt.testId)}
+                </h3>
+              </div>
+
+              <button
+                onClick={() => setInspectAttempt(null)}
+                className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
+              {/* Score & KPIs */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-100">
+                  <div className="text-[11px] font-mono text-indigo-700 uppercase tracking-wider mb-0.5">
+                    Score
+                  </div>
+                  <div className="text-2xl font-mono font-extrabold text-indigo-950">
+                    {inspectAttempt.score}
+                    <span className="text-xs font-normal text-indigo-500"> / {inspectAttempt.maxScore || 300}</span>
+                  </div>
+                  <div className="text-[10px] text-indigo-700 mt-1 font-semibold">
+                    {Math.round((inspectAttempt.score / (inspectAttempt.maxScore || 300)) * 100)}% marks
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-100">
+                  <div className="text-[11px] font-mono text-emerald-700 uppercase tracking-wider mb-0.5">
+                    Accuracy
+                  </div>
+                  <div className="text-2xl font-mono font-extrabold text-emerald-950">
+                    {inspectAttempt.accuracy}%
+                  </div>
+                  <div className="text-[10px] text-emerald-700 mt-1 font-semibold">
+                    {inspectAttempt.correctCount} Correct / {inspectAttempt.attemptedCount} Solved
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                  <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider mb-0.5">
+                    Time Spent
+                  </div>
+                  <div className="text-2xl font-mono font-extrabold text-slate-900">
+                    {formatDuration(inspectAttempt.timeSpentSeconds)}
+                  </div>
+                  <div className="text-[10px] text-slate-500 mt-1 font-mono">
+                    Total test duration
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                  <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wider mb-0.5">
+                    Avg Pace / Q
+                  </div>
+                  <div className="text-2xl font-mono font-extrabold text-slate-900">
+                    {inspectAttempt.attemptedCount > 0
+                      ? formatDuration(Math.round(inspectAttempt.timeSpentSeconds / inspectAttempt.attemptedCount))
+                      : "—"}
+                  </div>
+                  <div className="text-[10px] text-slate-500 mt-1 font-mono">
+                    Per question pace
+                  </div>
+                </div>
+              </div>
+
+              {/* Subject Breakdown if available */}
+              {Array.isArray(inspectAttempt.sectionBreakdown) && inspectAttempt.sectionBreakdown.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
+                    Subject Performance
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    {inspectAttempt.sectionBreakdown.map((sec: any, idx: number) => (
+                      <div
+                        key={idx}
+                        className="p-3 rounded-2xl bg-slate-50/80 border border-slate-200/90"
+                      >
+                        <div className="font-bold text-xs text-slate-900 capitalize mb-1">
+                          {sec.name || sec.subject || `Subject ${idx + 1}`}
+                        </div>
+                        <div className="flex justify-between items-center text-xs font-mono">
+                          <span className="text-slate-500">Score:</span>
+                          <span className="font-bold text-indigo-600">
+                            {sec.score ?? 0} Marks
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-[11px] font-mono text-slate-400 mt-0.5">
+                          <span>Accuracy:</span>
+                          <span className="text-slate-700">
+                            {sec.correct ?? 0}C · {sec.incorrect ?? 0}W
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Pacing Diagnostic Summary */}
+              {inspectAttempt.questionTimes && Object.keys(inspectAttempt.questionTimes).length > 0 && (
+                <div className="p-3.5 rounded-2xl bg-indigo-50/40 border border-indigo-100 space-y-1">
+                  <div className="text-xs font-bold text-indigo-900 flex items-center gap-1.5">
+                    <Clock size={14} className="text-indigo-600" />
+                    <span>Per-Question Pacing Captured</span>
+                  </div>
+                  <p className="text-xs text-indigo-700 leading-relaxed">
+                    Time logs recorded for {Object.keys(inspectAttempt.questionTimes).length} questions.
+                    Click &apos;Open Full Solutions&apos; below to inspect question-by-question time breakdowns and time sink diagnostics.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 sm:p-5 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between gap-3">
+              <button
+                onClick={() => setInspectAttempt(null)}
+                className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+
+              <Link
+                href={`/exam/player?id=${encodeURIComponent(inspectAttempt.testId)}&review=1&attemptId=${encodeURIComponent(inspectAttempt.id)}`}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>Open Full Interactive Solutions</span>
+                <ExternalLink size={13} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

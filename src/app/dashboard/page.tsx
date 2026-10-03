@@ -145,6 +145,8 @@ export default function DashboardPage() {
             correctCount: Number(d.correct_count || 0),
             incorrectCount: Number(d.incorrect_count || 0),
             timeSpentSeconds: Number(d.time_spent_seconds || 0),
+            sectionBreakdown: d.section_breakdown || [],
+            questionTimes: d.question_times || {},
             createdAt: d.created_at || new Date().toISOString(),
           }));
         }

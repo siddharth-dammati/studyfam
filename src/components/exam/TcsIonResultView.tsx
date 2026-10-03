@@ -73,6 +73,17 @@ export function TcsIonResultView({
     return `${mins}m ${remainingSecs}s`;
   };
 
+  const formatTimeSpent = (secs: number) => {
+    if (!secs || secs <= 0) return "0s";
+    if (secs < 60) return `${secs}s`;
+    const mins = Math.floor(secs / 60);
+    const remainder = secs % 60;
+    if (mins < 60) return remainder > 0 ? `${mins}m ${remainder}s` : `${mins}m`;
+    const hours = Math.floor(mins / 60);
+    const remMins = mins % 60;
+    return `${hours}h ${remMins}m`;
+  };
+
   // 1. JEE Main Percentile & All-India Rank (AIR) Prediction Engine (2026 Reference Feed)
   const jeePrediction = useMemo(() => {
     const rawScore = result.totalScore;
@@ -90,6 +101,77 @@ export function TcsIonResultView({
   // 4. Speed & Time Efficiency Analytics
   const avgTimePerAttempt =
     result.attemptedCount > 0 ? Math.round(result.timeSpentSeconds / result.attemptedCount) : 0;
+
+  const timeAnalytics = useMemo(() => {
+    let totalTrackedSecs = 0;
+    let correctSecs = 0;
+    let incorrectSecs = 0;
+    let unattemptedSecs = 0;
+
+    const subjectTimes: Record<string, { totalSecs: number; attempted: number; correct: number; incorrect: number }> = {
+      Physics: { totalSecs: 0, attempted: 0, correct: 0, incorrect: 0 },
+      Chemistry: { totalSecs: 0, attempted: 0, correct: 0, incorrect: 0 },
+      Mathematics: { totalSecs: 0, attempted: 0, correct: 0, incorrect: 0 },
+    };
+
+    const timeSinks: Array<{
+      questionNumber: number;
+      subject: string;
+      timeSpentSeconds: number;
+      isCorrect: boolean;
+      userResponse: string | null;
+      chapter: string;
+    }> = [];
+
+    const detailed = result.detailedResults || [];
+    for (const q of detailed) {
+      const t = Number(q.timeSpentSeconds) || 0;
+      totalTrackedSecs += t;
+      const subj = q.subject || "General";
+      if (!subjectTimes[subj]) {
+        subjectTimes[subj] = { totalSecs: 0, attempted: 0, correct: 0, incorrect: 0 };
+      }
+      subjectTimes[subj].totalSecs += t;
+
+      if (q.isCorrect) {
+        correctSecs += t;
+        subjectTimes[subj].correct++;
+        subjectTimes[subj].attempted++;
+      } else if (q.userResponse) {
+        incorrectSecs += t;
+        subjectTimes[subj].incorrect++;
+        subjectTimes[subj].attempted++;
+        if (t >= 150) {
+          timeSinks.push({
+            questionNumber: q.questionNumber,
+            subject: q.subject,
+            timeSpentSeconds: t,
+            isCorrect: false,
+            userResponse: q.userResponse,
+            chapter: q.chapter || "General",
+          });
+        }
+      } else {
+        unattemptedSecs += t;
+      }
+    }
+
+    const avgOnCorrect = result.correctCount > 0 ? Math.round(correctSecs / result.correctCount) : 0;
+    const avgOnIncorrect = result.incorrectCount > 0 ? Math.round(incorrectSecs / result.incorrectCount) : 0;
+    const avgOverall = result.attemptedCount > 0 ? Math.round((correctSecs + incorrectSecs) / result.attemptedCount) : 0;
+
+    return {
+      totalTrackedSecs: totalTrackedSecs || result.timeSpentSeconds,
+      correctSecs,
+      incorrectSecs,
+      unattemptedSecs,
+      avgOnCorrect,
+      avgOnIncorrect,
+      avgOverall,
+      subjectTimes,
+      timeSinks: timeSinks.sort((a, b) => b.timeSpentSeconds - a.timeSpentSeconds),
+    };
+  }, [result]);
 
   // Filter questions based on subject, status, chapter, and search query
   const filteredQuestions = useMemo(() => {
@@ -314,7 +396,7 @@ export function TcsIonResultView({
           </div>
 
           {/* Core Counters Row */}
-          <div className="mt-6 pt-5 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="mt-6 pt-5 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-5 gap-3">
             <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-lg text-center">
               <span className="text-xs font-bold text-emerald-700 block">Correct (+4)</span>
               <span className="text-xl font-extrabold text-emerald-800">{result.correctCount} Qs</span>
@@ -333,8 +415,18 @@ export function TcsIonResultView({
               <span className="text-[10px] text-slate-500 block">{result.totalQuestions - result.attemptedCount} Unattempted</span>
             </div>
 
-            <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-lg text-center">
-              <span className="text-xs font-bold text-amber-700 block">Avg Time / Q</span>
+            <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-lg text-center">
+              <span className="text-xs font-bold text-blue-700 block">Total Exam Time</span>
+              <span className="text-xl font-extrabold text-blue-800 font-mono">
+                {formatTimeSpent(result.timeSpentSeconds)}
+              </span>
+              <span className="text-[10px] text-blue-600 block">
+                {Math.round((result.timeSpentSeconds / 10800) * 100)}% of 3.0h
+              </span>
+            </div>
+
+            <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-lg text-center col-span-2 sm:col-span-1">
+              <span className="text-xs font-bold text-amber-700 block">Avg Pace / Q</span>
               <span className="text-xl font-extrabold text-amber-800">{avgTimePerAttempt}s</span>
               <span className="text-[10px] text-amber-600 block">Ideal: ~144s (2.4m)</span>
             </div>
@@ -520,7 +612,141 @@ export function TcsIonResultView({
               </div>
             </div>
 
-            {/* D. ACTIONABLE JEE ASPIRANT 3-STEP REVISION CHECKLIST */}
+            {/* D. TIME & SPEED EFFICIENCY DIAGNOSTIC */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-4">
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                    <Clock className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-extrabold text-gray-900">
+                      Time per Question &amp; Pacing Diagnostics
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Granular breakdown of time invested vs. marks gained across all subjects and questions.
+                    </p>
+                  </div>
+                </div>
+                <div className="text-left sm:text-right">
+                  <span className="text-xs text-gray-400 block font-mono">Total Time Spent</span>
+                  <span className="text-sm font-black text-gray-800 font-mono">
+                    {formatTimeSpent(result.timeSpentSeconds)}
+                  </span>
+                </div>
+              </div>
+
+              {/* 4 Pacing KPI Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                  <span className="text-[11px] font-bold uppercase text-slate-500 block">Avg Pace / Attempted Q</span>
+                  <span className="text-xl font-black text-slate-900 mt-1 block">
+                    {avgTimePerAttempt}s
+                  </span>
+                  <span className="text-[10px] text-slate-500 mt-0.5 block">
+                    Ideal: 120s – 150s / Q
+                  </span>
+                </div>
+
+                <div className="p-3.5 bg-emerald-50/70 border border-emerald-200 rounded-xl">
+                  <span className="text-[11px] font-bold uppercase text-emerald-700 block">Avg on Correct Qs</span>
+                  <span className="text-xl font-black text-emerald-900 mt-1 block">
+                    {timeAnalytics.avgOnCorrect}s
+                  </span>
+                  <span className="text-[10px] text-emerald-600 mt-0.5 block">
+                    {timeAnalytics.correctSecs > 0 ? formatTimeSpent(timeAnalytics.correctSecs) : "0s"} rewarded
+                  </span>
+                </div>
+
+                <div className="p-3.5 bg-rose-50/70 border border-rose-200 rounded-xl">
+                  <span className="text-[11px] font-bold uppercase text-rose-700 block">Avg on Incorrect Qs</span>
+                  <span className="text-xl font-black text-rose-900 mt-1 block">
+                    {timeAnalytics.avgOnIncorrect}s
+                  </span>
+                  <span className="text-[10px] text-rose-600 mt-0.5 block font-semibold">
+                    {timeAnalytics.incorrectSecs > 0 ? formatTimeSpent(timeAnalytics.incorrectSecs) : "0s"} wasted time
+                  </span>
+                </div>
+
+                <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-xl">
+                  <span className="text-[11px] font-bold uppercase text-blue-700 block">Unattempted Time</span>
+                  <span className="text-xl font-black text-blue-900 mt-1 block">
+                    {timeAnalytics.unattemptedSecs > 0 ? formatTimeSpent(timeAnalytics.unattemptedSecs) : "0s"}
+                  </span>
+                  <span className="text-[10px] text-blue-600 mt-0.5 block">
+                    Time browsing skipped Qs
+                  </span>
+                </div>
+              </div>
+
+              {/* Subject-Wise Time Allocation */}
+              <div className="space-y-2 pt-2">
+                <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  Subject-Wise Time Allocation &amp; Pacing:
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {["Physics", "Chemistry", "Mathematics"].map((subj) => {
+                    const st = timeAnalytics.subjectTimes[subj] || { totalSecs: 0, attempted: 0, correct: 0, incorrect: 0 };
+                    const avgSec = st.attempted > 0 ? Math.round(st.totalSecs / st.attempted) : 0;
+                    const idealMins = subj === "Chemistry" ? "35–45m" : subj === "Physics" ? "50–60m" : "70–80m";
+
+                    return (
+                      <div key={subj} className="p-3.5 rounded-xl border border-gray-200 bg-gray-50/60 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="font-extrabold text-sm text-gray-900">{subj}</span>
+                          <span className="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
+                            {formatTimeSpent(st.totalSecs)}
+                          </span>
+                        </div>
+                        <div className="text-xs text-gray-600 space-y-1">
+                          <div className="flex justify-between">
+                            <span>Attempted Pace:</span>
+                            <span className="font-bold text-gray-800">{avgSec > 0 ? `${avgSec}s / Q` : "—"}</span>
+                          </div>
+                          <div className="flex justify-between text-[11px] text-gray-500">
+                            <span>Recommended:</span>
+                            <span>{idealMins}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Time Sinks Alert (Questions taking > 2.5m resulting in negative marks) */}
+              {timeAnalytics.timeSinks.length > 0 && (
+                <div className="p-4 bg-amber-50/80 border border-amber-300 rounded-xl space-y-2.5">
+                  <div className="flex items-center space-x-2 text-amber-900 font-extrabold text-xs">
+                    <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                    <span>Time Sinks Identified ({timeAnalytics.timeSinks.length} Questions with &gt; 2.5 mins spent resulting in negative marks):</span>
+                  </div>
+                  <p className="text-xs text-amber-800 leading-relaxed">
+                    Spending over 2.5 minutes on a question and getting it wrong is a double penalty: you lose 1 mark AND sacrifice time that could have answered easier questions in other sections.
+                  </p>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {timeAnalytics.timeSinks.map((ts, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          const targetIdx = result.detailedResults.findIndex((q) => q.questionNumber === ts.questionNumber);
+                          if (targetIdx >= 0) {
+                            setSelectedQIndex(targetIdx);
+                            setActiveTab("interactive");
+                          }
+                        }}
+                        className="px-2.5 py-1 bg-white hover:bg-amber-100 border border-amber-300 rounded-lg text-xs font-bold text-amber-900 transition-colors cursor-pointer flex items-center space-x-1.5 shadow-2xs"
+                      >
+                        <span>Q{ts.questionNumber} ({ts.subject.slice(0, 4)}.)</span>
+                        <span className="text-[10px] text-rose-600 font-mono">⏱️ {formatTimeSpent(ts.timeSpentSeconds)} (-1)</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* E. ACTIONABLE JEE ASPIRANT 3-STEP REVISION CHECKLIST */}
             <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl shadow-md p-6 space-y-4">
               <div className="flex items-center space-x-2.5">
                 <Sparkles className="w-5 h-5 text-amber-400" />
@@ -706,8 +932,8 @@ export function TcsIonResultView({
                         )}
                       </div>
 
-                      {/* Status Badge */}
-                      <div>
+                      {/* Status & Time Badges */}
+                      <div className="flex items-center space-x-2 flex-wrap gap-y-1">
                         {activeQuestion?.isCorrect ? (
                           <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
                             <CheckCircle2 className="w-3.5 h-3.5" />
@@ -724,6 +950,27 @@ export function TcsIonResultView({
                             <span>Skipped (0 Marks)</span>
                           </span>
                         )}
+
+                        {/* Per-Question Time Spent Badge */}
+                        <span
+                          className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-xs font-bold border ${
+                            (activeQuestion?.timeSpentSeconds || 0) > 0 && (activeQuestion?.timeSpentSeconds || 0) <= 75
+                              ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                              : (activeQuestion?.timeSpentSeconds || 0) <= 150
+                              ? "bg-blue-50 text-blue-800 border-blue-300"
+                              : (activeQuestion?.timeSpentSeconds || 0) <= 240
+                              ? "bg-amber-50 text-amber-800 border-amber-300"
+                              : "bg-rose-50 text-rose-800 border-rose-300"
+                          }`}
+                          title="Time spent by candidate on this question"
+                        >
+                          <Clock className="w-3.5 h-3.5" />
+                          <span>
+                            {(activeQuestion?.timeSpentSeconds || 0) > 0
+                              ? `Time: ${formatTimeSpent(activeQuestion?.timeSpentSeconds || 0)}`
+                              : "Time: < 10s"}
+                          </span>
+                        </span>
                       </div>
                     </div>
 
@@ -1030,7 +1277,7 @@ export function TcsIonResultView({
                         )}
                       </div>
 
-                      <div>
+                      <div className="flex items-center space-x-2 flex-wrap gap-y-1">
                         {q.isCorrect ? (
                           <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
                             Correct (+4)
@@ -1044,6 +1291,11 @@ export function TcsIonResultView({
                             Unattempted (0)
                           </span>
                         )}
+
+                        <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200 inline-flex items-center space-x-1">
+                          <Clock className="w-3 h-3 text-slate-500" />
+                          <span>{(q.timeSpentSeconds || 0) > 0 ? formatTimeSpent(q.timeSpentSeconds || 0) : "< 10s"}</span>
+                        </span>
                       </div>
                     </div>
 
