@@ -244,11 +244,11 @@ export function TcsIonResultView({
       <header className="bg-white border-b border-gray-300 shadow-xs px-4 sm:px-8 py-3.5 sticky top-0 z-30 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center space-x-3">
           <Link
-            href="/exam"
+            href="/dashboard"
             className="flex items-center space-x-1.5 text-xs sm:text-sm font-semibold text-blue-700 hover:text-blue-900 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Test Series</span>
+            <span>Go back to dashboard</span>
           </Link>
           <span className="text-gray-300">|</span>
           <div>

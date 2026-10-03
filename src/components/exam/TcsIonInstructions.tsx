@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { User, Home, AlertCircle, ArrowUp, ArrowDown, ShieldAlert, Lock } from "lucide-react";
+import { User, Home, AlertCircle, ArrowUp, ArrowDown, ShieldAlert, Lock, ArrowLeft } from "lucide-react";
 
 interface TcsIonInstructionsProps {
   testTitle: string;
@@ -51,11 +51,11 @@ export function TcsIonInstructions({
       <header className="bg-white border-b border-gray-300 shadow-xs px-4 sm:px-8 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Link
-            href="/exam"
-            className="flex items-center space-x-1 text-sm font-semibold text-blue-700 hover:text-blue-900 transition-colors"
+            href="/dashboard"
+            className="flex items-center space-x-1.5 text-xs sm:text-sm font-semibold text-blue-700 hover:text-blue-900 transition-colors"
           >
-            <Home className="w-4 h-4" />
-            <span>Home (/)</span>
+            <ArrowLeft className="w-4 h-4" />
+            <span>Go back to dashboard</span>
           </Link>
           <span className="text-gray-300">|</span>
           <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-700">

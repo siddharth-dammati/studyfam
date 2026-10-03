@@ -293,10 +293,10 @@ function ExamPlayerContent() {
           <h2 className="text-lg font-bold text-gray-800">Exam Not Available</h2>
           <p className="text-sm text-gray-600">{error || "Unable to find the requested test."}</p>
           <Link
-            href="/exam"
-            className="inline-block px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+            href="/dashboard"
+            className="inline-block px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
           >
-            Back to Test Series
+            Go back to dashboard
           </Link>
         </div>
       </div>
