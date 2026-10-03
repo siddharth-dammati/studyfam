@@ -1338,6 +1338,91 @@ async function handleAdminExamSearch(request: Request, env: Env): Promise<Respon
   }
 }
 
+function checkQuestionCorrect(userAns: string, q: any): boolean {
+  if (!userAns) return false;
+  const rawUser = userAns.trim();
+  const normUser = rawUser.toLowerCase();
+  const rawCorrect = (q.correct_answer || q.correctAnswer || "").trim();
+  const normCorrect = rawCorrect.toLowerCase();
+
+  // 1. Direct string match
+  if (normCorrect && normUser === normCorrect) return true;
+
+  // 2. Letter to Number bidirectional mapping (A <-> 1, B <-> 2, C <-> 3, D <-> 4)
+  const mapLetterToNum: Record<string, string> = { a: "1", b: "2", c: "3", d: "4" };
+  const mapNumToLetter: Record<string, string> = { "1": "a", "2": "b", "3": "c", "4": "d" };
+  if (mapLetterToNum[normUser] === normCorrect || mapLetterToNum[normCorrect] === normUser) return true;
+  if (mapNumToLetter[normUser] === normCorrect || mapNumToLetter[normCorrect] === normUser) return true;
+
+  // 3. Option text match
+  const optA = (q.option_a || q.optionA || "").trim().toLowerCase();
+  const optB = (q.option_b || q.optionB || "").trim().toLowerCase();
+  const optC = (q.option_c || q.optionC || "").trim().toLowerCase();
+  const optD = (q.option_d || q.optionD || "").trim().toLowerCase();
+
+  let chosenText = "";
+  if (normUser === "a" || normUser === "1") chosenText = optA;
+  else if (normUser === "b" || normUser === "2") chosenText = optB;
+  else if (normUser === "c" || normUser === "3") chosenText = optC;
+  else if (normUser === "d" || normUser === "4") chosenText = optD;
+
+  if (chosenText && normCorrect && (chosenText === normCorrect || normCorrect.includes(chosenText))) return true;
+
+  // 4. Numerical float comparison
+  const numUser = parseFloat(normUser);
+  const numCorrect = parseFloat(normCorrect);
+  if (!isNaN(numUser) && !isNaN(numCorrect)) {
+    if (Math.abs(numUser - numCorrect) < 0.05) return true;
+  }
+
+  // 5. Solution check fallback
+  const sol = (q.solution || "").trim();
+  if (sol) {
+    const solLower = sol.toLowerCase();
+
+    // Check for explicit option mentions in solution
+    const isLetter = ["a", "b", "c", "d"].includes(normUser);
+    const isDigit = ["1", "2", "3", "4"].includes(normUser);
+    if (isLetter || isDigit) {
+      const letter = isLetter ? normUser : ["a", "b", "c", "d"][parseInt(normUser, 10) - 1];
+      const digit = isDigit ? normUser : String(["a", "b", "c", "d"].indexOf(normUser) + 1);
+
+      if (
+        solLower.includes(`correct option is (${letter})`) ||
+        solLower.includes(`correct option is ${letter}`) ||
+        solLower.includes(`option (${letter}) is correct`) ||
+        solLower.includes(`(${letter}) is correct`) ||
+        solLower.includes(`correct option is (${digit})`) ||
+        solLower.includes(`correct option is ${digit}`) ||
+        solLower.includes(`option (${digit}) is correct`) ||
+        solLower.includes(`(${digit}) is correct`) ||
+        solLower.includes(`ans. (${digit})`) ||
+        solLower.includes(`ans. (${letter})`)
+      ) {
+        return true;
+      }
+    }
+
+    // Numerical in solution
+    if (!isNaN(numUser)) {
+      const patterns = [
+        /(?:=|is|comes out to be|equal to|value of [a-zA-Zα-ωΑ-Ω_0-9\s]+ is|total|hence|therefore|∴|⇒)\s*(-?\d+(?:\.\d+)?)\s*(?:Ω|ohm|cm|m|s|j|kg|v|w|a|hz|k|n|c|deg|%|rad|mol|isomers|mole\/l)?(?:\.|\s|$)/gi,
+      ];
+      for (const pattern of patterns) {
+        const matches = [...sol.matchAll(pattern)];
+        for (const m of matches) {
+          const extractedVal = parseFloat(m[1]);
+          if (!isNaN(extractedVal) && Math.abs(numUser - extractedVal) < 0.05) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
 async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
   const jsonHeaders = {
     "Content-Type": "application/json",
@@ -1347,7 +1432,8 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
   try {
     const body: any = await request.json().catch(() => ({}));
     const {
-      responses,
+      testId,
+      responses = {},
       timeSpentSeconds,
       candidateEmail,
       questionTimes,    // Record<questionId, seconds> — per-question time
@@ -1357,27 +1443,40 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
       startedAt,        // ISO timestamp
     } = body;
 
-    const paper = await getWorkerActivePaper(env);
+    const rawTestId = (testId || body.id || "").toString().trim();
+    const cleanTestId = decodeURIComponent(rawTestId);
+    const mftMatch = cleanTestId.match(/^MFT-0*(\d+)(\.pdf)?$/i);
+    const resolvedFile = mftMatch ? `MFT-${mftMatch[1]}.pdf` : cleanTestId.endsWith(".pdf") ? cleanTestId : `${cleanTestId}.pdf`;
 
+    const db = MFT_QUESTIONS_BY_FILE as Record<string, any[]>;
+    const mftQuestions = (db[resolvedFile] || db[cleanTestId]) as any[];
+
+    let evaluation: any = null;
     let totalQuestions = 0;
     let attemptedCount = 0;
     let correctCount = 0;
     let incorrectCount = 0;
     let totalScore = 0;
-
     const sectionBreakdown: any[] = [];
     const detailedResults: any[] = [];
 
-    for (const subj of paper.subjects) {
-      let secTotal = 0;
-      let secAttempted = 0;
-      let secCorrect = 0;
-      let secIncorrect = 0;
-      let secScore = 0;
+    // ── Case A: Full Mock Test (MFT) ──────────────────────────────────────────
+    if (mftQuestions && mftQuestions.length > 0) {
+      const isMft = resolvedFile.startsWith("MFT-");
+      const cleanTitle = resolvedFile.replace(/\.pdf$/i, "").replace(/_/g, " ");
+      const marksPerQ = 4;
+      const negMarks = 1;
 
-      for (const q of subj.questions) {
+      const sectionMap = new Map<string, { total: number; attempted: number; correct: number; incorrect: number; score: number }>();
+
+      for (const q of mftQuestions) {
         totalQuestions++;
-        secTotal++;
+        const sec = q.subject || "General";
+        if (!sectionMap.has(sec)) {
+          sectionMap.set(sec, { total: 0, attempted: 0, correct: 0, incorrect: 0, score: 0 });
+        }
+        const s = sectionMap.get(sec)!;
+        s.total++;
 
         const userAns = (responses[q.id] || "").trim();
         const isAttempted = Boolean(userAns);
@@ -1388,51 +1487,46 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
 
         if (isAttempted) {
           attemptedCount++;
-          secAttempted++;
+          s.attempted++;
 
-          if (q.type === "NUMERICAL") {
-            const numUser = parseFloat(userAns);
-            const numCorrect = parseFloat(q.correctAnswer);
-            if (!isNaN(numUser) && !isNaN(numCorrect)) {
-              isCorrect = Math.abs(numUser - numCorrect) < 0.01;
-            } else {
-              isCorrect = userAns.toLowerCase() === q.correctAnswer.trim().toLowerCase();
-            }
-          } else {
-            isCorrect = userAns.toUpperCase() === q.correctAnswer.trim().toUpperCase();
-          }
+          isCorrect = checkQuestionCorrect(userAns, q);
 
           if (isCorrect) {
             correctCount++;
-            secCorrect++;
-            marksAwarded = paper.marksPerQuestion || 4;
-            totalScore += marksAwarded;
-            secScore += marksAwarded;
+            s.correct++;
+            marksAwarded = marksPerQ;
+            totalScore += marksPerQ;
+            s.score += marksPerQ;
           } else {
-            incorrectCount++;
-            secIncorrect++;
-            marksAwarded = -(paper.negativeMarks || 1);
-            totalScore += marksAwarded;
-            secScore += marksAwarded;
+            // If answer key exists and is wrong: -1 mark
+            const hasKnownAnswer = Boolean(q.correct_answer && q.correct_answer !== "—");
+            if (hasKnownAnswer) {
+              incorrectCount++;
+              s.incorrect++;
+              marksAwarded = -negMarks;
+              totalScore -= negMarks;
+              s.score -= negMarks;
+            } else {
+              // Neutral if key was dash/unavailable
+              marksAwarded = 0;
+            }
           }
         }
 
         detailedResults.push({
           questionId: q.id,
-          questionNumber: q.questionNumber,
+          questionNumber: q.question_number,
           subject: q.subject,
           chapter: q.chapter || "General",
-          section: q.section,
-          type: q.type,
           difficulty: q.difficulty || "Medium",
-          questionText: q.questionText,
-          optionA: q.optionA || null,
-          optionB: q.optionB || null,
-          optionC: q.optionC || null,
-          optionD: q.optionD || null,
-          imagePaths: q.imagePaths || [],
+          questionText: q.question_text,
+          optionA: q.option_a || null,
+          optionB: q.option_b || null,
+          optionC: q.option_c || null,
+          optionD: q.option_d || null,
+          imagePaths: q.image_paths || [],
           userResponse: isAttempted ? userAns : null,
-          correctAnswer: q.correctAnswer,
+          correctAnswer: q.correct_answer,
           isCorrect,
           solution: q.solution,
           marksAwarded,
@@ -1440,39 +1534,151 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
         });
       }
 
-      sectionBreakdown.push({
-        sectionName: subj.name,
-        total: secTotal,
-        attempted: secAttempted,
-        correct: secCorrect,
-        incorrect: secIncorrect,
-        score: secScore,
-      });
+      const preferredOrder = ["Physics", "Chemistry", "Mathematics"];
+      for (const p of preferredOrder) {
+        if (sectionMap.has(p)) {
+          sectionBreakdown.push({ sectionName: p, ...sectionMap.get(p)! });
+          sectionMap.delete(p);
+        }
+      }
+      for (const [name, st] of sectionMap.entries()) {
+        sectionBreakdown.push({ sectionName: name, ...st });
+      }
+
+      const unattemptedCount = totalQuestions - attemptedCount;
+      const maxScore = totalQuestions * marksPerQ;
+      const percentage = maxScore > 0 ? Math.max(0, Math.round((totalScore / maxScore) * 100 * 10) / 10) : 0;
+      const accuracy = attemptedCount > 0 ? Math.round((correctCount / attemptedCount) * 100 * 10) / 10 : 0;
+
+      evaluation = {
+        testId: encodeURIComponent(resolvedFile),
+        testTitle: testTitle || (isMft ? `JEE Main - ${cleanTitle}` : cleanTitle),
+        totalQuestions,
+        attemptedCount,
+        correctCount,
+        incorrectCount,
+        unattemptedCount,
+        totalScore,
+        maxScore,
+        percentage,
+        accuracy,
+        timeSpentSeconds: Number(timeSpentSeconds) || 0,
+        sectionBreakdown,
+        detailedResults,
+        submissionReason: submissionReason || null,
+        tabViolations: Number(tabViolations) || 0,
+      };
+    } 
+    // ── Case B: Active Exam Paper ─────────────────────────────────────────────
+    else {
+      const paper = await getWorkerActivePaper(env);
+
+      for (const subj of paper.subjects) {
+        let secTotal = 0;
+        let secAttempted = 0;
+        let secCorrect = 0;
+        let secIncorrect = 0;
+        let secScore = 0;
+
+        for (const q of subj.questions) {
+          totalQuestions++;
+          secTotal++;
+
+          const userAns = (responses[q.id] || "").trim();
+          const isAttempted = Boolean(userAns);
+          const timeOnQuestion = (questionTimes && questionTimes[q.id]) ? Number(questionTimes[q.id]) : 0;
+
+          let isCorrect = false;
+          let marksAwarded = 0;
+
+          if (isAttempted) {
+            attemptedCount++;
+            secAttempted++;
+
+            if (q.type === "NUMERICAL") {
+              const numUser = parseFloat(userAns);
+              const numCorrect = parseFloat(q.correctAnswer);
+              if (!isNaN(numUser) && !isNaN(numCorrect)) {
+                isCorrect = Math.abs(numUser - numCorrect) < 0.05;
+              } else {
+                isCorrect = userAns.toLowerCase() === q.correctAnswer.trim().toLowerCase();
+              }
+            } else {
+              isCorrect = userAns.toUpperCase() === q.correctAnswer.trim().toUpperCase();
+            }
+
+            if (isCorrect) {
+              correctCount++;
+              secCorrect++;
+              marksAwarded = paper.marksPerQuestion || 4;
+              totalScore += marksAwarded;
+              secScore += marksAwarded;
+            } else {
+              incorrectCount++;
+              secIncorrect++;
+              marksAwarded = -(paper.negativeMarks || 1);
+              totalScore += marksAwarded;
+              secScore += marksAwarded;
+            }
+          }
+
+          detailedResults.push({
+            questionId: q.id,
+            questionNumber: q.questionNumber,
+            subject: q.subject,
+            chapter: q.chapter || "General",
+            section: q.section,
+            type: q.type,
+            difficulty: q.difficulty || "Medium",
+            questionText: q.questionText,
+            optionA: q.optionA || null,
+            optionB: q.optionB || null,
+            optionC: q.optionC || null,
+            optionD: q.optionD || null,
+            imagePaths: q.imagePaths || [],
+            userResponse: isAttempted ? userAns : null,
+            correctAnswer: q.correctAnswer,
+            isCorrect,
+            solution: q.solution,
+            marksAwarded,
+            timeSpentSeconds: timeOnQuestion,
+          });
+        }
+
+        sectionBreakdown.push({
+          sectionName: subj.name,
+          total: secTotal,
+          attempted: secAttempted,
+          correct: secCorrect,
+          incorrect: secIncorrect,
+          score: secScore,
+        });
+      }
+
+      const unattemptedCount = totalQuestions - attemptedCount;
+      const maxScore = totalQuestions * (paper.marksPerQuestion || 4);
+      const percentage = maxScore > 0 ? Math.max(0, Math.round((totalScore / maxScore) * 100 * 10) / 10) : 0;
+      const accuracy = attemptedCount > 0 ? Math.round((correctCount / attemptedCount) * 100 * 10) / 10 : 0;
+
+      evaluation = {
+        testId: paper.id,
+        testTitle: testTitle || paper.title || paper.id,
+        totalQuestions,
+        attemptedCount,
+        correctCount,
+        incorrectCount,
+        unattemptedCount,
+        totalScore,
+        maxScore,
+        percentage,
+        accuracy,
+        timeSpentSeconds: Number(timeSpentSeconds) || 0,
+        sectionBreakdown,
+        detailedResults,
+        submissionReason: submissionReason || null,
+        tabViolations: Number(tabViolations) || 0,
+      };
     }
-
-    const unattemptedCount = totalQuestions - attemptedCount;
-    const maxScore = totalQuestions * (paper.marksPerQuestion || 4);
-    const percentage = maxScore > 0 ? Math.max(0, Math.round((totalScore / maxScore) * 100 * 10) / 10) : 0;
-    const accuracy = attemptedCount > 0 ? Math.round((correctCount / attemptedCount) * 100 * 10) / 10 : 0;
-
-    const evaluation = {
-      testId: paper.id,
-      testTitle: testTitle || paper.title || paper.id,
-      totalQuestions,
-      attemptedCount,
-      correctCount,
-      incorrectCount,
-      unattemptedCount,
-      totalScore,
-      maxScore,
-      percentage,
-      accuracy,
-      timeSpentSeconds: Number(timeSpentSeconds) || 0,
-      sectionBreakdown,
-      detailedResults,
-      submissionReason: submissionReason || null,
-      tabViolations: Number(tabViolations) || 0,
-    };
 
     // ── Supabase Persistence (non-fatal) ─────────────────────────────────────
     const email = (candidateEmail || "").trim().toLowerCase();

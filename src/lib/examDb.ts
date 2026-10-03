@@ -335,11 +335,16 @@ export function evaluateTest(
           totalScore += test.marks_per_question;
           secStats.score += test.marks_per_question;
         } else {
-          incorrectCount++;
-          secStats.incorrect++;
-          marksAwarded = -test.negative_marks;
-          totalScore -= test.negative_marks;
-          secStats.score -= test.negative_marks;
+          const hasKnownAnswer = Boolean(q.correct_answer && q.correct_answer !== "—" && q.correct_answer !== "-");
+          if (hasKnownAnswer) {
+            incorrectCount++;
+            secStats.incorrect++;
+            marksAwarded = -test.negative_marks;
+            totalScore -= test.negative_marks;
+            secStats.score -= test.negative_marks;
+          } else {
+            marksAwarded = 0;
+          }
         }
       }
 
@@ -392,33 +397,85 @@ export function evaluateTest(
 }
 
 function checkIsCorrect(userAns: string, q: QuestionRecord): boolean {
-  const normUser = userAns.trim().toLowerCase();
-  const normCorrect = (q.correct_answer || "").trim().toLowerCase();
+  if (!userAns) return false;
+  const rawUser = userAns.trim();
+  const normUser = rawUser.toLowerCase();
+  const rawCorrect = (q.correct_answer || "").trim();
+  const normCorrect = rawCorrect.toLowerCase();
 
-  if (normUser === normCorrect) return true;
+  // 1. Direct string match
+  if (normCorrect && normUser === normCorrect) return true;
 
+  // 2. Letter to Number bidirectional mapping (A <-> 1, B <-> 2, C <-> 3, D <-> 4)
   const mapLetterToNum: Record<string, string> = { a: "1", b: "2", c: "3", d: "4" };
   const mapNumToLetter: Record<string, string> = { "1": "a", "2": "b", "3": "c", "4": "d" };
+  if (mapLetterToNum[normUser] === normCorrect || mapLetterToNum[normCorrect] === normUser) return true;
+  if (mapNumToLetter[normUser] === normCorrect || mapNumToLetter[normCorrect] === normUser) return true;
 
-  if (mapLetterToNum[normUser] && mapLetterToNum[normUser] === normCorrect) return true;
-  if (mapNumToLetter[normCorrect] && mapNumToLetter[normCorrect] === normUser) return true;
+  // 3. Option text match
+  const optA = (q.option_a || "").trim().toLowerCase();
+  const optB = (q.option_b || "").trim().toLowerCase();
+  const optC = (q.option_c || "").trim().toLowerCase();
+  const optD = (q.option_d || "").trim().toLowerCase();
 
-  let chosenOptionText = "";
-  if (normUser === "a") chosenOptionText = (q.option_a || "").trim().toLowerCase();
-  if (normUser === "b") chosenOptionText = (q.option_b || "").trim().toLowerCase();
-  if (normUser === "c") chosenOptionText = (q.option_c || "").trim().toLowerCase();
-  if (normUser === "d") chosenOptionText = (q.option_d || "").trim().toLowerCase();
+  let chosenText = "";
+  if (normUser === "a" || normUser === "1") chosenText = optA;
+  else if (normUser === "b" || normUser === "2") chosenText = optB;
+  else if (normUser === "c" || normUser === "3") chosenText = optC;
+  else if (normUser === "d" || normUser === "4") chosenText = optD;
 
-  if (chosenOptionText && normCorrect && chosenOptionText === normCorrect) return true;
+  if (chosenText && normCorrect && (chosenText === normCorrect || normCorrect.includes(chosenText))) return true;
 
-  const sol = (q.solution || "").toLowerCase();
-  if (
-    sol.includes(`correct option is (${normUser})`) ||
-    sol.includes(`correct option is ${normUser}`) ||
-    sol.includes(`option (${normUser}) is correct`) ||
-    sol.includes(`(${normUser}) is correct`)
-  ) {
-    return true;
+  // 4. Numerical float comparison
+  const numUser = parseFloat(normUser);
+  const numCorrect = parseFloat(normCorrect);
+  if (!isNaN(numUser) && !isNaN(numCorrect)) {
+    if (Math.abs(numUser - numCorrect) < 0.05) return true;
+  }
+
+  // 5. Solution check fallback
+  const sol = (q.solution || "").trim();
+  if (sol) {
+    const solLower = sol.toLowerCase();
+
+    // Check for explicit option mentions in solution
+    const isLetter = ["a", "b", "c", "d"].includes(normUser);
+    const isDigit = ["1", "2", "3", "4"].includes(normUser);
+    if (isLetter || isDigit) {
+      const letter = isLetter ? normUser : ["a", "b", "c", "d"][parseInt(normUser, 10) - 1];
+      const digit = isDigit ? normUser : String(["a", "b", "c", "d"].indexOf(normUser) + 1);
+
+      if (
+        solLower.includes(`correct option is (${letter})`) ||
+        solLower.includes(`correct option is ${letter}`) ||
+        solLower.includes(`option (${letter}) is correct`) ||
+        solLower.includes(`(${letter}) is correct`) ||
+        solLower.includes(`correct option is (${digit})`) ||
+        solLower.includes(`correct option is ${digit}`) ||
+        solLower.includes(`option (${digit}) is correct`) ||
+        solLower.includes(`(${digit}) is correct`) ||
+        solLower.includes(`ans. (${digit})`) ||
+        solLower.includes(`ans. (${letter})`)
+      ) {
+        return true;
+      }
+    }
+
+    // Numerical in solution
+    if (!isNaN(numUser)) {
+      const patterns = [
+        /(?:=|is|comes out to be|equal to|value of [a-zA-Zα-ωΑ-Ω_0-9\s]+ is|total|hence|therefore|∴|⇒)\s*(-?\d+(?:\.\d+)?)\s*(?:Ω|ohm|cm|m|s|j|kg|v|w|a|hz|k|n|c|deg|%|rad|mol|isomers|mole\/l)?(?:\.|\s|$)/gi,
+      ];
+      for (const pattern of patterns) {
+        const matches = [...sol.matchAll(pattern)];
+        for (const m of matches) {
+          const extractedVal = parseFloat(m[1]);
+          if (!isNaN(extractedVal) && Math.abs(numUser - extractedVal) < 0.05) {
+            return true;
+          }
+        }
+      }
+    }
   }
 
   return false;
