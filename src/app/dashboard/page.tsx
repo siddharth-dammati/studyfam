@@ -263,13 +263,32 @@ export default function DashboardPage() {
   // 1. Loading state
   if (authLoading && loadingData) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
-          <p className="text-xs font-mono text-slate-500 uppercase tracking-wider">
-            Loading Candidate Dashboard...
-          </p>
+      <div className="min-h-screen bg-[#F6F9FF] flex flex-col items-center justify-center p-4 select-none">
+        <div className="relative w-32 h-32 mb-5 flex items-center justify-center">
+          <div
+            className="absolute inset-0 rounded-full animate-ping opacity-25"
+            style={{ background: "radial-gradient(circle, #1A5FE0, #D6AEF2)" }}
+          />
+          <div
+            className="absolute inset-2 rounded-full animate-spin p-[2px]"
+            style={{
+              background: "conic-gradient(from 0deg, #1A5FE0, #0A1C96, #D6AEF2, #1A5FE0)",
+              animationDuration: "3s",
+            }}
+          >
+            <div className="w-full h-full bg-[#F6F9FF] rounded-full" />
+          </div>
+          <div className="relative w-20 h-20 rounded-2xl bg-white shadow-xl border border-[#E3EAF6] flex items-center justify-center p-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon-512.png" alt="StudyFAM" className="w-full h-full object-contain" />
+          </div>
         </div>
+        <h3 className="text-base sm:text-lg font-bold text-[#0B1526]">
+          Directing to Candidate Dashboard...
+        </h3>
+        <p className="text-xs text-[#4B5B76] mt-1">
+          Loading your test analytics, reference slip & enrollment records...
+        </p>
       </div>
     );
   }
