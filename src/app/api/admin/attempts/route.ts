@@ -116,9 +116,28 @@ export async function POST(request: Request) {
       }
     }
 
+    // Deduplicate any duplicate attempts submitted within 3 minutes of each other for the same test
+    const dedupedAttempts: any[] = [];
+    for (const a of Array.isArray(rawAttempts) ? rawAttempts : []) {
+      const email = (a.email || "").toLowerCase().trim();
+      if (!email) continue;
+      const aTime = new Date(a.created_at || 0).getTime();
+      const isDup = dedupedAttempts.some((prev) => {
+        return (
+          (prev.email || "").toLowerCase().trim() === email &&
+          prev.test_id === a.test_id &&
+          prev.score === a.score &&
+          Math.abs(new Date(prev.created_at || 0).getTime() - aTime) < 180000
+        );
+      });
+      if (!isDup) {
+        dedupedAttempts.push(a);
+      }
+    }
+
     // Group attempts by user email
     const attemptsByUser = new Map<string, StudentAttemptItem[]>();
-    for (const a of Array.isArray(rawAttempts) ? rawAttempts : []) {
+    for (const a of dedupedAttempts) {
       const email = (a.email || "").toLowerCase().trim();
       if (!email) continue;
 
@@ -319,8 +338,8 @@ export async function POST(request: Request) {
 
     // Compute top-level overview metrics
     const totalAttemptingStudents = studentList.filter((s) => s.totalAttempts > 0).length;
-    const totalAttemptsLogged = Array.isArray(rawAttempts) ? rawAttempts.length : 0;
-    const allScores = (Array.isArray(rawAttempts) ? rawAttempts : []).map((a: any) => Number(a.score || 0));
+    const totalAttemptsLogged = dedupedAttempts.length;
+    const allScores = dedupedAttempts.map((a: any) => Number(a.score || 0));
     const highestScoreLogged = allScores.length > 0 ? Math.max(...allScores) : 0;
     const avgScoreLogged = allScores.length > 0 ? Math.round(allScores.reduce((sum, s) => sum + s, 0) / allScores.length) : 0;
 

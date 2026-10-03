@@ -1198,8 +1198,27 @@ async function handleAdminAttempts(request: Request, env: Env): Promise<Response
       }
     }
 
-    const attemptsByUser = new Map<string, any[]>();
+    // Deduplicate any duplicate attempts submitted within 3 minutes of each other for the same test
+    const dedupedAttempts: any[] = [];
     for (const a of Array.isArray(rawAttempts) ? rawAttempts : []) {
+      const email = (a.email || "").toLowerCase().trim();
+      if (!email) continue;
+      const aTime = new Date(a.created_at || 0).getTime();
+      const isDup = dedupedAttempts.some((prev: any) => {
+        return (
+          (prev.email || "").toLowerCase().trim() === email &&
+          prev.test_id === a.test_id &&
+          prev.score === a.score &&
+          Math.abs(new Date(prev.created_at || 0).getTime() - aTime) < 180000
+        );
+      });
+      if (!isDup) {
+        dedupedAttempts.push(a);
+      }
+    }
+
+    const attemptsByUser = new Map<string, any[]>();
+    for (const a of dedupedAttempts) {
       const email = (a.email || "").toLowerCase().trim();
       if (!email) continue;
 
@@ -1374,8 +1393,8 @@ async function handleAdminAttempts(request: Request, env: Env): Promise<Response
     });
 
     const totalAttemptingStudents = studentList.filter((s: any) => s.totalAttempts > 0).length;
-    const totalAttemptsLogged = Array.isArray(rawAttempts) ? rawAttempts.length : 0;
-    const allScores = (Array.isArray(rawAttempts) ? rawAttempts : []).map((a: any) => Number(a.score || 0));
+    const totalAttemptsLogged = dedupedAttempts.length;
+    const allScores = dedupedAttempts.map((a: any) => Number(a.score || 0));
     const highestScoreLogged = allScores.length > 0 ? Math.max(...allScores) : 0;
     const avgScoreLogged = allScores.length > 0 ? Math.round(allScores.reduce((sum: number, s: number) => sum + s, 0) / allScores.length) : 0;
 
@@ -1985,16 +2004,22 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
       };
 
       try {
-        await fetch(`${supabaseUrl}/rest/v1/exam_attempts`, {
+        const insRes = await fetch(`${supabaseUrl}/rest/v1/exam_attempts`, {
           method: "POST",
           headers: {
             apikey: supabaseKey,
             Authorization: `Bearer ${supabaseKey}`,
             "Content-Type": "application/json",
-            Prefer: "return=minimal",
+            Prefer: "return=representation",
           },
           body: JSON.stringify(attemptPayload),
         });
+        if (insRes.ok) {
+          const insertedRows: any = await insRes.json();
+          if (Array.isArray(insertedRows) && insertedRows.length > 0 && insertedRows[0].id) {
+            evaluation.id = insertedRows[0].id;
+          }
+        }
       } catch (syncErr) {
         console.warn("Supabase exam_attempts sync failed:", syncErr);
       }

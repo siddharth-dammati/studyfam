@@ -13,6 +13,7 @@ import {
   Award,
   Layers,
   Zap,
+  RotateCcw,
 } from "lucide-react";
 import { TestSummary } from "@/lib/examDb";
 import { Footer } from "@/components/sections/Footer";
@@ -23,6 +24,7 @@ export default function ExamCatalogPage() {
   const [chapterTests, setChapterTests] = useState<TestSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [attemptedTestIds, setAttemptedTestIds] = useState<Set<string>>(new Set());
 
   // Filters
   const [searchQuery, setSearchQuery] = useState("");
@@ -47,6 +49,28 @@ export default function ExamCatalogPage() {
       }
     }
     loadTests();
+
+    try {
+      const raw = localStorage.getItem("sf_recent_attempts");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          const s = new Set<string>();
+          for (const a of parsed) {
+            if (a.testId) {
+              s.add(a.testId.toLowerCase());
+              s.add(decodeURIComponent(a.testId).toLowerCase());
+              const match = a.testId.match(/MFT[-_ ]*0?(\d+)/i);
+              if (match) {
+                s.add(`mft-${match[1]}.pdf`);
+                s.add(`mft-${match[1]}`);
+              }
+            }
+          }
+          setAttemptedTestIds(s);
+        }
+      }
+    } catch {}
   }, []);
 
   const displayedTests = (activeTab === "full" ? fullMocks : chapterTests).filter((test) => {
@@ -261,13 +285,31 @@ export default function ExamCatalogPage() {
                         </div>
                       </div>
 
-                      <Link
-                        href={`/exam/player?id=${test.id}`}
-                        className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-xs group-hover:shadow-blue-500/20 active:scale-98"
-                      >
-                        <span>Take Examination</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                      </Link>
+                      {(() => {
+                        const isAttempted =
+                          attemptedTestIds.has(test.id.toLowerCase()) ||
+                          attemptedTestIds.has(decodeURIComponent(test.id).toLowerCase()) ||
+                          attemptedTestIds.has(test.source_file.toLowerCase()) ||
+                          Array.from(attemptedTestIds).some((id) => id.includes(test.source_file.toLowerCase()));
+
+                        return isAttempted ? (
+                          <Link
+                            href={`/exam/player?id=${test.id}`}
+                            className="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 text-white rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-xs active:scale-98"
+                          >
+                            <RotateCcw className="w-3.5 h-3.5 text-indigo-400" />
+                            <span>Reattempt Examination</span>
+                          </Link>
+                        ) : (
+                          <Link
+                            href={`/exam/player?id=${test.id}`}
+                            className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-xs group-hover:shadow-blue-500/20 active:scale-98"
+                          >
+                            <span>Take Examination</span>
+                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                          </Link>
+                        );
+                      })()}
                     </div>
                   );
                 })}

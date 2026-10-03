@@ -130,7 +130,21 @@ export default function DashboardPage() {
           .order("created_at", { ascending: false });
 
         if (!error && data && data.length > 0) {
-          remoteAttempts = data.map((d: any) => ({
+          const dedupedData: any[] = [];
+          for (const d of data) {
+            const dTime = new Date(d.created_at || 0).getTime();
+            const isDup = dedupedData.some(
+              (prev) =>
+                prev.test_id === d.test_id &&
+                prev.score === d.score &&
+                Math.abs(new Date(prev.created_at || 0).getTime() - dTime) < 180000
+            );
+            if (!isDup) {
+              dedupedData.push(d);
+            }
+          }
+
+          remoteAttempts = dedupedData.map((d: any) => ({
             id: String(d.id || `${d.test_id}_${d.created_at}`),
             testId: d.test_id || "MFT-1.pdf",
             testTitle: d.test_id?.startsWith("MFT-")
@@ -152,13 +166,31 @@ export default function DashboardPage() {
         }
       }
 
+      // Clean and deduplicate localAttempts
+      const cleanedLocal: MockAttemptRecord[] = [];
+      for (const loc of localAttempts) {
+        const locTime = new Date(loc.createdAt || 0).getTime();
+        const isDup = cleanedLocal.some(
+          (prev) =>
+            prev.id === loc.id ||
+            (prev.testId === loc.testId &&
+              prev.score === loc.score &&
+              Math.abs(new Date(prev.createdAt || 0).getTime() - locTime) < 180000)
+        );
+        if (!isDup) cleanedLocal.push(loc);
+      }
+      try {
+        localStorage.setItem("sf_recent_attempts", JSON.stringify(cleanedLocal));
+      } catch {}
+
       // Merge remote and local attempts
       const combined = [...remoteAttempts];
-      for (const loc of localAttempts) {
+      for (const loc of cleanedLocal) {
         const isDuplicate = combined.some(
           (rem) =>
-            rem.testId === loc.testId &&
-            Math.abs(new Date(rem.createdAt).getTime() - new Date(loc.createdAt).getTime()) < 180000
+            rem.id === loc.id ||
+            (rem.testId === loc.testId &&
+              Math.abs(new Date(rem.createdAt).getTime() - new Date(loc.createdAt).getTime()) < 180000)
         );
         if (!isDuplicate) {
           combined.push(loc);

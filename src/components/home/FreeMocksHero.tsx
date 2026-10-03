@@ -21,6 +21,7 @@ import {
   Calendar,
   Layers,
   Award,
+  RotateCcw,
 } from "lucide-react";
 import { FREE_MOCKS_DATA, FreeMockTestItem } from "@/lib/freeMocksData";
 
@@ -28,6 +29,31 @@ export function FreeMocksHero() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeModalTest, setActiveModalTest] = useState<FreeMockTestItem | null>(null);
+  const [attemptedTestIds, setAttemptedTestIds] = useState<Set<string>>(new Set());
+
+  React.useEffect(() => {
+    try {
+      const raw = localStorage.getItem("sf_recent_attempts");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          const s = new Set<string>();
+          for (const a of parsed) {
+            if (a.testId) {
+              s.add(a.testId.toLowerCase());
+              const match = a.testId.match(/MFT[-_ ]*0?(\d+)/i);
+              if (match) {
+                s.add(`mft-${match[1]}.pdf`);
+                s.add(`mft-${match[1]}`);
+                s.add(`mft-${match[1].padStart(2, "0")}`);
+              }
+            }
+          }
+          setAttemptedTestIds(s);
+        }
+      }
+    } catch {}
+  }, []);
 
   const filteredMocks = FREE_MOCKS_DATA.filter((mock) => {
     if (selectedDifficulty !== "ALL" && mock.difficulty !== selectedDifficulty) {
@@ -260,14 +286,32 @@ export function FreeMocksHero() {
 
                   {/* Action Buttons */}
                   <div className="flex items-center gap-2">
-                    <Link
-                      href={mock.playerUrl}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs hover:shadow transition-all active:scale-[0.98]"
-                    >
-                      <PlayCircle size={15} />
-                      <span>Start Free CBT Mock</span>
-                      <ArrowRight size={13} />
-                    </Link>
+                    {(() => {
+                      const isAttempted =
+                        attemptedTestIds.has(mock.id.toLowerCase()) ||
+                        attemptedTestIds.has(mock.code.toLowerCase()) ||
+                        attemptedTestIds.has(`mft-${mock.mockNumber}.pdf`) ||
+                        attemptedTestIds.has(`mft-${mock.mockNumber}`);
+
+                      return isAttempted ? (
+                        <Link
+                          href={mock.playerUrl}
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-xs hover:shadow transition-all active:scale-[0.98]"
+                        >
+                          <RotateCcw size={14} className="text-indigo-400" />
+                          <span>Reattempt CBT Mock</span>
+                        </Link>
+                      ) : (
+                        <Link
+                          href={mock.playerUrl}
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs hover:shadow transition-all active:scale-[0.98]"
+                        >
+                          <PlayCircle size={15} />
+                          <span>Start Free CBT Mock</span>
+                          <ArrowRight size={13} />
+                        </Link>
+                      );
+                    })()}
 
                     <button
                       onClick={() => setActiveModalTest(mock)}

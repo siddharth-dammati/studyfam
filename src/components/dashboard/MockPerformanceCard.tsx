@@ -284,46 +284,73 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-          {displayedMfts.map((mft) => (
-            <div
-              key={mft.id}
-              className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:border-indigo-200 hover:shadow-xs transition-all flex items-center justify-between gap-4"
-            >
-              <div className="space-y-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded-md">
-                    {mft.code}
-                  </span>
-                  <span className="font-bold text-sm text-slate-900 truncate">
-                    {mft.title}
-                  </span>
-                  {mft.badge && (
-                    <span className="text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                      {mft.badge}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500 truncate">{mft.keyHighlights}</p>
-                <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono">
-                  <span>{mft.totalQuestions} Questions</span>
-                  <span>•</span>
-                  <span>{mft.durationMinutes} Mins</span>
-                  <span>•</span>
-                  <span>{mft.totalMarks} Marks</span>
-                  <span>•</span>
-                  <span className="text-emerald-600 font-semibold">100% Free</span>
-                </div>
-              </div>
+          {displayedMfts.map((mft) => {
+            const isAttempted = attempts.some((a) => {
+              const normA = a.testId.toLowerCase();
+              const numMatch = a.testId.match(/MFT[-_ ]*0?(\d+)/i);
+              return (
+                normA === mft.id.toLowerCase() ||
+                normA.includes(mft.code.toLowerCase()) ||
+                (numMatch && parseInt(numMatch[1]) === mft.mockNumber)
+              );
+            });
 
-              <Link
-                href={mft.playerUrl}
-                className="shrink-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+            return (
+              <div
+                key={mft.id}
+                className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/50 hover:bg-white hover:border-indigo-200 hover:shadow-xs transition-all flex items-center justify-between gap-4"
               >
-                <Play size={12} className="fill-current" />
-                <span>Start</span>
-              </Link>
-            </div>
-          ))}
+                <div className="space-y-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2 py-0.5 rounded-md">
+                      {mft.code}
+                    </span>
+                    <span className="font-bold text-sm text-slate-900 truncate">
+                      {mft.title}
+                    </span>
+                    {isAttempted ? (
+                      <span className="text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        Attempted
+                      </span>
+                    ) : mft.badge ? (
+                      <span className="text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                        {mft.badge}
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="text-xs text-slate-500 truncate">{mft.keyHighlights}</p>
+                  <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono">
+                    <span>{mft.totalQuestions} Questions</span>
+                    <span>•</span>
+                    <span>{mft.durationMinutes} Mins</span>
+                    <span>•</span>
+                    <span>{mft.totalMarks} Marks</span>
+                    <span>•</span>
+                    <span className="text-emerald-600 font-semibold">100% Free</span>
+                  </div>
+                </div>
+
+                {isAttempted ? (
+                  <Link
+                    href={mft.playerUrl}
+                    className="shrink-0 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                    title="Reattempt this test"
+                  >
+                    <RotateCcw size={12} />
+                    <span>Reattempt</span>
+                  </Link>
+                ) : (
+                  <Link
+                    href={mft.playerUrl}
+                    className="shrink-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-95"
+                  >
+                    <Play size={12} className="fill-current" />
+                    <span>Start</span>
+                  </Link>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 

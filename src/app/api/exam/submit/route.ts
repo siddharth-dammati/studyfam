@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
           }
         }
 
-        await supabase.from("exam_attempts").insert({
+        const insertRes = await supabase.from("exam_attempts").insert({
           user_id: user?.id || null,
           email,
           test_id: evaluation.testId,
@@ -76,7 +76,11 @@ export async function POST(request: NextRequest) {
           tab_violations: Number(body.tabViolations) || 0,
           submission_reason: submissionReason || null,
           started_at: body.startedAt || null,
-        });
+        }).select("id").single();
+
+        if (insertRes.data?.id) {
+          evaluation.id = insertRes.data.id;
+        }
       }
     } catch (saveErr) {
       console.warn("Supabase attempt persistence skipped:", saveErr);

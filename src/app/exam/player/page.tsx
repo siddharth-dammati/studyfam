@@ -253,42 +253,6 @@ function ExamPlayerContent() {
             ...existingList.filter((a: any) => a.id !== newAttemptRecord.id),
           ].slice(0, 50);
           localStorage.setItem("sf_recent_attempts", JSON.stringify(updated));
-
-          // Guaranteed direct Supabase sync for authenticated candidate
-          if (profile?.email) {
-            try {
-              const supabase = createClient();
-              // Build question_times map from the questionTimes argument
-              const questionTimesMap: Record<string, number> = {};
-              if (questionTimes) {
-                for (const [qId, secs] of Object.entries(questionTimes)) {
-                  questionTimesMap[qId] = secs;
-                }
-              }
-              await supabase.from("exam_attempts").insert({
-                user_id: profile.id || null,
-                email: profile.email.toLowerCase().trim(),
-                test_id: test.id,
-                test_title: test.title,
-                score: json.result.totalScore ?? json.result.score ?? 0,
-                max_score: json.result.maxScore || 300,
-                percentage: json.result.percentage || 0,
-                accuracy: json.result.accuracy || 0,
-                time_spent_seconds: timeSpentSeconds,
-                total_questions: json.result.totalQuestions || 75,
-                attempted_count: json.result.attemptedCount || 0,
-                correct_count: json.result.correctCount || 0,
-                incorrect_count: json.result.incorrectCount || 0,
-                section_breakdown: json.result.sectionBreakdown || [],
-                detailed_results: json.result.detailedResults || [],
-                question_times: questionTimesMap,
-                tab_violations: json.result.tabViolations || 0,
-                submission_reason: submissionReason || null,
-              });
-            } catch (syncErr) {
-              console.warn("Client Supabase attempt sync skipped:", syncErr);
-            }
-          }
         } catch (storageErr) {
           console.warn("Could not cache exam attempt locally:", storageErr);
         }
