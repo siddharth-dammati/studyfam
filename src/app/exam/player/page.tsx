@@ -8,13 +8,15 @@ import { TestDetail, EvaluationResult } from "@/lib/examDb";
 import { TcsIonInstructions } from "@/components/exam/TcsIonInstructions";
 import { TcsIonPlayer } from "@/components/exam/TcsIonPlayer";
 import { TcsIonResultView } from "@/components/exam/TcsIonResultView";
-import { Loader2, AlertCircle } from "lucide-react";
+import { GoogleSignInButton } from "@/components/ui/GoogleSignInButton";
+import { Logo } from "@/components/ui/Logo";
+import { Loader2, AlertCircle, Lock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 function ExamPlayerContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || searchParams.get("testId") || "MFT-1.pdf";
-  const { profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
 
   const [test, setTest] = useState<TestDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,16 +33,26 @@ function ExamPlayerContent() {
 
   useEffect(() => {
     try {
-      const cached = localStorage.getItem("sf_candidate_record");
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (parsed.full_name) setCandidateName(parsed.full_name);
-        if (parsed.order_id) setCandidateRoll(`SF-${parsed.order_id.slice(-6).toUpperCase()}`);
-      } else if (profile?.fullName) {
+      if (profile?.fullName) {
         setCandidateName(profile.fullName);
+      } else if (user?.user_metadata?.full_name) {
+        setCandidateName(user.user_metadata.full_name);
+      } else if (profile?.email) {
+        setCandidateName(profile.email.split("@")[0]);
+      } else {
+        const cached = localStorage.getItem("sf_candidate_record");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed.full_name) setCandidateName(parsed.full_name);
+          if (parsed.order_id) setCandidateRoll(`SF-${parsed.order_id.slice(-6).toUpperCase()}`);
+        }
+      }
+
+      if (profile?.id) {
+        setCandidateRoll(`SF-${profile.id.slice(0, 8).toUpperCase()}`);
       }
     } catch {}
-  }, [profile]);
+  }, [profile, user]);
 
   useEffect(() => {
     async function loadTest() {
@@ -274,27 +286,147 @@ function ExamPlayerContent() {
     setPhase("instructions");
   };
 
-  if (loading) {
+  if (authLoading || (loading && !test)) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center space-y-4">
-        <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
-        <p className="text-sm font-semibold text-gray-700">
-          Preparing NTA / TCS iON Assessment Engine...
+      <div className="min-h-screen bg-[#fafafa] flex flex-col items-center justify-center p-4 select-none relative overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-radial from-[#d6aef2]/20 to-transparent blur-3xl pointer-events-none -z-10" />
+        <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-radial from-[#2f8fff]/15 to-transparent blur-3xl pointer-events-none -z-10" />
+        
+        <div className="relative w-16 h-16 mb-4 flex items-center justify-center">
+          <div className="absolute inset-0 rounded-2xl border-2 border-indigo-100 border-t-[#1a5fe0] animate-spin" />
+          <div className="w-12 h-12 bg-white rounded-xl shadow-xs flex items-center justify-center p-1.5 overflow-hidden border border-slate-200/80">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon-512.png" alt="StudyFAM" className="w-full h-full object-contain animate-pulse" />
+          </div>
+        </div>
+        <h3 className="text-base font-bold text-[#1a1a1a] tracking-tight">
+          Verifying Candidate Session...
+        </h3>
+        <p className="text-xs text-slate-500 mt-1 font-mono">
+          TCS iON CBT Examination Engine
         </p>
+      </div>
+    );
+  }
+
+  // Candidate must be signed in with Google to write mock examinations
+  if (!profile && !user && phase !== "result") {
+    const testTitle = test?.title || (id.startsWith("MFT") ? `Major Full Test ${id.match(/MFT[-_ ]*0?(\d+)/i)?.[1] || "1"}` : "JEE Main Full Mock Examination");
+
+    return (
+      <div className="min-h-screen bg-[#fafafa] text-[#1a1a1a] flex flex-col relative overflow-hidden selection:bg-[#1a5fe0] selection:text-white">
+        {/* Tokko Ambient background glows */}
+        <div className="absolute top-0 right-1/4 w-[600px] h-[600px] rounded-full bg-radial from-[#d6aef2]/20 to-transparent blur-3xl pointer-events-none -z-10" />
+        <div className="absolute bottom-1/3 -left-40 w-[500px] h-[500px] rounded-full bg-radial from-[#2f8fff]/15 to-transparent blur-3xl pointer-events-none -z-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(26,26,26,0.035)_1.2px,transparent_1.8px)] [background-size:24px_24px] pointer-events-none -z-10" />
+
+        {/* Top Header */}
+        <header className="border-b border-[rgba(26,26,26,0.08)] bg-[#fafafa]/85 backdrop-blur-xl sticky top-0 z-40 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white border border-[rgba(26,26,26,0.08)] hover:border-[#1a5fe0]/40 px-3.5 py-1.5 rounded-full shadow-2xs transition-all active:scale-95"
+            >
+              <ArrowLeft size={14} className="text-slate-500" />
+              <span>Go back to dashboard</span>
+            </Link>
+            <div className="h-4 w-px bg-slate-200/80 hidden sm:block" />
+            <Link href="/" className="flex items-center">
+              <Logo className="h-7 shrink-0" textClassName="text-base" />
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#dcfce7] border border-[#86efac]/80 rounded-full text-xs text-[#16a34a] font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] animate-pulse" />
+              <span>Official CBT Assessment</span>
+            </span>
+          </div>
+        </header>
+
+        {/* Center Candidate Verification Gate Card */}
+        <main className="flex-1 flex items-center justify-center p-4 sm:p-6 my-auto">
+          <div className="max-w-lg w-full bg-white border border-[rgba(26,26,26,0.08)] rounded-[32px] p-6 sm:p-10 shadow-[0_25px_60px_-20px_rgba(10,28,150,0.12)] text-center relative overflow-hidden">
+            {/* Top Accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#0a1c96] via-[#1a5fe0] to-[#16a34a]" />
+
+            <div className="w-14 h-14 bg-gradient-to-br from-[#0a1c96] to-[#1f6ff2] text-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-[0_12px_24px_-8px_rgba(26,95,224,0.45)]">
+              <Lock size={26} />
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#f3e9fd] border border-[#d6aef2]/70 rounded-full text-xs text-[#7c3aed] font-semibold mb-3">
+              <span>Sign In Required to Write Mock</span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#1a1a1a] tracking-tight mb-2">
+              Candidate Verification Required
+            </h1>
+
+            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-6">
+              You must sign in with your Google account to write this mock test. Authentication verifies your test session, logs question pacing diagnostics, and ensures genuine All-India rank calculation.
+            </p>
+
+            {/* Test details preview */}
+            <div className="p-4 sm:p-5 rounded-[22px] bg-[#fafafa] border border-[rgba(26,26,26,0.08)] mb-6 text-left space-y-2.5">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-mono text-slate-400 font-bold uppercase text-[10px]">Test Name</span>
+                <span className="font-bold text-[#0a1c96] font-mono text-[11px] bg-[#e9f1fd] border border-[#1a5fe0]/20 px-2.5 py-0.5 rounded-full">
+                  Official NTA Blueprint
+                </span>
+              </div>
+              <div className="font-bold text-sm sm:text-base text-slate-900 tracking-tight">
+                {testTitle}
+              </div>
+              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[rgba(26,26,26,0.06)] text-center font-mono">
+                <div className="p-2 bg-white rounded-xl border border-[rgba(26,26,26,0.06)] shadow-2xs">
+                  <div className="text-[10px] text-slate-400 uppercase">Questions</div>
+                  <div className="font-bold text-xs sm:text-sm text-slate-800">{test?.total_questions || 75} Qs</div>
+                </div>
+                <div className="p-2 bg-white rounded-xl border border-[rgba(26,26,26,0.06)] shadow-2xs">
+                  <div className="text-[10px] text-slate-400 uppercase">Duration</div>
+                  <div className="font-bold text-xs sm:text-sm text-slate-800">{test?.duration_minutes || 180} Mins</div>
+                </div>
+                <div className="p-2 bg-white rounded-xl border border-[rgba(26,26,26,0.06)] shadow-2xs">
+                  <div className="text-[10px] text-slate-400 uppercase">Total Marks</div>
+                  <div className="font-bold text-xs sm:text-sm text-[#0a1c96]">300 Marks</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Google One-Tap / Standard Button */}
+            <div className="flex justify-center w-full mb-4">
+              <GoogleSignInButton text="continue_with" size="large" shape="pill" width={320} />
+            </div>
+
+            <p className="text-[11px] text-slate-400 font-mono mb-5">
+              Fast 1-click Google authentication. Your answers and timer will auto-save to the cloud.
+            </p>
+
+            <div className="pt-4 border-t border-[rgba(26,26,26,0.08)] flex items-center justify-center gap-4 text-xs font-semibold text-slate-600">
+              <Link href="/dashboard" className="hover:text-[#0a1c96] transition-colors">
+                Go back to dashboard
+              </Link>
+              <span>•</span>
+              <Link href="/exam" className="hover:text-[#0a1c96] transition-colors">
+                Explore all 10 MFTs
+              </Link>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
 
   if (error || !test) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-4">
-        <div className="bg-white border border-gray-200 rounded-xl p-8 max-w-md w-full text-center shadow-sm space-y-4">
+      <div className="min-h-screen bg-[#fafafa] flex flex-col items-center justify-center p-4">
+        <div className="bg-white border border-[rgba(26,26,26,0.08)] rounded-[28px] p-8 max-w-md w-full text-center shadow-md space-y-4">
           <AlertCircle className="w-12 h-12 text-rose-500 mx-auto" />
-          <h2 className="text-lg font-bold text-gray-800">Exam Not Available</h2>
-          <p className="text-sm text-gray-600">{error || "Unable to find the requested test."}</p>
+          <h2 className="text-lg font-bold text-[#1a1a1a]">Exam Not Available</h2>
+          <p className="text-sm text-slate-500">{error || "Unable to find the requested test."}</p>
           <Link
             href="/dashboard"
-            className="inline-block px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+            className="inline-block px-5 py-2.5 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] text-white rounded-full text-xs font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
           >
             Go back to dashboard
           </Link>

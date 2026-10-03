@@ -12,12 +12,16 @@ import {
   Award,
   RotateCcw,
   Trophy,
+  Lock,
 } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { TestSummary } from "@/lib/examDb";
 import { Footer } from "@/components/sections/Footer";
+import { useAuth } from "@/hooks/useAuth";
+import { GoogleSignInButton } from "@/components/ui/GoogleSignInButton";
 
 export default function ExamCatalogPage() {
+  const { profile, loading: authLoading } = useAuth();
   const [fullMocks, setFullMocks] = useState<TestSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -104,12 +108,23 @@ export default function ExamCatalogPage() {
             <Trophy className="w-3.5 h-3.5 text-amber-400" />
             <span>National Mock (27 Dec)</span>
           </Link>
-          <Link
-            href="/dashboard"
-            className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all shadow-xs"
-          >
-            Candidate Dashboard
-          </Link>
+          {profile ? (
+            <Link
+              href="/dashboard"
+              className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all shadow-xs"
+            >
+              Candidate Dashboard
+            </Link>
+          ) : !authLoading ? (
+            <GoogleSignInButton text="signin_with" size="small" shape="pill" width={160} />
+          ) : (
+            <Link
+              href="/dashboard"
+              className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all shadow-xs"
+            >
+              Candidate Dashboard
+            </Link>
+          )}
         </div>
       </header>
 
@@ -182,6 +197,20 @@ export default function ExamCatalogPage() {
                 <span>100% Free Forever</span>
               </div>
             </div>
+
+            {!profile && !authLoading && (
+              <div className="mt-4 p-3.5 bg-blue-950/70 border border-blue-500/30 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex items-center space-x-2.5 text-xs text-blue-200">
+                  <Lock className="w-4 h-4 text-blue-400 shrink-0" />
+                  <span>
+                    <strong>Sign In Required:</strong> Mock tests enforce TCS iON candidate verification to preserve your question pacing, response logs, and rank analysis.
+                  </span>
+                </div>
+                <div className="shrink-0">
+                  <GoogleSignInButton text="signin_with" size="small" shape="pill" width={160} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -276,15 +305,32 @@ export default function ExamCatalogPage() {
                           attemptedTestIds.has(test.source_file.toLowerCase()) ||
                           Array.from(attemptedTestIds).some((id) => id.includes(test.source_file.toLowerCase()));
 
-                        return isAttempted ? (
-                          <Link
-                            href={`/exam/player?id=${test.id}`}
-                            className="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 text-white rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-xs active:scale-98"
-                          >
-                            <RotateCcw className="w-3.5 h-3.5 text-indigo-400" />
-                            <span>Reattempt Examination</span>
-                          </Link>
-                        ) : (
+                        if (isAttempted) {
+                          return (
+                            <Link
+                              href={`/exam/player?id=${test.id}`}
+                              className="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 text-white rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-xs active:scale-98"
+                            >
+                              <RotateCcw className="w-3.5 h-3.5 text-indigo-400" />
+                              <span>Reattempt Examination</span>
+                            </Link>
+                          );
+                        }
+
+                        if (!profile && !authLoading) {
+                          return (
+                            <Link
+                              href={`/exam/player?id=${test.id}`}
+                              className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-xs group-hover:shadow-blue-500/20 active:scale-98"
+                            >
+                              <Lock className="w-3.5 h-3.5 text-blue-200" />
+                              <span>Sign In &amp; Write Mock</span>
+                              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                            </Link>
+                          );
+                        }
+
+                        return (
                           <Link
                             href={`/exam/player?id=${test.id}`}
                             className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-xs group-hover:shadow-blue-500/20 active:scale-98"

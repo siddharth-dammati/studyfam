@@ -121,7 +121,7 @@ export function useAuth() {
         typeof nextPathOrEvent === "string"
           ? nextPathOrEvent
           : typeof window !== "undefined"
-          ? window.location.pathname
+          ? window.location.pathname + window.location.search
           : "/dashboard";
 
       if (typeof window !== "undefined") {

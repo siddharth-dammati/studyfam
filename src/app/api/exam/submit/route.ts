@@ -16,6 +16,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Enforce authentication: candidate must be signed in to submit an exam
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+    const userRes = await supabase.auth.getUser();
+    const user = userRes.data?.user;
+    const email = user?.email || candidateEmail;
+
+    if (!email) {
+      return NextResponse.json(
+        { success: false, error: "Authentication required. You must sign in with your Google account to write and submit a mock test." },
+        { status: 401 }
+      );
+    }
+
     let evaluation: any = null;
 
     // Check if submitting the Active 75-Question Mock Paper
