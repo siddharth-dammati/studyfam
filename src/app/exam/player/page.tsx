@@ -126,7 +126,7 @@ function ExamPlayerContent() {
                 const solRes = await fetch("/api/exam/solutions", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ id }),
+                  body: JSON.stringify({ id, email: profile?.email || null }),
                 });
                 const solJson = await solRes.json();
                 if (solJson.success && solJson.result) {

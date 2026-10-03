@@ -1775,6 +1775,38 @@ async function handleExamSolutions(request: Request, env: Env): Promise<Response
       detailedResults,
     };
 
+    // If candidate email is provided, enrich with past attempt data from Supabase
+    const email = (body.email || body.candidateEmail || "").toLowerCase().trim();
+    if (email) {
+      try {
+        const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "https://wyzkhvomjwrgripytoiv.supabase.co";
+        const supabaseKey = env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_OAyjUsFt2m1hx6qQgAp7NA_lhQEhXte";
+        const pastRes = await fetch(
+          `${supabaseUrl}/rest/v1/exam_attempts?email=eq.${encodeURIComponent(email)}&test_id=eq.${encodeURIComponent(resolvedFile)}&order=created_at.desc&limit=1`,
+          { headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` } }
+        );
+        if (pastRes.ok) {
+          const pastList = await pastRes.json();
+          if (Array.isArray(pastList) && pastList.length > 0) {
+            const past = pastList[0];
+            if (past.detailed_results && Array.isArray(past.detailed_results)) {
+              result.detailedResults = past.detailed_results;
+            }
+            result.totalScore = past.score ?? result.totalScore;
+            result.accuracy = past.accuracy ?? result.accuracy;
+            result.percentage = past.percentage ?? result.percentage;
+            result.timeSpentSeconds = past.time_spent_seconds ?? result.timeSpentSeconds;
+            result.attemptedCount = past.attempted_count ?? result.attemptedCount;
+            result.correctCount = past.correct_count ?? result.correctCount;
+            result.incorrectCount = past.incorrect_count ?? result.incorrectCount;
+            if (past.section_breakdown) result.sectionBreakdown = past.section_breakdown;
+          }
+        }
+      } catch (err) {
+        // Non-fatal
+      }
+    }
+
     return new Response(JSON.stringify({ success: true, result }), { status: 200, headers: jsonHeaders });
   } catch (err: any) {
     return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500, headers: jsonHeaders });

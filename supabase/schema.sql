@@ -193,12 +193,13 @@ exception
 end;
 $$;
 
--- 6. EXAM ATTEMPTS TABLE (Stores student mock test scores & analytics)
+-- 6. EXAM ATTEMPTS TABLE (Stores student mock test scores, answers, question times & analytics)
 create table if not exists public.exam_attempts (
     id uuid primary key default gen_random_uuid(),
     user_id uuid references auth.users(id) on delete set null,
     email text,
     test_id text not null,
+    test_title text,
     score numeric not null default 0,
     max_score numeric not null default 300,
     percentage numeric not null default 0,
@@ -209,16 +210,32 @@ create table if not exists public.exam_attempts (
     correct_count integer not null default 0,
     incorrect_count integer not null default 0,
     section_breakdown jsonb,
+    detailed_results jsonb,
+    question_times jsonb,
+    tab_violations integer not null default 0,
+    submission_reason text,
+    started_at timestamptz,
     created_at timestamptz not null default now()
 );
 
+-- Safe idempotent migrations if table already exists
+ALTER TABLE public.exam_attempts ADD COLUMN IF NOT EXISTS test_title text;
+ALTER TABLE public.exam_attempts ADD COLUMN IF NOT EXISTS detailed_results jsonb;
+ALTER TABLE public.exam_attempts ADD COLUMN IF NOT EXISTS question_times jsonb;
+ALTER TABLE public.exam_attempts ADD COLUMN IF NOT EXISTS tab_violations integer DEFAULT 0;
+ALTER TABLE public.exam_attempts ADD COLUMN IF NOT EXISTS submission_reason text;
+ALTER TABLE public.exam_attempts ADD COLUMN IF NOT EXISTS started_at timestamptz;
+
 create index if not exists idx_exam_attempts_email on public.exam_attempts(email);
 create index if not exists idx_exam_attempts_test_id on public.exam_attempts(test_id);
-create index if not exists idx_exam_attempts_created_at on public.exam_attempts(created_at);
+create index if not exists idx_exam_attempts_created_at on public.exam_attempts(created_at desc);
+create index if not exists idx_exam_attempts_user_id on public.exam_attempts(user_id);
 
 alter table public.exam_attempts enable row level security;
+grant select, insert on table public.exam_attempts to anon, authenticated;
 
 drop policy if exists "Allow public insert exam attempts" on public.exam_attempts;
+drop policy if exists "Anyone can insert attempts" on public.exam_attempts;
 create policy "Allow public insert exam attempts"
 on public.exam_attempts
 for insert
@@ -226,10 +243,12 @@ to anon, authenticated
 with check (true);
 
 drop policy if exists "Allow read own exam attempts" on public.exam_attempts;
-create policy "Allow read own exam attempts"
+drop policy if exists "Allow select exam attempts" on public.exam_attempts;
+create policy "Allow select exam attempts"
 on public.exam_attempts
 for select
 to anon, authenticated
 using (true);
+
 
 

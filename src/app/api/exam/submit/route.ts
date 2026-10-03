@@ -47,10 +47,20 @@ export async function POST(request: NextRequest) {
       const email = user?.email || candidateEmail || null;
 
       if (email) {
+        // Build question_times map
+        const questionTimesMap: Record<string, number> = body.questionTimes || {};
+        const detailedResults = evaluation.detailedResults || [];
+        for (const dr of detailedResults) {
+          if (dr.questionId && questionTimesMap[dr.questionId] !== undefined) {
+            dr.timeSpentSeconds = Number(questionTimesMap[dr.questionId]) || 0;
+          }
+        }
+
         await supabase.from("exam_attempts").insert({
           user_id: user?.id || null,
           email,
           test_id: evaluation.testId,
+          test_title: body.testTitle || evaluation.testTitle || evaluation.testId,
           score: evaluation.totalScore,
           max_score: evaluation.maxScore,
           percentage: evaluation.percentage,
@@ -61,6 +71,11 @@ export async function POST(request: NextRequest) {
           correct_count: evaluation.correctCount,
           incorrect_count: evaluation.incorrectCount,
           section_breakdown: evaluation.sectionBreakdown,
+          detailed_results: detailedResults,
+          question_times: questionTimesMap,
+          tab_violations: Number(body.tabViolations) || 0,
+          submission_reason: submissionReason || null,
+          started_at: body.startedAt || null,
         });
       }
     } catch (saveErr) {

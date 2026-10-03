@@ -47,6 +47,12 @@ async function getSolutionsForTest(testId: string) {
         if (pastAttempt.section_breakdown && Array.isArray(pastAttempt.section_breakdown)) {
           evaluation.sectionBreakdown = pastAttempt.section_breakdown;
         }
+        if (pastAttempt.detailed_results && Array.isArray(pastAttempt.detailed_results)) {
+          evaluation.detailedResults = pastAttempt.detailed_results;
+        }
+        if (pastAttempt.question_times) {
+          evaluation.questionTimes = pastAttempt.question_times;
+        }
       }
     }
   } catch (e) {
