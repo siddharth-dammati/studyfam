@@ -19,9 +19,9 @@ export function TestSeriesComparison() {
       advantage: true,
     },
     {
-      feature: "Chapter-wise Diagnostic Tests",
-      studyfam: "400+ Chapter Tests (9,395+ Qs)",
-      coaching: "Often restricted to expensive batch packages",
+      feature: "Question Pacing Diagnostics",
+      studyfam: "Per-question stopwatch & speed telemetry",
+      coaching: "Basic total time taken only",
       advantage: true,
     },
     {

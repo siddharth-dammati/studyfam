@@ -340,27 +340,27 @@ export function FreeMocksHero() {
             </div>
           )}
 
-          {/* Quick Bar: 300+ Chapter Tests Banner */}
+          {/* Quick Bar: 27 Dec National Mock Banner */}
           <div className="mt-8 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-md">
             <div className="space-y-1.5 max-w-xl">
-              <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">
-                <BookOpen size={14} />
-                <span>300+ Topic &amp; Chapter Tests Available</span>
+              <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">
+                <Trophy size={14} />
+                <span>All-India Mock Test 2027</span>
               </div>
               <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white">
-                Want to practice individual chapters first?
+                Compete on the National Stage (27 Dec 2026)
               </h3>
               <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                Take chapter-wise tests across Physics, Chemistry, and Mathematics with targeted question banks covering Mechanics, Calculus, Organic Chemistry, and more.
+                Single-slot nationwide competition with ₹27 entry (₹18 dedicated to the scholarship pool). Top rankers win 100% of their official NTA JEE Main application fee refunded.
               </p>
             </div>
 
             <div className="flex items-center gap-3">
               <Link
-                href="/exam"
-                className="inline-flex items-center gap-2 px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl text-xs font-bold transition-all shadow-sm shrink-0"
+                href="/all-india-mock"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-bold transition-all shadow-sm shrink-0"
               >
-                <span>Browse 400+ Chapter Tests</span>
+                <span>View National Mock Details</span>
                 <ArrowRight size={14} />
               </Link>
             </div>

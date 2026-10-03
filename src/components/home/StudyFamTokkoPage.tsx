@@ -458,7 +458,6 @@ export function StudyFamTokkoPage() {
 
           <div className="nav-links">
             <a href="#mfts">10 MFTs</a>
-            <Link href="/exam">400+ Chapter Tests</Link>
             <a href="#scholarship">Scholarship</a>
             <a href="#pricing">Pricing</a>
             <a href="#faq">FAQ</a>
@@ -514,7 +513,6 @@ export function StudyFamTokkoPage() {
         {/* Mobile Nav Drawer */}
         <div className={`mnav ${mobileOpen ? "open" : ""}`} id="mnav">
           <a href="#mfts" onClick={() => setMobileOpen(false)}>10 MFTs</a>
-          <Link href="/exam" onClick={() => setMobileOpen(false)}>400+ Chapter Tests</Link>
           <a href="#scholarship" onClick={() => setMobileOpen(false)}>Scholarship</a>
           <a href="#pricing" onClick={() => setMobileOpen(false)}>Pricing</a>
           <a href="#faq" onClick={() => setMobileOpen(false)}>FAQ</a>
@@ -555,17 +553,17 @@ export function StudyFamTokkoPage() {
               </span>
             </h1>
             <p className="sub">
-              <strong>10 full-length CBT mocks (MFT-01 → MFT-10) &amp; 400+ chapter tests</strong> — 75 questions · 300 marks · 180 minutes · +4/−1 — plus a <strong>₹27 All-India Scholarship Exam</strong> that refunds your full NTA fee.
+              <strong>10 full-length CBT mocks (MFT-01 → MFT-10)</strong> — 75 questions · 300 marks · 180 minutes · +4/−1 — plus a <strong>₹27 All-India Scholarship Exam</strong> that refunds your full NTA fee.
             </p>
             <div className="cta-row">
               <a className="btn btn-blue" href="/exam/player?id=MFT-1.pdf">Start Free →</a>
-              <Link className="btn btn-ghost" href="/exam">Browse 400+ Tests</Link>
+              <Link className="btn btn-ghost" href="/exam">View All MFTs</Link>
               <a className="btn btn-ghost" href="#scholarship">₹27 Scholarship</a>
             </div>
             <p className="cta-note">Free forever · No credit card · 24/7 access</p>
             <div className="hero-stats" ref={statsContainerRef}>
               <div><b><span className="num" data-to="10">10</span></b><span>Full mocks, free</span></div>
-              <div><b><span className="num" data-to="400">400</span>+</b><span>Chapter tests</span></div>
+              <div><b><span className="num" data-to="750">750</span></b><span>Curated questions</span></div>
               <div><b><span className="num" data-to="300">300</span></b><span>Marks per paper</span></div>
               <div><b><span className="num" data-to="27" data-pre="₹">₹27</span></b><span>Scholarship entry</span></div>
             </div>

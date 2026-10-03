@@ -86,11 +86,10 @@ export function getAvailableTests(): { fullMocks: TestSummary[]; chapterTests: T
       chapter,
       count(*) as question_count
     FROM questions 
+    WHERE source_file LIKE 'MFT-%'
     GROUP BY source_file 
     HAVING question_count >= 5
-    ORDER BY 
-      CASE WHEN source_file LIKE 'MFT-%' THEN 0 ELSE 1 END,
-      source_file ASC
+    ORDER BY source_file ASC
   `;
 
   const rows = db.prepare(query).all() as Array<{
@@ -109,8 +108,6 @@ export function getAvailableTests(): { fullMocks: TestSummary[]; chapterTests: T
     for (const c of customSummaries) {
       if (c.is_full_mock) {
         fullMocks.push(c);
-      } else {
-        chapterTests.push(c);
       }
     }
   } catch (e) {
@@ -118,26 +115,20 @@ export function getAvailableTests(): { fullMocks: TestSummary[]; chapterTests: T
   }
 
   for (const r of rows) {
-    const isMft = r.source_file.startsWith("MFT-");
-    const isMock = isMft || r.question_count >= 60;
     const cleanTitle = r.source_file.replace(/\.pdf$/i, "").replace(/_/g, " ");
 
     const summary: TestSummary = {
       id: encodeURIComponent(r.source_file),
-      title: isMft ? `JEE Main - ${cleanTitle} (Official Pattern)` : cleanTitle,
+      title: `JEE Main - ${cleanTitle} (Official Pattern)`,
       source_file: r.source_file,
-      subject: isMock ? "All Subjects" : r.subject,
+      subject: "All Subjects",
       chapter: r.chapter,
       question_count: Number(r.question_count),
-      duration_minutes: isMock ? 180 : Math.max(30, Math.round(r.question_count * 2.4)),
-      is_full_mock: isMock,
+      duration_minutes: 180,
+      is_full_mock: true,
     };
 
-    if (isMock) {
-      fullMocks.push(summary);
-    } else {
-      chapterTests.push(summary);
-    }
+    fullMocks.push(summary);
   }
 
   return { fullMocks, chapterTests };

@@ -18,7 +18,7 @@ export function HomeFooter() {
             </Link>
 
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-sm">
-              StudyFAM is India&apos;s premier community-driven JEE Main preparation portal. We provide 10 full-length NTA CBT mock tests and 400+ chapter-wise practice tests 100% free with complete step-by-step textbook solutions.
+              StudyFAM is India&apos;s premier community-driven JEE Main preparation portal. We provide 10 full-length NTA CBT mock tests (MFT-01 to MFT-10) 100% free with complete step-by-step textbook solutions.
             </p>
 
             <div className="inline-flex items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-200 text-[11px] text-slate-700 shadow-xs">
@@ -50,19 +50,18 @@ export function HomeFooter() {
             </ul>
           </div>
 
-          {/* Col 4: Chapter Tests & Practice */}
+          {/* Col 4: National Mock & Portal */}
           <div className="space-y-3">
             <div className="text-[11px] font-mono uppercase font-bold text-slate-900 tracking-wider">
-              Question Banks &amp; Events
+              National Mock &amp; Events
             </div>
             <ul className="space-y-2">
               {[
-                { name: "Physics Chapter Tests (110+)", href: "/exam" },
-                { name: "Chemistry Chapter Tests (125+)", href: "/exam" },
-                { name: "Mathematics Chapter Tests (105+)", href: "/exam" },
                 { name: "All-India Scholarship Mock (27 Dec)", href: "/all-india-mock" },
                 { name: "Official Scholarship Rules", href: "/scholarship-rules" },
                 { name: "Candidate Dashboard", href: "/dashboard" },
+                { name: "Admit Card Specimen", href: "/admit-card" },
+                { name: "Full Mocks Catalog", href: "/exam" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="hover:text-indigo-600 transition-colors">

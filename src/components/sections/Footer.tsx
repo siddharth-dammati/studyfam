@@ -197,7 +197,7 @@ export function Footer() {
           <h4>Practice</h4>
           <Link href="/#mfts">10 Free Mocks (MFT 1–10)</Link>
           <Link href="/all-india-mock#exam-pattern">Exam Pattern (NTA 75-Q)</Link>
-          <Link href="/exam">Chapter Tests (400+)</Link>
+          <Link href="/exam">Full Mock Exam Hall</Link>
           <Link href="/#faq">Frequently Asked Questions</Link>
         </div>
 

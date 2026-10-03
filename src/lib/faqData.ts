@@ -6,7 +6,7 @@ export interface FAQItemData {
 export const HOME_FAQS: FAQItemData[] = [
   {
     q: "Are the 10 full-length JEE Main mock tests on StudyFAM truly 100% free?",
-    a: "Yes, all 10 Full-Length JEE Main Mock Tests (MFT-01 through MFT-10) and our 400+ chapter-wise practice tests are 100% free forever. There are no paywalls, no hidden subscription charges, and no credit card required to start taking tests.",
+    a: "Yes, all 10 Full-Length JEE Main Mock Tests (MFT-01 through MFT-10) are 100% free forever. There are no paywalls, no hidden subscription charges, and no credit card required to start taking tests.",
   },
   {
     q: "How closely does StudyFAM's test player resemble the actual NTA CBT interface?",
@@ -30,7 +30,7 @@ export const HOME_FAQS: FAQItemData[] = [
   },
   {
     q: "How should I structure my practice across the 10 free mock tests?",
-    a: "We recommend taking MFT-01 as a baseline diagnostic test. Review your errors using our step-by-step solutions, drill into your weak topics using our 400+ chapter tests, and then schedule one full mock every 7 to 10 days (e.g. MFT-02 to MFT-10) during the morning slot (9:00 AM – 12:00 PM) to align your biological clock with the actual JEE exam timing.",
+    a: "We recommend taking MFT-01 as a baseline diagnostic test. Review your errors using our step-by-step solutions, revise weak areas from your textbook, and then schedule one full mock every 7 to 10 days (e.g. MFT-02 to MFT-10) during the morning slot (9:00 AM – 12:00 PM) to align your biological clock with the actual JEE exam timing.",
   },
   {
     q: "Do I need to create an account to start practicing?",

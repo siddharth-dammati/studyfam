@@ -201,8 +201,8 @@ export function StudyFamLandingPage() {
             <a href="#all-india-mock" className="px-3.5 py-1.5 text-xs font-bold text-[#4B5B76] hover:text-[#1A5FE0] hover:bg-white rounded-full transition-all">
               27 Dec Scholarship
             </a>
-            <a href="#chapter-tests" className="px-3.5 py-1.5 text-xs font-bold text-[#4B5B76] hover:text-[#1A5FE0] hover:bg-white rounded-full transition-all">
-              Chapter Banks
+            <a href="/exam" className="px-3.5 py-1.5 text-xs font-bold text-[#4B5B76] hover:text-[#1A5FE0] hover:bg-white rounded-full transition-all">
+              Full Mocks
             </a>
             <a href="#comparison" className="px-3.5 py-1.5 text-xs font-bold text-[#4B5B76] hover:text-[#1A5FE0] hover:bg-white rounded-full transition-all">
               Comparison
@@ -270,11 +270,11 @@ export function StudyFamLandingPage() {
                 27 Dec Scholarship Exam (₹27)
               </a>
               <a
-                href="#chapter-tests"
+                href="/exam"
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2.5 rounded-xl font-bold text-sm text-[#0B1526] hover:bg-blue-50 hover:text-[#1A5FE0] transition-colors"
               >
-                300+ Chapter Test Banks
+                10 Full Mocks (MFT)
               </a>
               <a
                 href="#comparison"
@@ -1233,86 +1233,7 @@ export function StudyFamLandingPage() {
         </div>
       </section>
 
-      {/* =========================================================================
-          9. 300+ CHAPTER PRACTICE TESTS SPOTLIGHT (#chapter-tests)
-          ========================================================================= */}
-      <section id="chapter-tests" className="py-24 sm:py-32 bg-white border-y border-[#E3EAF6] scroll-mt-20">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-extrabold text-[#1A5FE0] mb-3">
-              300+ CHAPTER-WISE TESTS
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-black text-[#0B1526] tracking-tight">
-              Drill Specific Weak Chapters
-            </h2>
-            <p className="text-base sm:text-lg text-[#4B5B76] mt-3">
-              Fix conceptual leaks with 9,300+ curated chapter questions before taking full-length papers.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Physics Card */}
-            <div className="bg-[#F6F9FF] rounded-3xl p-8 border border-[#E3EAF6] flex flex-col justify-between hover:shadow-xl transition-all">
-              <div>
-                <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl mb-4">
-                  ⚛️
-                </div>
-                <h3 className="text-2xl font-black text-[#0B1526] mb-1">Physics Chapter Banks</h3>
-                <span className="text-xs font-extrabold text-[#1A5FE0]">110+ Tests · 3,100+ Questions</span>
-                <p className="text-xs text-[#4B5B76] leading-relaxed mt-3">
-                  Kinematics, Rotational Dynamics, Electrodynamics & AC, Modern Physics, Ray & Wave Optics, Thermodynamics.
-                </p>
-              </div>
-              <a
-                href="/exam"
-                className="mt-6 w-full py-3 rounded-full text-center text-xs font-extrabold bg-white border border-[#CBD5E1] text-[#0B1526] hover:bg-blue-50 hover:text-[#1A5FE0] hover:border-blue-200 transition-all"
-              >
-                Practice Physics Tests →
-              </a>
-            </div>
-
-            {/* Chemistry Card */}
-            <div className="bg-[#F6F9FF] rounded-3xl p-8 border border-[#E3EAF6] flex flex-col justify-between hover:shadow-xl transition-all">
-              <div>
-                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl mb-4">
-                  🧪
-                </div>
-                <h3 className="text-2xl font-black text-[#0B1526] mb-1">Chemistry Chapter Banks</h3>
-                <span className="text-xs font-extrabold text-emerald-600">125+ Tests · 3,300+ Questions</span>
-                <p className="text-xs text-[#4B5B76] leading-relaxed mt-3">
-                  GOC & Reaction Mechanisms, Chemical Thermodynamics, Coordination Chemistry, Carbonyls, Chemical Bonding.
-                </p>
-              </div>
-              <a
-                href="/exam"
-                className="mt-6 w-full py-3 rounded-full text-center text-xs font-extrabold bg-white border border-[#CBD5E1] text-[#0B1526] hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition-all"
-              >
-                Practice Chemistry Tests →
-              </a>
-            </div>
-
-            {/* Maths Card */}
-            <div className="bg-[#F6F9FF] rounded-3xl p-8 border border-[#E3EAF6] flex flex-col justify-between hover:shadow-xl transition-all">
-              <div>
-                <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl mb-4">
-                  📐
-                </div>
-                <h3 className="text-2xl font-black text-[#0B1526] mb-1">Maths Chapter Banks</h3>
-                <span className="text-xs font-extrabold text-purple-600">105+ Tests · 2,900+ Questions</span>
-                <p className="text-xs text-[#4B5B76] leading-relaxed mt-3">
-                  Definite Integrals, Vectors & 3D Geometry, Matrices & Determinants, Conic Sections, Limits & Continuity.
-                </p>
-              </div>
-              <a
-                href="/exam"
-                className="mt-6 w-full py-3 rounded-full text-center text-xs font-extrabold bg-white border border-[#CBD5E1] text-[#0B1526] hover:bg-purple-50 hover:text-purple-700 hover:border-purple-200 transition-all"
-              >
-                Practice Maths Tests →
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* =========================================================================
           10. 3-STAGE MASTERY CURRICULUM TRACKS (TOKKO STYLE)
@@ -1637,7 +1558,7 @@ export function StudyFamLandingPage() {
                 India&apos;s premier community-driven Free JEE Main CBT Mock Examination and National Scholarship Platform. Built by IITians for future IITians.
               </p>
               <div className="text-[11px] text-slate-500 font-mono">
-                10 Full MFTs · 300+ Chapter Tests · 750 Curated NTA Qs
+                10 Full MFTs · 750 Curated NTA Qs · 100% Free
               </div>
             </div>
 
@@ -1645,10 +1566,10 @@ export function StudyFamLandingPage() {
             <div>
               <div className="text-xs font-bold text-white uppercase tracking-wider mb-4">Free Practice</div>
               <ul className="space-y-2 text-xs text-slate-400">
-                <li><a href="/exam/player?id=MFT-1.pdf" className="hover:text-white transition-colors">MFT-01 (Mechanics)</a></li>
-                <li><a href="/exam/player?id=MFT-2.pdf" className="hover:text-white transition-colors">MFT-02 (Electrodynamics)</a></li>
+                <li><a href="/exam/player?id=MFT-1.pdf" className="hover:text-white transition-colors">MFT-01 (Full Mock)</a></li>
+                <li><a href="/exam/player?id=MFT-2.pdf" className="hover:text-white transition-colors">MFT-02 (Full Mock)</a></li>
                 <li><a href="/exam/player?id=MFT-3.pdf" className="hover:text-white transition-colors">MFT-03 to MFT-10</a></li>
-                <li><a href="#chapter-tests" className="hover:text-white transition-colors">300+ Chapter Tests</a></li>
+                <li><a href="/exam" className="hover:text-white transition-colors">10 Full Mocks (MFT)</a></li>
                 <li><a href="#cbt-engine" className="hover:text-white transition-colors">TCS iON CBT Simulator</a></li>
               </ul>
             </div>

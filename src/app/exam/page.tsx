@@ -7,12 +7,9 @@ import {
   Clock,
   CheckCircle2,
   Search,
-  Filter,
   ArrowRight,
   Sparkles,
   Award,
-  Layers,
-  Zap,
   RotateCcw,
   Trophy,
 } from "lucide-react";
@@ -21,16 +18,11 @@ import { TestSummary } from "@/lib/examDb";
 import { Footer } from "@/components/sections/Footer";
 
 export default function ExamCatalogPage() {
-  const [activeTab, setActiveTab] = useState<"full" | "chapter">("full");
   const [fullMocks, setFullMocks] = useState<TestSummary[]>([]);
-  const [chapterTests, setChapterTests] = useState<TestSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [attemptedTestIds, setAttemptedTestIds] = useState<Set<string>>(new Set());
-
-  // Filters
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedSubject, setSelectedSubject] = useState<string>("ALL");
 
   useEffect(() => {
     async function loadTests() {
@@ -40,7 +32,6 @@ export default function ExamCatalogPage() {
         const json = await res.json();
         if (json.success) {
           setFullMocks(json.fullMocks || []);
-          setChapterTests(json.chapterTests || []);
         } else {
           setError(json.error || "Failed to load tests");
         }
@@ -75,14 +66,12 @@ export default function ExamCatalogPage() {
     } catch {}
   }, []);
 
-  const displayedTests = (activeTab === "full" ? fullMocks : chapterTests).filter((test) => {
-    if (selectedSubject !== "ALL" && test.subject !== selectedSubject) return false;
+  const displayedTests = fullMocks.filter((test) => {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       const matchTitle = test.title.toLowerCase().includes(q);
-      const matchChapter = (test.chapter || "").toLowerCase().includes(q);
-      const matchSubject = test.subject.toLowerCase().includes(q);
-      return matchTitle || matchChapter || matchSubject;
+      const matchSource = test.source_file.toLowerCase().includes(q);
+      return matchTitle || matchSource;
     }
     return true;
   });
@@ -97,7 +86,7 @@ export default function ExamCatalogPage() {
           </Link>
           <span className="text-slate-700 hidden sm:inline">|</span>
           <span className="text-xs sm:text-sm font-semibold text-slate-400 hidden sm:inline">
-            All India Mock Test Series &amp; Question Bank
+            10 Official Full-Length JEE Main Mock Tests (MFT Series)
           </span>
         </div>
 
@@ -166,13 +155,13 @@ export default function ExamCatalogPage() {
             </div>
 
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              Master the Real JEE Main with Official Test Players
+              Master the Real JEE Main with Official Full-Length Mocks
             </h1>
 
             <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-              Experience the authentic NTA Computer Based Test interface with real countdown timers, official marking
-              scheme (+4 / -1), collapsible 5-state question palettes, and step-by-step solutions from our 9,395+
-              curated question bank. Master all 10 MFTs and chapter banks to benchmark your preparation for the 27 Dec All-India Mock.
+              Experience the authentic NTA Computer Based Test interface with real 180-minute countdown timers, official marking
+              scheme (+4 / -1), collapsible 5-state question palettes, and step-by-step textbook solutions.
+              Practice all 10 MFT papers to benchmark your score and pacing before the 27 Dec All-India Mock.
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2 text-xs font-medium text-slate-300">
@@ -182,7 +171,7 @@ export default function ExamCatalogPage() {
               </div>
               <div className="flex items-center space-x-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>400+ Chapter Practice Tests</span>
+                <span>75 Questions / 300 Marks Each</span>
               </div>
               <div className="flex items-center space-x-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -197,64 +186,26 @@ export default function ExamCatalogPage() {
         </div>
       </section>
 
-      {/* Main Content & Tabs */}
+      {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 pb-20 space-y-6">
-        {/* Navigation Tabs */}
+        {/* Header & Search Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800 pb-4">
-          <div className="flex items-center space-x-2 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
-            <button
-              onClick={() => {
-                setActiveTab("full");
-                setSelectedSubject("ALL");
-              }}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                activeTab === "full"
-                  ? "bg-blue-600 text-white shadow-xs"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <Award className="w-4 h-4" />
-              <span>10 Major Full Tests (MFT Series)</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("chapter")}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                activeTab === "chapter"
-                  ? "bg-blue-600 text-white shadow-xs"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <Layers className="w-4 h-4" />
-              <span>400+ Chapter Practice Tests {chapterTests.length > 0 ? `(${chapterTests.length})` : ""}</span>
-            </button>
+          <div className="flex items-center space-x-2">
+            <span className="flex items-center space-x-2 px-3.5 py-1.5 rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30 text-xs sm:text-sm font-bold">
+              <Award className="w-4 h-4 text-blue-400" />
+              <span>10 Major Full Tests (MFT-01 to MFT-10)</span>
+            </span>
           </div>
 
-          {/* Search & Subject Filter */}
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-              <input
-                type="text"
-                placeholder="Search tests or chapters..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-slate-900 border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 w-48 sm:w-60"
-              />
-            </div>
-
-            {activeTab === "chapter" && (
-              <select
-                value={selectedSubject}
-                onChange={(e) => setSelectedSubject(e.target.value)}
-                className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white font-medium focus:outline-none focus:border-blue-500"
-              >
-                <option value="ALL">All Subjects</option>
-                <option value="Physics">Physics</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="Mathematics">Mathematics</option>
-              </select>
-            )}
+          <div className="relative">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <input
+              type="text"
+              placeholder="Search tests..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-slate-900 border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 w-full sm:w-64"
+            />
           </div>
         </div>
 
@@ -262,7 +213,7 @@ export default function ExamCatalogPage() {
         {loading && (
           <div className="py-20 text-center space-y-3">
             <div className="inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-slate-400">Loading tests from questions database...</p>
+            <p className="text-sm text-slate-400">Loading full mock tests...</p>
           </div>
         )}
 
@@ -277,13 +228,11 @@ export default function ExamCatalogPage() {
           <div>
             {displayedTests.length === 0 ? (
               <div className="py-16 text-center text-slate-500 text-sm">
-                No tests match your search criteria.
+                No mock tests match your search criteria.
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {displayedTests.map((test) => {
-                  const isMft = test.source_file.startsWith("MFT-");
-
                   return (
                     <div
                       key={test.id}
@@ -291,14 +240,8 @@ export default function ExamCatalogPage() {
                     >
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <span
-                            className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
-                              isMft
-                                ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
-                                : "bg-blue-500/10 text-blue-400 border border-blue-500/30"
-                            }`}
-                          >
-                            {isMft ? "Official 300 Marks · Full Mock" : `${test.subject} · Chapter Practice`}
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                            Official 300 Marks · Full Mock
                           </span>
 
                           <span className="text-[11px] text-slate-400 flex items-center space-x-1 font-mono">
@@ -311,11 +254,9 @@ export default function ExamCatalogPage() {
                           <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-blue-400 transition-colors line-clamp-2">
                             {test.title}
                           </h3>
-                          {test.chapter && (
-                            <p className="text-xs text-slate-400 mt-1 line-clamp-1">
-                              Chapter: {test.chapter}
-                            </p>
-                          )}
+                          <p className="text-xs text-slate-400 mt-1 line-clamp-1">
+                            Physics (25 Qs) · Chemistry (25 Qs) · Mathematics (25 Qs)
+                          </p>
                         </div>
 
                         <div className="flex items-center space-x-4 text-xs text-slate-400 pt-1">

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "StudyFam — India's Free JEE Main CBT Platform & ₹27 National Scholarship Exam",
-  description: "Experience the real TCS iON JEE Main CBT screen with 10 free major mocks, 400+ chapter tests, question pacing diagnostics, and 27 Dec All-India Scholarship Mock (₹27 entry / ₹18 pool).",
+  description: "Experience the real TCS iON JEE Main CBT screen with 10 free major mocks, question pacing diagnostics, and 27 Dec All-India Scholarship Mock (₹27 entry / ₹18 pool).",
 };
 
 export default function TokkoPage() {

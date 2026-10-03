@@ -6,7 +6,7 @@ import { FREE_MOCKS_DATA } from "@/lib/freeMocksData";
 export const metadata: Metadata = {
   title: "StudyFam — India's Free JEE Main CBT Platform & ₹27 National Scholarship Exam",
   description:
-    "Practice 10 free full-length JEE Main mock tests (MFT-01 to MFT-10) and 400+ chapter tests with authentic NTA TCS iON CBT interface, question pacing diagnostics, and compete on 27 Dec 2026 in the National Mock (₹27 entry / ₹18 scholarship pool per student). 100% free practice suite forever.",
+    "Practice 10 free full-length JEE Main mock tests (MFT-01 to MFT-10) with authentic NTA TCS iON CBT interface, question pacing diagnostics, and compete on 27 Dec 2026 in the National Mock (₹27 entry / ₹18 scholarship pool per student). 100% free practice suite forever.",
   keywords: [
     "free jee mock test",
     "jee main 2027 mock test free",
