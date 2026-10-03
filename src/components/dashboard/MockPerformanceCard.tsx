@@ -339,7 +339,7 @@ export function MockPerformanceCard({ attempts, loading }: MockPerformanceCardPr
 
               return (
                 <div
-                  key={attempt.id}
+                  key={`${attempt.id}_${attempt.createdAt}_${attempt.score}`}
                   className="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/80 transition-colors"
                 >
                   <div className="space-y-1.5 min-w-0">
