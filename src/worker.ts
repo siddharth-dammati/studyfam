@@ -3,6 +3,7 @@ import { ALLOWED_ADMIN_EMAILS, DEFAULT_ADMIN_PASSCODE } from "./lib/adminAuth";
 import DEFAULT_ACTIVE_EXAM_PAPER from "../questions_database/active_exam_paper.json";
 import CURATED_QUESTION_BANK from "../questions_database/curated_question_bank.json";
 import MFT_QUESTIONS_BY_FILE from "../questions_database/mft_questions.json";
+import SOHAN_CHEM_MOCK from "../questions_database/custom_tests/sohan-chem-mock.json";
 
 export interface Env {
   ASSETS: {
@@ -1750,6 +1751,98 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
     const sectionBreakdown: any[] = [];
     const detailedResults: any[] = [];
 
+    // ── Case 0: Unlisted Sohan Chemistry Mock Test ───────────────────────────
+    if (cleanTestId === "sohan-chem-mock" || cleanTestId.toLowerCase().includes("sohan")) {
+      const questions = SOHAN_CHEM_MOCK.sections[0].questions;
+      const marksPerQ = SOHAN_CHEM_MOCK.marks_per_question || 4;
+      const negMarks = SOHAN_CHEM_MOCK.negative_marks || 1;
+      const sectionMap = new Map<string, { total: number; attempted: number; correct: number; incorrect: number; score: number }>();
+
+      for (const q of questions) {
+        totalQuestions++;
+        const sec = q.subject || "Chemistry";
+        if (!sectionMap.has(sec)) sectionMap.set(sec, { total: 0, attempted: 0, correct: 0, incorrect: 0, score: 0 });
+        const s = sectionMap.get(sec)!;
+        s.total++;
+
+        const userAns = (responses[q.id] || "").trim();
+        const isAttempted = Boolean(userAns);
+        const timeOnQuestion = (questionTimes && questionTimes[q.id]) ? Number(questionTimes[q.id]) : 0;
+        let isCorrect = false;
+        let marksAwarded = 0;
+
+        if (isAttempted) {
+          attemptedCount++;
+          s.attempted++;
+          isCorrect = checkQuestionCorrect(userAns, q);
+          if (isCorrect) {
+            correctCount++;
+            s.correct++;
+            marksAwarded = marksPerQ;
+            totalScore += marksPerQ;
+            s.score += marksPerQ;
+          } else {
+            incorrectCount++;
+            s.incorrect++;
+            marksAwarded = -negMarks;
+            totalScore -= negMarks;
+            s.score -= negMarks;
+          }
+        }
+
+        detailedResults.push({
+          questionId: q.id,
+          questionNumber: q.question_number,
+          subject: q.subject,
+          chapter: q.chapter || "General",
+          difficulty: q.difficulty || "Medium",
+          questionText: q.question_text,
+          optionA: q.option_a || null,
+          optionB: q.option_b || null,
+          optionC: q.option_c || null,
+          optionD: q.option_d || null,
+          imagePaths: q.image_paths || [],
+          userResponse: isAttempted ? userAns : null,
+          correctAnswer: q.correct_answer,
+          isCorrect,
+          solution: q.solution,
+          marksAwarded,
+          timeSpentSeconds: timeOnQuestion,
+        });
+      }
+
+      const maxScore = totalQuestions * marksPerQ;
+      const percentage = maxScore > 0 ? Math.max(0, Math.round((totalScore / maxScore) * 1000) / 10) : 0;
+      const accuracy = attemptedCount > 0 ? Math.round((correctCount / attemptedCount) * 1000) / 10 : 0;
+
+      for (const [name, s] of sectionMap.entries()) {
+        sectionBreakdown.push({ sectionName: name, ...s });
+      }
+
+      evaluation = {
+        testId: "sohan-chem-mock",
+        testTitle: SOHAN_CHEM_MOCK.title,
+        totalQuestions,
+        attemptedCount,
+        correctCount,
+        incorrectCount,
+        unattemptedCount: totalQuestions - attemptedCount,
+        totalScore,
+        maxScore,
+        percentage,
+        accuracy,
+        timeSpentSeconds: Number(timeSpentSeconds) || 0,
+        sectionBreakdown,
+        detailedResults,
+        submissionReason: submissionReason || null,
+      };
+
+      return new Response(JSON.stringify({ success: true, result: evaluation }), {
+        status: 200,
+        headers: jsonHeaders,
+      });
+    }
+
     // ── Case A: Full Mock Test (MFT) ──────────────────────────────────────────
     if (mftQuestions && mftQuestions.length > 0) {
       const isMft = resolvedFile.startsWith("MFT-");
@@ -2051,6 +2144,27 @@ async function handleExamDetail(request: Request, env: Env): Promise<Response> {
 
     // Decode and normalise: "MFT-1.pdf", "MFT-1", "MFT-01" all resolve to "MFT-1.pdf"
     const cleanId = decodeURIComponent(rawId);
+
+    // Support Unlisted Sohan Chemistry Mock Test
+    if (cleanId === "sohan-chem-mock" || cleanId.toLowerCase().includes("sohan")) {
+      const sanitizedSections = SOHAN_CHEM_MOCK.sections.map((sec: any) => ({
+        name: sec.name,
+        questions: sec.questions.map((q: any) => ({
+          ...sanitizeQuestion(q),
+          type: q.type || (q.question_number > 20 ? "NUMERICAL" : "MCQ"),
+          section: q.section || (q.question_number > 20 ? "Section B (Numerical)" : "Section A (MCQ)"),
+        })),
+      }));
+
+      const test = {
+        ...SOHAN_CHEM_MOCK,
+        allowGuest: true,
+        is_unlisted: true,
+        sections: sanitizedSections,
+      };
+      return new Response(JSON.stringify({ success: true, test }), { status: 200, headers: jsonHeaders });
+    }
+
     const mftMatch = cleanId.match(/^MFT-0*(\d+)(\.pdf)?$/i);
     const resolvedFile = mftMatch ? `MFT-${mftMatch[1]}.pdf` : cleanId.endsWith(".pdf") ? cleanId : `${cleanId}.pdf`;
 
@@ -2172,6 +2286,97 @@ async function handleExamSolutions(request: Request, env: Env): Promise<Response
     }
 
     const cleanId = decodeURIComponent(rawId);
+
+    // Support Unlisted Sohan Chemistry Mock Solutions
+    if (cleanId === "sohan-chem-mock" || cleanId.toLowerCase().includes("sohan")) {
+      const questions = SOHAN_CHEM_MOCK.sections[0].questions;
+      const userResponses: Record<string, string> = body.responses || {};
+      const marksPerQ = SOHAN_CHEM_MOCK.marks_per_question || 4;
+      const negativeMarks = SOHAN_CHEM_MOCK.negative_marks || 1;
+
+      let totalScore = 0, correct = 0, incorrect = 0, attempted = 0;
+      const detailedResults: any[] = [];
+      const sectionMap = new Map<string, { total: number; attempted: number; correct: number; incorrect: number; score: number }>();
+
+      for (const q of questions) {
+        const sec = q.subject || "Chemistry";
+        if (!sectionMap.has(sec)) sectionMap.set(sec, { total: 0, attempted: 0, correct: 0, incorrect: 0, score: 0 });
+        const s = sectionMap.get(sec)!;
+        s.total++;
+
+        const userAns = (userResponses[q.id] || "").trim();
+        const isAttempted = Boolean(userAns);
+        let isCorrect = false;
+        let marksAwarded = 0;
+
+        if (isAttempted) {
+          attempted++;
+          s.attempted++;
+          isCorrect = checkQuestionCorrect(userAns, q);
+          if (isCorrect) {
+            correct++;
+            s.correct++;
+            marksAwarded = marksPerQ;
+            totalScore += marksPerQ;
+            s.score += marksPerQ;
+          } else {
+            incorrect++;
+            s.incorrect++;
+            marksAwarded = -negativeMarks;
+            totalScore -= negativeMarks;
+            s.score -= negativeMarks;
+          }
+        }
+
+        detailedResults.push({
+          questionId: q.id,
+          questionNumber: q.question_number,
+          subject: q.subject,
+          chapter: q.chapter || "General",
+          difficulty: q.difficulty || "Medium",
+          questionText: q.question_text,
+          optionA: q.option_a || null,
+          optionB: q.option_b || null,
+          optionC: q.option_c || null,
+          optionD: q.option_d || null,
+          imagePaths: q.image_paths || [],
+          userResponse: isAttempted ? userAns : null,
+          correctAnswer: q.correct_answer,
+          isCorrect,
+          solution: q.solution,
+          marksAwarded,
+        });
+      }
+
+      const maxScore = questions.length * marksPerQ;
+      const percentage = maxScore > 0 ? Math.max(0, Math.round((totalScore / maxScore) * 1000) / 10) : 0;
+      const accuracy = attempted > 0 ? Math.round((correct / attempted) * 1000) / 10 : 0;
+
+      const sectionBreakdown: any[] = [];
+      for (const [name, s] of sectionMap.entries()) {
+        sectionBreakdown.push({ sectionName: name, ...s });
+      }
+
+      const result: any = {
+        testId: "sohan-chem-mock",
+        testTitle: SOHAN_CHEM_MOCK.title,
+        totalQuestions: questions.length,
+        attemptedCount: attempted,
+        correctCount: correct,
+        incorrectCount: incorrect,
+        unattemptedCount: questions.length - attempted,
+        totalScore,
+        maxScore,
+        percentage,
+        accuracy,
+        timeSpentSeconds: Number(body.timeSpentSeconds) || 0,
+        sectionBreakdown,
+        detailedResults,
+      };
+
+      return new Response(JSON.stringify({ success: true, result }), { status: 200, headers: jsonHeaders });
+    }
+
     const mftMatch = cleanId.match(/^MFT-0*(\d+)(\.pdf)?$/i);
     const resolvedFile = mftMatch ? `MFT-${mftMatch[1]}.pdf` : cleanId.endsWith(".pdf") ? cleanId : `${cleanId}.pdf`;
 
