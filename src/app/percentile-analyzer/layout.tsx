@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   keywords: [
     "jee main marks vs percentile",
     "jee main marks vs percentile 2026",
+    "jee main marks vs percentile",
+    "jee main marks vs percentile 2026",
     "jee main marks vs percentile 2027",
     "jee rank predictor",
     "jee main rank calculator",
@@ -15,6 +17,15 @@ export const metadata: Metadata = {
     "nta percentile formula",
     "jee main score vs rank",
     "jee 99 percentile marks",
+    "180 marks in jee main percentile",
+    "160 marks in jee main percentile",
+    "140 marks in jee main percentile",
+    "120 marks in jee main percentile",
+    "100 marks in jee main percentile",
+    "marks required for 99 percentile in jee main 2026",
+    "jee main shift wise marks vs percentile",
+    "safe score for nit trichy cse",
+    "studyfam jee percentile analyzer",
   ],
   alternates: {
     canonical: "https://studyfam.in/percentile-analyzer",
@@ -83,6 +94,30 @@ export default function PercentileAnalyzerLayout({
             acceptedAnswer: {
               "@type": "Answer",
               text: "Historically, 99 percentile ranges between 175 to 205 marks depending on the shift difficulty level and candidate performance distribution.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What percentile is 160 marks in JEE Main?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "A raw score of 160 marks typically translates to approximately 98.2 to 98.8 percentile, securing an estimated All-India Rank between 14,000 to 22,000 depending on the shift difficulty.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What percentile is 120 marks in JEE Main?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "A score of 120 marks usually corresponds to approximately 94.5 to 96.0 percentile, securing an estimated rank of 48,000 to 65,000.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What is a safe score in JEE Main for top NIT Computer Science (CSE)?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "For top NITs like Trichy, Surathkal, and Warangal, a safe general-category score for Computer Science is 210+ marks, which corresponds to 99.4+ percentile.",
             },
           },
           {

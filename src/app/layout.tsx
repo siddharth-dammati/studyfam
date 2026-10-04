@@ -30,6 +30,7 @@ export const metadata: Metadata = {
   description:
     "Practice 10 free full-length JEE Main mock tests (750 questions) with authentic NTA TCS iON CBT interface, question pacing diagnostics, and compete on 27 Dec 2026 in the National Mock (₹27 entry / ₹18 scholarship pool per student). 100% free practice suite forever.",
   keywords: [
+    // Core high volume terms
     "free jee mock test",
     "jee main 2026 mock test free",
     "jee main 2027 mock test",
@@ -45,12 +46,44 @@ export const metadata: Metadata = {
     "jee test series 75 questions",
     "jee scholarship mock test",
     "major full test mft series",
+    // Competitor & alternative search terms
+    "mathongo test series free alternative",
+    "allen test series free alternative",
+    "resonance test series free alternative",
+    "best free test series for jee main",
+    "jee main mock test series free online with timer",
+    // Subject specific student queries
+    "jee main physics mock test 25 questions with solutions",
+    "jee main chemistry mock test 25 questions with solutions",
+    "jee main maths mock test 25 questions with solutions",
+    "jee main section b numerical practice integer questions",
+    "jee main chapterwise and full syllabus test series",
+    "jee mock test with negative marking +4 -1",
+    // Score & Percentile specific searches
+    "jee main marks for 99 percentile",
+    "jee main 2026 score to rank predictor",
+    "how to score 200 marks in jee main",
+    "nta percentile calculation formula",
+    // Target groups
+    "jee mock test for class 12",
+    "jee mock test for droppers 2026",
+    "jee main mock test with step by step solutions pdf",
+    "national scholarship exam for jee aspirants",
+    "nta jee application fee refund scholarship",
   ],
   authors: [{ name: "StudyFAM Academic Team", url: "https://studyfam.in" }],
   creator: "StudyFAM",
   publisher: "StudyFAM Technologies",
   category: "education",
   applicationName: "StudyFAM",
+  other: {
+    subject: "JEE Main Free Mock Tests, TCS iON CBT Practice Engine, Percentile & Rank Predictor",
+    topic: "Engineering Entrance Exam Preparation India (JEE Main 2026/2027)",
+    classification: "Education / Competitive Exams / Engineering Entrance",
+    coverage: "India",
+    distribution: "Global",
+    rating: "General",
+  },
   alternates: {
     canonical: "https://studyfam.in",
   },
@@ -155,6 +188,52 @@ export default function RootLayout({
         },
         featureList:
           "Real-time 180 minute countdown timer, Official +4/-1 marking scheme, Section A MCQs and Section B Numericals, Collapsible 5-state TCS iON palette, Question pacing diagnostics, Detailed textbook solutions",
+      },
+      {
+        "@type": "FAQPage",
+        name: "JEE Main Free Mock Tests & CBT Exam Guide",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Where can I attempt free full-length JEE Main mock tests on TCS iON CBT interface?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "StudyFAM (https://studyfam.in/exam) provides 10 free full-length Major Full Tests (MFT-01 to MFT-10) featuring 75 questions each, 180-minute countdown timers, official +4/-1 marking, and an authentic TCS iON 5-state question palette.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What is the best free alternative to paid JEE test series like MathonGo and Allen?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "StudyFAM offers a completely free alternative to paid test series like MathonGo and Allen. Candidates get 750 high-yield questions across Physics, Chemistry, and Mathematics, question-by-question speed telemetry, step-by-step textbook solutions, and All-India percentile benchmarking with zero subscription fees.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How many marks are required to score 99 percentile in JEE Main 2026/2027?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Historically, 99 percentile in JEE Main requires between 175 to 205 marks out of 300, depending on shift difficulty level. You can use the StudyFAM Percentile & Rank Predictor (https://studyfam.in/percentile-analyzer) to estimate your percentile from your raw score.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How are Section B numerical integer questions evaluated in JEE Main?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "In Section B, candidates must solve numerical value problems and enter integers or decimals rounded to the nearest integer. Correct answers earn +4 marks, while incorrect answers deduct -1 mark.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What is the StudyFAM All-India Mock Test on 27 Dec 2026?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "The StudyFAM All-India Mock is a nationwide proctored CBT examination conducted on Sunday, 27 Dec 2026 (09:00 AM – 12:00 PM IST). With a nominal ₹27 registration fee, ₹18 per candidate is escrowed to refund 100% of the official NTA JEE Main application fee (₹1,000 for boys / ₹800 for girls) for top rankers across Merit and Need-based tracks.",
+            },
+          },
+        ],
       },
     ],
   };

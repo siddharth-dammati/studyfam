@@ -15,6 +15,12 @@ export const metadata: Metadata = {
     "jee full syllabus mock test",
     "jee main physics chemistry maths practice",
     "major full test studyfam",
+    "mathongo test series free alternative",
+    "allen jee test series free online",
+    "free cbt test series for jee droppers",
+    "jee main 75 questions mock test with solutions",
+    "download jee mock test with answer key",
+    "best free mock test for jee main",
   ],
   alternates: {
     canonical: "https://studyfam.in/exam",
@@ -65,6 +71,35 @@ export default function ExamLayout({
           description: `${mock.keyHighlights} Focus topics: ${mock.focusTopics.join(", ")}.`,
           url: `https://studyfam.in/exam/mft-${mock.mockNumber}`,
         })),
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "How many full-length mock tests are available on StudyFAM?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "StudyFAM provides 10 complete Major Full Tests (MFT-01 to MFT-10). Each test contains 75 questions (25 Physics, 25 Chemistry, 25 Maths) following the exact NTA syllabus and +4/-1 marking scheme.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Is there any cost to attempt these JEE Main mock tests?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "No. All 10 MFT full-length papers are 100% free with unlimited reattempts and instant textbook solutions.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How does the StudyFAM CBT player replicate the TCS iON exam hall?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "The player precisely matches the NTA TCS iON interface including the 5-state question palette (Answered, Not Answered, Marked for Review, Visited, Not Visited), question paper overview, countdown timer, and Section A/Section B controls.",
+            },
+          },
+        ],
       },
       {
         "@type": "BreadcrumbList",

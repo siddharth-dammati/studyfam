@@ -759,6 +759,20 @@ export function StudyFamTokkoPage() {
                 Skip to scholarship
               </a>
             </div>
+
+            {/* Semantic accessibility & search indexing outline (Invisible on screen via sr-only) */}
+            <div className="sr-only">
+              <h3>Complete JEE Main Syllabus &amp; NTA Question Distribution</h3>
+              <p>
+                StudyFAM provides 10 free full-length Major Full Tests (MFT-01 to MFT-10) for JEE Main 2026 and JEE Main 2027 aspirants.
+                Each test paper comprises 75 questions (300 marks, 180 minutes) adhering strictly to the NTA reduced syllabus:
+                Physics (25 Questions): Kinematics, Laws of Motion, Work Energy Power, Rotational Motion, Gravitation, Thermodynamics, Oscillations and Waves, Electrostatics, Current Electricity, Magnetic Effects, Optics, Dual Nature of Matter, Atoms and Nuclei, Semiconductor Electronics.
+                Chemistry (25 Questions): Mole Concept, Atomic Structure, Chemical Bonding, Chemical Thermodynamics, Solutions, Equilibrium, Redox and Electrochemistry, Chemical Kinetics, Coordination Compounds, p-Block, d and f-Block Elements, Purification, Hydrocarbons, Organic Halides, Alcohols Phenols Ethers, Aldehydes Ketones Carboxylic Acids, Amines, Biomolecules.
+                Mathematics (25 Questions): Sets Relations Functions, Complex Numbers, Quadratic Equations, Matrices and Determinants, Permutations Combinations, Binomial Theorem, Sequences and Series, Limit Continuity Differentiability, Applications of Derivatives, Indefinite and Definite Integrals, Differential Equations, Coordinate Geometry, Straight Lines, Circles, Conic Sections, Vectors and 3D Geometry, Probability.
+                Marking Scheme: +4 marks for correct answers, -1 negative mark for incorrect answers in both Section A (20 MCQs) and Section B (5 Numericals).
+                Features: Authentic TCS iON CBT exam simulation, per-question speed stopwatch, detailed step-by-step textbook solutions, All-India rank and percentile predictor.
+              </p>
+            </div>
           </div>
         </section>
 
