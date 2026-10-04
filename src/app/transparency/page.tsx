@@ -2,9 +2,14 @@ import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
 import { ShieldCheck, PieChart, CheckCircle2, Lock, ArrowUpRight, Scale, Eye, FileSpreadsheet } from "lucide-react";
 import Link from "next/link";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Financial Transparency & Governance Report | StudyFam",
   description: "Audited breakdown of the ₹18 scholarship pool allocation, escrow management, and payout verification for the StudyFam JEE Main 2027 All India Mock.",
+  alternates: {
+    canonical: "/transparency",
+  },
 };
 
 export default function TransparencyPage() {

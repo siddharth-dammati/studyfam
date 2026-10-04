@@ -2,9 +2,14 @@ import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
 import { ShieldCheck, AlertCircle, RefreshCw, Mail, CheckCircle2, Clock } from "lucide-react";
 import Link from "next/link";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Cancellation & Refund Policy | StudyFam JEE Mock",
   description: "Official cancellation, dispute resolution, and refund policy for StudyFam All-India Mock Test registrations.",
+  alternates: {
+    canonical: "/refund-policy",
+  },
 };
 
 export default function RefundPolicyPage() {

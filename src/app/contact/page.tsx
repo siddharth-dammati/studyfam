@@ -2,9 +2,14 @@ import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { Mail, Clock, ShieldCheck, Headphones, MessageSquare, CheckCircle2 } from "lucide-react";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Contact & Grievance Redressal | StudyFam",
   description: "Official contact details, candidate support channels, and statutory Grievance Officer information for StudyFam Technologies.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default function ContactPage() {

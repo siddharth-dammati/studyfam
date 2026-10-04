@@ -457,9 +457,9 @@ export function StudyFamTokkoPage() {
           </Link>
 
           <div className="nav-links">
-            <a href="#mfts">10 MFTs</a>
-            <a href="#scholarship">Scholarship</a>
-            <a href="#pricing">Pricing</a>
+            <Link href="/exam">10 MFTs</Link>
+            <Link href="/all-india-mock">National Mock (27 Dec)</Link>
+            <Link href="/percentile-analyzer">Percentile Analyzer</Link>
             <a href="#faq">FAQ</a>
           </div>
 
@@ -512,9 +512,9 @@ export function StudyFamTokkoPage() {
 
         {/* Mobile Nav Drawer */}
         <div className={`mnav ${mobileOpen ? "open" : ""}`} id="mnav">
-          <a href="#mfts" onClick={() => setMobileOpen(false)}>10 MFTs</a>
-          <a href="#scholarship" onClick={() => setMobileOpen(false)}>Scholarship</a>
-          <a href="#pricing" onClick={() => setMobileOpen(false)}>Pricing</a>
+          <Link href="/exam" onClick={() => setMobileOpen(false)}>10 MFTs</Link>
+          <Link href="/all-india-mock" onClick={() => setMobileOpen(false)}>National Mock (27 Dec)</Link>
+          <Link href="/percentile-analyzer" onClick={() => setMobileOpen(false)}>Percentile Analyzer</Link>
           <a href="#faq" onClick={() => setMobileOpen(false)}>FAQ</a>
           {user ? (
             <>

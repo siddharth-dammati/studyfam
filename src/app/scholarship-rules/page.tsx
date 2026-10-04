@@ -2,9 +2,14 @@ import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
 import { Award, Heart, CheckCircle2, ShieldCheck, Scale, ArrowRight, Clock, HelpCircle, FileText, Sparkles } from "lucide-react";
 import Link from "next/link";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Fee Support & Merit Scholarship Rules | StudyFam JEE 2027",
   description: "Official legal documentation and rules governing the StudyFam JEE Main 2027 fee support pool, Top N scholarship allocation, and gender parity distribution.",
+  alternates: {
+    canonical: "/scholarship-rules",
+  },
 };
 
 export default function ScholarshipRulesPage() {

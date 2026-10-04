@@ -2,9 +2,14 @@ import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
 import { ShieldAlert, AlertTriangle, FileText, CheckCircle2, Lock, Scale } from "lucide-react";
 import Link from "next/link";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Terms of Service & Examination Regulations | StudyFam",
   description: "Terms and conditions, academic integrity policies, and mock examination regulations governing StudyFam All-India Mock 2027.",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsPage() {

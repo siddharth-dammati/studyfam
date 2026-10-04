@@ -2,9 +2,14 @@ import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
 import { Users, BarChart3, HeartHandshake, ShieldCheck, Award, ArrowRight, Sparkles, BookOpen } from "lucide-react";
 import Link from "next/link";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "About StudyFam | Engineering India's True JEE Benchmark",
   description: "Learn about the mission, statistical methodology, and social scholarship architecture powering the StudyFam JEE Main 2027 All India Mock.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

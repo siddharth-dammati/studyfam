@@ -192,12 +192,12 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Column 1: Mock Tests */}
+        {/* Column 1: Mock Tests & Tools */}
         <div>
-          <h4>Practice</h4>
-          <Link href="/#mfts">10 Free Mocks (MFT 1–10)</Link>
-          <Link href="/all-india-mock#exam-pattern">Exam Pattern (NTA 75-Q)</Link>
-          <Link href="/exam">Full Mock Exam Hall</Link>
+          <h4>Practice &amp; Tools</h4>
+          <Link href="/exam">10 Free MFT Mock Tests</Link>
+          <Link href="/percentile-analyzer">Percentile &amp; AIR Predictor</Link>
+          <Link href="/all-india-mock">National Mock (27 Dec)</Link>
           <Link href="/#faq">Frequently Asked Questions</Link>
         </div>
 

@@ -2,9 +2,14 @@ import { ExternalPageShell } from "@/components/layout/ExternalPageShell";
 import { ShieldCheck, Lock, EyeOff, UserCheck, Server, Mail, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Privacy Policy | StudyFam (DPDP Act 2023 Compliant)",
   description: "Official Privacy Policy of StudyFam Technologies. Explaining student data protection, DPDP Act 2023 compliance, telemetry encryption, and Grievance Officer details.",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 export default function PrivacyPage() {

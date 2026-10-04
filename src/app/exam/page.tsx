@@ -331,13 +331,32 @@ export default function ExamCatalogPage() {
                         }
 
                         return (
-                          <Link
-                            href={`/exam/player?id=${test.id}`}
-                            className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-xs group-hover:shadow-blue-500/20 active:scale-98"
-                          >
-                            <span>Take Examination</span>
-                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                          </Link>
+                          <div className="space-y-2 w-full">
+                            <Link
+                              href={`/exam/player?id=${test.id}`}
+                              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-xs group-hover:shadow-blue-500/20 active:scale-98"
+                            >
+                              <span>Take Examination</span>
+                              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                            </Link>
+                            {(() => {
+                              const numMatch = test.id.match(/\d+/);
+                              if (numMatch) {
+                                return (
+                                  <div className="text-center pt-1">
+                                    <Link
+                                      href={`/exam/mft-${numMatch[0]}`}
+                                      className="text-[11px] text-slate-400 hover:text-blue-400 transition-colors inline-flex items-center space-x-1"
+                                    >
+                                      <span>Syllabus &amp; Blueprint (MFT-{numMatch[0].padStart(2, "0")})</span>
+                                      <ArrowRight className="w-3 h-3" />
+                                    </Link>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            })()}
+                          </div>
                         );
                       })()}
                     </div>
