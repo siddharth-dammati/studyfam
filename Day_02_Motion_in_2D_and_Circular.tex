@@ -1,0 +1,1315 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=2cm, bottom=2.3cm, left=1.8cm, right=1.8cm, headsep=0.8cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[table]{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable,skins}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,patterns,calc}
+
+% High-Contrast Modern Color Palette
+\definecolor{primaryDark}{RGB}{12, 32, 84}       % Midnight Navy (Deep)
+\definecolor{primaryBlue}{RGB}{18, 72, 160}      % Solid Royal Blue
+\definecolor{goldAccent}{RGB}{255, 215, 0}       % Gold highlight
+\definecolor{l1Green}{RGB}{14, 120, 62}          % Vivid Forest Green (Level 1)
+\definecolor{l2Amber}{RGB}{205, 80, 0}           % Rich Amber / Orange (Level 2)
+\definecolor{l3Crimson}{RGB}{180, 20, 20}        % Deep Crimson Red (Level 3)
+\definecolor{formulaBg}{RGB}{255, 252, 235}      % Warm Cream-Gold (Formula Callout)
+\definecolor{formulaBorder}{RGB}{220, 160, 30}   % Gold Border for Formulas
+\definecolor{cardBg}{RGB}{250, 252, 255}         % Clean Crisp Card Background
+\definecolor{cardBorder}{RGB}{130, 170, 220}     % Sharp Steel Blue Border
+\definecolor{tableStripe}{RGB}{242, 246, 252}    % Alternating Table Row
+\definecolor{tableDarkHeader}{RGB}{12, 32, 84}   % Dark Table Header
+\definecolor{darkCharcoal}{RGB}{25, 25, 25}      % High-contrast body text
+
+% Page styling (Guaranteed Collision-Free Header)
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{16pt}
+\fancyhead[L]{\small\textsf{\textbf{\textcolor{primaryDark}{StudyFAM JEE Revision}} $\vert$ \textbf{\textcolor{primaryBlue}{Day 02: Motion in 2D \& Circular Motion}}}}
+\fancyhead[R]{\small\textsf{\textbf{\textcolor{l3Crimson}{Study Target: 8 Hours}}}}
+\fancyfoot[C]{\textbf{\textsf{\thepage}}}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Custom High-Contrast tcolorboxes
+\tcbset{
+  dayheader/.style={
+    colback=primaryDark,
+    coltext=white,
+    boxrule=0pt,
+    arc=3mm,
+    left=14pt, right=14pt, top=10pt, bottom=10pt
+  },
+  sectionbanner/.style={
+    colback=primaryBlue,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  chapterbanner/.style={
+    colback=primaryDark,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=7pt, bottom=7pt
+  },
+  l1banner/.style={
+    colback=l1Green,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  l2banner/.style={
+    colback=l2Amber,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  l3banner/.style={
+    colback=l3Crimson,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  formulacard/.style={
+    enhanced,
+    breakable,
+    colback=formulaBg,
+    colframe=formulaBorder,
+    boxrule=1.2pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=8pt, bottom=8pt
+  },
+  theorycard/.style={
+    enhanced,
+    breakable,
+    colback=cardBg,
+    colframe=cardBorder,
+    boxrule=1.2pt,
+    arc=2.5mm,
+    left=12pt, right=12pt, top=10pt, bottom=10pt
+  }
+}
+
+\begin{document}
+
+% ==================== DAY HEADER BANNER ====================
+\begin{tcolorbox}[dayheader]
+\begin{center}
+  {\Large \textbf{\textsf{\textcolor{goldAccent}{STUDYFAM JEE INTENSIVE REVISION SERIES}}}}\\[3pt]
+  {\LARGE \textbf{\textsf{DAY 02: MOTION IN TWO DIMENSIONS \& CIRCULAR MOTION}}}\\[5pt]
+  {\normalsize \textbf{\textsf{Core Topics:}} Projectile Trajectory $\vert$ Incline Projections $\vert$ Circular Kinematics $\vert$ Banking $\vert$ Relative Motion (2D)}\\[3pt]
+  {\footnotesize \textbf{Daily Target Time:} 8 Hours \quad $\vert$ \quad \textbf{Curated Questions:} 75 Questions (25 Level-1 + 25 Level-2 + 25 Level-3)}
+\end{center}
+\end{tcolorbox}
+
+\vspace{6pt}
+
+% ==================== PART 1: TODAY'S PLAN ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 1: TODAY'S 8-HOUR ACTION SCHEDULE}}}
+\end{tcolorbox}
+\vspace{2pt}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabularx}{\textwidth}{|c|c|X|c|}
+\hline
+\rowcolor{tableDarkHeader}
+\textcolor{white}{\textbf{Session}} & \textcolor{white}{\textbf{Time}} & \textcolor{white}{\textbf{Focus Area \& High-Yield Strategy}} & \textcolor{white}{\textbf{Duration}} \\
+\hline
+\rowcolor{white}
+\textbf{Block 1} & 09:00 -- 11:00 & \textbf{Theory \& Formula Compendium:} Study the unabridged theory section below. Review 2D independence, trajectory relations, inclined projections, circular acceleration decomposition, and road banking. & 2.0 Hours \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Block 2} & 11:15 -- 12:45 & \textbf{Level-1 Foundation \& Speed Drill (Q1--Q25):} Direct formula application, range symmetry, trajectory equations, uniform circular motion. Target: $\le 1.5$ min/Q. & 1.5 Hours \\
+\hline
+\rowcolor{white}
+-- & 12:45 -- 01:45 & \textit{Lunch Break, Physical Movement \& Mental Recovery} & 1.0 Hour \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Block 3} & 01:45 -- 04:15 & \textbf{Level-2 Core JEE Main Mastery (Q26--Q50):} River-swimmer, rain-man, non-uniform circular motion, tangential/centripetal forces, staircase problems. Target: $\le 2.5$ min/Q. & 2.5 Hours \\
+\hline
+\rowcolor{white}
+\textbf{Block 4} & 04:30 -- 06:15 & \textbf{Level-3 Advanced \& Numerical Challenge (Q51--Q75):} Inclined plane projections, turntable slipping, 2D pursuit, conical pendulum, integer numericals. & 1.75 Hours \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Block 5} & 06:30 -- 07:15 & \textbf{Master Answer Key Audit \& Error Logging:} Check answers, re-derive any missed questions, log tricky traps in your revision notebook. & 0.75 Hour \\
+\hline
+\rowcolor{tableDarkHeader}
+\multicolumn{3}{|r|}{\textcolor{white}{\textbf{TOTAL DEDICATED STUDY TIME}}} & \textcolor{white}{\textbf{8.0 Hours}} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\vspace{5pt}
+
+% ==================== PART 2: OUTCOMES OF THE PLAN ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 2: TARGETED LEARNING OUTCOMES}}}
+\end{tcolorbox}
+\vspace{3pt}
+
+\begin{itemize}[leftmargin=18pt,itemsep=2.5pt,topsep=1pt]
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 1 (Projectile Trajectory \& Geometric Rules):}} Fluently use $y = x\tan\theta\left(1 - \frac{x}{R}\right)$ and $\tan\theta = \frac{4H}{R}$ to solve barrier-clearing and coordinate problems without calculating time.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 2 (Complementary Angles \& Two-Time Theorems):}} Apply $R(\theta) = R(90^\circ - \theta)$, $R = 4\sqrt{H_1 H_2}$, $t_1 t_2 = \frac{2R}{g}$, and $h = \frac{1}{2}gt_1 t_2$ for crossing identical heights.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 3 (Projections on Inclined Planes):}} Resolve gravity along and perpendicular to the incline ($g\sin\beta, g\cos\beta$) to find time of flight, range, and perpendicular impact condition $\cot\alpha = 2\tan\beta$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 4 (Circular Kinematics \& Vector Nature):}} Distinguish between infinitesimal vector displacement $d\vec{\theta}$ and finite scalar rotation $\theta$, and compute net acceleration $a = \sqrt{a_t^2 + a_c^2}$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 5 (Road Banking \& Conical Systems):}} Calculate optimum banking speed $v_0 = \sqrt{Rg\tan\theta}$, friction limits $v_{\max} = \sqrt{Rg\tan(\theta + \phi)}$, and conical pendulum tension $T = \frac{mg}{\cos\theta}$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 6 (Relative Motion in 2D):}} Master river-crossing for minimum time ($t_{\min} = d/v_s$) and minimum drift ($x_{\min}$), and determine rain umbrella angles using $\vec{v}_{r/m} = \vec{v}_r - \vec{v}_m$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 7 (Relative Angular Velocity):}} Evaluate line-of-sight rotation using $\omega_{A/B} = \frac{(v_{A/B})_\perp}{r_{AB}}$ for intersecting and pursuit paths.
+\end{itemize}
+
+\vspace{5pt}
+
+% ==================== PART 3: COMPLETE UNABRIDGED THEORY COMPENDIUM ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 3: UNABRIDGED THEORY \& FORMULA REVISION (FROM NOTES)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+% -------------------------------------------------------------
+% SUBSECTION 1: MOTION IN A PLANE (PROJECTILE MOTION)
+% -------------------------------------------------------------
+\begin{tcolorbox}[chapterbanner]
+  {\Large \textbf{\textsf{1. Motion in a Plane: Projectile Motion (Complete Notes)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.1 Kinematic Resolution of 2D Motion}}}}\\[3pt]
+In two-dimensional motion with constant acceleration $\vec{a} = a_x\hat{i} + a_y\hat{j}$, the horizontal and vertical motions are completely independent:
+\begin{itemize}[leftmargin=14pt,itemsep=2pt]
+  \item \textbf{Horizontal Component (Uniform Motion):} $u_x = u\cos\theta$, $a_x = 0$, $v_x = u\cos\theta = \text{constant}$, $x = (u\cos\theta)t$.
+  \item \textbf{Vertical Component (Uniformly Accelerated Motion):} $u_y = u\sin\theta$, $a_y = -g$, $v_y = u\sin\theta - gt$, $y = (u\sin\theta)t - \frac{1}{2}gt^2$.
+  \item \textbf{Instantaneous Velocity Vector:}
+  \[
+    \vec{v} = v_x\hat{i} + v_y\hat{j} = (u\cos\theta)\hat{i} + (u\sin\theta - gt)\hat{j}, \quad |\vec{v}| = \sqrt{v_x^2 + v_y^2} = \sqrt{u^2 + g^2 t^2 - 2ugt\sin\theta}
+  \]
+  \item \textbf{Direction of Motion (Angle $\alpha$ with Horizontal):}
+  \[
+    \tan\alpha = \frac{v_y}{v_x} = \frac{u\sin\theta - gt}{u\cos\theta} = \tan\theta - \frac{gt}{u\cos\theta}
+  \]
+  \item \textbf{At the Highest Point:} Vertical velocity vanishes ($v_y = 0$), so net speed is minimum but non-zero: $v_{\min} = v_x = u\cos\theta$, directed purely horizontally. Net acceleration is still $g$ downwards ($\vec{a} \perp \vec{v}$).
+\end{itemize}
+
+\begin{tcolorbox}[formulacard]
+  \textbf{\textcolor{primaryDark}{1.2 Ground-to-Ground Standard Projectile Parameters:}}
+  \begin{itemize}[leftmargin=14pt,itemsep=2.5pt]
+    \item \textbf{Time of Flight ($T$):} Time required to return to the projection level ($y = 0$):
+    \[
+      T = \frac{2u_y}{g} = \frac{2u\sin\theta}{g}, \quad t_{\text{ascent}} = t_{\text{descent}} = \frac{u\sin\theta}{g} = \frac{T}{2}
+    \]
+    \item \textbf{Maximum Height Attained ($H$):} Highest vertical displacement above projection point:
+    \[
+      H = \frac{u_y^2}{2g} = \frac{u^2\sin^2\theta}{2g} = \frac{1}{8}gT^2 \implies T = \sqrt{\frac{8H}{g}}
+    \]
+    \item \textbf{Horizontal Range ($R$):} Total horizontal distance traveled during the time of flight:
+    \[
+      R = u_x T = \frac{2u_x u_y}{g} = \frac{u^2\sin 2\theta}{g}
+    \]
+    \item \textbf{Fundamental Geometric Relation:}
+    \[
+      \frac{H}{R} = \frac{u^2\sin^2\theta / 2g}{u^2\sin 2\theta / g} = \frac{\sin^2\theta}{4\sin\theta\cos\theta} = \frac{1}{4}\tan\theta \implies \tan\theta = \frac{4H}{R}
+    \]
+    \item \textbf{Complementary Angles Property:} For a given initial speed $u$, the range is identical for angles $\theta$ and $(90^\circ - \theta)$:
+    \[
+      R(\theta) = R(90^\circ - \theta), \quad \frac{H_1}{H_2} = \tan^2\theta, \quad R = 4\sqrt{H_1 H_2}, \quad t_1 t_2 = \frac{2R}{g} \propto R
+    \]
+    \item \textbf{Maximum Range Condition:} $R$ is maximum at $\theta = 45^\circ$, where $R_{\max} = \dfrac{u^2}{g}$ and $H = \dfrac{R_{\max}}{4}$.
+    \item \textbf{Maximum Throw Distance vs. Height:} If an athlete can throw a ball to maximum horizontal distance $X = \frac{u^2}{g}$, the maximum vertical height to which he can throw the same ball is $H_{\max} = \frac{X}{2} = \frac{u^2}{2g}$.
+  \end{itemize}
+\end{tcolorbox}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.3 Equation of Trajectory (Path of Projectile)}}}}\\[3pt]
+Eliminating time $t = \frac{x}{u\cos\theta}$ gives the parabolic trajectory:
+\[
+  y = x\tan\theta - \frac{gx^2}{2u^2\cos^2\theta} = x\tan\theta\left(1 - \frac{x}{R}\right)
+\]
+\textit{Crucial Exam Note:} Any equation of the form $y = Ax - Bx^2$ represents a projectile trajectory with $\tan\theta = A$ and range $R = \frac{A}{B}$.
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.4 Two-Point Crossing Theorems (From Notes)}}}}\\[3pt]
+If a projectile crosses the same vertical height $h$ at two instants $t_1$ and $t_2$, corresponding to horizontal distances $x$ and $y$ from the origin:
+\begin{enumerate}[label=(\alph*),leftmargin=14pt,itemsep=2pt]
+  \item $x + y = R$ (the sum of the horizontal coordinates equals the total range).
+  \item $t_1 + t_2 = T$ (sum of crossing times equals total time of flight).
+  \item $h = \frac{1}{2}gt_1 t_2$ (height determined entirely by crossing times).
+  \item \textbf{Average Velocity:} The average velocity of the projectile between the two points at equal height is purely horizontal and equal to $u\cos\theta$.
+\end{enumerate}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.5 Horizontal Projection from a Height $h$}}}}\\[3pt]
+When a body is projected horizontally with velocity $u$ from the top of a tower of height $h$:
+\begin{itemize}[leftmargin=14pt,itemsep=1.5pt]
+  \item $u_x = u, a_x = 0 \implies x = ut$; \quad $u_y = 0, a_y = g \implies y = \frac{1}{2}gt^2$.
+  \item \textbf{Time of Flight:} $T = \sqrt{\dfrac{2h}{g}}$ (independent of projection speed $u$!).
+  \item \textbf{Horizontal Range:} $R = uT = u\sqrt{\dfrac{2h}{g}}$.
+  \item \textbf{Impact Velocity:} $v_x = u$, $v_y = gt = \sqrt{2gh} \implies v = \sqrt{u^2 + 2gh}$, inclined at $\tan\theta = \dfrac{v_y}{v_x} = \dfrac{\sqrt{2gh}}{u}$.
+\end{itemize}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.6 Angled Projection from a Height $h$ (From Notes)}}}}\\[3pt]
+\begin{itemize}[leftmargin=14pt,itemsep=2pt]
+  \item \textbf{Case I: Projected Upwards at Angle $\theta$ Above Horizontal:}
+  Time taken to strike the ground $t_1$:
+  \[
+    -h = (u\sin\theta)t_1 - \frac{1}{2}gt_1^2 \implies t_1 = \frac{T + \sqrt{T^2 + 8h/g}}{2}, \quad \text{where } T = \frac{2u\sin\theta}{g}
+  \]
+  Horizontal range: $R = (u\cos\theta)t_1$.
+  \item \textbf{Case II: Projected Downwards at Angle $\theta$ Below Horizontal:}
+  Time taken to strike the ground $t_2$:
+  \[
+    h = (u\sin\theta)t_2 + \frac{1}{2}gt_2^2 \implies t_2 = \frac{-T + \sqrt{T^2 + 8h/g}}{2}
+  \]
+  Horizontal range: $R = (u\cos\theta)t_2$.
+\end{itemize}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.7 Projectile Motion on an Inclined Plane (From Notes)}}}}\\[3pt]
+Let the inclined plane make an angle $\beta$ with the horizontal, and the projectile be launched at an angle $\alpha$ relative to the inclined surface:
+\begin{itemize}[leftmargin=14pt,itemsep=2.5pt]
+  \item \textbf{Up the Incline:} Acceleration components: $a_\parallel = -g\sin\beta$, $a_\perp = -g\cos\beta$.
+  \[
+    T = \frac{2u_\perp}{g_\perp} = \frac{2u\sin\alpha}{g\cos\beta}, \quad H = \frac{u_\perp^2}{2g_\perp} = \frac{u^2\sin^2\alpha}{2g\cos\beta}
+  \]
+  \[
+    R_{\text{up}} = \frac{2u^2\sin\alpha\cos(\alpha + \beta)}{g\cos^2\beta}, \quad R_{\max} = \frac{u^2}{g(1 + \sin\beta)} \quad \left(\text{at } \alpha = \frac{\pi}{4} - \frac{\beta}{2}\right)
+  \]
+  \item \textbf{Down the Incline:} Acceleration components: $a_\parallel = +g\sin\beta$, $a_\perp = -g\cos\beta$.
+  \[
+    T = \frac{2u\sin\alpha}{g\cos\beta}, \quad R_{\text{down}} = \frac{2u^2\sin\alpha\cos(\alpha - \beta)}{g\cos^2\beta}, \quad R_{\max} = \frac{u^2}{g(1 - \sin\beta)} \quad \left(\text{at } \alpha = \frac{\pi}{4} + \frac{\beta}{2}\right)
+  \]
+  \item \textbf{Perpendicular Strike Condition:} If the projectile strikes the inclined plane normally ($v_\parallel = 0$ at landing):
+  \[
+    \tan\alpha = \frac{1}{2\tan\beta} \iff \cot\alpha = 2\tan\beta
+  \]
+\end{itemize}
+
+\vspace{10pt}
+
+% -------------------------------------------------------------
+% SUBSECTION 2: CIRCULAR MOTION KINEMATICS & DYNAMICS
+% -------------------------------------------------------------
+\begin{tcolorbox}[chapterbanner]
+  {\Large \textbf{\textsf{2. Circular Motion Kinematics \& Dynamics (Complete Notes)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{2.1 Angular Variables \& Vector Character (Key Tips From Notes)}}}}\\[3pt]
+\begin{itemize}[leftmargin=14pt,itemsep=2pt]
+  \item \textbf{Radius Vector ($\vec{r}$):} Vector directed from the center of curvature to the revolving particle. It has constant magnitude $r$, but continuous varying direction ($d\vec{r}/dt \ne 0$).
+  \item \textbf{Angular Displacement ($\theta$):} $\theta = \frac{\text{arc length } s}{\text{radius } r}$ (measured in radians).
+  \begin{tcolorbox}[formulacard]
+    \textbf{\textcolor{l3Crimson}{Fundamental Rule of Angular Displacement:}}
+    \begin{itemize}[leftmargin=12pt,itemsep=1.5pt]
+      \item \textbf{Infinitesimal angular displacement $d\vec{\theta}$ is a TRUE VECTOR:} It obeys the commutative law of vector addition ($d\vec{\theta}_1 + d\vec{\theta}_2 = d\vec{\theta}_2 + d\vec{\theta}_1$).
+      \item \textbf{Finite angular displacement $\theta$ is a SCALAR:} Finite rotations about different axes do not commute ($\vec{\theta}_1 + \vec{\theta}_2 \ne \vec{\theta}_2 + \vec{\theta}_1$).
+    \end{itemize}
+  \end{tcolorbox}
+  \item \textbf{Angular Velocity ($\omega$):}
+    \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+      \item \textit{Average:} $\omega_{\text{avg}} = \dfrac{\Delta\theta}{\Delta t}$ (scalar quantity).
+      \item \textit{Instantaneous:} $\vec{\omega} = \dfrac{d\vec{\theta}}{dt}$ (axial vector along the rotation axis given by right-hand thumb rule). Unit: $\text{rad/s}$.
+      \item \textit{Uniform Rotation:} $\omega = \dfrac{2\pi}{T} = 2\pi f = 2\pi n$, where $T = \frac{1}{n}$ is the time period and $n$ is frequency in $\text{rev/s}$ (or $\text{rpm}/60$).
+    \end{itemize}
+  \item \textbf{Linear vs. Angular Velocity Relation:}
+  \[
+    v = \omega r \quad \iff \quad \vec{v} = \vec{\omega} \times \vec{r}
+  \]
+\end{itemize}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{2.2 Acceleration Decomposition in Circular Motion}}}}\\[3pt]
+Differentiating velocity vector $\vec{v} = \vec{\omega}\times\vec{r}$ with respect to time:
+\[
+  \vec{a} = \frac{d\vec{v}}{dt} = \frac{d\vec{\omega}}{dt}\times\vec{r} + \vec{\omega}\times\frac{d\vec{r}}{dt} = \vec{\alpha}\times\vec{r} + \vec{\omega}\times\vec{v} = \vec{a}_t + \vec{a}_c
+\]
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}m{3.2cm}|>{\centering\arraybackslash}m{3.0cm}|>{\centering\arraybackslash}m{3.2cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\rowcolor{tableDarkHeader}
+\textcolor{white}{\textbf{Component}} & \textcolor{white}{\textbf{Formula}} & \textcolor{white}{\textbf{Direction}} & \textcolor{white}{\textbf{Physical Role}} \\
+\hline
+\rowcolor{white}
+\textbf{Tangential Accel.} ($\vec{a}_t$) & $a_t = \dfrac{dv}{dt} = \alpha r$ & Tangent to path & Changes the \textbf{magnitude} of velocity (speed). Zero in uniform circular motion. \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Centripetal Accel.} ($\vec{a}_c$) & $a_c = \dfrac{v^2}{r} = \omega^2 r = \omega v$ & Towards center (radial) & Changes the \textbf{direction} of velocity. Always present in any curved motion! \\
+\hline
+\rowcolor{white}
+\textbf{Net Acceleration} ($\vec{a}$) & $a = \sqrt{a_t^2 + a_c^2}$ & $\tan\phi = \dfrac{a_c}{a_t}$ & $a = \sqrt{\left(\dfrac{dv}{dt}\right)^2 + \left(\dfrac{v^2}{r}\right)^2} = \sqrt{(\alpha r)^2 + (\omega^2 r)^2}$. \\
+\hline
+\end{tabularx}
+\end{center}
+
+\vspace{4pt}
+\begin{tcolorbox}[formulacard]
+  \textbf{\textcolor{primaryDark}{2.3 Road Banking, Friction Limits \& Bending (From Notes):}}
+  \begin{itemize}[leftmargin=14pt,itemsep=2.5pt]
+    \item \textbf{Level Unbanked Circular Road:} Necessary centripetal force is provided solely by static friction:
+    \[
+      f_s \le \mu_s mg \implies \frac{mv^2}{R} \le \mu_s mg \implies v_{\max} = \sqrt{\mu_s R g}
+    \]
+    \item \textbf{Optimum Banking Speed (Friction-Free Speed):} Road banked at angle $\theta$ with horizontal:
+    \[
+      N\sin\theta = \frac{mv_0^2}{R}, \quad N\cos\theta = mg \implies \tan\theta = \frac{v_0^2}{Rg} \implies v_0 = \sqrt{Rg\tan\theta}
+    \]
+    \item \textbf{Banked Road with Friction ($\mu_s$):}
+    \[
+      v_{\max} = \sqrt{Rg\left(\frac{\mu_s + \tan\theta}{1 - \mu_s\tan\theta}\right)} = \sqrt{Rg\tan(\theta + \phi)}, \quad \text{where } \tan\phi = \mu_s
+    \]
+    \[
+      v_{\min} = \sqrt{Rg\left(\frac{\tan\theta - \mu_s}{1 + \mu_s\tan\theta}\right)} = \sqrt{Rg\tan(\theta - \phi)}
+    \]
+    \item \textbf{Bending of a Cyclist:} A cyclist negotiating a turn of radius $r$ at speed $v$ bends inward at angle $\theta$ with the vertical:
+    \[
+      \tan\theta = \frac{v^2}{rg}
+    \]
+  \end{itemize}
+\end{tcolorbox}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{2.4 Relative Angular Velocity (From Notes)}}}}\\[3pt]
+The relative angular velocity of particle $A$ with respect to particle $B$ is the rate at which the line of sight $AB$ rotates:
+\[
+  \omega_{A/B} = \frac{(v_{A/B})_\perp}{r_{AB}} = \frac{\text{Component of relative velocity } \perp \text{ to line } AB}{\text{Separation distance } r_{AB}}
+\]
+If $\vec{v}_A$ makes angle $\theta_1$ and $\vec{v}_B$ makes angle $\theta_2$ with the line connecting them:
+\[
+  \omega_{A/B} = \frac{v_A\sin\theta_1 + v_B\sin\theta_2}{r_{AB}}
+\]
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{2.5 Relative Motion in 2D: River-Swimmer \& Rain-Man}}}}\\[3pt]
+\begin{itemize}[leftmargin=14pt,itemsep=2pt]
+  \item \textbf{River-Swimmer Problems:} River speed $v_r$, swimmer speed in still water $v_s$, width $d$.
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+    \item \textit{Condition for Shortest Time:} Swim directly perpendicular to river current ($\theta = 90^\circ$).
+    \[
+      t_{\min} = \frac{d}{v_s}, \quad \text{Drift along bank: } x = v_r t_{\min} = \frac{v_r d}{v_s}
+    \]
+    \item \textit{Condition for Shortest Path (Zero Drift):} Possible only if $v_s > v_r$. Swimmer must head upstream at angle $\theta = \sin^{-1}\left(\frac{v_r}{v_s}\right)$ with the normal:
+    \[
+      t = \frac{d}{v_{\text{eff}}} = \frac{d}{\sqrt{v_s^2 - v_r^2}}
+    \]
+    \item \textit{Minimum Drift when $v_s < v_r$:} Swimmer heads upstream at angle $\theta = \sin^{-1}\left(\frac{v_s}{v_r}\right)$, giving minimum drift:
+    \[
+      x_{\min} = d\sqrt{\left(\frac{v_r}{v_s}\right)^2 - 1}
+    \]
+  \end{itemize}
+  \item \textbf{Rain-Man Problems:} Relative velocity of rain with respect to man: $\vec{v}_{r/m} = \vec{v}_r - \vec{v}_m$.
+  To protect from rain, hold umbrella along the direction of $\vec{v}_{r/m}$:
+  \[
+    \tan\phi = \frac{|\vec{v}_m|}{|\vec{v}_r|} \quad \text{(measured from the vertical)}
+  \]
+\end{itemize}
+
+\newpage
+
+\begin{tcolorbox}[l1banner]
+  {\Large \textbf{\textsf{LEVEL 1: FOUNDATION \& SPEED DRILLS (25 Questions)}}}\\[2pt]
+  {\footnotesize \textbf{Focus:} Direct Formula Application $\vert$ Range Symmetry $\vert$ Trajectory Basics $\vert$ Target Time: $\le 1.5$ min/Q}
+\end{tcolorbox}
+\vspace{6pt}
+
+\begin{enumerate}[label=\textbf{\textcolor{l1Green}{Q\arabic*.}},leftmargin=24pt,itemsep=10pt]
+
+  % Q1
+  \item Two particles start simultaneously from the same point and move along two straight lines, one with uniform velocity $v$ and the other with uniform acceleration $a$. If $\alpha$ is the angle between their lines of motion, the least value of relative velocity will occur at time:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{v\sin\alpha}{a}$
+    \item $\dfrac{v\cos\alpha}{a}$
+    \item $\dfrac{v\tan\alpha}{a}$
+    \item $\dfrac{v\cot\alpha}{a}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q2
+  \item In a car race, car $A$ takes time $t_0$ less to finish than car $B$ and passes the finishing point with a velocity $v_0$ more than car $B$. Both cars start from rest and travel with constant accelerations $a_1$ and $a_2$ respectively. The ratio $\dfrac{v_0}{t_0}$ is equal to:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{a_1 + a_2}{2}$
+    \item $\dfrac{a_1 a_2}{a_1 + a_2}$
+    \item $\sqrt{a_1 a_2}$
+    \item $\dfrac{a_2^2}{a_1}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q3
+  \item A man can swim at a speed of $5\text{ km/h}$ in still water. A $1\text{ km}$ wide river flows at the rate of $3\text{ km/h}$. If the man wishes to swim across the river directly opposite to the starting point, the time he will take to cross the river is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $10\text{ min}$
+    \item $13\text{ min}$
+    \item $15\text{ min}$
+    \item $18\text{ min}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q4
+  \item A projectile has the same horizontal range $R$ for two different angles of projection. If $t_1$ and $t_2$ be the times of flight in the two cases, then the product of the two times of flight satisfies:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $t_1 t_2 \propto R$
+    \item $t_1 t_2 \propto R^2$
+    \item $t_1 t_2 \propto \dfrac{1}{R}$
+    \item $t_1 t_2 \propto \dfrac{1}{R^2}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q5
+  \item If the angles of projection of a projectile with the same initial velocity exceed or fall short of $45^\circ$ by equal amounts $\alpha$, then the ratio of their horizontal ranges is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $1 : 2$
+    \item $1 : 3$
+    \item $1 : 4$
+    \item $1 : 1$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q6
+  \item The equation of trajectory of a projectile is given by $y = \sqrt{3}x - \dfrac{gx^2}{2}$. The angle of projection $\theta$ with the horizontal is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\tan\theta = \dfrac{1}{\sqrt{3}}$
+    \item $\tan\theta = \sqrt{3}$
+    \item $\theta = \dfrac{\pi}{2}$
+    \item $\theta = 0^\circ$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q7
+  \item An airplane flying horizontally at a height of $1500\text{ m}$ with a velocity of $200\text{ m/s}$ passes directly overhead an anti-aircraft gun. The angle with the horizontal at which the gun should be fired with a muzzle velocity of $400\text{ m/s}$ to hit the plane is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $90^\circ$
+    \item $60^\circ$
+    \item $30^\circ$
+    \item $45^\circ$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q8
+  \item A body projected at an angle with the horizontal has a range of $300\text{ m}$. If the time of flight is $6\text{ s}$, then the horizontal component of velocity is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $30\text{ m/s}$
+    \item $50\text{ m/s}$
+    \item $40\text{ m/s}$
+    \item $45\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q9
+  \item A boy can throw a stone up to a maximum vertical height of $10\text{ m}$. The maximum horizontal distance that the boy can throw the same stone is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $10\text{ m}$
+    \item $10\sqrt{2}\text{ m}$
+    \item $15\text{ m}$
+    \item $20\text{ m}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q10
+  \item A projectile is given an initial velocity of $\vec{v} = (\hat{i} + 2\hat{j})\text{ m/s}$, where $\hat{i}$ is along the horizontal ground and $\hat{j}$ is vertically upwards. If $g = 10\text{ m/s}^2$, the equation of its trajectory is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $y = x - 5x^2$
+    \item $y = 2x - 5x^2$
+    \item $4y = 2x - 5x^2$
+    \item $4y = 2x - 25x^2$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q11
+  \item The equation of trajectory of a projectile is given by $y = 4x - \dfrac{5}{39}x^2$. The horizontal range of the projectile is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $31.2\text{ m}$
+    \item $15.6\text{ m}$
+    \item $7.8\text{ m}$
+    \item $23.4\text{ m}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q12
+  \item A projectile is fired from the surface of the earth with a velocity of $5\text{ m/s}$ at angle $\theta$ with the horizontal. Another projectile fired from another planet with a velocity of $3\text{ m/s}$ at the same angle follows an identical trajectory. The acceleration due to gravity on the planet is: (Take $g = 9.8\text{ m/s}^2$)
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $3.53\text{ m/s}^2$
+    \item $5.88\text{ m/s}^2$
+    \item $16.3\text{ m/s}^2$
+    \item $2.45\text{ m/s}^2$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q13
+  \item A projectile is thrown at an angle of $40^\circ$ with the horizontal and its range is $R_1$. Another projectile is thrown at an angle of $40^\circ$ with the vertical and its range is $R_2$. The relation between $R_1$ and $R_2$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $R_1 = R_2$
+    \item $R_1 = 2R_2$
+    \item $2R_1 = R_2$
+    \item $R_1 = \dfrac{4}{5}R_2$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q14
+  \item A particle is projected at an angle of elevation $\alpha$. After $t$ seconds, its position vector appears to have an angle of elevation $\beta$ as seen from the point of projection. The initial projection speed $u$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{gt\cos\beta}{2\sin(\alpha - \beta)}$
+    \item $\dfrac{gt\sin\beta}{2\sin(\alpha - \beta)}$
+    \item $\dfrac{gt}{2\sin(\alpha - \beta)}$
+    \item $\dfrac{gt\cos\beta}{\sin(\alpha - \beta)}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q15
+  \item A particle is projected with speed $u$ from the ground at an angle $\theta$ with the horizontal. The radius of curvature of the trajectory at the point where its velocity vector is perpendicular to the initial velocity vector is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{u^2\cos^2\theta}{g}$
+    \item $\dfrac{u^2\cot^2\theta}{g\sin\theta}$
+    \item $\dfrac{u^2}{g}$
+    \item $\dfrac{u^2\tan^2\theta}{g\cos\theta}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q16
+  \item A body of mass $m$ is projected horizontally with velocity $v$ from the top of a tower of height $h$ and reaches the ground at distance $x$ from the foot. If a second body of mass $2m$ is projected horizontally from height $2h$ and reaches distance $2x$, the horizontal velocity of the second body is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $v$
+    \item $\sqrt{2}v$
+    \item $2v$
+    \item $\dfrac{v}{2}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q17
+  \item The velocity of projection of an oblique projectile is $\vec{u} = (6\hat{i} + 8\hat{j})\text{ m/s}$. Taking $g = 10\text{ m/s}^2$, the horizontal range of the projectile is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $4.9\text{ m}$
+    \item $9.6\text{ m}$
+    \item $19.6\text{ m}$
+    \item $14.4\text{ m}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q18
+  \item A liquid of mass $M$ fills a narrow tube $AB$ of length $L$. The tube is rotated in a horizontal plane about end $A$ with constant angular velocity $\omega$. The total force exerted by the rotating liquid on the closed end $B$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{1}{2}ML\omega^2$
+    \item $ML\omega^2$
+    \item $\dfrac{1}{3}ML\omega^2$
+    \item $\dfrac{1}{4}ML\omega^2$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q19
+  \item A stone tied to the end of a string of length $1\text{ m}$ is whirled in a horizontal circle with a constant speed. If the stone makes $22$ revolutions in $44\text{ seconds}$, the magnitude and direction of the acceleration of the stone are:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\pi^2\text{ m/s}^2$ towards the center
+    \item $\pi^2\text{ m/s}^2$ away from center
+    \item $\pi^2\text{ m/s}^2$ along the tangent
+    \item $\dfrac{\pi^2}{4}\text{ m/s}^2$ towards center
+  \end{enumerate}
+  \end{multicols}
+
+  % Q20
+  \item A particle moves along a circular path of radius $R = 100\text{ m}$. Its speed varies with time as $v(t) = 2t^2 + t$ (in $\text{m/s}$). The magnitude of the net acceleration of the particle at $t = 2\text{ s}$ is approximately:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $21\text{ m/s}^2$
+    \item $9.06\text{ m/s}^2$
+    \item $13.5\text{ m/s}^2$
+    \item $10.0\text{ m/s}^2$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q21
+  \item A particle is projected from the origin. The $x$ and $y$ components of its displacement vary with time as $x(t) = 6t$ and $y(t) = 8t - 5t^2$ (in meters). The initial projection speed of the particle is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $6\text{ m/s}$
+    \item $8\text{ m/s}$
+    \item $10\text{ m/s}$
+    \item $14\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q22
+  \item A particle is projected with a velocity $v$ such that its horizontal range is twice the greatest height attained ($R = 2H$). If $g$ is acceleration due to gravity, the range $R$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{4v^2}{5g}$
+    \item $\dfrac{5v^2}{4g}$
+    \item $\dfrac{4v^2}{3g}$
+    \item $\dfrac{2v^2}{5g}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q23
+  \item A body moves in a circular path of radius $r$ with a constant speed $v$. Which of the following statements is TRUE?
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item Its velocity is constant.
+    \item Its acceleration vector is constant.
+    \item It possesses an acceleration of constant magnitude directed radially inward.
+    \item Its acceleration varies in magnitude with time.
+  \end{enumerate}
+
+  % Q24
+  \item A particle is moving along a circle of radius $r$ centered at $O$ with a constant speed $v$. What is the magnitude of the change in velocity when it turns through an angle $\angle AOB = 40^\circ$?
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $2v\sin 20^\circ$
+    \item $4v\sin 40^\circ$
+    \item $2v\sin 40^\circ$
+    \item $v\sin 20^\circ$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q25
+  \item An aircraft executes a horizontal loop of radius $R = 1\text{ km}$ with a steady speed of $900\text{ km/h}$. The centripetal acceleration of the aircraft is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $62.5\text{ m/s}^2$
+    \item $30.0\text{ m/s}^2$
+    \item $32.5\text{ m/s}^2$
+    \item $72.5\text{ m/s}^2$
+  \end{enumerate}
+  \end{multicols}
+
+\end{enumerate}
+
+\newpage
+
+% ==================== LEVEL 2 ====================
+\begin{tcolorbox}[l2banner]
+  {\Large \textbf{\textsf{LEVEL 2: JEE MAIN CORE MASTERY (25 Questions)}}}\\[2pt]
+  {\footnotesize \textbf{Focus:} Two-Step Reasoning $\vert$ River-Swimmer $\vert$ Rain-Man $\vert$ Road Banking $\vert$ Target Time: $\le 2.5$ min/Q}
+\end{tcolorbox}
+\vspace{6pt}
+
+\begin{enumerate}[label=\textbf{\textcolor{l2Amber}{Q\arabic*.}},leftmargin=24pt,itemsep=10pt,start=26]
+
+  % Q26
+  \item A man holds an umbrella at $30^\circ$ with the vertical to keep himself dry. When he runs at a speed of $10\text{ m/s}$, he finds raindrops hitting him vertically. The speeds of raindrops with respect to the running man and with respect to the earth are respectively:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $20\text{ m/s}, 10\text{ m/s}$
+    \item $10\text{ m/s}, 20\sqrt{3}\text{ m/s}$
+    \item $10\sqrt{3}\text{ m/s}, 20\text{ m/s}$
+    \item $20\text{ m/s}, 10\sqrt{3}\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q27
+  \item A bird is flying due east with a velocity of $4\text{ m/s}$. The wind starts blowing with a velocity of $3\text{ m/s}$ due north. The relative velocity of the bird with respect to the wind is directed:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\tan^{-1}(3/4)$ South of East
+    \item $\tan^{-1}(4/3)$ South of East
+    \item $\tan^{-1}(3/4)$ North of East
+    \item $\tan^{-1}(4/3)$ East of South
+  \end{enumerate}
+  \end{multicols}
+
+  % Q28
+  \item A man can row a boat at $4\text{ km/h}$ in still water. He crosses a river of width $4\text{ km}$ where the current flows at $2\text{ km/h}$. In what direction should he head the boat to cross the river in the shortest time, and what is this minimum time?
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item Parallel to current, $2\text{ hours}$
+    \item Perpendicular to current, $2\text{ hours}$
+    \item At $60^\circ$ upstream, $1\text{ hour}$
+    \item Perpendicular to current, $1\text{ hour}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q29
+  \item A stationary observer sees rain falling with a velocity of $20\text{ m/s}$ at an angle of $30^\circ$ with the vertical. The velocity with which the observer should move so that rain appears to fall vertically is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $15\text{ m/s}$
+    \item $30\text{ m/s}$
+    \item $10\text{ m/s}$
+    \item $20\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q30
+  \item A particle has an initial velocity $\vec{u} = (3\hat{i} + 4\hat{j})\text{ m/s}$ and a constant acceleration $\vec{a} = (0.4\hat{i} + 0.3\hat{j})\text{ m/s}^2$. Its speed after $10\text{ seconds}$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $7\sqrt{2}\text{ m/s}$
+    \item $7\text{ m/s}$
+    \item $8.5\text{ m/s}$
+    \item $10\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q31
+  \item The coordinates of a particle moving in the $xy$-plane at any instant of time $t$ are given by $x(t) = 4t^2$ and $y(t) = 3t^2$ (in meters). The speed of the particle at that instant is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $10t\text{ m/s}$
+    \item $5t\text{ m/s}$
+    \item $7t\text{ m/s}$
+    \item $25t\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q32
+  \item A body is projected with velocity $v_1$ from point $A$ at an angle of $30^\circ$ with the horizontal. At the same instant, another body is projected vertically upwards from point $B$ (directly below the highest point of the first trajectory) with velocity $v_2$. For the two bodies to collide, the ratio $\dfrac{v_2}{v_1}$ must be:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $0.5$
+    \item $1.0$
+    \item $\dfrac{\sqrt{3}}{2}$
+    \item $\dfrac{2}{\sqrt{3}}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q33
+  \item A rifle bullet is fired horizontally with a speed of $1500\text{ m/s}$ in order to hit a target $100\text{ m}$ away. Taking $g = 10\text{ m/s}^2$, the gun should be aimed:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $15\text{ cm}$ above the target
+    \item $10\text{ cm}$ above the target
+    \item $2.22\text{ cm}$ above the target
+    \item Directly towards the target
+  \end{enumerate}
+  \end{multicols}
+
+  % Q34
+  \item Two projectiles $A$ and $B$ thrown with speeds in the ratio $1 : \sqrt{3}$ acquire the same maximum height. If $A$ is thrown at an angle of $30^\circ$ with the horizontal, the angle of projection of $B$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $0^\circ$
+    \item $\sin^{-1}(1/8)$
+    \item $\sin^{-1}(1/\sqrt{12})$
+    \item $\sin^{-1}(1/2)$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q35
+  \item A ball is projected with a certain speed from the ground at a distance of $30\text{ m}$ from a vertical wall. If the angle of projection is $45^\circ$, the ball just clears the wall and strikes the ground $10\text{ m}$ past the wall. The height of the wall is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $7.5\text{ m}$
+    \item $10.0\text{ m}$
+    \item $12.5\text{ m}$
+    \item $15.0\text{ m}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q36
+  \item A ball rolls off the top of a staircase horizontally with velocity $u$. If the steps are $h$ meters high and $b$ meters wide, the ball will hit the edge of the $n^{\text{th}}$ step if:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $n = \dfrac{2hu^2}{gb}$
+    \item $n = \dfrac{2hu}{gb^2}$
+    \item $n = \dfrac{2hu^2}{gb^2}$
+    \item $n = \dfrac{hu^2}{gb^2}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q37
+  \item A stone projected with velocity $u$ at angle $\theta$ reaches maximum height $H_1$. When projected with the same speed at angle $(90^\circ - \theta)$, it reaches height $H_2$. The relation between horizontal range $R$ and heights $H_1, H_2$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $R = 4\sqrt{H_1 H_2}$
+    \item $R = 4(H_1 - H_2)$
+    \item $R = 4(H_1 + H_2)$
+    \item $R = 2\sqrt{H_1 H_2}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q38
+  \item A body is projected with speed $u$ at an angle $\alpha$ with the horizontal. The speed of the body when its velocity vector makes an angle $\beta$ with the vertical is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{u\cos\alpha}{\cos\beta}$
+    \item $\dfrac{u\cos\alpha}{\sin\beta}$
+    \item $\dfrac{u\sin\alpha}{\cos\beta}$
+    \item $\dfrac{u\sin\alpha}{\sin\beta}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q39
+  \item An artillery piece with fixed muzzle speed has maximum range $R$. To hit a target at distance $R/2$ on the same horizontal level, the elevation angle of the gun should be:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $10^\circ$
+    \item $18^\circ$
+    \item $12^\circ$
+    \item $15^\circ$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q40
+  \item Building $P$ is $150\text{ m}$ tall and is at a horizontal distance of $100\text{ m}$ from building $Q$. A ball thrown horizontally from the roof of $P$ enters an open window in $Q$ located $25\text{ m}$ above the ground. The speed with which the ball was thrown is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $20\text{ m/s}$
+    \item $30\text{ m/s}$
+    \item $40\text{ m/s}$
+    \item $50\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q41
+  \item Two bodies are projected horizontally in opposite directions with velocities $u_1$ and $u_2$ from the top of a building. If their velocity vectors become perpendicular to each other after falling through a vertical distance $h$, then $h$ is given by:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $h = \dfrac{u_1 u_2}{2g}$
+    \item $h = \dfrac{2u_1 u_2}{g}$
+    \item $h = \dfrac{u_1 u_2}{g}$
+    \item $h = \dfrac{\sqrt{u_1 u_2}}{2g}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q42
+  \item A body is projected with velocity $u$ at an angle $\theta$ with the horizontal. The velocity of the body will become perpendicular to its initial velocity of projection after a time $t$ given by:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{2u\sin\theta}{g}$
+    \item $\dfrac{u\sin\theta}{g}$
+    \item $\dfrac{2u}{g\sin\theta}$
+    \item $\dfrac{u}{g\sin\theta}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q43
+  \item A body is projected from the ground with speed $u$ at angle $\theta$ with the horizontal. At the highest point, its speed is $\sqrt{2/3}$ times its speed at half the maximum height. The angle of projection $\theta$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $30^\circ$
+    \item $45^\circ$
+    \item $60^\circ$
+    \item $\sin^{-1}(2/3)$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q44
+  \item A body is projected from the ground with velocity $u$ at angle $\theta$. The average velocity of the body between the point of projection and the highest point of its trajectory is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{u}{2}(1 + \cos\theta)$
+    \item $\dfrac{u}{2}\sqrt{1 + \cos^2\theta}$
+    \item $\dfrac{u}{2}\sqrt{1 + 2\cos^2\theta}$
+    \item $\dfrac{u}{2}\sqrt{1 + 3\cos^2\theta}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q45
+  \item A string can withstand a maximum tension of $25\text{ N}$. What is the maximum speed with which a body of mass $1\text{ kg}$ can be whirled in a horizontal circle using a string of length $1\text{ m}$?
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $2.5\text{ m/s}$
+    \item $5.0\text{ m/s}$
+    \item $7.5\text{ m/s}$
+    \item $10.0\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q46
+  \item A car travels at a speed of $36\text{ km/h}$ on a level road where the coefficient of static friction is $\mu_s = 0.8$. If $g = 10\text{ m/s}^2$, the car will skid while negotiating a curve if the radius of the turn is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $10\text{ m}$
+    \item $13\text{ m}$
+    \item $14\text{ m}$
+    \item $16\text{ m}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q47
+  \item A body of mass $0.5\text{ kg}$ is whirled in a vertical circle with an angular frequency of $10\text{ rad/s}$. If the radius of the circle is $0.5\text{ m}$, the tension in the string at the topmost point of the vertical circle is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $10\text{ N}$
+    \item $20\text{ N}$
+    \item $30\text{ N}$
+    \item $40\text{ N}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q48
+  \item The kinetic energy of a particle of mass $m$ moving in a circle of radius $r$ depends on distance covered $s$ as $K = as^2$, where $a$ is a positive constant. The total force acting on the particle as a function of $s$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $2as\sqrt{1 + \left(\dfrac{s}{r}\right)^2}$
+    \item $3as\sqrt{1 + \left(\dfrac{s}{r}\right)^2}$
+    \item $as\sqrt{1 + \left(\dfrac{s}{r}\right)^2}$
+    \item $4as\sqrt{1 + \left(\dfrac{s}{r}\right)^2}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q49
+  \item A coin of mass $10\text{ g}$ is placed at a distance of $30\text{ cm}$ from the center of a turn-table. The table rotates at $30\text{ rpm}$ about a vertical axis. The minimum coefficient of static friction to prevent the coin from sliding off is approximately: (Take $\pi^2 \approx 10, g = 10\text{ m/s}^2$)
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $0.1$
+    \item $0.2$
+    \item $0.3$
+    \item $0.4$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q50
+  \item A conical pendulum has a string of length $L = 50\text{ cm}$ and a bob of mass $m = 200\text{ g}$. The bob revolves in a horizontal circle such that the string makes an angle $\theta = 60^\circ$ with the vertical. The tension in the string is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $1\text{ N}$
+    \item $2\text{ N}$
+    \item $3\text{ N}$
+    \item $4\text{ N}$
+  \end{enumerate}
+  \end{multicols}
+
+\end{enumerate}
+
+\newpage
+
+% ==================== LEVEL 3 ====================
+\begin{tcolorbox}[l3banner]
+  {\Large \textbf{\textsf{LEVEL 3: JEE ADVANCED \& NUMERICAL CHALLENGE (25 Questions)}}}\\[2pt]
+  {\footnotesize \textbf{Focus:} Incline Projections $\vert$ Turntable Kinematics $\vert$ Pursuit Paths $\vert$ Integer Numericals (Q70--Q75)}
+\end{tcolorbox}
+\vspace{6pt}
+
+\begin{enumerate}[label=\textbf{\textcolor{l3Crimson}{Q\arabic*.}},leftmargin=24pt,itemsep=10pt,start=51]
+
+  % Q51
+  \item A particle is projected with a certain velocity at an angle $\alpha$ above the horizontal from the foot of an inclined plane of inclination $30^\circ$. If the particle strikes the plane normally, then $\alpha$ is equal to:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $30^\circ + \tan^{-1}\left(\dfrac{\sqrt{3}}{2}\right)$
+    \item $45^\circ$
+    \item $60^\circ$
+    \item $30^\circ + \tan^{-1}(2\sqrt{3})$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q52
+  \item A boat moves relative to river water with a velocity $v$ which is $n$ times less than the river flow velocity $u$ ($v = u/n$, $n > 1$). At what angle $\theta$ to the stream direction must the boat head to minimize drifting downstream?
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{\pi}{2} + \sin^{-1}\left(\dfrac{1}{n}\right)$
+    \item $\cos^{-1}\left(\dfrac{1}{n}\right)$
+    \item $\tan^{-1}\left(\dfrac{1}{\sqrt{n^2 - 1}}\right)$
+    \item $\dfrac{\pi}{2} - \sin^{-1}\left(\dfrac{1}{n}\right)$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q53
+  \item Two cars $A$ and $B$ are moving west-to-east at $20\text{ m/s}$ and south-to-north at $15\text{ m/s}$ along perpendicular crossroads. Initially $A$ is $500\text{ m}$ west and $B$ is $400\text{ m}$ south of the intersection. The shortest distance between them during their subsequent motion is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $10\text{ m}$
+    \item $15\text{ m}$
+    \item $20\text{ m}$
+    \item $25\text{ m}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q54
+  \item An airplane is observed by two observers traveling at $60\text{ km/h}$ in vehicles moving in opposite directions along a straight road. To one observer, the airplane appears to cross the road track at right angles ($90^\circ$), while to the other it appears to cross at $45^\circ$. At what angle $\theta$ does the airplane actually cross the road track relative to the ground?
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\tan^{-1}(2)$
+    \item $\tan^{-1}(1/2)$
+    \item $\tan^{-1}(3/2)$
+    \item $\tan^{-1}(2/3)$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q55
+  \item A man wishes to cross a river of width $d = 500\text{ m}$. His rowing speed relative to water is $3\text{ km/h}$ and the river current is $2\text{ km/h}$. If the man's walking speed along the bank is $5\text{ km/h}$, in what direction $\theta$ (relative to the normal to the bank) should he row to reach the directly opposite point in the minimum possible time?
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\sin^{-1}(7/8)$
+    \item $\sin^{-1}(8/7)$
+    \item $\sin^{-1}(2/3)$
+    \item $\sin^{-1}(3/7)$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q56
+  \item A gun placed on a straight horizontal road is fired at an angle of $45^\circ$ to hit a car moving away from the gun with uniform speed $10\sqrt{2}\text{ m/s}$. The car is at a distance of $150\text{ m}$ from the gun at the instant of firing. The muzzle speed of the shell must be: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $20\text{ m/s}$
+    \item $30\text{ m/s}$
+    \item $40\text{ m/s}$
+    \item $50\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q57
+  \item From the top of a tower of height $40\text{ m}$, a ball is projected upwards with a speed of $20\text{ m/s}$ at an angle of $30^\circ$ to the horizontal. Taking $g = 10\text{ m/s}^2$, the total time after which the ball strikes the ground is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $1\text{ s}$
+    \item $2\text{ s}$
+    \item $3\text{ s}$
+    \item $4\text{ s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q58
+  \item A uniform meter rod of mass $m = 1.5\text{ kg}$ and length $L = 1\text{ m}$ rests with its upper end against a smooth vertical wall and its lower end on a rough horizontal floor. The minimum coefficient of static friction $\mu_s$ between the floor and the rod so that it can lean at an angle of $30^\circ$ with the floor without slipping is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $0.88$
+    \item $0.98$
+    \item $0.87$
+    \item $0.67$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q59
+  \item A man running along a straight horizontal road with uniform velocity $\vec{u} = u\hat{i}$ observes rain falling vertically down ($-\hat{j}$). If he doubles his running speed to $2u\hat{i}$, he observes the rain falling at an angle $\theta$ with the vertical. The true velocity of the rain with respect to the ground is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $u\hat{i} - u\hat{j}$
+    \item $u\hat{i} - \dfrac{u}{\tan\theta}\hat{j}$
+    \item $2u\hat{i} + u\cot\theta\hat{j}$
+    \item $u\hat{i} + u\sin\theta\hat{j}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q60
+  \item Three particles $A, B$, and $C$ are situated at the vertices of an equilateral triangle of side $l$ at $t = 0$. Each particle moves with constant speed $v$ such that $A$ always heads towards $B$, $B$ towards $C$, and $C$ towards $A$. The time when they meet at the centroid of the triangle is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{2l}{3v}$
+    \item $\dfrac{3l}{2v}$
+    \item $\dfrac{l}{v}$
+    \item $\dfrac{3l}{4v}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q61
+  \item A block of mass $m$ is placed on a rough horizontal turntable at distance $r$ from the axis. The coefficient of friction is $\mu$. If the turntable starts from rest with uniform angular acceleration $\alpha$, the time after which the block begins to slip is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\left[\left(\dfrac{\mu g}{\alpha^2 r}\right)^2 - \dfrac{1}{\alpha^2}\right]^{1/4}$
+    \item $\left[\left(\dfrac{\mu g}{\alpha r}\right)^2 - \dfrac{1}{\alpha^2}\right]^{1/4}$
+    \item $\left[\dfrac{\mu g}{\alpha^2 r} - \dfrac{1}{\alpha}\right]^{1/2}$
+    \item $\left[\left(\dfrac{\mu g}{\alpha^2 r}\right)^2 + \dfrac{1}{\alpha^2}\right]^{1/4}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q62
+  \item A projectile is thrown upwards making an angle of $60^\circ$ with the horizontal with an initial speed of $150\text{ m/s}$. Taking $g = 10\text{ m/s}^2$, the time after which its inclination with the horizontal becomes $45^\circ$ is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $15(\sqrt{3} - 1)\text{ s}$
+    \item $15(\sqrt{3} + 1)\text{ s}$
+    \item $7.5(\sqrt{3} - 1)\text{ s}$
+    \item $7.5(\sqrt{3} + 1)\text{ s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q63
+  \item A car travels east at $25\text{ km/h}$. To the driver of the car, a bus appears to move towards the north with a speed of $25\sqrt{3}\text{ km/h}$. The true speed and direction of motion of the bus are:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $50\text{ km/h}, 30^\circ\text{ East of North}$
+    \item $50\text{ km/h}, 60^\circ\text{ North of East}$
+    \item $25\text{ km/h}, 30^\circ\text{ East of North}$
+    \item $25\text{ km/h}, 60^\circ\text{ North of East}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q64
+  \item A police van moving on a highway at $30\text{ km/h}$ fires a bullet at a suspect's car speeding away in the same direction at $192\text{ km/h}$. If the muzzle speed of the bullet is $150\text{ m/s}$, with what speed does the bullet strike the suspect's car?
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $120\text{ m/s}$
+    \item $90\text{ m/s}$
+    \item $125\text{ m/s}$
+    \item $105\text{ m/s}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q65
+  \item A body is projected vertically upwards with velocity $u$. After time $t$, another body is projected vertically upwards from the same point with velocity $v$ ($v < u$). For the two bodies to meet as soon as possible, the time interval $t$ must be:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{u - v + \sqrt{u^2 + v^2}}{g}$
+    \item $\dfrac{u - v + \sqrt{u^2 - v^2}}{g}$
+    \item $\dfrac{u + v + \sqrt{u^2 - v^2}}{g}$
+    \item $\dfrac{u - v + \sqrt{u^2 - v^2}}{2g}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q66
+  \item A body is projected horizontally with speed $u$ from the top $A$ of an inclined plane of inclination $\theta = 30^\circ$ with the horizontal. It lands at point $P$ on the incline. The straight-line distance $AP$ along the incline is:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{u^2}{2g}$
+    \item $\dfrac{\sqrt{3}u^2}{2g}$
+    \item $\dfrac{2u^2}{3g}$
+    \item $\dfrac{4u^2}{3g}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q67
+  \item A body is projected with speed $u$ at angle $\alpha$ with the horizontal. After what time $t$ will its instantaneous velocity vector become perpendicular to its initial velocity vector?
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $\dfrac{2u\sin\alpha}{g}$
+    \item $\dfrac{u}{g\sin\alpha}$
+    \item $\dfrac{u\cos\alpha}{g}$
+    \item $\dfrac{u}{g\cos\alpha}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q68
+  \item A light elastic spring of natural length $L = 50\text{ cm}$ and spring constant $k = 2\text{ N/m}$ has a small body of mass $m = 20\text{ g}$ attached to its end. The system revolves in a horizontal circle at $30\text{ rpm}$. Taking $\pi^2 \approx 10$, the elongation of the spring and the tension in it are:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $0.05\text{ m}, 0.1\text{ N}$
+    \item $0.06\text{ m}, 0.2\text{ N}$
+    \item $0.075\text{ m}, 0.2\text{ N}$
+    \item $0.015\text{ m}, 0.3\text{ N}$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q69
+  \item A ball is projected horizontally from the roof of a building. It strikes the ground after time $t$ with its velocity vector making an angle $\theta$ with the horizontal. The speed of horizontal projection was:
+  \begin{multicols}{2}
+  \begin{enumerate}[label=\textbf{\textcolor{primaryDark}{(\Alph*)}},itemsep=2pt]
+    \item $gt\cot\theta$
+    \item $gt\tan\theta$
+    \item $gt\cos\theta$
+    \item $gt\sin\theta$
+  \end{enumerate}
+  \end{multicols}
+
+  % Q70
+  \item A ball is thrown with a velocity whose horizontal component is $12\text{ m/s}$ from a point $15\text{ m}$ above the ground and $6\text{ m}$ away from a vertical wall $18.75\text{ m}$ high in such a way to just clear the wall. Find the time (in seconds) when the ball reaches the ground. (Take $g = 10\text{ m/s}^2$).\\
+  \textit{[Numerical Value Question: Enter integer value]}
+
+  % Q71
+  \item A golfer hits a ball with velocity $u = 52\text{ m/s}$ at an angle $\alpha$ where $\tan\alpha = 5/12$. The time duration (in seconds) for which the ball remains at least $15\text{ m}$ above the ground is: (Take $g = 10\text{ m/s}^2$).\\
+  \textit{[Numerical Value Question: Enter integer value]}
+
+  % Q72
+  \item Two cars $A$ and $B$ are moving west to east at $20\text{ m/s}$ and south to north at $15\text{ m/s}$ along crossroads. Initially $A$ is $500\text{ m}$ from the intersection and $B$ is $400\text{ m}$ from the intersection. If the shortest distance between them during motion is $d$, find the value of $d / 5$ (in meters).\\
+  \textit{[Numerical Value Question: Enter integer value]}
+
+  % Q73
+  \item A boat is sent across (perpendicular) a river with a velocity of $8\text{ km/h}$. If the resultant velocity of the boat relative to the ground is $10\text{ km/h}$, find the velocity of the river flow (in km/h).\\
+  \textit{[Numerical Value Question: Enter integer value]}
+
+  % Q74
+  \item A ball thrown by one player reaches another player in $2\text{ s}$. Find the maximum height (in meters) attained by the ball above the point of projection. (Take $g = 10\text{ m/s}^2$).\\
+  \textit{[Numerical Value Question: Enter integer value]}
+
+  % Q75
+  \item Rain is falling vertically downwards with a speed of $4\text{ km/h}$. A girl walks on a straight horizontal road with a speed of $3\text{ km/h}$. The magnitude of the apparent velocity of rain with respect to the girl is (in km/h):\\
+  \textit{[Numerical Value Question: Enter integer value]}
+
+\end{enumerate}
+
+\newpage
+
+% ==================== MASTER ANSWER KEY ====================
+\begin{tcolorbox}[sectionbanner]
+  {\Large \textbf{\textsf{DAY 02: MASTER ANSWER KEY (Q1 -- Q75)}}}
+\end{tcolorbox}
+\vspace{6pt}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabular}{|c|c||c|c||c|c||c|c||c|c|}
+\hline
+\rowcolor{tableDarkHeader}
+\textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans.}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans.}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans.}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans.}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans.}} \\
+\hline\hline
+\rowcolor{white}
+1 & \textbf{\textcolor{l1Green}{B}} & 16 & \textbf{\textcolor{l1Green}{B}} & 31 & \textbf{\textcolor{l2Amber}{A}} & 46 & \textbf{\textcolor{l2Amber}{A}} & 61 & \textbf{\textcolor{l3Crimson}{A}} \\
+\hline
+\rowcolor{tableStripe}
+2 & \textbf{\textcolor{l1Green}{C}} & 17 & \textbf{\textcolor{l1Green}{B}} & 32 & \textbf{\textcolor{l2Amber}{A}} & 47 & \textbf{\textcolor{l2Amber}{B}} & 62 & \textbf{\textcolor{l3Crimson}{C}} \\
+\hline
+\rowcolor{white}
+3 & \textbf{\textcolor{l1Green}{C}} & 18 & \textbf{\textcolor{l1Green}{A}} & 33 & \textbf{\textcolor{l2Amber}{C}} & 48 & \textbf{\textcolor{l2Amber}{A}} & 63 & \textbf{\textcolor{l3Crimson}{B}} \\
+\hline
+\rowcolor{tableStripe}
+4 & \textbf{\textcolor{l1Green}{A}} & 19 & \textbf{\textcolor{l1Green}{A}} & 34 & \textbf{\textcolor{l2Amber}{C}} & 49 & \textbf{\textcolor{l2Amber}{C}} & 64 & \textbf{\textcolor{l3Crimson}{D}} \\
+\hline
+\rowcolor{white}
+5 & \textbf{\textcolor{l1Green}{D}} & 20 & \textbf{\textcolor{l1Green}{B}} & 35 & \textbf{\textcolor{l2Amber}{A}} & 50 & \textbf{\textcolor{l2Amber}{D}} & 65 & \textbf{\textcolor{l3Crimson}{B}} \\
+\hline
+\rowcolor{tableStripe}
+6 & \textbf{\textcolor{l1Green}{B}} & 21 & \textbf{\textcolor{l1Green}{C}} & 36 & \textbf{\textcolor{l2Amber}{C}} & 51 & \textbf{\textcolor{l3Crimson}{A}} & 66 & \textbf{\textcolor{l3Crimson}{D}} \\
+\hline
+\rowcolor{white}
+7 & \textbf{\textcolor{l1Green}{B}} & 22 & \textbf{\textcolor{l1Green}{A}} & 37 & \textbf{\textcolor{l2Amber}{A}} & 52 & \textbf{\textcolor{l3Crimson}{A}} & 67 & \textbf{\textcolor{l3Crimson}{B}} \\
+\hline
+\rowcolor{tableStripe}
+8 & \textbf{\textcolor{l1Green}{B}} & 23 & \textbf{\textcolor{l1Green}{C}} & 38 & \textbf{\textcolor{l2Amber}{B}} & 53 & \textbf{\textcolor{l3Crimson}{C}} & 68 & \textbf{\textcolor{l3Crimson}{A}} \\
+\hline
+\rowcolor{white}
+9 & \textbf{\textcolor{l1Green}{D}} & 24 & \textbf{\textcolor{l1Green}{A}} & 39 & \textbf{\textcolor{l2Amber}{D}} & 54 & \textbf{\textcolor{l3Crimson}{A}} & 69 & \textbf{\textcolor{l3Crimson}{A}} \\
+\hline
+\rowcolor{tableStripe}
+10 & \textbf{\textcolor{l1Green}{B}} & 25 & \textbf{\textcolor{l1Green}{A}} & 40 & \textbf{\textcolor{l2Amber}{A}} & 55 & \textbf{\textcolor{l3Crimson}{D}} & 70 & \textbf{\textcolor{l3Crimson}{3}} \\
+\hline
+\rowcolor{white}
+11 & \textbf{\textcolor{l1Green}{A}} & 26 & \textbf{\textcolor{l2Amber}{C}} & 41 & \textbf{\textcolor{l2Amber}{A}} & 56 & \textbf{\textcolor{l3Crimson}{D}} & 71 & \textbf{\textcolor{l3Crimson}{2}} \\
+\hline
+\rowcolor{tableStripe}
+12 & \textbf{\textcolor{l1Green}{A}} & 27 & \textbf{\textcolor{l2Amber}{A}} & 42 & \textbf{\textcolor{l2Amber}{D}} & 57 & \textbf{\textcolor{l3Crimson}{D}} & 72 & \textbf{\textcolor{l3Crimson}{4}} \\
+\hline
+\rowcolor{white}
+13 & \textbf{\textcolor{l1Green}{A}} & 28 & \textbf{\textcolor{l2Amber}{D}} & 43 & \textbf{\textcolor{l2Amber}{B}} & 58 & \textbf{\textcolor{l3Crimson}{C}} & 73 & \textbf{\textcolor{l3Crimson}{6}} \\
+\hline
+\rowcolor{tableStripe}
+14 & \textbf{\textcolor{l1Green}{A}} & 29 & \textbf{\textcolor{l2Amber}{C}} & 44 & \textbf{\textcolor{l2Amber}{D}} & 59 & \textbf{\textcolor{l3Crimson}{B}} & 74 & \textbf{\textcolor{l3Crimson}{5}} \\
+\hline
+\rowcolor{white}
+15 & \textbf{\textcolor{l1Green}{B}} & 30 & \textbf{\textcolor{l2Amber}{A}} & 45 & \textbf{\textcolor{l2Amber}{B}} & 60 & \textbf{\textcolor{l3Crimson}{A}} & 75 & \textbf{\textcolor{l3Crimson}{5}} \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{10pt}
+\begin{tcolorbox}[theorycard]
+\footnotesize
+\textbf{\textcolor{primaryDark}{Self-Evaluation \& JEE Benchmarking Guidelines:}}
+\begin{itemize}[leftmargin=12pt,itemsep=2pt]
+  \item \textbf{Marking Scheme:} $+4$ for correct, $-1$ for incorrect in MCQs, $0$ unattempted. $+4$ for correct, $0$ incorrect in Numericals. Max Marks: 300.
+  \item \textbf{\textcolor{l1Green}{Target $> 240$ Marks:}} Exceptional 2D mastery \& quick spatial visualization (Top 500 AIR pace).
+  \item \textbf{\textcolor{l2Amber}{Target $190 - 240$ Marks:}} Strong JEE Main performance (Top 2500 AIR pace). Review relative motion sign conventions.
+  \item \textbf{\textcolor{l3Crimson}{Target $< 190$ Marks:}} Rework missed Level 2 and Level 3 problems in Block 5.
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}

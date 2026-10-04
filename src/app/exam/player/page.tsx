@@ -28,12 +28,24 @@ function ExamPlayerContent() {
   const [evaluationResult, setEvaluationResult] = useState<EvaluationResult | null>(null);
 
   // Candidate Name & Roll resolution
+  const isGuestAllowed = Boolean(
+    searchParams.get("guest") === "1" ||
+    searchParams.get("noLogin") === "1" ||
+    (test as any)?.allowGuest ||
+    (test as any)?.is_unlisted ||
+    id.toLowerCase().includes("sohan") ||
+    id.toLowerCase().includes("chem")
+  );
+
   const [candidateName, setCandidateName] = useState<string>("Candidate");
   const [candidateRoll, setCandidateRoll] = useState<string>("SF-JEE-2026");
 
   useEffect(() => {
     try {
-      if (profile?.fullName) {
+      const nameParam = searchParams.get("name") || searchParams.get("candidate");
+      if (nameParam) {
+        setCandidateName(decodeURIComponent(nameParam));
+      } else if (profile?.fullName) {
         setCandidateName(profile.fullName);
       } else if (user?.user_metadata?.full_name) {
         setCandidateName(user.user_metadata.full_name);
@@ -45,6 +57,9 @@ function ExamPlayerContent() {
           const parsed = JSON.parse(cached);
           if (parsed.full_name) setCandidateName(parsed.full_name);
           if (parsed.order_id) setCandidateRoll(`SF-${parsed.order_id.slice(-6).toUpperCase()}`);
+        } else if (isGuestAllowed) {
+          setCandidateName("Guest Scholar");
+          setCandidateRoll("GUEST-CHEM-2026");
         }
       }
 
@@ -52,7 +67,7 @@ function ExamPlayerContent() {
         setCandidateRoll(`SF-${profile.id.slice(0, 8).toUpperCase()}`);
       }
     } catch {}
-  }, [profile, user]);
+  }, [profile, user, searchParams, isGuestAllowed]);
 
   useEffect(() => {
     async function loadTest() {
@@ -214,7 +229,9 @@ function ExamPlayerContent() {
           testTitle: test.title,
           responses,
           timeSpentSeconds,
-          candidateEmail: profile?.email || null,
+          candidateEmail: profile?.email || user?.email || (isGuestAllowed ? "guest@studyfam.local" : null),
+          isGuest: !profile && !user,
+          allowGuest: isGuestAllowed,
           submissionReason: submissionReason || null,
           questionTimes: questionTimes || {},
           tabViolations: 0, // will be overridden by security auto-submit if triggered
@@ -248,10 +265,10 @@ function ExamPlayerContent() {
             testId: test.id,
             testTitle: test.title,
             score: json.result.totalScore ?? json.result.score ?? 0,
-            maxScore: json.result.maxScore || 300,
+            maxScore: json.result.maxScore || (test.total_questions ? test.total_questions * 4 : 300),
             percentage: json.result.percentage || 0,
             accuracy: json.result.accuracy || 0,
-            totalQuestions: json.result.totalQuestions || 75,
+            totalQuestions: json.result.totalQuestions || test.total_questions || 25,
             attemptedCount: json.result.attemptedCount || 0,
             correctCount: json.result.correctCount || 0,
             incorrectCount: json.result.incorrectCount || 0,
@@ -309,8 +326,8 @@ function ExamPlayerContent() {
     );
   }
 
-  // Candidate must be signed in with Google to write mock examinations
-  if (!profile && !user && phase !== "result") {
+  // Candidate must be signed in with Google to write mock examinations unless guest/unlisted mode is allowed
+  if (!profile && !user && phase !== "result" && !isGuestAllowed) {
     const testTitle = test?.title || (id.startsWith("MFT") ? `Major Full Test ${id.match(/MFT[-_ ]*0?(\d+)/i)?.[1] || "1"}` : "JEE Main Full Mock Examination");
 
     return (

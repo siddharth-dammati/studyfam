@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sohan Mocks — JEE Main Chemistry Special 25Q Mock Test</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(18, 24, 38, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover: rgba(26, 35, 56, 0.95);
+      --primary: #2563eb;
+      --primary-glow: #3b82f6;
+      --accent: #10b981;
+      --accent-glow: #34d399;
+      --amber: #f59e0b;
+      --purple: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: auto, auto, auto, 28px 28px;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 5rem;
+    }
+
+    /* Top banner for unlisted / private status */
+    .unlisted-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fbbf24;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.1);
+    }
+
+    .header-section {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .badge-tag {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #60a5fa;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.25rem;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+
+    /* Key Specs Grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .spec-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: all 0.2s ease;
+    }
+
+    .spec-card:hover {
+      border-color: rgba(59, 130, 246, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .spec-val {
+      font-size: 1.75rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.25rem;
+    }
+
+    .spec-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Primary CTA Buttons */
+    .cta-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      padding: 1.1rem 2.25rem;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.65), 0 0 25px rgba(59, 130, 246, 0.45);
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      padding: 1.1rem 2rem;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    /* Section Cards */
+    .content-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 2.25rem;
+      margin-bottom: 2.5rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #ffffff;
+    }
+
+    .section-title-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+
+    /* Weightage Breakdown Table */
+    .weightage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .branch-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .branch-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .branch-physical::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+    .branch-inorganic::before { background: linear-gradient(90deg, #10b981, #34d399); }
+    .branch-organic::before { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+    .branch-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .branch-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .branch-stats {
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: #94a3b8;
+    }
+
+    .chapter-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .chapter-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      color: #cbd5e1;
+      padding: 0.4rem 0.6rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .chapter-tag {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .tag-mcq {
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .tag-num {
+      background: rgba(168, 85, 247, 0.15);
+      color: #d8b4fe;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 1.25rem;
+    }
+
+    .feature-item h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .feature-item p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Guidelines List */
+    .guideline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+      font-size: 0.925rem;
+      color: #cbd5e1;
+    }
+
+    .guideline-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3b82f6;
+      margin-top: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    footer a {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      .cta-container {
+        flex-direction: column;
+      }
+      .btn-primary, .btn-secondary {
+        width: 100%;
+      }
+      .content-box {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="unlisted-banner">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>Unlisted Special Access • Sohan Mocks</span>
+      </div>
+
+      <div class="badge-tag">JEE Main 2026 Examination Engine</div>
+
+      <h1>Chemistry Special 25Q Full Mock Test</h1>
+
+      <p class="subtitle">
+        Curated strictly in accordance with NTA's official Chemistry chapter-wise weightage. Test yourself on StudyFAM's authentic TCS iON CBT exam player with a strict 60-minute timer and instant post-exam analytics — completely accessible without login!
+      </p>
+
+      <!-- Key Specs -->
+      <div class="specs-grid">
+        <div class="spec-card">
+          <div class="spec-val">25 Qs</div>
+          <div class="spec-label">Total Questions</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-val">60 Min</div>
+          <div class="spec-label">1-Hour Strict Timer</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-val">100</div>
+          <div class="spec-label">Max Marks (+4 / -1)</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-val">No Login</div>
+          <div class="spec-label">Instant Guest Access</div>
+        </div>
+      </div>
+
+      <!-- Call to Actions -->
+      <div class="cta-container">
+        <a href="/exam/player?id=sohan-chem-mock&guest=1" class="btn-primary" id="launch-exam-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          <span>Start 1-Hour Chemistry Mock Exam</span>
+        </a>
+
+        <a href="/exam/player?id=sohan-chem-mock&guest=1&review=1" class="btn-secondary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12h20"></path>
+            <path d="M20 12l-4-4"></path>
+            <path d="M20 12l-4 4"></path>
+          </svg>
+          <span>View Solutions & Analysis Key</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Chapterwise Weightage Breakdown -->
+    <div class="content-box">
+      <div class="section-title">
+        <div class="section-title-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+            <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+          </svg>
+        </div>
+        <span>JEE Main Chemistry Chapter-Wise Weightage Breakdown</span>
+      </div>
+
+      <div class="weightage-grid">
+        <!-- Physical Chemistry -->
+        <div class="branch-card branch-physical">
+          <div class="branch-header">
+            <div class="branch-name">Physical Chemistry</div>
+            <div class="branch-stats">8 Qs (32%) • 32 Marks</div>
+          </div>
+          <ul class="chapter-list">
+            <li class="chapter-item">
+              <span>Chemical Thermodynamics (ΔU, w, ΔS)</span>
+              <span class="chapter-tag tag-mcq">Q1 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Chemical Kinetics (Arrhenius Eq. & Ea)</span>
+              <span class="chapter-tag tag-mcq">Q2 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Solutions & Colligative Properties (ΔTf)</span>
+              <span class="chapter-tag tag-mcq">Q3 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Electrochemistry & Nernst Equation</span>
+              <span class="chapter-tag tag-mcq">Q4 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Equilibrium (Common Ion & Ksp)</span>
+              <span class="chapter-tag tag-mcq">Q5 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Mole Concept & Combustion Stoichiometry</span>
+              <span class="chapter-tag tag-num">Q21 • Numerical</span>
+            </li>
+            <li class="chapter-item">
+              <span>Atomic Structure (Bohr Emission Spectrum)</span>
+              <span class="chapter-tag tag-num">Q22 • Numerical</span>
+            </li>
+            <li class="chapter-item">
+              <span>Redox Reactions & KMnO₄ Titrations</span>
+              <span class="chapter-tag tag-num">Q23 • Numerical</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Inorganic Chemistry -->
+        <div class="branch-card branch-inorganic">
+          <div class="branch-header">
+            <div class="branch-name">Inorganic Chemistry</div>
+            <div class="branch-stats">8 Qs (32%) • 32 Marks</div>
+          </div>
+          <ul class="chapter-list">
+            <li class="chapter-item">
+              <span>MOT: Bond Order & Magnetic Nature</span>
+              <span class="chapter-tag tag-mcq">Q6 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>VSEPR Theory: Xe & Halogen Fluorides</span>
+              <span class="chapter-tag tag-mcq">Q7 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Periodic Table: Ionization Anomalies</span>
+              <span class="chapter-tag tag-mcq">Q8 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Coordination: CFT & Inner Orbital Complexes</span>
+              <span class="chapter-tag tag-mcq">Q9 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Coordination: Optical Isomerism</span>
+              <span class="chapter-tag tag-mcq">Q10 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>d & f-Block: Lanthanoid Contraction (Zr/Hf)</span>
+              <span class="chapter-tag tag-mcq">Q11 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>p-Block: Oxoacids of Phosphorus (P-H bonds)</span>
+              <span class="chapter-tag tag-mcq">Q12 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Coordination: High-Spin Unpaired Electrons</span>
+              <span class="chapter-tag tag-num">Q24 • Numerical</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Organic Chemistry -->
+        <div class="branch-card branch-organic">
+          <div class="branch-header">
+            <div class="branch-name">Organic Chemistry</div>
+            <div class="branch-stats">9 Qs (36%) • 36 Marks</div>
+          </div>
+          <ul class="chapter-list">
+            <li class="chapter-item">
+              <span>GOC: Acidic Strength of Phenols</span>
+              <span class="chapter-tag tag-mcq">Q13 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>GOC: Carbocation Thermodynamic Stability</span>
+              <span class="chapter-tag tag-mcq">Q14 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Hydrocarbons: Reductive Ozonolysis</span>
+              <span class="chapter-tag tag-mcq">Q15 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Haloalkanes: SN2 & Walden Inversion</span>
+              <span class="chapter-tag tag-mcq">Q16 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Ethers: Cleavage with Concentrated HI</span>
+              <span class="chapter-tag tag-mcq">Q17 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Aldehydes: Tollens' & Iodoform Tests</span>
+              <span class="chapter-tag tag-mcq">Q18 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Amines: Hoffmann Bromamide & Azo Dye</span>
+              <span class="chapter-tag tag-mcq">Q19 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Biomolecules: Non-Reducing Disaccharides</span>
+              <span class="chapter-tag tag-mcq">Q20 • MCQ</span>
+            </li>
+            <li class="chapter-item">
+              <span>Biomolecules: Chiral Centers in D-Glucose</span>
+              <span class="chapter-tag tag-num">Q25 • Numerical</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features & Exam Highlights -->
+    <div class="content-box">
+      <div class="section-title">
+        <div class="section-title-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+          </svg>
+        </div>
+        <span>Exam Player & Post-Test Diagnostic Highlights</span>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-item">
+          <h4>
+            <span style="color: #3b82f6;">⏱</span>
+            <span>Real 1-Hour CBT Clock</span>
+          </h4>
+          <p>Strict 60:00 countdown timer with active minute-by-minute sync, visual warnings at 10m and 5m, and automatic submission upon expiry.</p>
+        </div>
+
+        <div class="feature-item">
+          <h4>
+            <span style="color: #8b5cf6;">⌨</span>
+            <span>Virtual Numerical Keypad</span>
+          </h4>
+          <p>Authentic NTA-compliant on-screen virtual keypad for Section B (Questions 21-25) supporting decimal and negative values.</p>
+        </div>
+
+        <div class="feature-item">
+          <h4>
+            <span style="color: #10b981;">📊</span>
+            <span>Percentile & Rank Projection</span>
+          </h4>
+          <p>Instant scoring analysis mapped to official NTA 2026 percentile cutoffs and All India Rank (AIR) projections across shifts.</p>
+        </div>
+
+        <div class="feature-item">
+          <h4>
+            <span style="color: #f59e0b;">🔍</span>
+            <span>Step-by-Step Solutions</span>
+          </h4>
+          <p>Every single question features complete pedagogical explanations, reaction mechanisms, and LaTeX rendered mathematical equations.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exam Guidelines -->
+    <div class="content-box">
+      <div class="section-title">
+        <div class="section-title-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+        </div>
+        <span>Test Instructions & Rules</span>
+      </div>
+
+      <div class="guideline-item">
+        <div class="guideline-dot"></div>
+        <div>
+          <strong>Section A (Q1 – Q20):</strong> 20 Multiple Choice Questions (Single Correct). Each question awards <strong>+4 marks</strong> for correct answer and penalizes <strong>-1 mark</strong> for incorrect attempt.
+        </div>
+      </div>
+
+      <div class="guideline-item">
+        <div class="guideline-dot"></div>
+        <div>
+          <strong>Section B (Q21 – Q25):</strong> 5 Numerical Value Questions. Enter answers using the on-screen keypad or numeric keys. Each question awards <strong>+4 marks</strong> for correct and penalizes <strong>-1 mark</strong> for incorrect.
+        </div>
+      </div>
+
+      <div class="guideline-item">
+        <div class="guideline-dot"></div>
+        <div>
+          <strong>Zero Sign-In Requirement:</strong> This unlisted mock can be attempted immediately without Google authentication. Your session and attempt evaluation will be stored in your browser's local cache.
+        </div>
+      </div>
+
+      <div class="guideline-item">
+        <div class="guideline-dot"></div>
+        <div>
+          <strong>Proctoring:</strong> Tab switches and full-screen exits will trigger proctoring alerts in the exam player. Ensure you take the mock in an uninterrupted environment.
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Action Card -->
+    <div style="text-align: center; padding: 2rem 0;">
+      <a href="/exam/player?id=sohan-chem-mock&guest=1" class="btn-primary" style="font-size: 1.15rem; padding: 1.25rem 3rem;">
+        <span>Launch Sohan Chemistry Mock (1 Hour)</span>
+      </a>
+      <p style="font-size: 0.85rem; color: #64748b; margin-top: 1rem;">
+        Unlisted test link • Direct URL: <code>/exam/player?id=sohan-chem-mock&guest=1</code>
+      </p>
+    </div>
+
+    <footer>
+      <p>
+        © 2026 StudyFAM Platform. Unlisted Assessment for Sohan Mocks. All rights reserved.
+      </p>
+    </footer>
+  </div>
+
+</body>
+</html>

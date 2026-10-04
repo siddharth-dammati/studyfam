@@ -30,6 +30,8 @@ export default function robots(): MetadataRoute.Robots {
           "/auth/*",
           "/dashboard",
           "/admit-card",
+          "/sohanmocks",
+          "/sohanmocks.html",
         ],
       },
       {
@@ -55,6 +57,8 @@ export default function robots(): MetadataRoute.Robots {
           "/auth/*",
           "/dashboard",
           "/admit-card",
+          "/sohanmocks",
+          "/sohanmocks.html",
         ],
       },
     ],

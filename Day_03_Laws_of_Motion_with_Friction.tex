@@ -1,0 +1,1199 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=2cm, bottom=2.3cm, left=1.8cm, right=1.8cm, headsep=0.8cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[table]{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable,skins}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,patterns,calc}
+
+% High-Contrast Modern Color Palette
+\definecolor{primaryDark}{RGB}{12, 32, 84}       % Midnight Navy (Deep)
+\definecolor{primaryBlue}{RGB}{18, 72, 160}      % Solid Royal Blue
+\definecolor{goldAccent}{RGB}{255, 215, 0}       % Gold highlight
+\definecolor{l1Green}{RGB}{14, 120, 62}          % Vivid Forest Green (Level 1)
+\definecolor{l2Amber}{RGB}{205, 80, 0}           % Rich Amber / Orange (Level 2)
+\definecolor{l3Crimson}{RGB}{180, 20, 20}        % Deep Crimson Red (Level 3)
+\definecolor{formulaBg}{RGB}{255, 252, 235}      % Warm Cream-Gold (Formula Callout)
+\definecolor{formulaBorder}{RGB}{220, 160, 30}   % Gold Border for Formulas
+\definecolor{cardBg}{RGB}{250, 252, 255}         % Clean Crisp Card Background
+\definecolor{cardBorder}{RGB}{130, 170, 220}     % Sharp Steel Blue Border
+\definecolor{tableStripe}{RGB}{242, 246, 252}    % Alternating Table Row
+\definecolor{tableDarkHeader}{RGB}{12, 32, 84}   % Dark Table Header
+\definecolor{darkCharcoal}{RGB}{25, 25, 25}      % High-contrast body text
+
+% Page styling (Guaranteed Collision-Free Header)
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{16pt}
+\fancyhead[L]{\small\textsf{\textbf{\textcolor{primaryDark}{StudyFAM JEE Revision}} $\vert$ \textbf{\textcolor{primaryBlue}{Day 03: Laws of Motion \& Friction}}}}
+\fancyhead[R]{\small\textsf{\textbf{\textcolor{l3Crimson}{Study Target: 8 Hours}}}}
+\fancyfoot[C]{\textbf{\textsf{\thepage}}}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Custom High-Contrast tcolorboxes
+\tcbset{
+  dayheader/.style={
+    colback=primaryDark,
+    coltext=white,
+    boxrule=0pt,
+    arc=3mm,
+    left=14pt, right=14pt, top=10pt, bottom=10pt
+  },
+  sectionbanner/.style={
+    colback=primaryBlue,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  chapterbanner/.style={
+    colback=primaryDark,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=7pt, bottom=7pt
+  },
+  l1banner/.style={
+    colback=l1Green,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  l2banner/.style={
+    colback=l2Amber,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  l3banner/.style={
+    colback=l3Crimson,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  formulacard/.style={
+    enhanced,
+    breakable,
+    colback=formulaBg,
+    colframe=formulaBorder,
+    boxrule=1.2pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=8pt, bottom=8pt
+  },
+  theorycard/.style={
+    enhanced,
+    breakable,
+    colback=cardBg,
+    colframe=cardBorder,
+    boxrule=1.2pt,
+    arc=2.5mm,
+    left=12pt, right=12pt, top=10pt, bottom=10pt
+  }
+}
+
+\begin{document}
+
+
+% ==================== DAY HEADER BANNER ====================
+\begin{tcolorbox}[dayheader]
+\begin{center}
+  {\Large \textbf{\textsf{\textcolor{goldAccent}{STUDYFAM JEE INTENSIVE REVISION SERIES}}}}\\[3pt]
+  {\LARGE \textbf{\textsf{DAY 03: LAWS OF MOTION WITH FRICTION}}}\\[5pt]
+  {\normalsize \textbf{\textsf{Core Topics:}} Newton's Laws $\vert$ Weighing Machine Dynamics $\vert$ Constraint Relations $\vert$ Springs $\vert$ Friction Regimes $\vert$ Block-on-Block}\\[3pt]
+  {\footnotesize \textbf{Daily Target Time:} 8 Hours \quad $\vert$ \quad \textbf{Curated Questions:} 75 Questions (25 Level-1 + 25 Level-2 + 25 Level-3)}
+\end{center}
+\end{tcolorbox}
+
+\vspace{6pt}
+
+% ==================== PART 1: TODAY'S PLAN ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 1: TODAY'S 8-HOUR ACTION SCHEDULE}}}
+\end{tcolorbox}
+\vspace{2pt}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabularx}{\textwidth}{|c|c|X|c|}
+\hline
+\rowcolor{tableDarkHeader}
+\textcolor{white}{\textbf{Session}} & \textcolor{white}{\textbf{Time}} & \textcolor{white}{\textbf{Focus Area \& High-Yield Strategy}} & \textcolor{white}{\textbf{Duration}} \\
+\hline
+\rowcolor{white}
+\textbf{Block 1} & 09:00 -- 11:00 & \textbf{Theory \& Formula Compendium:} Study unabridged theory below. Master action-reaction pairs, elevator apparent weight $N=m(g\pm a)$, heavy rope tension $T(x)=F(1-x/L)$, spring cutting $k\ell=\text{const}$, string/wedge constraints, and friction laws. & 2.0 Hours \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Block 2} & 11:15 -- 12:45 & \textbf{Level-1 Foundation \& Speed Drill (Q1--Q25):} Direct Newton's 2nd law applications, impulse-momentum theorem, elevator tensions, machine gun thrust, static friction thresholds. Target: $\le 1.5$ min/Q. & 1.5 Hours \\
+\hline
+\rowcolor{white}
+-- & 12:45 -- 01:45 & \textit{Lunch Break, Physical Movement \& Mental Recovery} & 1.0 Hour \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Block 3} & 01:45 -- 04:15 & \textbf{Level-2 Core JEE Main Mastery (Q26--Q50):} Connected block systems on pulleys, rough incline time ratios $\mu=\tan\theta(1-1/n^2)$, rocket thrust, monkey climbing acceleration, spring balance series. Target: $\le 2.5$ min/Q. & 2.5 Hours \\
+\hline
+\rowcolor{white}
+\textbf{Block 4} & 04:30 -- 06:15 & \textbf{Level-3 Advanced \& Numerical Challenge (Q51--Q75):} Block-on-block slipping thresholds, minimum pulling force at optimum angle, string tension infinity limits, Atwood machine, integer numericals. & 1.75 Hours \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Block 5} & 06:30 -- 07:15 & \textbf{Master Answer Key Audit \& Error Logging:} Check answers against the master key, re-solve any incorrect problems, and log key traps in your revision notebook. & 0.75 Hour \\
+\hline
+\rowcolor{tableDarkHeader}
+\multicolumn{3}{|r|}{\textcolor{white}{\textbf{TOTAL DEDICATED STUDY TIME}}} & \textcolor{white}{\textbf{8.0 Hours}} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\vspace{5pt}
+
+% ==================== PART 2: OUTCOMES OF THE PLAN ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 2: TARGETED LEARNING OUTCOMES}}}
+\end{tcolorbox}
+\vspace{3pt}
+
+\begin{itemize}[leftmargin=18pt,itemsep=2.5pt,topsep=1pt]
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 1 (Inertial vs Non-Inertial Frames):}} Correctly apply pseudo forces $\vec{F}_{\text{pseudo}} = -m\vec{a}_0$ in accelerating frames and compute apparent weights $N = m(g \pm a)$ on weighing scales.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 2 (Impulse \& Variable Mass Dynamics):}} Evaluate impulsive momentum transfers $\vec{J} = \Delta\vec{p}$ in collisions and thrust equations for rockets and conveyor belts $F = v_{\text{rel}}\frac{dm}{dt}$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 3 (Tension in Strings \& Ropes):}} Master Atwood machine accelerations $a = \frac{m_1 - m_2}{m_1 + m_2}g$ and tension gradients in massive ropes $T(x) = F\left(1 - \frac{x}{L}\right)$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 4 (Constraint Equations):}} Solve complex multi-pulley systems using virtual work $\sum \vec{T}_i \cdot \vec{a}_i = 0$ and wedge contact constraints $a_{1\perp} = a_{2\perp}$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 5 (Spring Invariants \& Combinations):}} Apply the invariant $k\ell = \text{constant}$ to calculate cut spring constants $k_1 = \frac{m+n}{m}k$ and series/parallel equivalent stiffnesses.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 6 (Frictional Regimes \& Angle of Repose):}} Distinguish self-adjusting static friction ($f_s \le \mu_s N$) from kinetic sliding friction ($f_k = \mu_k N$), and apply $\tan\lambda = \mu_s$ and $\tan\alpha = \mu_s$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 7 (Multi-Block Slipping \& Incline Multipliers):}} Calculate maximum force without relative slip in block-on-block systems and solve rough incline time relations $\mu = \tan\theta\left(1 - \frac{1}{n^2}\right)$.
+\end{itemize}
+
+\vspace{5pt}
+
+
+% ==================== PART 3: COMPLETE UNABRIDGED THEORY COMPENDIUM ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 3: UNABRIDGED THEORY \& FORMULA REVISION (FROM NOTES)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+% -------------------------------------------------------------
+% SUBSECTION 1: NEWTON'S LAWS OF MOTION
+% -------------------------------------------------------------
+\begin{tcolorbox}[chapterbanner]
+  {\Large \textbf{\textsf{1. Newton's Laws of Motion (Complete Notes)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.1 Fundamental Laws and Types of Forces}}}}\\[3pt]
+\begin{itemize}[leftmargin=14pt,itemsep=2.5pt]
+  \item \textbf{First Law of Motion (Law of Inertia):} A body continues in its state of rest or of uniform motion along a straight line unless acted upon by an unbalanced external force.
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+    \item \textit{Inertia of Rest:} When a stationary bus suddenly starts, passengers lurch backward.
+    \item \textit{Inertia of Motion:} When a moving vehicle stops abruptly, passengers pitch forward.
+    \item \textit{Inertia of Direction:} When a car takes a sharp turn, passengers tilt outward.
+  \end{itemize}
+  \item \textbf{Second Law of Motion (Momentum Principle):} The rate of change of linear momentum is directly proportional to the applied net external force and takes place in the direction of the force:
+  \[
+    \vec{F} = \frac{d\vec{p}}{dt} = \frac{d(m\vec{v})}{dt} = m\frac{d\vec{v}}{dt} + \vec{v}\frac{dm}{dt}
+  \]
+  For constant mass $m$: $\vec{F} = m\vec{a}$. In Cartesian components:
+  \[
+    F_x = \frac{dp_x}{dt} = m a_x, \quad F_y = \frac{dp_y}{dt} = m a_y, \quad F_z = \frac{dp_z}{dt} = m a_z
+  \]
+  \textit{Impulse of a Force:} $\vec{J} = \int_{t_1}^{t_2} \vec{F}\,dt = \Delta\vec{p} = \vec{p}_f - \vec{p}_i$. Graphical area under $F-t$ curve equals impulse.
+  \item \textbf{Third Law of Motion (Action--Reaction):} To every action, there is always an equal and opposite reaction:
+  \[
+    \vec{F}_{AB} = -\vec{F}_{BA}
+  \]
+  where $\vec{F}_{AB}$ is the force on body $A$ due to body $B$, and $\vec{F}_{BA}$ is the force on $B$ due to $A$.
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+    \item Action and reaction forces act on \textbf{different bodies} simultaneously. They never cancel each other.
+    \item They are identical in nature (e.g., both gravitational, both normal contact, etc.).
+  \end{itemize}
+  \item \textbf{Classification of Forces:}
+  \begin{enumerate}[label=(\alph*),leftmargin=12pt,itemsep=1.5pt]
+    \item \textbf{Contact Forces:} Require physical mechanical contact (Normal reaction $N$, Tension $T$, Friction $f$, Spring force $F_s$).
+    \item \textbf{Field / Distant Forces:} Act across space without physical contact (Gravitational weight $\vec{w} = m\vec{g}$, Electrostatic force, Magnetic force).
+  \end{enumerate}
+\end{itemize}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.2 Contact Forces: Normal, Tension, and Spring Systems}}}}\\[3pt]
+\begin{itemize}[leftmargin=14pt,itemsep=2.5pt]
+  \item \textbf{Normal Reaction ($N$):} Contact force perpendicular to the tangent plane of contact. It is a repulsive constraint force preventing interpenetration of rigid surfaces.
+  \item \textbf{Weighing Machine Principle:} A weighing machine does \textbf{not} measure true gravitational weight $mg$; it measures the \textbf{normal reaction force $N$} exerted on its upper platform.
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+    \item Lift accelerating upward with acceleration $a$: $N = m(g + a)$ (apparent weight increases).
+    \item Lift accelerating downward with acceleration $a < g$: $N = m(g - a)$ (apparent weight decreases).
+    \item Free fall ($a = g$): $N = 0$ (state of weightlessness).
+  \end{itemize}
+  \item \textbf{Tension in Strings ($T$):} Tension always acts as a \textbf{pulling} force away from the body along the length of the string.
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+    \item For an ideal (massless and frictionless) string and pulley, tension is uniform throughout.
+    \item When a string has mass $M$ and length $L$, tension varies with position: at distance $x$ from the pulled end with force $F$, $T(x) = F\left(1 - \frac{x}{L}\right)$.
+    \item A string slacks instantly whenever the tension drops to zero ($T = 0$).
+  \end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}[formulacard]
+  \textbf{\textcolor{primaryDark}{1.3 Spring Dynamics and Cutting Properties (Complete Notes):}}
+  An ideal spring of stiffness $k$ follows Hooke's Law: $F_s = -kx$, where $x$ is deformation from natural length $\ell$.
+  \begin{itemize}[leftmargin=14pt,itemsep=2.5pt]
+    \item \textbf{Spring Invariant Property:} The product of spring constant and natural length is strictly constant:
+    \[
+      k \times \ell = \text{constant}
+    \]
+    \item \textbf{Cutting a Spring in Ratio $m : n$:} If a spring of stiffness $k$ and length $\ell$ is cut into two pieces with lengths $\ell_1 = \frac{m}{m+n}\ell$ and $\ell_2 = \frac{n}{m+n}\ell$, the new stiffnesses are:
+    \[
+      k_1 = \frac{m+n}{m}k, \qquad k_2 = \frac{m+n}{n}k
+    \]
+    \item \textbf{Series Combination:} Same tension force through each spring, deformations add:
+    \[
+      \frac{1}{k_{\text{eq}}} = \frac{1}{k_1} + \frac{1}{k_2} + \dots + \frac{1}{k_n} \implies k_{\text{eq}} = \frac{k_1 k_2}{k_1 + k_2} \quad (\text{for two springs})
+    \]
+    \item \textbf{Parallel Combination:} Same deformation for all springs, restoring forces add:
+    \[
+      k_{\text{eq}} = k_1 + k_2 + \dots + k_n
+    \]
+    \item \textbf{Spring Balance:} Measures the tension force acting at its hook (reading in $\text{kg-wt} = T/g$). When two identical spring balances are connected in series supporting mass $M$, \textbf{both read $M\text{ kg}$}.
+  \end{itemize}
+\end{tcolorbox}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.4 Constraint Relations \& System Dynamics}}}}\\[3pt]
+\begin{enumerate}[label=(\roman*),leftmargin=14pt,itemsep=2.5pt]
+  \item \textbf{String Constraint (Virtual Work Theorem):} Because ideal strings are inextensible, the total work done by internal tension forces in any virtual displacement is zero:
+  \[
+    \sum \vec{T}_i \cdot \vec{x}_i = 0 \implies \sum \vec{T}_i \cdot \vec{v}_i = 0 \implies \sum \vec{T}_i \cdot \vec{a}_i = 0
+  \]
+  \item \textbf{Wedge Constraint:} When two rigid bodies remain in contact without interpenetration or separation, the components of their velocities and accelerations perpendicular to the contact interface must be identical:
+  \[
+    v_{1\perp} = v_{2\perp}, \qquad a_{1\perp} = a_{2\perp}
+  \]
+  \item \textbf{Newton's Second Law for a System of Particles:}
+  \[
+    \vec{F}_{\text{ext}} = \sum_{i=1}^n m_i \vec{a}_i = M_{\text{total}} \vec{a}_{\text{cm}}
+  \]
+  Internal interaction forces cancel out pairwise in accordance with Newton's Third Law.
+  \item \textbf{Equilibrium of a Particle:} Net external force vanishes: $\sum \vec{F} = 0 \iff \sum F_x = 0, \;\sum F_y = 0, \;\sum F_z = 0$.
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+    \item \textbf{Lami's Theorem:} For three coplanar concurrent forces in equilibrium:
+    \[
+      \frac{F_1}{\sin\alpha} = \frac{F_2}{\sin\beta} = \frac{F_3}{\sin\gamma}
+    \]
+    where $\alpha, \beta, \gamma$ are the angles opposite to forces $\vec{F}_1, \vec{F}_2, \vec{F}_3$.
+  \end{itemize}
+\end{enumerate}
+
+\vspace{10pt}
+
+% -------------------------------------------------------------
+% SUBSECTION 2: FRICTION
+% -------------------------------------------------------------
+\begin{tcolorbox}[chapterbanner]
+  {\Large \textbf{\textsf{2. Friction (Complete Notes)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{2.1 Nature, Types and Governing Laws of Friction}}}}\\[3pt]
+Friction is an electromagnetic contact force that acts parallel to the interface between two contacting surfaces, opposing their relative motion or tendency of relative motion.
+
+\begin{tcolorbox}[formulacard]
+  \textbf{\textcolor{primaryDark}{Static vs. Kinetic Friction (Complete Comparison):}}
+  \begin{center}
+  \renewcommand{\arraystretch}{1.25}
+  \small
+  \begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}m{3.2cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+  \hline
+  \rowcolor{tableDarkHeader}
+  \textcolor{white}{\textbf{Feature}} & \textcolor{white}{\textbf{Static Friction ($f_s$)}} & \textcolor{white}{\textbf{Kinetic Friction ($f_k$)}} \\
+  \hline
+  \rowcolor{white}
+  \textbf{Physical State} & No relative slipping between surfaces (tendency of motion only). & Active relative sliding occurs at the contact interface. \\
+  \hline
+  \rowcolor{tableStripe}
+  \textbf{Magnitude} & \textbf{Self-adjusting}: $0 \le f_s \le f_{s,\max} = \mu_s N$. & \textbf{Constant}: $f_k = \mu_k N$ (empirically $\mu_k \le \mu_s$). \\
+  \hline
+  \rowcolor{white}
+  \textbf{Direction} & Opposes the \textit{tendency} of relative motion. & Opposes the \textit{actual direction of relative slip}. \\
+  \hline
+  \rowcolor{tableStripe}
+  \textbf{Dependence} & Independent of apparent contact area; equals applied force $F$ up to limiting threshold. & Independent of sliding speed (over moderate ranges) and apparent contact area. \\
+  \hline
+  \end{tabularx}
+  \end{center}
+\end{tcolorbox}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{2.2 Characteristic Angles and Inclined Plane Dynamics}}}}\\[3pt]
+\begin{enumerate}[label=(\alph*),leftmargin=14pt,itemsep=2.5pt]
+  \item \textbf{Angle of Friction ($\lambda$):} The angle that the resultant total contact reaction $\vec{R} = \vec{N} + \vec{f}_{\max}$ makes with the normal reaction $\vec{N}$:
+  \[
+    \tan\lambda = \frac{f_{s,\max}}{N} = \frac{\mu_s N}{N} = \mu_s \implies \lambda = \tan^{-1}(\mu_s)
+  \]
+  Magnitude of total contact reaction force: $R = \sqrt{N^2 + f_s^2} \implies N \le R \le N\sqrt{1 + \mu_s^2}$.
+  \item \textbf{Angle of Repose ($\alpha$):} The minimum angle of inclination of a rough plane with the horizontal at which a body placed on it begins to slide down under gravity alone:
+  \[
+    mg\sin\alpha = f_{s,\max} = \mu_s mg\cos\alpha \implies \tan\alpha = \mu_s \iff \alpha = \lambda
+  \]
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+    \item If incline angle $\theta < \alpha$: Body remains at rest; static friction $f_s = mg\sin\theta < \mu_s mg\cos\theta$.
+    \item If incline angle $\theta = \alpha$: Body is on the verge of slipping (limiting equilibrium).
+    \item If incline angle $\theta > \alpha$: Body slides down with downward acceleration $a = g(\sin\theta - \mu_k\cos\theta)$.
+  \end{itemize}
+  \item \textbf{Rough Incline Accelerations \& Time Ratios:}
+  \begin{itemize}[leftmargin=12pt,itemsep=1.5pt]
+    \item Downward acceleration: $a_{\text{down}} = g(\sin\theta - \mu_k\cos\theta)$.
+    \item Upward retardation: $a_{\text{up}} = g(\sin\theta + \mu_k\cos\theta)$.
+    \item \textbf{Time Multiplier Formula:} If a body takes $n$ times as long to slide down a rough incline as down an identical smooth incline of length $s$:
+    \[
+      s = \frac{1}{2}a_{\text{smooth}} t_{\text{smooth}}^2 = \frac{1}{2}a_{\text{rough}} (n t_{\text{smooth}})^2 \implies a_{\text{rough}} = \frac{a_{\text{smooth}}}{n^2}
+    \]
+    \[
+      g(\sin\theta - \mu_k\cos\theta) = \frac{g\sin\theta}{n^2} \implies \mu_k = \tan\theta\left(1 - \frac{1}{n^2}\right)
+    \]
+  \end{itemize}
+  \item \textbf{Minimum Force to Move a Body on a Rough Horizontal Plane:}
+  Pulling force $F$ applied at an angle $\theta$ above the horizontal:
+  \[
+    F = \frac{\mu mg}{\cos\theta + \mu\sin\theta} \implies F_{\min} = \frac{\mu mg}{\sqrt{1 + \mu^2}} \quad \text{at optimum angle } \theta = \tan^{-1}(\mu)
+  \]
+  \item \textbf{Two-Block System Friction Analysis (Block on Block):}
+  For mass $m$ on top of mass $M$ on smooth floor with friction $\mu$ between them:
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+    \item If force $F$ is applied to lower block $M$: Maximum common acceleration before slipping is $a_{\max} = \frac{f_{s,\max}}{m} = \mu g$. Maximum applied force without relative slip: $F_{\max} = (M + m)\mu g$.
+    \item If force $F$ is applied to upper block $m$: Maximum common acceleration is $a_{\max} = \frac{f_{s,\max}}{M} = \frac{\mu m g}{M}$. Maximum applied force without relative slip: $F_{\max} = \mu m g\left(1 + \frac{m}{M}\right)$.
+  \end{itemize}
+\end{enumerate}
+
+\newpage
+
+
+% ==================== LEVEL 1: FOUNDATION & SPEED DRILL ====================
+\begin{tcolorbox}[l1banner]
+  {\large \textbf{\textsf{LEVEL 1: FOUNDATION \& SPEED DRILL (Q01 -- Q25)}}} \hfill {\small \textbf{Target: $\le 1.5$ min per question}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=18pt,itemsep=8pt]
+
+  \item An object of mass $10\text{ kg}$ moves along a straight line at a constant speed of $10\text{ m/s}$. A constant force acts on it for $4\text{ s}$ and gives it a speed of $2\text{ m/s}$ in the opposite direction. The magnitude and direction of the force is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $-3\text{ N}$
+      \item $-30\text{ N}$
+      \item $+3\text{ N}$
+      \item $+30\text{ N}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A car of mass $1000\text{ kg}$ is moving at a speed of $30\text{ m/s}$ along a straight horizontal road. Brakes are applied to produce a constant retarding force of $5000\text{ N}$. The time taken to bring the car to rest is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $5\text{ s}$
+      \item $10\text{ s}$
+      \item $12\text{ s}$
+      \item $6\text{ s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item The constant retarding force required to stop a car of mass $800\text{ kg}$ moving at a speed of $20\text{ m/s}$ over a stopping distance of $25\text{ m}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1200\text{ N}$
+      \item $6400\text{ N}$
+      \item $1600\text{ N}$
+      \item $1800\text{ N}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item If $n$ bullets, each of mass $m$, are fired horizontally with a velocity $v$ per second from a machine gun, the average force required to hold the machine gun in position is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $(n + 1)mv$
+      \item $\dfrac{mv}{n^2}$
+      \item $\dfrac{mv}{n}$
+      \item $mnv$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A cricketer catches a cricket ball of mass $150\text{ g}$ moving with a velocity of $20\text{ m/s}$. If the catching process is completed in $0.1\text{ s}$, the average force exerted on the cricketer's hands is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $300\text{ N}$
+      \item $30\text{ N}$
+      \item $3\text{ N}$
+      \item $0.3\text{ N}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Sand is being dropped vertically onto a horizontal conveyor belt at a constant rate of $M\text{ kg/s}$. The force (in Newtons) necessary to keep the belt moving at a constant speed $v$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $Mv$
+      \item $2Mv$
+      \item $\dfrac{1}{2}Mv$
+      \item $\dfrac{1}{3}Mv$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A mass of $1\text{ kg}$ is suspended by a light thread. The ratio of the tension in the thread when it is (i) lifted up with an acceleration of $4.9\text{ m/s}^2$ to when it is (ii) lowered with the same acceleration of $4.9\text{ m/s}^2$ is: (Take $g = 9.8\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $3 : 1$
+      \item $1 : 2$
+      \item $1 : 3$
+      \item $2 : 1$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A person of mass $60\text{ kg}$ is inside an elevator of mass $940\text{ kg}$. The elevator accelerates vertically upwards at $1.0\text{ m/s}^2$. Taking $g = 10\text{ m/s}^2$, the tension in the main supporting cable of the elevator is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $8600\text{ N}$
+      \item $9680\text{ N}$
+      \item $11000\text{ N}$
+      \item $1200\text{ N}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A constant force produces an acceleration of $2\text{ m/s}^2$ in a body of mass $m_1$ and an acceleration of $3\text{ m/s}^2$ in another body of mass $m_2$. If both bodies are tied together, the acceleration produced by the same force is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1.0\text{ m/s}^2$
+      \item $6.0\text{ m/s}^2$
+      \item $5.0\text{ m/s}^2$
+      \item $1.2\text{ m/s}^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body moves with an initial speed of $1\text{ m/s}$, and a retarding force $R$ is required to stop it in a distance $x$. If the speed of the body is increased to $3\text{ m/s}$, the force required to stop it in the same distance $x$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1.5 R$
+      \item $3 R$
+      \item $6 R$
+      \item $9 R$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A horizontal force of $16\text{ N}$ is applied on a block of mass $4\text{ kg}$ resting on a rough horizontal floor with coefficient of friction $\mu = 0.6$. The frictional force acting on the block is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $20\text{ N}$
+      \item $24\text{ N}$
+      \item $16\text{ N}$
+      \item $\text{Zero}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A block weighing $20\text{ N}$ rests on a rough horizontal surface. A horizontal force of $8\text{ N}$ is required to just cause the block to start moving. The coefficient of static friction $\mu_s$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $0.20$
+      \item $0.40$
+      \item $0.60$
+      \item $0.80$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A marble block of mass $2\text{ kg}$ lying on horizontal ice is projected with a velocity of $6\text{ m/s}$ and is brought to rest by friction in $10\text{ s}$. Taking $g = 10\text{ m/s}^2$, the coefficient of kinetic friction between the marble and ice is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $0.02$
+      \item $0.03$
+      \item $0.06$
+      \item $0.01$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Which of the following statements regarding the normal force $N$ and the gravitational weight $W$ of a body is conceptually most accurate?
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $N$ and $W$ always form an action-reaction pair
+      \item $N$ must always have the exact same magnitude as $W$
+      \item $N$ is always greater than or equal to $W$
+      \item $N$ and $W$ are different forces that may have equal magnitude in certain static cases
+    \end{enumerate}
+  \end{multicols}
+
+  \item A customer pushes a grocery cart with a constant forward force of $75\text{ N}$. According to Newton's third law, the cart exerts a backward force of $75\text{ N}$ on the customer:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item Only when the cart moves at constant velocity
+      \item Only if there is zero friction with the floor
+      \item Only when the cart is speeding up
+      \item Under all circumstances and at all times
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle moves in the $xy$-plane such that its linear momentum at time $t$ is given by $\vec{p}(t) = 2\cos t\,\hat{i} + 2\sin t\,\hat{j}$. The angle between the net force vector $\vec{F}$ and the momentum vector $\vec{p}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $0^\circ$
+      \item $30^\circ$
+      \item $45^\circ$
+      \item $90^\circ$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A space satellite in force-free deep space sweeps stationary interplanetary dust at a rate $\frac{dM}{dt} = \alpha v$, where $v$ is its speed and $\alpha$ is a constant. The deceleration of the satellite at that instant is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $-\dfrac{2\alpha v^2}{M}$
+      \item $-\dfrac{\alpha v^2}{M}$
+      \item $-\dfrac{\alpha v^2}{2M}$
+      \item $-\alpha v^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Two bodies of masses $1\text{ kg}$ and $2\text{ kg}$ moving with the same velocity are brought to rest by the same braking force. The ratio of their stopping times ($t_1 : t_2$) is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1 : 2$
+      \item $2 : 1$
+      \item $1 : 4$
+      \item $4 : 1$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A hammer of mass $3\text{ kg}$ striking a nail at a speed of $2\text{ m/s}$ drives it into a wooden wall and stops. The magnitude of the impulse imparted to the nail is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $6\text{ N}\cdot\text{s}$
+      \item $3\text{ N}\cdot\text{s}$
+      \item $2\text{ N}\cdot\text{s}$
+      \item $12\text{ N}\cdot\text{s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A ship of mass $3 \times 10^7\text{ kg}$ initially at rest is pulled by a steady force of $5 \times 10^4\text{ N}$ through a distance of $3\text{ m}$. Assuming water resistance is negligible, the speed attained by the ship is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1.5\text{ m/s}$
+      \item $60\text{ m/s}$
+      \item $0.1\text{ m/s}$
+      \item $5.0\text{ m/s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item An elevator moves vertically upwards with a uniform velocity $v$. A block of mass $m$ is resting on the horizontal floor of the elevator. The frictional force acting on the block is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\text{Zero}$
+      \item $mg$
+      \item $\mu mg$
+      \item $2\mu mg$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle of mass $m$ tied to one end of a light string of length $l$ moves with constant speed $v$ in a horizontal circle on a frictionless horizontal table. The other end of the string is fixed at the center. The net force acting on the particle is directed towards the center and has magnitude:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $T + \dfrac{mv^2}{l}$
+      \item $T - \dfrac{mv^2}{l}$
+      \item $\text{Zero}$
+      \item $T$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A light string can withstand a maximum tension of $25\text{ N}$. What is the greatest speed at which a body of mass $1\text{ kg}$ tied to the string can be whirled in a horizontal circle of radius $1\text{ m}$ on a smooth table?
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $2.5\text{ m/s}$
+      \item $5.0\text{ m/s}$
+      \item $7.5\text{ m/s}$
+      \item $10.0\text{ m/s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A force of $5\text{ N}$ acting separately on two masses $m_1$ and $m_2$ produces accelerations of $8\text{ m/s}^2$ and $24\text{ m/s}^2$ respectively. If both masses are tied together and subjected to the same $5\text{ N}$ force, the acceleration will be:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $4\text{ m/s}^2$
+      \item $6\text{ m/s}^2$
+      \item $16\text{ m/s}^2$
+      \item $32\text{ m/s}^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body of mass $M$ is resting on a rough horizontal surface with coefficient of friction $\mu$. If a horizontal force $F_0$ is just sufficient to set the body in motion, the coefficient of friction $\mu$ is given by:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{\mu Mg}{F_0}$
+      \item $\dfrac{F_0}{Mg}$
+      \item $\dfrac{\mu F_0}{Mg}$
+      \item $\dfrac{Mg}{F_0}$
+    \end{enumerate}
+  \end{multicols}
+
+\end{enumerate}
+\newpage
+
+
+% ==================== LEVEL 2: CORE JEE MAIN MASTERY ====================
+\begin{tcolorbox}[l2banner]
+  {\large \textbf{\textsf{LEVEL 2: CORE JEE MAIN MASTERY (Q26 -- Q50)}}} \hfill {\small \textbf{Target: $\le 2.5$ min per question}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=18pt,itemsep=8pt,resume]
+
+  \item A hot air balloon of total mass $M$ is descending vertically with a constant downward acceleration $a$ ($a < g$). What mass $m$ must be released from the balloon so that it begins to ascend with an upward acceleration of the same magnitude $a$?
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{2Ma}{g + a}$
+      \item $\dfrac{2Ma}{g - a}$
+      \item $\dfrac{Ma}{g + a}$
+      \item $\dfrac{Ma}{g - a}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A monkey of mass $m$ is descending from the branch of a tree with a constant acceleration $a$. If the breaking strength of the branch is $75\%$ of the monkey's weight, the minimum acceleration with which the monkey can safely slide down without breaking the branch is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{g}{3}$
+      \item $\dfrac{3g}{4}$
+      \item $\dfrac{g}{4}$
+      \item $\dfrac{g}{2}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A monkey of mass $20\text{ kg}$ is holding a vertical rope. The rope will not break when a static mass of $25\text{ kg}$ is suspended from it, but will break if the mass exceeds $25\text{ kg}$. The maximum acceleration with which the monkey can climb up along the rope is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $2.5\text{ m/s}^2$
+      \item $5.0\text{ m/s}^2$
+      \item $25.0\text{ m/s}^2$
+      \item $10.0\text{ m/s}^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A horizontal uniform rope of total length $L$ and mass $M$ rests on a frictionless horizontal table. A constant pulling force $F$ is applied horizontally at one of its ends. The tension in the rope at a distance $l$ from the pulled end is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $F\left(1 - \dfrac{l}{L}\right)$
+      \item $F\left(\dfrac{l}{L}\right)$
+      \item $F\left(1 - \dfrac{l^2}{L^2}\right)$
+      \item $\dfrac{F L}{l}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A block of mass $m$ is resting on a smooth horizontal surface. One end of a uniform rope of mass $m/3$ is attached to the block, and a horizontal force $F$ is applied to the free end of the rope. The contact pulling force exerted by the rope on the block is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{8}{7}F$
+      \item $\dfrac{1}{7}F$
+      \item $\dfrac{1}{8}F$
+      \item $\dfrac{3}{4}F$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Starting from rest, a body slides down a $45^\circ$ rough inclined plane in twice the time it takes to slide down an identical smooth inclined plane of the same length. The coefficient of kinetic friction $\mu_k$ between the body and the rough plane is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{3}{2}$
+      \item $\dfrac{3}{4}$
+      \item $\dfrac{1}{2}$
+      \item $\dfrac{1}{4}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A triangular wedge of mass $M$ with an incline angle of $30^\circ$ rests on a frictionless horizontal floor. A small block rests on the incline. The horizontal acceleration $a$ that must be imparted to the wedge so that the small block remains stationary relative to the wedge is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $g$
+      \item $\dfrac{g}{2}$
+      \item $\dfrac{g}{\sqrt{3}}$
+      \item $g\sqrt{3}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A $5000\text{ kg}$ rocket is set for vertical lift-off. The exhaust gases are ejected vertically downward with a speed of $800\text{ m/s}$ relative to the rocket. To impart an initial upward acceleration of $20\text{ m/s}^2$, the rate of gas ejection must be: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $187.6\text{ kg/s}$
+      \item $188.6\text{ kg/s}$
+      \item $188.5\text{ kg/s}$
+      \item $187.5\text{ kg/s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A stationary body of mass $3\text{ kg}$ at rest explodes into three equal pieces of mass $1\text{ kg}$ each. Two of the pieces fly off in mutually perpendicular directions with velocities $30\hat{i}\text{ m/s}$ and $40\hat{j}\text{ m/s}$. The velocity vector of the third piece immediately after the explosion is:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $(30\hat{i} + 40\hat{j})\text{ m/s}$
+      \item $(30\hat{i} - 40\hat{j})\text{ m/s}$
+      \item $(-30\hat{i} + 40\hat{j})\text{ m/s}$
+      \item $-(30\hat{i} + 40\hat{j})\text{ m/s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body of mass $5\text{ kg}$ under the action of a constant force $\vec{F} = F_x\hat{i} + F_y\hat{j}$ has velocity $\vec{v}_1 = (6\hat{i} - 2\hat{j})\text{ m/s}$ at $t = 0\text{ s}$ and $\vec{v}_2 = (-2\hat{i} + 6\hat{j})\text{ m/s}$ at $t = 10\text{ s}$. The force $\vec{F}$ acting on the body is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $(-4\hat{i} + 4\hat{j})\text{ N}$
+      \item $(-3\hat{i} + 4\hat{j})\text{ N}$
+      \item $(3\hat{i} - 4\hat{j})\text{ N}$
+      \item $(4\hat{i} - 4\hat{j})\text{ N}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A bullet is fired from a rifle barrel. The force acting on the bullet during its motion in the barrel is given by $F(t) = 600 - 2 \times 10^5 t\text{ N}$, where $t$ is in seconds. The total impulse imparted to the bullet from $t = 0$ until the force drops to zero is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1.8\text{ N}\cdot\text{s}$
+      \item $\text{Zero}$
+      \item $9.0\text{ N}\cdot\text{s}$
+      \item $0.9\text{ N}\cdot\text{s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A stone is dropped from a height $h$ and strikes the ground with a linear momentum $P$. If the same stone is dropped from a height of $2h$, the percentage increase in the momentum with which it strikes the ground is closest to:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $68\%$
+      \item $41\%$
+      \item $200\%$
+      \item $100\%$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A light spring balance $A$ hangs from a rigid ceiling hook, and a second identical light spring balance $B$ hangs from the lower hook of $A$. A block of mass $M\text{ kg}$ is suspended from the bottom hook of $B$. The readings of scales $A$ and $B$ respectively will be:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item Both scales read $M\text{ kg}$ each
+      \item Scale $B$ reads $M\text{ kg}$ and scale $A$ reads zero
+      \item The sum of the readings will be $M\text{ kg}$
+      \item Both scales read $M/2\text{ kg}$ each
+    \end{enumerate}
+  \end{multicols}
+
+  \item Three coplanar concurrent forces $\vec{R}_1, \vec{R}_2, \vec{R}_3$ act on a particle of mass $m$, holding it in equilibrium. If the force $\vec{R}_3$ is suddenly removed, the magnitude of the resulting acceleration of the particle is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{R_3}{m}$
+      \item $\dfrac{R_1 + R_2}{m}$
+      \item $\dfrac{R_1 - R_2}{m}$
+      \item $\dfrac{\sqrt{R_1^2 + R_2^2}}{m}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A block of mass $1\text{ kg}$ rests on a rough horizontal table with $\mu_s = 0.5$. A pulling force $F$ is applied at an angle of $30^\circ$ above the horizontal. The minimum force $F$ required to initiate sliding is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $5.00\text{ N}$
+      \item $4.48\text{ N}$
+      \item $7.46\text{ N}$
+      \item $10.00\text{ N}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A metal block weighing $2\text{ kg}$ rests on a frictionless horizontal plane. A horizontal jet of water strikes the block with a mass flow rate of $1\text{ kg/s}$ at a velocity of $5\text{ m/s}$ and splashes away without rebounding. The initial acceleration of the block is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $2.5\text{ m/s}^2$
+      \item $5.0\text{ m/s}^2$
+      \item $10.0\text{ m/s}^2$
+      \item $20.0\text{ m/s}^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A car travels on a unbanked circular level track of radius $R = 150\text{ m}$. If the coefficient of static friction between the tyres and the road is $\mu = 0.6$, the maximum safe speed to avoid skidding is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $60\text{ m/s}$
+      \item $30\text{ m/s}$
+      \item $15\text{ m/s}$
+      \item $45\text{ m/s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A car moves at a steady speed of $36\text{ km/h}$ along a straight horizontal road. If the coefficient of friction between the tyres and the road is $\mu = 0.5$, the minimum stopping distance without skidding under emergency braking is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $10\text{ m}$
+      \item $13\text{ m}$
+      \item $14\text{ m}$
+      \item $16\text{ m}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A boy sitting on the topmost berth of a railway passenger compartment in a train that is slowing down into a station drops an apple towards his brother sitting directly below. The apple will land:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item Exactly in the hands of his brother
+      \item Slightly ahead in the direction of the train's motion
+      \item Slightly behind opposite to the direction of motion
+      \item Deflected sideways perpendicular to the track
+    \end{enumerate}
+  \end{multicols}
+
+  \item A ball of mass $10\text{ g}$ moving perpendicular to a rigid vertical wall strikes it with speed $v$ and rebounds elastically with the same speed in a contact duration of $\Delta t = 0.01\text{ s}$. If the average force exerted on the wall is $54\text{ N}$, the speed $v$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $27\text{ m/s}$
+      \item $3.7\text{ m/s}$
+      \item $54\text{ m/s}$
+      \item $37\text{ m/s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item The rate of emission of gas from the exhaust of a $2\text{ kg}$ research rocket is initially $0.1\text{ kg/s}$. If the exhaust velocity of the gas relative to the rocket is $50\text{ m/s}$, the initial acceleration of the rocket in gravity-free space is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $2.4\text{ m/s}^2$
+      \item $2.3\text{ m/s}^2$
+      \item $2.6\text{ m/s}^2$
+      \item $2.5\text{ m/s}^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A cart of mass $100\text{ kg}$ is being pulled by five workers with a combined forward force of $2500\text{ N}$ against a constant friction force of $500\text{ N}$. The forward acceleration of the cart is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $26\text{ m/s}^2$
+      \item $30\text{ m/s}^2$
+      \item $22\text{ m/s}^2$
+      \item $20\text{ m/s}^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A pail containing sand has a total initial mass of $60\text{ kg}$. A crane lowers it with a downward acceleration of $g/5$. If sand leaks out from a hole in the bottom at a constant rate, what mass of sand must leak out to maintain the crane cable tension constant if the acceleration is reversed to an upward acceleration of $g/5$?
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $20\text{ kg}$
+      \item $9.2\text{ kg}$
+      \item $40\text{ kg}$
+      \item $51\text{ kg}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A block of mass $m$ is connected to another block of mass $M$ by a light spring on a smooth horizontal table. An external horizontal force $F$ is applied to mass $M$. At an instant when block $M$ has acceleration $a$, the acceleration of block $m$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{F - Ma}{m}$
+      \item $\dfrac{F}{m + M}$
+      \item $\dfrac{Ma}{m}$
+      \item $\dfrac{F - ma}{M}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A uniform spring of stiffness $k$ is cut into two pieces whose lengths are in the ratio $1 : 2$. The spring constant of the shorter segment is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{k}{3}$
+      \item $\dfrac{2k}{3}$
+      \item $3k$
+      \item $\dfrac{3k}{2}$
+    \end{enumerate}
+  \end{multicols}
+
+\end{enumerate}
+\newpage
+
+
+% ==================== LEVEL 3: JEE ADVANCED & NUMERICAL CHALLENGE ====================
+\begin{tcolorbox}[l3banner]
+  {\large \textbf{\textsf{LEVEL 3: JEE ADVANCED \& NUMERICAL CHALLENGE (Q51 -- Q75)}}} \hfill {\small \textbf{Target: Multi-Concept Deep Problems}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\noindent{\textbf{\textsf{\textcolor{l3Crimson}{Section A: Advanced Conceptual Multi-Choice Questions (Q51 -- Q69)}}}}
+\vspace{2pt}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=18pt,itemsep=8pt,resume]
+
+  \item Two persons hold a rope of negligible mass tightly at its ends so that it is initially perfectly horizontal. A mass $M$ is then suspended from the midpoint of the rope. The minimum tension force that must be exerted at each end to maintain the rope completely straight and horizontal without any sag is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $Mg$
+      \item $\dfrac{Mg}{2}$
+      \item $2Mg$
+      \item Infinitely large
+    \end{enumerate}
+  \end{multicols}
+
+  \item A smooth pulley $A$ of mass $M_0$ rests on a frictionless horizontal table. A light cord passes around the pulley, with its two ends hanging down through a slot in the table, carrying masses $M_1$ and $M_2$ ($M_1 \ne M_2$). When released, the tension in the cord supporting masses $M_1$ and $M_2$ is given by:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{4M_1 M_2 g}{4M_1 M_2 + M_0(M_1 + M_2)}$
+      \item $\dfrac{2M_1 M_2 g}{M_1 + M_2 + M_0}$
+      \item $\dfrac{4M_1 M_2 g}{M_1 + M_2}$
+      \item $\dfrac{M_0(M_1 + M_2)g}{4M_1 M_2 + M_0}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A block $A$ of mass $2\text{ kg}$ rests on top of a larger block $B$ of mass $4\text{ kg}$, which sits on a smooth horizontal floor. The coefficient of static friction between block $A$ and block $B$ is $\mu_s = 0.5$. The maximum horizontal force $F$ that can be applied to block $A$ such that both blocks move together without relative slipping is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $10\text{ N}$
+      \item $15\text{ N}$
+      \item $20\text{ N}$
+      \item $30\text{ N}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A block of mass $M$ is placed on a rough horizontal surface with coefficient of friction $\mu$. An external pulling force $F$ acts at an angle $\theta$ with the horizontal. The minimum magnitude of $F$ required to move the block at the optimum pulling angle is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{\mu Mg}{\sqrt{1 + \mu^2}}$
+      \item $\mu Mg$
+      \item $\dfrac{\mu Mg}{1 + \mu}$
+      \item $\dfrac{Mg}{\sqrt{1 + \mu^2}}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Which of the following statements regarding friction are INCORRECT?
+  \begin{enumerate}[label=(\roman*),leftmargin=14pt,itemsep=1pt]
+    \item If there were zero friction, the work needed to move a body between two points would always be zero.
+    \item Friction is a purely electromagnetic contact force.
+    \item Static friction is a non-conservative force that cannot adjust its magnitude.
+    \item Rolling friction is always strictly greater than sliding kinetic friction.
+  \end{enumerate}
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item (i) and (ii)
+      \item (ii) and (iv)
+      \item (i), (iii) and (iv)
+      \item All of these
+    \end{enumerate}
+  \end{multicols}
+
+  \item A uniform flexible heavy chain of total length $L$ lies on a rough horizontal table with coefficient of static friction $\mu$. The maximum fraction of its length that can hang over the edge without the chain sliding off the table is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{\mu}{1 - \mu}$
+      \item $\dfrac{\mu}{\mu + 1}$
+      \item $\dfrac{1}{\mu + 1}$
+      \item $\dfrac{\mu}{2\mu + 1}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A smooth block of mass $m$ is placed on the inclined face of a wedge of mass $M$ and inclination angle $\theta$. The wedge is free to slide on a frictionless horizontal plane. When the system is released from rest, the horizontal acceleration of the wedge is:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{mg\sin\theta\cos\theta}{M + m\sin^2\theta}$
+      \item $\dfrac{mg\sin\theta}{M + m}$
+      \item $\dfrac{mg\tan\theta}{M + m\cos^2\theta}$
+      \item $\dfrac{Mg\sin\theta\cos\theta}{M + m\sin^2\theta}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Both a spring balance and an equal-arm beam balance are placed in an elevator. When the elevator accelerates vertically upwards with an acceleration $a$, what happens to their respective readings?
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item Both scale readings increase
+      \item Both scale readings remain unchanged
+      \item Spring balance reading increases; beam balance reading remains unchanged
+      \item Spring balance reading remains unchanged; beam balance reading increases
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle of mass $m = 2\text{ kg}$ starts from rest at $t = 0$ under the action of a time-dependent force $F(t) = (12 - 3t^2)\text{ N}$. The velocity of the particle at the instant when the force drops to zero ($t = 2\text{ s}$) is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $4\text{ m/s}$
+      \item $8\text{ m/s}$
+      \item $12\text{ m/s}$
+      \item $16\text{ m/s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item In a block-pulley setup, a block $A$ of mass $M$ rests on a frictionless horizontal table. A light inextensible cord tied to $A$ passes around a movable pulley of mass $m$ hanging vertically. If the other end of the cord is anchored to the ceiling, the downward acceleration of the movable pulley is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{mg}{4M + m}$
+      \item $\dfrac{2mg}{M + 4m}$
+      \item $\dfrac{mg}{M + m}$
+      \item $\dfrac{4mg}{4M + m}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A cart of mass $M_0$ filled with sand of initial mass $M_s$ is propelled along frictionless horizontal rails by a constant horizontal force $F$. Sand leaks out through a small hole in the floor of the cart at a constant rate $\mu\text{ kg/s}$. The speed of the cart as a function of time $t$ is:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $v(t) = \dfrac{F}{\mu}\ln\left(\dfrac{M_0 + M_s}{M_0 + M_s - \mu t}\right)$
+      \item $v(t) = \dfrac{F t}{M_0 + M_s}$
+      \item $v(t) = \dfrac{F}{\mu}\left[1 - e^{-\mu t / (M_0 + M_s)}\right]$
+      \item $v(t) = \dfrac{2Ft}{2M_0 + M_s - \mu t}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A small coin rests on the rough inner surface of a fixed hemispherical bowl of radius $R$. The coefficient of static friction is $\mu$. The maximum vertical height $h$ above the lowest point of the bowl at which the coin can remain in static equilibrium without slipping is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $R(1 - \mu)$
+      \item $R\sqrt{1 + \mu^2}$
+      \item $R\left(1 - \dfrac{1}{\sqrt{1 + \mu^2}}\right)$
+      \item $\dfrac{\mu R}{\sqrt{1 + \mu^2}}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A simple pendulum of mass $m$ is suspended from the ceiling of a vehicle accelerating horizontally with uniform acceleration $a$. In the vehicle's reference frame, the angle $\theta$ made by the pendulum with the vertical and the tension $T$ in the string in equilibrium are:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\tan\theta = \dfrac{g}{a}, \quad T = m\sqrt{g^2 + a^2}$
+      \item $\tan\theta = \dfrac{a}{g}, \quad T = m\sqrt{g^2 + a^2}$
+      \item $\tan\theta = \dfrac{a}{g}, \quad T = m(g - a)$
+      \item $\sin\theta = \dfrac{a}{g}, \quad T = mg\cos\theta$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Three blocks of masses $m_1, m_2, m_3$ are placed in line and in contact on a rough inclined plane of angle $\theta$. The coefficients of friction between the blocks and the incline are $\mu_1 > \mu_2 > \mu_3$. During motion down the plane:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item The blocks move together with common acceleration and contact forces are non-zero
+      \item The blocks separate immediately and move with different accelerations
+      \item Block $m_1$ moves fastest
+      \item Contact force between $m_2$ and $m_3$ is zero
+    \end{enumerate}
+  \end{multicols}
+
+  \item A light string is wrapped several times around a solid uniform cylinder of mass $M$ resting on a horizontal table. If the free end of the string is pulled vertically upward with a force $F = Mg$, the acceleration of the center of mass of the cylinder is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $g$
+      \item $\dfrac{g}{2}$
+      \item $\text{Zero}$
+      \item $2g$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body of mass $m$ is pushed up a rough inclined plane of inclination angle $\theta$ ($\tan\theta > \mu$) by applying a horizontal force $F$. The minimum magnitude of $F$ required to just prevent the body from sliding down the plane is:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $mg\left(\dfrac{\sin\theta - \mu\cos\theta}{\cos\theta + \mu\sin\theta}\right)$
+      \item $mg\left(\dfrac{\sin\theta + \mu\cos\theta}{\cos\theta - \mu\sin\theta}\right)$
+      \item $mg(\sin\theta - \mu\cos\theta)$
+      \item $\dfrac{mg\sin\theta}{\cos\theta + \mu\sin\theta}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A rocket moves in gravity-free outer space by burning fuel ejected at a constant exhaust velocity $u$ relative to the rocket. What fraction of the rocket's initial total mass $M_0$ must be consumed as fuel to accelerate the rocket from rest to a speed $v$?
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $e^{-v/u}$
+      \item $1 - e^{-v/u}$
+      \item $e^{v/u} - 1$
+      \item $\ln\left(1 + \dfrac{v}{u}\right)$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Two blocks of masses $m_1$ and $m_2$ are connected by a massless spring and suspended vertically from the ceiling by a light cord. When the cord is cut, the instantaneous acceleration of mass $m_1$ (upper mass) and mass $m_2$ (lower mass) are respectively:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $a_1 = g, \quad a_2 = g$
+      \item $a_1 = 0, \quad a_2 = g$
+      \item $a_1 = g\left(1 + \dfrac{m_2}{m_1}\right), \quad a_2 = g$
+      \item $a_1 = g\left(1 + \dfrac{m_2}{m_1}\right), \quad a_2 = 0$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A smooth horizontal rod rotates about a vertical axis through one of its ends with a constant angular velocity $\omega$. A small ring of mass $m$ is free to slide along the rod. At a distance $r$ from the axis of rotation, the outward radial force experienced by the ring in the rotating frame of the rod is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $m\omega^2 r$
+      \item $2m\omega^2 r$
+      \item $\dfrac{1}{2}m\omega^2 r$
+      \item $\text{Zero}$
+    \end{enumerate}
+  \end{multicols}
+
+\end{enumerate}
+
+\vspace{8pt}
+\noindent{\textbf{\textsf{\textcolor{l3Crimson}{Section B: High-Yield JEE Integer Numericals (Q70 -- Q75)}}}}
+\vspace{2pt}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=18pt,itemsep=10pt,resume]
+
+  \item Two masses $m_1 = 3\text{ kg}$ and $m_2 = 2\text{ kg}$ are connected by a light inextensible cord passing over a fixed frictionless pulley in an ideal Atwood machine. Taking $g = 10\text{ m/s}^2$, find the tension in the cord while the masses are in motion (in Newtons).
+
+  \item Two blocks of masses $m_1 = 2\text{ kg}$ and $m_2 = 3\text{ kg}$ are placed in physical contact on a smooth horizontal floor. A horizontal push force $F = 20\text{ N}$ is applied to block $m_1$ directed towards $m_2$. Find the magnitude of the normal contact force between the two blocks (in Newtons).
+
+  \item A block of mass $m = 2\text{ kg}$ rests on top of a larger block of mass $M = 3\text{ kg}$ placed on a frictionless horizontal floor. The coefficient of static friction between the two blocks is $\mu_s = 0.4$. Taking $g = 10\text{ m/s}^2$, find the maximum horizontal force $F$ (in Newtons) that can be applied to the lower block $M$ such that both blocks accelerate together without relative slipping.
+
+  \item A block of mass $m = 4\text{ kg}$ rests on a rough inclined plane of inclination angle $30^\circ$ with the horizontal. The coefficient of static friction is $\mu_s = 0.8$. Taking $g = 10\text{ m/s}^2$, find the magnitude of the frictional force acting on the block (in Newtons).
+
+  \item Two boys of masses $10\text{ kg}$ and $8\text{ kg}$ are holding onto and moving along a single light vertical rope suspended from a rigid ceiling. The first boy ($10\text{ kg}$) climbs upwards with an acceleration of $2\text{ m/s}^2$ relative to the rope, while the second boy ($8\text{ kg}$) descends with a uniform velocity of $2\text{ m/s}$. Taking $g = 10\text{ m/s}^2$, find the total tension force exerted on the rigid ceiling support (in Newtons).
+
+  \item A car is traveling along a horizontal circular track of radius $R = 10\text{ m}$ at a constant speed of $10\text{ m/s}$. A plumb bob is suspended from the roof of the car by a light cord. Taking $g = 10\text{ m/s}^2$, find the angle (in degrees) that the cord makes with the true vertical in steady state.
+
+\end{enumerate}
+\newpage
+
+
+% ==================== MASTER ANSWER KEY ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 4: MASTER 100\% VERIFIED ANSWER KEY (DAY 03)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}X|}
+\hline
+\rowcolor{tableDarkHeader}
+\textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} \\
+\hline
+\rowcolor{white}
+\textbf{01} & B & \textbf{16} & D & \textbf{31} & B & \textbf{46} & D & \textbf{61} & A \\
+\hline
+\rowcolor{tableStripe}
+\textbf{02} & D & \textbf{17} & B & \textbf{32} & C & \textbf{47} & D & \textbf{62} & C \\
+\hline
+\rowcolor{white}
+\textbf{03} & B & \textbf{18} & A & \textbf{33} & D & \textbf{48} & A & \textbf{63} & B \\
+\hline
+\rowcolor{tableStripe}
+\textbf{04} & D & \textbf{19} & A & \textbf{34} & D & \textbf{49} & A & \textbf{64} & A \\
+\hline
+\rowcolor{white}
+\textbf{05} & B & \textbf{20} & C & \textbf{35} & A & \textbf{50} & C & \textbf{65} & C \\
+\hline
+\rowcolor{tableStripe}
+\textbf{06} & A & \textbf{21} & A & \textbf{36} & D & \textbf{51} & D & \textbf{66} & A \\
+\hline
+\rowcolor{white}
+\textbf{07} & A & \textbf{22} & D & \textbf{37} & B & \textbf{52} & A & \textbf{67} & B \\
+\hline
+\rowcolor{tableStripe}
+\textbf{08} & C & \textbf{23} & B & \textbf{38} & A & \textbf{53} & B & \textbf{68} & D \\
+\hline
+\rowcolor{white}
+\textbf{09} & D & \textbf{24} & B & \textbf{39} & A & \textbf{54} & A & \textbf{69} & A \\
+\hline
+\rowcolor{tableStripe}
+\textbf{10} & D & \textbf{25} & B & \textbf{40} & B & \textbf{55} & C & \textbf{70} & \textbf{24} \\
+\hline
+\rowcolor{white}
+\textbf{11} & C & \textbf{26} & A & \textbf{41} & A & \textbf{56} & B & \textbf{71} & \textbf{12} \\
+\hline
+\rowcolor{tableStripe}
+\textbf{12} & B & \textbf{27} & C & \textbf{42} & B & \textbf{57} & A & \textbf{72} & \textbf{20} \\
+\hline
+\rowcolor{white}
+\textbf{13} & C & \textbf{28} & A & \textbf{43} & A & \textbf{58} & C & \textbf{73} & \textbf{20} \\
+\hline
+\rowcolor{tableStripe}
+\textbf{14} & D & \textbf{29} & A & \textbf{44} & B & \textbf{59} & B & \textbf{74} & \textbf{200} \\
+\hline
+\rowcolor{white}
+\textbf{15} & D & \textbf{30} & D & \textbf{45} & A & \textbf{60} & A & \textbf{75} & \textbf{45} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\vspace{10pt}
+\begin{tcolorbox}[formulacard]
+  \small \textbf{\textcolor{primaryDark}{Revision Strategy Note:}}
+  Cross-verify your answers against the key above after completing each block. Do not look at the answers while solving. For any question answered incorrectly, review the relevant unabridged notes in Part 3, identify whether the error was conceptual or calculational, and log it in your 10-day mistake repository.
+\end{tcolorbox}
+
+\end{document}

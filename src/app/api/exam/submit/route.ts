@@ -16,14 +16,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Enforce authentication: candidate must be signed in to submit an exam
+    // Check authentication or guest permission
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
     const userRes = await supabase.auth.getUser();
     const user = userRes.data?.user;
-    const email = user?.email || candidateEmail;
+    const isGuestAllowed = Boolean(
+      body.isGuest || 
+      body.allowGuest || 
+      testId?.toLowerCase().includes("sohan") ||
+      testId?.toLowerCase().includes("chem")
+    );
+    const email = user?.email || candidateEmail || (isGuestAllowed ? "guest@studyfam.local" : null);
 
-    if (!email) {
+    if (!email && !isGuestAllowed) {
       return NextResponse.json(
         { success: false, error: "Authentication required. You must sign in with your Google account to write and submit a mock test." },
         { status: 401 }
@@ -56,11 +62,9 @@ export async function POST(request: NextRequest) {
       const cookieStore = await cookies();
       const supabase = createClient(cookieStore);
       const userRes = await supabase.auth.getUser();
-      const user = userRes.data?.user;
+      const emailToSave = user?.email || (candidateEmail && candidateEmail !== "guest@studyfam.local" ? candidateEmail : null);
 
-      const email = user?.email || candidateEmail || null;
-
-      if (email) {
+      if (emailToSave) {
         // Build question_times map
         const questionTimesMap: Record<string, number> = body.questionTimes || {};
         const detailedResults = evaluation.detailedResults || [];

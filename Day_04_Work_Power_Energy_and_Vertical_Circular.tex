@@ -1,0 +1,1208 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=2cm, bottom=2.3cm, left=1.8cm, right=1.8cm, headsep=0.8cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[table]{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable,skins}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,patterns,calc}
+
+% High-Contrast Modern Color Palette
+\definecolor{primaryDark}{RGB}{12, 32, 84}       % Midnight Navy (Deep)
+\definecolor{primaryBlue}{RGB}{18, 72, 160}      % Solid Royal Blue
+\definecolor{goldAccent}{RGB}{255, 215, 0}       % Gold highlight
+\definecolor{l1Green}{RGB}{14, 120, 62}          % Vivid Forest Green (Level 1)
+\definecolor{l2Amber}{RGB}{205, 80, 0}           % Rich Amber / Orange (Level 2)
+\definecolor{l3Crimson}{RGB}{180, 20, 20}        % Deep Crimson Red (Level 3)
+\definecolor{formulaBg}{RGB}{255, 252, 235}      % Warm Cream-Gold (Formula Callout)
+\definecolor{formulaBorder}{RGB}{220, 160, 30}   % Gold Border for Formulas
+\definecolor{cardBg}{RGB}{250, 252, 255}         % Clean Crisp Card Background
+\definecolor{cardBorder}{RGB}{130, 170, 220}     % Sharp Steel Blue Border
+\definecolor{tableStripe}{RGB}{242, 246, 252}    % Alternating Table Row
+\definecolor{tableDarkHeader}{RGB}{12, 32, 84}   % Dark Table Header
+\definecolor{darkCharcoal}{RGB}{25, 25, 25}      % High-contrast body text
+
+% Page styling (Guaranteed Collision-Free Header)
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{16pt}
+\fancyhead[L]{\small\textsf{\textbf{\textcolor{primaryDark}{StudyFAM JEE Revision}} $\vert$ \textbf{\textcolor{primaryBlue}{Day 04: Work, Power, Energy \& Vertical Circle}}}}
+\fancyhead[R]{\small\textsf{\textbf{\textcolor{l3Crimson}{Study Target: 8 Hours}}}}
+\fancyfoot[C]{\textbf{\textsf{\thepage}}}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Custom High-Contrast tcolorboxes
+\tcbset{
+  dayheader/.style={
+    colback=primaryDark,
+    coltext=white,
+    boxrule=0pt,
+    arc=3mm,
+    left=14pt, right=14pt, top=10pt, bottom=10pt
+  },
+  sectionbanner/.style={
+    colback=primaryBlue,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  chapterbanner/.style={
+    colback=primaryDark,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=7pt, bottom=7pt
+  },
+  l1banner/.style={
+    colback=l1Green,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  l2banner/.style={
+    colback=l2Amber,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  l3banner/.style={
+    colback=l3Crimson,
+    coltext=white,
+    boxrule=0pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=6pt, bottom=6pt
+  },
+  formulacard/.style={
+    enhanced,
+    breakable,
+    colback=formulaBg,
+    colframe=formulaBorder,
+    boxrule=1.2pt,
+    arc=2mm,
+    left=10pt, right=10pt, top=8pt, bottom=8pt
+  },
+  theorycard/.style={
+    enhanced,
+    breakable,
+    colback=cardBg,
+    colframe=cardBorder,
+    boxrule=1.2pt,
+    arc=2.5mm,
+    left=12pt, right=12pt, top=10pt, bottom=10pt
+  }
+}
+
+\begin{document}
+
+
+% ==================== DAY HEADER BANNER ====================
+\begin{tcolorbox}[dayheader]
+\begin{center}
+  {\Large \textbf{\textsf{\textcolor{goldAccent}{STUDYFAM JEE INTENSIVE REVISION SERIES}}}}\\[3pt]
+  {\LARGE \textbf{\textsf{DAY 04: WORK, POWER, ENERGY \& VERTICAL CIRCULAR MOTION}}}\\[5pt]
+  {\normalsize \textbf{\textsf{Core Topics:}} Work by Variable Forces $\vert$ Work-Energy Theorem $\vert$ Potential Energy $\vert$ Equilibrium $\vert$ Power Dynamics $\vert$ Vertical Circle}\\[3pt]
+  {\footnotesize \textbf{Daily Target Time:} 8 Hours \quad $\vert$ \quad \textbf{Curated Questions:} 75 Questions (25 Level-1 + 25 Level-2 + 25 Level-3)}
+\end{center}
+\end{tcolorbox}
+
+\vspace{6pt}
+
+% ==================== PART 1: TODAY'S PLAN ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 1: TODAY'S 8-HOUR ACTION SCHEDULE}}}
+\end{tcolorbox}
+\vspace{2pt}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabularx}{\textwidth}{|c|c|X|c|}
+\hline
+\rowcolor{tableDarkHeader}
+\textcolor{white}{\textbf{Session}} & \textcolor{white}{\textbf{Time}} & \textcolor{white}{\textbf{Focus Area \& High-Yield Strategy}} & \textcolor{white}{\textbf{Duration}} \\
+\hline
+\rowcolor{white}
+\textbf{Block 1} & 09:00 -- 11:00 & \textbf{Theory \& Formula Compendium:} Study unabridged theory below. Master work integrals, conservative vs non-conservative fields, $U(r)$ equilibrium conditions, constant power kinematics ($v \propto t^{1/2}, s \propto t^{3/2}$), and vertical circle regimes. & 2.0 Hours \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Block 2} & 11:15 -- 12:45 & \textbf{Level-1 Foundation \& Speed Drill (Q1--Q25):} Direct scalar products, graphical area evaluations, spring work, kinetic energy relations, simple power calculations. Target: $\le 1.5$ min/Q. & 1.5 Hours \\
+\hline
+\rowcolor{white}
+-- & 12:45 -- 01:45 & \textit{Lunch Break, Physical Movement \& Mental Recovery} & 1.0 Hour \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Block 3} & 01:45 -- 04:15 & \textbf{Level-2 Core JEE Main Mastery (Q26--Q50):} Variable force integrals, spring-block friction systems, turbine/pump power, vertical circular motion tensions, sliding off a hemisphere. Target: $\le 2.5$ min/Q. & 2.5 Hours \\
+\hline
+\rowcolor{white}
+\textbf{Block 4} & 04:30 -- 06:15 & \textbf{Level-3 Advanced \& Numerical Challenge (Q51--Q75):} Lennard-Jones potential, vertical circle slacking \& projectile trajectories, rigid rod looping, variable friction, integer numericals. & 1.75 Hours \\
+\hline
+\rowcolor{tableStripe}
+\textbf{Block 5} & 06:30 -- 07:15 & \textbf{Master Answer Key Audit \& Error Logging:} Check answers against the master key, re-derive any missed questions, log key insights in your revision notebook. & 0.75 Hour \\
+\hline
+\rowcolor{tableDarkHeader}
+\multicolumn{3}{|r|}{\textcolor{white}{\textbf{TOTAL DEDICATED STUDY TIME}}} & \textcolor{white}{\textbf{8.0 Hours}} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\vspace{5pt}
+
+% ==================== PART 2: OUTCOMES OF THE PLAN ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 2: TARGETED LEARNING OUTCOMES}}}
+\end{tcolorbox}
+\vspace{3pt}
+
+\begin{itemize}[leftmargin=18pt,itemsep=2.5pt,topsep=1pt]
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 1 (Work Computations):}} Evaluate work done by constant and variable force fields using scalar products and line integrals $W = \int \vec{F} \cdot d\vec{r}$, and extract work from $F-x$ graphical areas.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 2 (Work-Energy Theorem in All Frames):}} Fluently apply $W_{\text{net}} = \Delta K$ for single bodies and $\Delta K + \Delta U = W_{\text{ext}} + W_{\text{nc}}$ for systems involving springs, gravity, and frictional dissipation.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 3 (Potential Energy \& Equilibrium Classification):}} Determine equilibrium points from $\frac{dU}{dr} = 0$ and classify them as stable ($\frac{d^2 U}{dr^2} > 0$), unstable ($\frac{d^2 U}{dr^2} < 0$), or neutral ($\frac{d^2 U}{dr^2} = 0$).
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 4 (Power Dynamics):}} Solve constant power engine systems and verify the universal scalings $v \propto t^{1/2}$, $s \propto t^{3/2}$, and $F \propto t^{-1/2}$, along with pump/turbine mass transfer equations $P = \frac{dm}{dt}(gh + \frac{1}{2}v^2)$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 5 (Vertical Circular Dynamics):}} Apply conservation of mechanical energy and radial dynamics to evaluate velocity $v(\theta)$ and string tension $T(\theta)$ at any angle.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 6 (Critical Thresholds in Vertical Circles):}} Differentiate between string looping ($u \ge \sqrt{5gR}, v_{\text{top}} \ge \sqrt{gR}$) and rigid rod looping ($u \ge 2\sqrt{gR}, v_{\text{top}} \ge 0$), and locate slacking points where $T=0$.
+  \item[$\square$] \textbf{\textcolor{primaryDark}{Outcome 7 (Tension Invariants \& Slacking Trajectories):}} Leverage the invariant tension difference $T_{\text{bottom}} - T_{\text{top}} = 6mg$, and solve post-slacking projectile motion inside the vertical circle.
+\end{itemize}
+
+\vspace{5pt}
+
+
+% ==================== PART 3: COMPLETE UNABRIDGED THEORY COMPENDIUM ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 3: UNABRIDGED THEORY \& FORMULA REVISION (FROM NOTES)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+% -------------------------------------------------------------
+% SUBSECTION 1: WORK, POWER AND ENERGY
+% -------------------------------------------------------------
+\begin{tcolorbox}[chapterbanner]
+  {\Large \textbf{\textsf{1. Work, Power and Energy (Complete Notes)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.1 Work Done by Constant and Multiple Forces}}}}\\[3pt]
+\begin{itemize}[leftmargin=14pt,itemsep=2pt]
+  \item \textbf{Work Done by a Constant Force:} Work is the scalar dot product of force vector $\vec{F}$ and displacement vector $\vec{S}$:
+  \[
+    W = \vec{F} \cdot \vec{S} = F S \cos\theta = F_x \Delta x + F_y \Delta y + F_z \Delta z
+  \]
+  where $\theta$ is the angle between $\vec{F}$ and $\vec{S}$. Work is a scalar quantity (SI unit: Joule, $\text{J} = \text{N}\cdot\text{m}$, dimensions: $[M L^2 T^{-2}]$).
+  \item \textbf{Work Done by Multiple Forces:} If several forces $\vec{F}_1, \vec{F}_2, \dots, \vec{F}_n$ act on a body:
+  \[
+    \vec{F}_{\text{net}} = \sum_{i=1}^n \vec{F}_i \implies W_{\text{net}} = \left(\sum \vec{F}_i\right) \cdot \vec{S} = \sum_{i=1}^n (\vec{F}_i \cdot \vec{S}) = W_1 + W_2 + \dots + W_n
+  \]
+\end{itemize}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.2 Work Done by a Variable Force \& Graphical Meaning}}}}\\[3pt]
+When the force varies in magnitude or direction along the displacement path from $\vec{r}_i$ to $\vec{r}_f$:
+\[
+  W = \int dW = \int_{\vec{r}_i}^{\vec{r}_f} \vec{F} \cdot d\vec{r} = \int_{x_i}^{x_f} F_x\,dx + \int_{y_i}^{y_f} F_y\,dy + \int_{z_i}^{z_f} F_z\,dz
+\]
+\begin{tcolorbox}[formulacard]
+  \textbf{\textcolor{l3Crimson}{Graphical Interpretation of Work Done:}}
+  \begin{itemize}[leftmargin=12pt,itemsep=1.5pt]
+    \item The \textbf{area under the Force--Displacement ($F-x$) curve} represents the total work done.
+    \item Area above the displacement axis represents \textbf{positive work} ($W > 0$).
+    \item Area below the displacement axis represents \textbf{negative work} ($W < 0$).
+  \end{itemize}
+\end{tcolorbox}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.3 Specific Work Evaluations (Key Cases from Notes)}}}}\\[3pt]
+\begin{enumerate}[label=(\roman*),leftmargin=14pt,itemsep=2.5pt]
+  \item \textbf{Force Perpendicular to Velocity at All Instants ($\vec{F} \perp \vec{v}$):} The work done is strictly \textbf{zero}:
+  \[
+    dW = \vec{F}\cdot d\vec{r} = \vec{F}\cdot\vec{v}\,dt = 0
+  \]
+  \textit{Examples from Notes:}
+  \begin{itemize}[leftmargin=12pt,itemsep=1pt]
+    \item Tension in an inextensible string attached to a fixed center in circular motion ($W_T = 0$).
+    \item Normal reaction on a block sliding on a fixed stationary surface ($W_N = 0$).
+    \item Magnetic Lorentz force on a moving charge ($\vec{F}_B = q(\vec{v}\times\vec{B}) \perp \vec{v} \implies W_B = 0$).
+  \end{itemize}
+  \item \textbf{Work Done by Gravity Near Earth's Surface:}
+  \[
+    W_g = -mg(h_f - h_i) = -mg \Delta h
+  \]
+  Gravity does positive work when a body descends ($\Delta h < 0$), and negative work when it ascends ($\Delta h > 0$).
+  \item \textbf{Work Done by Friction on a Block Moving on a Fixed Surface:}
+  \[
+    W_f = -\int \mu_k N\,ds = -\mu_k N \times (\text{total distance traveled})
+  \]
+  \textit{Crucial Note on Static Friction:} Static friction does \textbf{no work} on a single rigid body, but can do positive, negative, or zero work on individual interacting bodies of a system (net work done by static friction on the system as a whole is zero).
+  \item \textbf{Work Done by an Ideal Spring ($F = -kx$):}
+  \[
+    W_s = \int_{x_i}^{x_f} (-kx)\,dx = \frac{1}{2}k\left(x_i^2 - x_f^2\right) = -\Delta U_s
+  \]
+  where $x_i$ and $x_f$ refer to the initial and final extension/compression from the unstretched position.
+\end{enumerate}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.4 Relation Between Momentum and Kinetic Energy}}}}\\[3pt]
+For a particle of mass $m$ moving with speed $v$:
+\[
+  K = \frac{1}{2}mv^2 = \frac{p^2}{2m} \iff p = \sqrt{2mK}
+\]
+\textit{Fractional Error Rule for Small Changes ($\le 5\%$):} $\dfrac{\Delta K}{K} \approx 2\dfrac{\Delta p}{p}$.
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.5 Conservative Forces and Potential Energy}}}}\\[3pt]
+A force is conservative if the work done by it on a particle depends only on the initial and final positions, and is independent of the path taken ($\oint \vec{F}_c \cdot d\vec{r} = 0$).
+\begin{itemize}[leftmargin=14pt,itemsep=2pt]
+  \item \textbf{Definition of Potential Energy:} Potential energy is defined \textbf{only} for conservative forces:
+  \[
+    \Delta U = U_f - U_i = -\int_{\vec{r}_i}^{\vec{r}_f} \vec{F}_c \cdot d\vec{r} = -W_c \iff dU = -\vec{F}_c \cdot d\vec{r}
+  \]
+  \item \textbf{Gradient Relation in 3D and 1D:}
+  \[
+    \vec{F} = -\nabla U = -\left(\frac{\partial U}{\partial x}\hat{i} + \frac{\partial U}{\partial y}\hat{j} + \frac{\partial U}{\partial z}\hat{k}\right), \quad \text{In 1D: } F_x = -\frac{dU}{dx}
+  \]
+\end{itemize}
+
+\begin{tcolorbox}[formulacard]
+  \textbf{\textcolor{primaryDark}{1.6 Equilibrium Conditions (Complete Analysis from Notes):}}
+  A particle is in translational equilibrium if the net force acting on it is zero:
+  \[
+    F = -\frac{dU}{dr} = 0 \implies \text{Slope of } U(r) \text{ curve is zero.}
+  \]
+  \begin{center}
+  \renewcommand{\arraystretch}{1.25}
+  \small
+  \begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}m{2.8cm}|>{\centering\arraybackslash}m{3.2cm}|>{\centering\arraybackslash}m{2.5cm}|>{\raggedright\arraybackslash}X|}
+  \hline
+  \rowcolor{tableDarkHeader}
+  \textcolor{white}{\textbf{Equilibrium Type}} & \textcolor{white}{\textbf{Mathematical Criterion}} & \textcolor{white}{\textbf{Potential Energy}} & \textcolor{white}{\textbf{Physical Nature}} \\
+  \hline
+  \rowcolor{white}
+  \textbf{Stable Equilibrium} & $\dfrac{dU}{dr} = 0, \quad \dfrac{d^2 U}{dr^2} > 0$ & Minimum & When slightly displaced, a restoring force acts ($dF/dr < 0$) pulling the body back. \\
+  \hline
+  \rowcolor{tableStripe}
+  \textbf{Unstable Equilibrium} & $\dfrac{dU}{dr} = 0, \quad \dfrac{d^2 U}{dr^2} < 0$ & Maximum & When slightly displaced, a repelling force acts ($dF/dr > 0$) pushing the body further away. \\
+  \hline
+  \rowcolor{white}
+  \textbf{Neutral Equilibrium} & $\dfrac{dU}{dr} = 0, \quad \dfrac{d^2 U}{dr^2} = 0$ & Constant & When slightly displaced, the net force remains zero; body stays in its new state. \\
+  \hline
+  \end{tabularx}
+  \end{center}
+\end{tcolorbox}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.7 Work-Energy Theorem \& Mechanical Energy Conservation}}}}\\[3pt]
+\begin{itemize}[leftmargin=14pt,itemsep=2pt]
+  \item \textbf{Work-Energy Theorem for a Single Particle:} The total work done by ALL forces (conservative, non-conservative, and external) equals the change in kinetic energy:
+  \[
+    W_{\text{net}} = W_c + W_{nc} + W_{\text{ext}} = \Delta K = \frac{1}{2}mv_f^2 - \frac{1}{2}mv_i^2
+  \]
+  \item \textbf{Work-Energy Theorem for a System:}
+  \[
+    \Delta K + \Delta U = W_{\text{ext}} + W_{\text{int, NC}}
+  \]
+  \item \textbf{Law of Conservation of Mechanical Energy:} If net external work is zero ($W_{\text{ext}} = 0$) and internal non-conservative forces are absent ($W_{\text{int, NC}} = 0$):
+  \[
+    \Delta K + \Delta U = 0 \implies K_i + U_i = K_f + U_f = \text{constant}
+  \]
+\end{itemize}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{1.8 Power Definitions \& Constant Power Dynamics}}}}\\[3pt]
+\begin{itemize}[leftmargin=14pt,itemsep=1.5pt]
+  \item \textbf{Average Power:} $P_{\text{avg}} = \dfrac{\text{Total Work Done } W}{\text{Total Time Taken } t}$.
+  \item \textbf{Instantaneous Power:} $P = \dfrac{dW}{dt} = \vec{F} \cdot \dfrac{d\vec{r}}{dt} = \vec{F} \cdot \vec{v}$.
+  \item \textbf{Motion of a Vehicle Under Constant Power $P$ (Starting from Rest):}
+  \[
+    P = m v \frac{dv}{dt} \implies \int_0^v v\,dv = \frac{P}{m}\int_0^t dt \implies v(t) = \sqrt{\frac{2Pt}{m}} \propto t^{1/2}
+  \]
+  \[
+    s(t) = \int_0^t v\,dt = \sqrt{\frac{2P}{m}} \left(\frac{2}{3}t^{3/2}\right) = \sqrt{\frac{8P}{9m}} t^{3/2} \propto t^{3/2}
+  \]
+  \[
+    F(t) = m\frac{dv}{dt} = \sqrt{\frac{mP}{2t}} \propto t^{-1/2}
+  \]
+\end{itemize}
+
+\vspace{10pt}
+
+% -------------------------------------------------------------
+% SUBSECTION 2: VERTICAL CIRCULAR MOTION
+% -------------------------------------------------------------
+\begin{tcolorbox}[chapterbanner]
+  {\Large \textbf{\textsf{2. Vertical Circular Motion (Complete Compendium)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+Consider a particle of mass $m$ tied to an inextensible string of length $R$ whirled in a vertical circle. Let $u$ be its speed at the lowest point (bottom):
+
+\begin{tcolorbox}[formulacard]
+  \textbf{\textcolor{primaryDark}{2.1 Dynamics at Arbitrary Position (Angle $\theta$ with Lowest Point):}}
+  \begin{itemize}[leftmargin=14pt,itemsep=2.5pt]
+    \item \textbf{Speed at Angle $\theta$:} From conservation of mechanical energy:
+    \[
+      \frac{1}{2}mu^2 = \frac{1}{2}mv^2 + mgR(1 - \cos\theta) \implies v(\theta) = \sqrt{u^2 - 2gR(1 - \cos\theta)}
+    \]
+    \item \textbf{Tension at Angle $\theta$:} Radial equation: $T - mg\cos\theta = \dfrac{mv^2}{R}$:
+    \[
+      T(\theta) = mg\cos\theta + \frac{mv^2}{R} = \frac{m}{R}\left[u^2 - gR(2 - 3\cos\theta)\right]
+    \]
+    \item \textbf{At the Lowest Point ($\theta = 0^\circ$):} $v_B = u, \quad T_B = \dfrac{mu^2}{R} + mg$.
+    \item \textbf{At the Horizontal Position ($\theta = 90^\circ$):} $v_H = \sqrt{u^2 - 2gR}, \quad T_H = \dfrac{mu^2}{R} - 2mg$.
+    \item \textbf{At the Highest Point ($\theta = 180^\circ$):} $v_T = \sqrt{u^2 - 4gR}, \quad T_T = \dfrac{mu^2}{R} - 5mg$.
+    \item \textbf{Invariant Tension Difference:}
+    \[
+      T_B - T_T = \left(\frac{mu^2}{R} + mg\right) - \left(\frac{mu^2}{R} - 5mg\right) = 6mg \quad (\text{independent of } u!)
+    \]
+  \end{itemize}
+\end{tcolorbox}
+
+\vspace{5pt}
+\noindent{\large\textbf{\textsf{\textcolor{primaryDark}{2.2 Regimes of Motion in a Vertical Circle}}}}\\[3pt]
+\begin{enumerate}[label=(\alph*),leftmargin=14pt,itemsep=2.5pt]
+  \item \textbf{Oscillation Regime ($u \le \sqrt{2gR}$):}
+  The velocity becomes zero before or at the horizontal level ($\theta \le 90^\circ$) while tension remains positive ($T > 0$). The particle oscillates as a pendulum with amplitude $\theta_{\max} = \cos^{-1}\left(1 - \frac{u^2}{2gR}\right)$.
+  \item \textbf{Slacking \& Projectile Regime ($\sqrt{2gR} < u < \sqrt{5gR}$):}
+  The tension vanishes ($T = 0$) in the upper half ($90^\circ < \theta < 180^\circ$) before velocity becomes zero ($v \ne 0$). The string slacks at angle $\theta$ where:
+  \[
+    \cos\theta = -\frac{u^2 - 2gR}{3gR}
+  \]
+  After slacking, the particle leaves the circular path and flies freely under gravity as a \textbf{parabolic projectile} through the circle!
+  \item \textbf{Complete Looping the Loop ($u \ge \sqrt{5gR}$):}
+  To complete full revolution without the string ever slacking, the tension at the top must satisfy $T_T \ge 0$:
+  \[
+    v_{\text{top}} \ge \sqrt{gR} \iff u_{\text{bottom}} \ge \sqrt{5gR}
+  \]
+  \item \textbf{Light Rigid Rod or Smooth Hollow Vertical Tube:}
+  Because a rigid rod or closed hollow tube can support compressive normal forces ($T$ can be zero or negative), the particle only needs non-zero speed to cross the highest point ($v_{\text{top}} > 0$):
+  \[
+    v_{\text{top}} \ge 0 \iff u_{\text{bottom}} \ge \sqrt{4gR} = 2\sqrt{gR}
+  \]
+\end{enumerate}
+
+\newpage
+
+
+% ==================== LEVEL 1: FOUNDATION & SPEED DRILL ====================
+\begin{tcolorbox}[l1banner]
+  {\large \textbf{\textsf{LEVEL 1: FOUNDATION \& SPEED DRILL (Q01 -- Q25)}}} \hfill {\small \textbf{Target: $\le 1.5$ min per question}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=18pt,itemsep=8pt]
+
+  \item A body moves a distance of $10\text{ m}$ along a straight line under the action of a constant force of $5\text{ N}$. If the work done on the body is $25\text{ J}$, the angle which the force makes with the direction of motion of the body is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $0^\circ$
+      \item $30^\circ$
+      \item $60^\circ$
+      \item $90^\circ$
+    \end{enumerate}
+  \end{multicols}
+
+  \item The work done by a position-dependent force $\vec{F} = (-6x^3\hat{i})\text{ N}$ in displacing a particle along the $x$-axis from $x = 4\text{ m}$ to $x = -2\text{ m}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $360\text{ J}$
+      \item $240\text{ J}$
+      \item $-240\text{ J}$
+      \item $-360\text{ J}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Calculate the total work done on a mechanical tool by a constant force $\vec{F} = (11.25\hat{i} + 11.25\hat{j})\text{ N}$ if the tool is first moved along the $x$-axis to $(3.00\text{ m}, 0)$ and then moved parallel to the $y$-axis to $(3.00\text{ m}, 3.00\text{ m})$:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $67.5\text{ J}$
+      \item $85.0\text{ J}$
+      \item $102.5\text{ J}$
+      \item $7.5\text{ J}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A uniform force $\vec{F} = (3\hat{i} + \hat{j})\text{ N}$ acts on a particle of mass $2\text{ kg}$. The particle is displaced from position vector $\vec{r}_1 = (2\hat{i} + \hat{k})\text{ m}$ to position vector $\vec{r}_2 = (4\hat{i} + 3\hat{j} - \hat{k})\text{ m}$. The work done by the force on the particle is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $6\text{ J}$
+      \item $13\text{ J}$
+      \item $15\text{ J}$
+      \item $9\text{ J}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A spring of spring constant $k = 5 \times 10^3\text{ N/m}$ is stretched initially by $5\text{ cm}$ from its unstretched position. The additional work required to stretch it further by another $5\text{ cm}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $12.50\text{ J}$
+      \item $18.75\text{ J}$
+      \item $25.00\text{ J}$
+      \item $6.25\text{ J}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item When a rubber band is stretched by a distance $x$, it exerts a restoring force of magnitude $F = ax + bx^2$, where $a$ and $b$ are positive constants. The work done in stretching the unstretched rubber band by a distance $L$ is:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $aL^2 + bL^3$
+      \item $\dfrac{1}{2}(aL^2 + bL^3)$
+      \item $\dfrac{aL^2}{2} + \dfrac{bL^3}{3}$
+      \item $\dfrac{1}{2}\left(\dfrac{aL^2}{2} + \dfrac{bL^3}{3}\right)$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Two similar springs $P$ and $Q$ have spring constants $k_P$ and $k_Q$ such that $k_P > k_Q$. They are stretched, first by the same extension (case a), and second by the same applied force (case b). The work done by the springs $W_P$ and $W_Q$ are related as:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $W_P = W_Q$ in (a); $W_P = W_Q$ in (b)
+      \item $W_P > W_Q$ in (a); $W_Q > W_P$ in (b)
+      \item $W_P < W_Q$ in (a); $W_Q < W_P$ in (b)
+      \item $W_P = W_Q$ in (a); $W_P > W_Q$ in (b)
+    \end{enumerate}
+  \end{multicols}
+
+  \item A light cord is used to lower vertically a block of mass $M$ through a distance $d$ at a constant downward acceleration of $g/4$. The work done by the cord on the block is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{1}{4}Mgd$
+      \item $\dfrac{3}{4}Mgd$
+      \item $-\dfrac{3}{4}Mgd$
+      \item $Mgd$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Which of the following statements regarding the work done by static friction on an object is correct?
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item It can be positive, negative, or zero
+      \item It must strictly be negative
+      \item It must strictly be zero
+      \item It is always equal to kinetic friction
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body of mass $10\text{ kg}$ moves with a constant speed $v = 2\text{ m/s}$ along a horizontal circular path of radius $8\text{ m}$. The instantaneous power delivered to the body by the centripetal force is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $10\text{ W}$
+      \item $98\text{ W}$
+      \item $49\text{ W}$
+      \item $\text{Zero}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item If two persons $A$ and $B$ take $2\text{ seconds}$ and $4\text{ seconds}$ respectively to lift identical objects of mass $m$ to the same height $h$, then the ratio of the average power delivered by person $A$ to that by person $B$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1 : 2$
+      \item $1 : 1$
+      \item $2 : 1$
+      \item $1 : 3$
+    \end{enumerate}
+  \end{multicols}
+
+  \item An electric motor develops $10\text{ kW}$ of output power. How much time will it take to lift a mass of $200\text{ kg}$ vertically through a height of $40\text{ m}$? (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $4\text{ s}$
+      \item $5\text{ s}$
+      \item $8\text{ s}$
+      \item $10\text{ s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item If a machine gun fires $n$ bullets per second, each having a kinetic energy $K$, then the average power of the machine gun is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{n}{K^2}$
+      \item $\dfrac{K}{n}$
+      \item $n^2 K$
+      \item $nK$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle of mass $m$ has half the kinetic energy of another particle of mass $m/2$. If the speed of the heavier particle increases by $2\text{ m/s}$, its kinetic energy equals that of the other particle. The ratio of their initial speeds is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1 : 1$
+      \item $1 : 2$
+      \item $1 : \sqrt{2}$
+      \item $1 : 4$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Two particles of masses $m$ and $4m$ have their linear momenta in the ratio $2 : 1$. The ratio of their respective kinetic energies is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $2 : 1$
+      \item $4 : 1$
+      \item $8 : 1$
+      \item $16 : 1$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body of mass $m$ is dropped from rest from a height $H$. It attains a speed $v$ when it is at a height $h$ above the ground. Which of the following expressions gives the total initial height $H$?
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $h + \dfrac{v^2}{2g}$
+      \item $h - \dfrac{v^2}{2g}$
+      \item $\dfrac{v^2}{2g} - h$
+      \item $v\sqrt{\dfrac{2h}{g}}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body is allowed to fall freely under gravity from a height of $10\text{ m}$. If it loses $25\%$ of its mechanical energy due to impact with the ground, the maximum height to which it bounces after this single impact is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $2.5\text{ m}$
+      \item $5.0\text{ m}$
+      \item $7.5\text{ m}$
+      \item $8.2\text{ m}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A car of mass $m$ is driven with forward acceleration $a$ along a straight horizontal road against a constant external resistive force $R$. When the instantaneous velocity of the car is $V$, the engine power delivered to the wheels is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $RV$
+      \item $maV$
+      \item $(R + ma)V$
+      \item $(ma - R)V$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A constant power $P$ is supplied to a car starting from rest. If $v$ is the speed of the car at time $t$, then the relationship between $v$ and $t$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $v \propto t$
+      \item $v \propto t^2$
+      \item $v \propto \sqrt{t}$
+      \item $v \propto t^{-1/2}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A car of mass $m$ starts from rest and accelerates so that the instantaneous power delivered to the car maintains a constant value $P_0$. The instantaneous velocity of this car is proportional to:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $t^2$
+      \item $t^{1/2}$
+      \item $t^{-1/2}$
+      \item $t^0$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body is moved along a straight line by an engine delivering constant power. The distance $s$ traversed by the body in time $t$ from rest is proportional to:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $t^{3/4}$
+      \item $t^{3/2}$
+      \item $t^{1/4}$
+      \item $t^{1/2}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle of mass $m$ is driven by a machine that delivers a constant power of $k\text{ watts}$. If the particle starts from rest, the force acting on the particle at time $t$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\sqrt{mk}\,t^{-1/2}$
+      \item $\sqrt{\dfrac{mk}{2}}\,t^{-1/2}$
+      \item $\dfrac{1}{2}\sqrt{mk}\,t^{-1/2}$
+      \item $\sqrt{2mk}\,t^{-1/2}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body is projected vertically upwards from the surface of the earth and reaches a maximum height equal to the radius of the earth $R$ before falling back. The power exerted by the gravitational force on the body is greatest:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item At the highest position of the body
+      \item At the instant just before hitting the earth
+      \item It remains constant throughout the flight
+      \item At the instant just after projection
+    \end{enumerate}
+  \end{multicols}
+
+  \item An engineer claims to have designed a new heat engine delivering $10\text{ kW}$ of mechanical power with a fuel consumption rate of $1\text{ g/s}$. If the calorific value of the fuel is $11\text{ kcal/g}$ ($1\text{ cal} = 4.2\text{ J}$), the claim is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item Valid ($< 100\%$ eff.)
+      \item Invalid
+      \item Impossible to judge
+      \item Violates 1st Law
+    \end{enumerate}
+  \end{multicols}
+
+  \item A $10\text{ m}$ long uniform iron chain of linear mass density $\lambda = 0.8\text{ kg/m}$ is hanging freely from a rigid ceiling. Taking $g = 10\text{ m/s}^2$, the average power required to lift the bottom of the chain to the ceiling support in $10\text{ seconds}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $10\text{ W}$
+      \item $20\text{ W}$
+      \item $30\text{ W}$
+      \item $40\text{ W}$
+    \end{enumerate}
+  \end{multicols}
+
+\end{enumerate}
+\newpage
+
+
+% ==================== LEVEL 2: CORE JEE MAIN MASTERY ====================
+\begin{tcolorbox}[l2banner]
+  {\large \textbf{\textsf{LEVEL 2: CORE JEE MAIN MASTERY (Q26 -- Q50)}}} \hfill {\small \textbf{Target: $\le 2.5$ min per question}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=18pt,itemsep=8pt,resume]
+
+  \item The position of a particle of mass $4\text{ g}$ acted upon by a constant force is given by $x(t) = 4t^2 + t$, where $x$ is in metres and $t$ in seconds. The total work done by the force on the particle during the first $2\text{ seconds}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $128\text{ mJ}$
+      \item $512\text{ mJ}$
+      \item $576\text{ mJ}$
+      \item $144\text{ mJ}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A force acts on a $30\text{ g}$ particle in such a way that its position as a function of time is given by $x(t) = 3t - 4t^2 + t^3$, where $x$ is in metres and $t$ in seconds. The work done by this force during the interval $t = 0$ to $t = 4\text{ s}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $5.28\text{ J}$
+      \item $450\text{ mJ}$
+      \item $490\text{ mJ}$
+      \item $530\text{ mJ}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item The distance $x$ moved by a body of mass $0.5\text{ kg}$ under the action of a force varies with time $t$ as $x = 3t^2 + 4t + 5$ (SI units). The work done by the force in the first $2\text{ seconds}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $25\text{ J}$
+      \item $50\text{ J}$
+      \item $60\text{ J}$
+      \item $100\text{ J}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body of mass $1\text{ kg}$ begins to move from rest under the action of a time-dependent force $\vec{F}(t) = (2t\hat{i} + 3t^2\hat{j})\text{ N}$. The instantaneous power developed by the force at time $t$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $(2t^2 + 3t^3)\text{ W}$
+      \item $(2t^2 + 4t^4)\text{ W}$
+      \item $(2t^3 + 3t^4)\text{ W}$
+      \item $(2t^3 + 3t^5)\text{ W}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Power applied to a particle of mass $m$ varies with time as $P(t) = (3t^2 - 2t + 1)\text{ W}$, where $t$ is in seconds. The total change in its kinetic energy between $t = 2\text{ s}$ and $t = 4\text{ s}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $48\text{ J}$
+      \item $44\text{ J}$
+      \item $42\text{ J}$
+      \item $46\text{ J}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body of mass $m$ accelerates uniformly from rest to velocity $v_1$ in time interval $T_1$. The instantaneous power delivered to the body as a function of time $t$ ($t \le T_1$) is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{m v_1^2}{T_1^2} t$
+      \item $\dfrac{m v_1^2}{2T_1^2} t$
+      \item $\dfrac{m v_1}{T_1} t$
+      \item $\dfrac{m v_1^2}{T_1} t^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Water falls from a vertical height of $60\text{ m}$ at a steady rate of $15\text{ kg/s}$ to operate an electrical turbine. If the mechanical losses due to frictional resistance are $10\%$, the useful power generated by the turbine is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $8.1\text{ kW}$
+      \item $10.2\text{ kW}$
+      \item $12.3\text{ kW}$
+      \item $7.0\text{ kW}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A wind-powered generator converts wind energy into electrical energy. Assuming that the generator converts a fixed fraction of the total kinetic energy of the incoming air column into electricity, the electric power output is proportional to wind speed $v$ as:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $v$
+      \item $v^2$
+      \item $v^3$
+      \item $v^4$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A force applied by the engine of a train of mass $2.05 \times 10^6\text{ kg}$ changes its speed uniformly from $5\text{ m/s}$ to $25\text{ m/s}$ in $5\text{ minutes}$. The average power delivered by the engine during this period is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1.025\text{ MW}$
+      \item $2.05\text{ MW}$
+      \item $5.00\text{ MW}$
+      \item $6.00\text{ MW}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A vertical spring with force constant $k$ is fixed on a horizontal table. A ball of mass $m$ at a height $h$ above the free upper end of the spring falls vertically on the spring so that the spring is compressed by a maximum distance $d$. The net work done by gravity and spring force on the ball during this descent is:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $mg(h + d) - \dfrac{1}{2}kd^2$
+      \item $mg(h - d) - \dfrac{1}{2}kd^2$
+      \item $mg(h - d) + \dfrac{1}{2}kd^2$
+      \item $mg(h + d) + \dfrac{1}{2}kd^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A $2\text{ kg}$ block slides along a rough horizontal floor with an initial speed of $4\text{ m/s}$. It strikes an uncompressed horizontal spring ($k = 10{,}000\text{ N/m}$) and compresses it until the block momentarily comes to rest. If a constant kinetic friction force of $15\text{ N}$ acts on the block, the maximum compression of the spring is closest to:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $5.5\text{ cm}$
+      \item $4.5\text{ cm}$
+      \item $7.5\text{ cm}$
+      \item $3.0\text{ cm}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A steel ball of mass $5\text{ g}$ is thrown vertically downward with speed $10\text{ m/s}$ from a height of $19.5\text{ m}$ above a sand bed. It penetrates the sand to a depth of $50\text{ cm}$ before stopping. The total magnitude of mechanical energy dissipated by the sand is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $1.25\text{ J}$
+      \item $2.00\text{ J}$
+      \item $1.75\text{ J}$
+      \item $12.5\text{ J}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A thin uniform rigid rod of mass $m$ and length $L$ is inclined at an angle of $60^\circ$ with the upward vertical, with its lower end resting on the floor. Taking the floor as the reference level ($U=0$), the potential energy of the rod is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $mgL$
+      \item $\dfrac{mgL}{2}$
+      \item $\dfrac{mgL}{3}$
+      \item $\dfrac{mgL}{4}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A $15\text{ g}$ ball is shot horizontally from a spring gun whose spring has a force constant $k = 600\text{ N/m}$. The spring is initially compressed by $5\text{ cm}$. The greatest possible horizontal range of the ball on level ground when fired at the optimum launch angle is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $6.0\text{ m}$
+      \item $12.0\text{ m}$
+      \item $10.0\text{ m}$
+      \item $8.0\text{ m}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item When a body is projected vertically upwards from the ground with velocity $u$, its potential energy and kinetic energy at a given height $h$ (point $A$) are in the ratio $U : K = 2 : 3$. If the same body is projected vertically with double the previous velocity ($2u$), then at the same point $A$ the ratio of its potential energy to kinetic energy will be:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $9 : 1$
+      \item $2 : 9$
+      \item $1 : 9$
+      \item $9 : 2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A block is released from the top of two rough inclined planes, each of vertical height $h$. The angles of inclination are $30^\circ$ and $60^\circ$ respectively. The coefficient of kinetic friction $\mu < 1/\sqrt{3}$ and mass $m$ are identical. If $K_1$ and $K_2$ are the kinetic energies at the bottom for $\theta = 30^\circ$ and $\theta = 60^\circ$ respectively, then:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $K_1 = K_2$
+      \item $K_1 > K_2$
+      \item $K_1 < K_2$
+      \item Insufficient data
+    \end{enumerate}
+  \end{multicols}
+
+  \item A car of weight $W$ climbs an inclined road that rises by $100\text{ m}$ over a road length of $1\text{ km}$ ($\sin\theta = 0.1$). A constant frictional force of magnitude $W/20$ opposes the motion. If the maximum power delivered by the engine is $P$, the maximum steady speed $v_{\max}$ of the car up the incline is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{P}{0.1 W}$
+      \item $\dfrac{P}{0.15 W}$
+      \item $\dfrac{P}{0.05 W}$
+      \item $\dfrac{20 P}{W}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle of mass $10\text{ g}$ moves along a circle of radius $6.4\text{ cm}$ with a constant tangential acceleration $a_t$. What is the magnitude of $a_t$ if the kinetic energy of the particle becomes $8 \times 10^{-4}\text{ J}$ by the end of the second complete revolution after starting from rest?
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $0.10\text{ m/s}^2$
+      \item $0.15\text{ m/s}^2$
+      \item $0.18\text{ m/s}^2$
+      \item $0.20\text{ m/s}^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A simple pendulum of length $l$ has a bob of mass $m$. The bob is pulled aside from its equilibrium position through an angle $\alpha$ with the vertical and released from rest. The speed of the bob as it passes through the lowest point is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\sqrt{2gl}$
+      \item $\sqrt{2gl\cos\alpha}$
+      \item $\sqrt{2gl(1 - \cos\alpha)}$
+      \item $\sqrt{2gl(1 - \sin\alpha)}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A stone tied to an inextensible string of length $L$ is whirled in a vertical circle. If $u$ is the speed at the lowest point, the magnitude of the string tension when the string becomes horizontal is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{m u^2}{L}$
+      \item $\dfrac{m(u^2 - 2gL)}{L}$
+      \item $\dfrac{m(u^2 - 3gL)}{L}$
+      \item $\dfrac{m(u^2 - gL)}{L}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item The pilot of an aircraft (who is not strapped to his seat) can perform a vertical loop-the-loop maneuver of radius $R = 4000\text{ m}$ in the air without falling out at the topmost point. The minimum speed of the aircraft at the highest point must be: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $100\text{ m/s}$
+      \item $200\text{ m/s}$
+      \item $300\text{ m/s}$
+      \item $400\text{ m/s}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A small body of mass $0.5\text{ kg}$ is whirled in a vertical circle of radius $R = 0.5\text{ m}$ at an angular frequency of $10\text{ rad/s}$. The tension in the string when the body is at the lowest point of its path is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $25\text{ N}$
+      \item $30\text{ N}$
+      \item $35\text{ N}$
+      \item $40\text{ N}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle tied to a string describes a vertical circular motion of radius $r$ continuously. If it has a speed of $v_T = \sqrt{3gr}$ at the highest point, then the ratio of the string tension at the highest point to that at the lowest point ($T_{\text{top}}/T_{\text{bottom}}$) is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $0.20$
+      \item $0.33$
+      \item $0.50$
+      \item $0.25$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A small body of mass $M$ is placed at the topmost point of a smooth fixed solid hemisphere of radius $R = 5\text{ m}$. It is released with an infinitesimal disturbance. The angular displacement $\theta$ from the upward vertical at which the body loses contact with the hemispherical surface is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\cos^{-1}(1/3)$
+      \item $\cos^{-1}(1/2)$
+      \item $\cos^{-1}(2/3)$
+      \item $\cos^{-1}(3/4)$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A small coin is placed at a distance $r$ from the centre of a horizontal rotating turntable. The rotational speed of the turntable is gradually increased. If the coefficient of static friction between the coin and the turntable is $\mu$, the maximum angular velocity $\omega$ at which the coin will not slip is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\sqrt{\dfrac{2\mu g}{r}}$
+      \item $\sqrt{\dfrac{\mu g}{2r}}$
+      \item $\sqrt{\dfrac{\mu g}{r}}$
+      \item $2\sqrt{\dfrac{\mu g}{r}}$
+    \end{enumerate}
+  \end{multicols}
+
+\end{enumerate}
+\newpage
+
+
+% ==================== LEVEL 3: JEE ADVANCED & NUMERICAL CHALLENGE ====================
+\begin{tcolorbox}[l3banner]
+  {\large \textbf{\textsf{LEVEL 3: JEE ADVANCED \& NUMERICAL CHALLENGE (Q51 -- Q75)}}} \hfill {\small \textbf{Target: Multi-Concept Deep Problems}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\noindent{\textbf{\textsf{\textcolor{l3Crimson}{Section A: Advanced Conceptual Multi-Choice Questions (Q51 -- Q69)}}}}
+\vspace{2pt}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=18pt,itemsep=8pt,resume]
+
+  \item A force $\vec{F} = -K(y\hat{i} + x\hat{j})$, where $K$ is a positive constant, acts on a particle moving in the $xy$-plane. Starting from the origin $(0,0)$, the particle is taken along the positive $x$-axis to $(a,0)$, and then parallel to the $y$-axis to $(a, a)$. The total work done by the force $\vec{F}$ on the particle along this two-segment path is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $-2Ka^2$
+      \item $2Ka^2$
+      \item $-Ka^2$
+      \item $Ka^2$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A locomotive of mass $m$ starts from rest at $t = 0$ such that its velocity varies with displacement $s$ as $v = \alpha s^{2/3}$, where $\alpha$ is a positive constant. The total work done by all the forces acting on the locomotive during the first $t$ seconds of its motion is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{m\alpha^4 t^2}{8}$
+      \item $\dfrac{m\alpha^6 t^4}{162}$
+      \item $\dfrac{m\alpha^6 t^4}{81}$
+      \item $\dfrac{m\alpha^4 t^2}{2}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A body of mass $m$ is pulled up a smooth inclined plane of inclination $\theta$ ($\sin\theta = 1/x$) by an external agent with a constant acceleration $a$. The body starts from rest and attains a final speed $v$. The work done by the agent during this displacement is:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{1}{2}mv^2\left(\dfrac{g + xa}{2}\right)$
+      \item $\dfrac{mv^2(g + a)}{2a}$
+      \item $\dfrac{2mv^2 x(a + gx)}{a}$
+      \item $\dfrac{mv^2(g + xa)}{2ax}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item The potential energy of a $1\text{ kg}$ particle free to move along the $x$-axis is given by $V(x) = \left(\dfrac{x^4}{4} - \dfrac{x^2}{2}\right)\text{ J}$. If the total mechanical energy of the particle is $2\text{ J}$, the maximum speed of the particle (in $\text{m/s}$) is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $2$
+      \item $\dfrac{3}{\sqrt{2}}$
+      \item $\sqrt{2}$
+      \item $\dfrac{1}{\sqrt{2}}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Two blocks of masses $m_1 = 10\text{ kg}$ and $m_2 = 20\text{ kg}$ are connected by a massless spring of stiffness $k = 200\text{ N/m}$ on a rough horizontal floor with friction coefficient $\mu = 0.1$. The minimum constant horizontal force $F$ applied to $m_1$ in order to just slide block $m_2$ is:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\mu m_1 g + \dfrac{\mu m_2 g}{2}$
+      \item $\mu m_1 g + \mu m_2 g$
+      \item $\dfrac{\mu m_1 g - \mu m_2 g}{2}$
+      \item $\dfrac{\mu m_1 g + \mu m_2 g}{2}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item The potential energy between two atoms in a diatomic molecule as a function of interatomic separation $r$ is given by $U(r) = \dfrac{a}{r^{12}} - \dfrac{b}{r^6}$, where $a$ and $b$ are positive constants. The equilibrium bond separation $r_0$ and the molecular binding (dissociation) energy $D$ are:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $r_0 = \left(\dfrac{2a}{b}\right)^{1/6}, \quad D = \dfrac{b^2}{4a}$
+      \item $r_0 = \left(\dfrac{a}{b}\right)^{1/6}, \quad D = \dfrac{b^2}{2a}$
+      \item $r_0 = \left(\dfrac{a}{2b}\right)^{1/6}, \quad D = \dfrac{b^2}{4a}$
+      \item $r_0 = \left(\dfrac{2a}{b}\right)^{1/3}, \quad D = \dfrac{b^2}{8a}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A small block of mass $m$ slides down from rest along a frictionless track that terminates in a vertical circular loop of radius $R$. The minimum release height $h_{\min}$ above the bottom of the loop such that the block safely negotiates the loop without losing contact is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $2R$
+      \item $\dfrac{5}{2}R$
+      \item $3R$
+      \item $\dfrac{7}{2}R$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle attached to a light inextensible string of length $L$ is given a horizontal velocity $u = \sqrt{3gL}$ at the lowest point. The angle $\theta$ with the upward vertical at which the string slacks is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\cos^{-1}\left(\dfrac{1}{3}\right)$
+      \item $\cos^{-1}\left(\dfrac{2}{3}\right)$
+      \item $\cos^{-1}\left(\dfrac{1}{2}\right)$
+      \item $\cos^{-1}\left(\dfrac{3}{4}\right)$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle tied to a string of length $L$ is projected horizontally from the lowest point with speed $u = \sqrt{4gL}$. After the string becomes slack in the upper half, the particle flies freely under gravity. The highest vertical elevation above the lowest point reached during this trajectory is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{50}{27}L$
+      \item $\dfrac{64}{27}L$
+      \item $2L$
+      \item $\dfrac{7}{4}L$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A small bead of mass $m$ is threaded on a smooth vertical circular wire hoop of radius $R$. The bead is gently nudged from rest at the highest point of the hoop. The normal contact force exerted by the hoop on the bead vanishes when the radius vector rotates through an angle $\theta$ from the upward vertical equal to:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\cos^{-1}(1/3)$
+      \item $\cos^{-1}(1/2)$
+      \item $\cos^{-1}(2/3)$
+      \item $\cos^{-1}(3/5)$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A conservative 3D force field is given by $\vec{F} = (2xy + z^3)\hat{i} + x^2\hat{j} + 3xz^2\hat{k}\text{ N}$. The work done by this force field on a particle moved along any arbitrary path from $(1, -2, 1)\text{ m}$ to $(3, 1, 2)\text{ m}$ is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $34\text{ J}$
+      \item $28\text{ J}$
+      \item $42\text{ J}$
+      \item $16\text{ J}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A block of mass $m$ is released from rest on an inclined plane of inclination angle $\theta$. The coefficient of friction increases linearly with the distance $x$ traveled down the plane according to $\mu(x) = bx$. The total distance $x_{\max}$ the block travels before momentarily coming to rest is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{\tan\theta}{b}$
+      \item $\dfrac{2\tan\theta}{b}$
+      \item $\dfrac{3\tan\theta}{2b}$
+      \item $\dfrac{\tan\theta}{2b}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item An electric pump with an overall efficiency of $80\%$ lifts water from an underground reservoir of depth $10\text{ m}$ at a steady rate of $20\text{ litres/second}$ and discharges it through a narrow nozzle of area $2\text{ cm}^2$. Taking $g = 10\text{ m/s}^2$ and $\rho_w = 1000\text{ kg/m}^3$, the electrical power input required is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $102.0\text{ kW}$
+      \item $81.6\text{ kW}$
+      \item $115.0\text{ kW}$
+      \item $127.5\text{ kW}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A vehicle of mass $m$ climbs a straight slope of inclination $\theta$ against a speed-dependent resistance force $F_r = kv$. If the vehicle's engine delivers a constant power $P$, the terminal steady speed $v_t$ of the vehicle is governed by the equation:
+  \begin{multicols}{2}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $k v_t^2 + (mg\sin\theta)v_t - P = 0$
+      \item $k v_t^2 - (mg\sin\theta)v_t - P = 0$
+      \item $k v_t + mg\sin\theta - P = 0$
+      \item $m v_t^2 + k v_t - P\sin\theta = 0$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A particle whirled in a vertical circle of radius $R$ by a string has speed $u$ at the bottom. As long as the particle completes the vertical loop, the difference between the tension in the string at the lowest point and that at the highest point ($T_{\text{bottom}} - T_{\text{top}}$) is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $2mg$
+      \item $4mg$
+      \item $6mg$
+      \item Dependent on $u$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A uniform flexible chain of total mass $M$ and length $L$ lies on a smooth horizontal table top with $1/n$ of its length hanging freely over the edge. The work done by an external agent to gently pull the hanging part back onto the table is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{MgL}{n^2}$
+      \item $\dfrac{MgL}{2n^2}$
+      \item $\dfrac{MgL}{2n}$
+      \item $\dfrac{MgL}{4n^2}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item In a conical pendulum of string length $L$, the string makes a steady angle $\theta$ with the downward vertical. Taking the lowest possible position of the bob (when hanging vertically at rest) as the zero potential energy datum, the ratio of its kinetic energy to potential energy is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\dfrac{1 + \cos\theta}{2\cos\theta}$
+      \item $\dfrac{1 - \cos\theta}{2\cos\theta}$
+      \item $\dfrac{\sin^2\theta}{2\cos\theta}$
+      \item $\dfrac{\tan\theta}{2}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item A small bob of mass $m$ is attached to the tip of a light rigid rod of length $L$. The opposite end of the rod is pivoted freely about a horizontal axis. The minimum speed $u$ that must be imparted horizontally to the bob at the lowest point to complete a full vertical circle is:
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $\sqrt{5gL}$
+      \item $2\sqrt{gL}$
+      \item $\sqrt{3gL}$
+      \item $\sqrt{gL}$
+    \end{enumerate}
+  \end{multicols}
+
+  \item Two masses $m_1 = 3\text{ kg}$ and $m_2 = 1\text{ kg}$ are connected by a light inextensible cord passing over a fixed frictionless pulley. Starting from rest, the system is released. The total work done by the cord tension on mass $m_2$ during the first second of motion is: (Take $g = 10\text{ m/s}^2$)
+  \begin{multicols}{4}
+    \begin{enumerate}[label=(\Alph*)]
+      \item $37.5\text{ J}$
+      \item $25.0\text{ J}$
+      \item $50.0\text{ J}$
+      \item $12.5\text{ J}$
+    \end{enumerate}
+  \end{multicols}
+
+\end{enumerate}
+
+\vspace{8pt}
+\noindent{\textbf{\textsf{\textcolor{l3Crimson}{Section B: High-Yield JEE Integer Numericals (Q70 -- Q75)}}}}
+\vspace{2pt}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=18pt,itemsep=10pt,resume]
+
+  \item A stone of mass $1\text{ kg}$ tied to a light inextensible string of length $L = \dfrac{10}{3}\text{ m}$ is whirling in a vertical circular path. If the ratio of the maximum tension to the minimum tension in the string during the motion is $4$, find the speed of the stone at the highest point of its path (in $\text{m/s}$). (Take $g = 10\text{ m/s}^2$)
+
+  \item A constant force $\vec{F} = (2\hat{i} + 3\hat{j})\text{ N}$ displaces a body in the $xy$-plane from an initial position $\vec{r}_1 = (4\hat{i} - 5\hat{j})\text{ m}$ to a final position $\vec{r}_2 = (\hat{i} + 3\hat{j})\text{ m}$. Find the magnitude of work done by the force on the body (in Joules).
+
+  \item A block of mass $5\text{ kg}$ is being raised vertically upwards by means of a light cable attached to it. The block ascends with a uniform acceleration of $2\text{ m/s}^2$ through a vertical height of $2.5\text{ m}$. Find the work done by the cable tension on the block (in Joules). (Take $g = 10\text{ m/s}^2$)
+
+  \item A bomb of mass $16\text{ kg}$ initially at rest on a frictionless surface explodes into two fragments of masses $4\text{ kg}$ and $12\text{ kg}$. If the velocity of the $12\text{ kg}$ fragment immediately after the explosion is $4\text{ m/s}$, find the kinetic energy of the $4\text{ kg}$ fragment (in Joules).
+
+  \item A block of mass $m = 2\text{ kg}$ is pulled vertically upwards by a light rope through a vertical displacement of $s = 4\text{ m}$ with an upward acceleration of $a = 2.2\text{ m/s}^2$. Taking $g = 9.8\text{ m/s}^2$, find the work done by the tension force on the block (in Joules).
+
+  \item In a shotput athletic event, an athlete throws a shotput of mass $10\text{ kg}$ with an initial speed of $1\text{ m/s}$ at an elevation angle of $45^\circ$ from a release height of $1.5\text{ m}$ above horizontal ground. Taking $g = 10\text{ m/s}^2$, find the total kinetic energy of the shotput at the instant it strikes the ground (in Joules).
+
+\end{enumerate}
+\newpage
+
+
+% ==================== MASTER ANSWER KEY ====================
+\begin{tcolorbox}[sectionbanner]
+  {\large \textbf{\textsf{PART 4: MASTER 100\% VERIFIED ANSWER KEY (DAY 04)}}}
+\end{tcolorbox}
+\vspace{4pt}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}X|}
+\hline
+\rowcolor{tableDarkHeader}
+\textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} & \textcolor{white}{\textbf{Q.}} & \textcolor{white}{\textbf{Ans}} \\
+\hline
+\rowcolor{white}
+\textbf{01} & C & \textbf{16} & A & \textbf{31} & A & \textbf{46} & B & \textbf{61} & A \\
+\hline
+\rowcolor{tableStripe}
+\textbf{02} & A & \textbf{17} & C & \textbf{32} & A & \textbf{47} & B & \textbf{62} & B \\
+\hline
+\rowcolor{white}
+\textbf{03} & A & \textbf{18} & C & \textbf{33} & C & \textbf{48} & D & \textbf{63} & D \\
+\hline
+\rowcolor{tableStripe}
+\textbf{04} & D & \textbf{19} & C & \textbf{34} & B & \textbf{49} & C & \textbf{64} & A \\
+\hline
+\rowcolor{white}
+\textbf{05} & B & \textbf{20} & B & \textbf{35} & A & \textbf{50} & C & \textbf{65} & C \\
+\hline
+\rowcolor{tableStripe}
+\textbf{06} & C & \textbf{21} & B & \textbf{36} & A & \textbf{51} & C & \textbf{66} & B \\
+\hline
+\rowcolor{white}
+\textbf{07} & B & \textbf{22} & B & \textbf{37} & A & \textbf{52} & B & \textbf{67} & A \\
+\hline
+\rowcolor{tableStripe}
+\textbf{08} & C & \textbf{23} & B & \textbf{38} & D & \textbf{53} & D & \textbf{68} & B \\
+\hline
+\rowcolor{white}
+\textbf{09} & A & \textbf{24} & A & \textbf{39} & C & \textbf{54} & B & \textbf{69} & A \\
+\hline
+\rowcolor{tableStripe}
+\textbf{10} & D & \textbf{25} & D & \textbf{40} & C & \textbf{55} & A & \textbf{70} & \textbf{10} \\
+\hline
+\rowcolor{white}
+\textbf{11} & C & \textbf{26} & C & \textbf{41} & C & \textbf{56} & A & \textbf{71} & \textbf{18} \\
+\hline
+\rowcolor{tableStripe}
+\textbf{12} & C & \textbf{27} & A & \textbf{42} & B & \textbf{57} & B & \textbf{72} & \textbf{150} \\
+\hline
+\rowcolor{white}
+\textbf{13} & D & \textbf{28} & C & \textbf{43} & A & \textbf{58} & A & \textbf{73} & \textbf{288} \\
+\hline
+\rowcolor{tableStripe}
+\textbf{14} & B & \textbf{29} & D & \textbf{44} & C & \textbf{59} & B & \textbf{74} & \textbf{96} \\
+\hline
+\rowcolor{white}
+\textbf{15} & D & \textbf{30} & D & \textbf{45} & B & \textbf{60} & C & \textbf{75} & \textbf{155} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\vspace{10pt}
+\begin{tcolorbox}[formulacard]
+  \small \textbf{\textcolor{primaryDark}{Revision Strategy Note:}}
+  Cross-verify your answers against the key above after completing each block. Do not look at the answers while solving. For any question answered incorrectly, review the relevant unabridged notes in Part 3, identify whether the error was conceptual or calculational, and log it in your 10-day mistake repository.
+\end{tcolorbox}
+
+\end{document}

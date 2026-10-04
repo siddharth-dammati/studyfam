@@ -17,6 +17,8 @@ Disallow: /api/*
 Disallow: /auth/*
 Disallow: /dashboard
 Disallow: /admit-card
+Disallow: /sohanmocks
+Disallow: /sohanmocks.html
 
 User-Agent: Googlebot
 Allow: /
@@ -37,6 +39,8 @@ Disallow: /api/*
 Disallow: /auth/*
 Disallow: /dashboard
 Disallow: /admit-card
+Disallow: /sohanmocks
+Disallow: /sohanmocks.html
 
 Host: https://studyfam.in
 Sitemap: https://studyfam.in/sitemap.xml

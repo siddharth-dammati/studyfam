@@ -19,11 +19,15 @@ function sanitizeTest(test: any) {
       difficulty: q.difficulty,
       has_image: q.has_image,
       image_paths: q.image_paths,
+      type: q.type || (q.question_number > 20 || (!q.option_a && !q.option_b) ? "NUMERICAL" : "MCQ"),
+      section: q.section || (q.question_number > 20 ? "Section B (Numerical)" : "Section A (MCQ)"),
     })),
   }));
 
   return {
     ...test,
+    allowGuest: Boolean(test.allowGuest),
+    is_unlisted: Boolean(test.is_unlisted || test.unlisted),
     sections: sanitizedSections,
   };
 }

@@ -23,8 +23,13 @@ export function listCustomTests(): TestSummary[] {
     try {
       const fullPath = path.join(CUSTOM_TESTS_DIR, f);
       const raw = fs.readFileSync(fullPath, "utf-8");
-      const test = JSON.parse(raw) as TestDetail & { is_custom?: boolean; updatedAt?: string };
+      const test = JSON.parse(raw) as TestDetail & { is_custom?: boolean; updatedAt?: string; is_unlisted?: boolean; unlisted?: boolean };
       if (test && test.id && Array.isArray(test.sections)) {
+        // Skip unlisted / secret tests from public mock test listings
+        if (test.is_unlisted || (test as any).unlisted) {
+          continue;
+        }
+
         const totalQ = test.sections.reduce((acc, s) => acc + (s.questions?.length || 0), 0);
         const isMftOverride = test.id.startsWith("MFT-");
         summaries.push({
