@@ -50,7 +50,10 @@
           "solution": "From the First Law of Thermodynamics: ΔQ = ΔU + ΔW. For path ACB: 60 J = ΔU + 30 J => ΔU = 30 J. Since internal energy is a state function, ΔU_ADB = ΔU_ACB = 30 J. For path ADB: ΔQ = ΔU + ΔW = 30 J + 10 J = 40 J.",
           "chapter": "Thermodynamics",
           "difficulty": "Medium",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Physics/Full_Mock___Physics/MFT_1_q2_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "phy_mcq_03",
@@ -302,7 +305,10 @@
           "solution": "The net work done during any cyclic thermodynamic process equals the area enclosed by the cycle on a P-V diagram. Since Area 1 > Area 2, W₁ > W₂.",
           "chapter": "Thermodynamics",
           "difficulty": "Easy",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Physics/Full_Mock___Physics/MFT_1_q4_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "phy_mcq_17",
@@ -338,7 +344,10 @@
           "solution": "At mean position, total energy is kinetic: (1/2) k A² = (1/2) M v² => v = A √(k/M). By conservation of linear momentum at the mean position: M v₁ = (M + m) v₂. Thus v₂ = [M / (M + m)] v₁. Now (1/2) k A₂² = (1/2)(M + m) v₂² => A₂ = v₂ √((M + m)/k) = A₁ √(M / (M + m)). Here M = 900 g, M + m = 1024 g. So A₁ / A₂ = √(1024 / 900) = 32 / 30 = 16 / 15. Setting 16/15 = α/(α - 1) gives α = 16.",
           "chapter": "Oscillations",
           "difficulty": "Medium",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Physics/Full_Mock___Physics/MFT_1_q16_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "phy_mcq_19",
@@ -488,7 +497,10 @@
           "solution": "Hydroxylation of alkenes using cold alkaline KMnO₄ proceeds via syn-addition. Syn-addition on a cis-alkene yields the meso compound (cis + syn -> meso). Thus, meso-2,3-butanediol is formed.",
           "chapter": "Hydrocarbons",
           "difficulty": "Medium",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_1_q41_1.jpeg"
+          ],
+          "has_image": 1
         },
         {
           "id": "chem_mcq_03",
@@ -686,7 +698,10 @@
           "solution": "All boron trihalides (BF₃, BCl₃, BBr₃) have sp² hybridization with zero lone pairs on the central boron atom, giving a trigonal planar geometry, and are strictly isostructural.",
           "chapter": "Chemical Bonding",
           "difficulty": "Easy",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_5_q30_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "chem_mcq_14",
@@ -704,7 +719,10 @@
           "solution": "Isoprene has structure CH₂=C(CH₃)-CH=CH₂. Ozonolysis of both terminal double bonds yields two moles of methanal (HCHO) and one mole of 2-ketopropanal (CH₃-CO-CHO). Thus compound A is 2-methylbuta-1,3-diene.",
           "chapter": "Hydrocarbons",
           "difficulty": "Hard",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_5_q35_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "chem_mcq_15",
@@ -812,7 +830,10 @@
           "solution": "Equating k₁ = k₂: A₁ exp(-E_a1 / Rᵀ) = A₂ exp(-E_a2 / Rᵀ) => A₂ / A₁ = exp((E_a2 - E_a1) / Rᵀ) => 10¹⁰ / 10⁸ = 10² = exp(600 / 2T). Taking ln: 2 ln 10 = 2 × 2.303 = 300 / T => T = 300 / (2 × 2.303) = 150 / 2.303 K.",
           "chapter": "Chemical Kinetics",
           "difficulty": "Hard",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_2_q35_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "chem_num_21",
@@ -868,7 +889,10 @@
           "solution": "Degree of unsaturation = number of rings + number of π-bonds = 1 (ring) + 4 (double bonds) = 5.",
           "chapter": "Organic Chemistry - Some Basic Principles",
           "difficulty": "Easy",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_10_q49_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "chem_num_25",
@@ -962,7 +986,10 @@
           "solution": "Let a general point on the given line be N(λ - 5, 4λ - 3, -9λ + 6). Direction ratios of PN are (λ - 7, 4λ - 7, -9λ + 7). Since PN is perpendicular to the line: 1(λ - 7) + 4(4λ - 7) - 9(-9λ + 7) = 0 => 98λ - 98 = 0 => λ = 1. Thus N = (-4, 1, -3). Vector PN = (-6, -3, -2) ~ (3, 6, 2). The equation of line through P is (x - 2)/3 = (y - 4)/6 = (z + 1)/2.",
           "chapter": "Three Dimensional Geometry",
           "difficulty": "Hard",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Mathematics/Area_Under_Curves/Area_Under_Curves___Test_2_q4_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "math_mcq_05",
@@ -998,7 +1025,10 @@
           "solution": "Let ∠RPQ = θ and ∠RQP = φ. The slope of PR gives tan θ = y / (1 - x), and slope of QR gives tan φ = y / (x + 1). Given tan(θ - φ) = tan 45° = 1. Expanding (tan θ - tan φ) / (1 + tan θ tan φ) = 1 and simplifying the rational expression leads directly to y² - x² - 2xy + 1 = 0.",
           "chapter": "Coordinate Geometry - Straight Lines",
           "difficulty": "Medium",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Mathematics/Quadratic_Equation/Quadratic_Equation___Test_3_q4_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "math_mcq_07",
@@ -1034,7 +1064,10 @@
           "solution": "As x -> 0⁺: lim x^x = 1. Inside the numerator cosine: x·sin x + 1 -> 1, so the numerator approaches 1 · cos(1) = cos(1). In the denominator: tan x - x -> 0, so cos(tan x - x) -> cos(0) = 1. For small positive x, {x + 1} = x, so {x + 1} - x = 0, giving cos(0) = 1. Therefore L = cos(1) / (1 · 1) = cos(1).",
           "chapter": "Limits and Derivatives",
           "difficulty": "Medium",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Mathematics/Circle/Circle___Test_4_q7_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "math_mcq_09",
@@ -1070,7 +1103,10 @@
           "solution": "The number of subsets of a set of n elements is 2ⁿ. Thus 2^α + 2^β + 2^γ = 28. Writing 28 as a sum of three powers of 2: 28 = 16 + 8 + 4 = 2⁴ + 2³ + 2². The values {α, β, γ} must be the distinct set {4, 3, 2}. The number of ordered permutations of 3 distinct elements is 3! = 6.",
           "chapter": "Sets and Relations",
           "difficulty": "Easy",
-          "imagePaths": []
+          "imagePaths": [
+            "/exam-images/Mathematics/Basic_of_Mathematics/Basic_of_Mathematics___Test_1_q6_1.png"
+          ],
+          "has_image": 1
         },
         {
           "id": "math_mcq_11",

@@ -13,7 +13,7 @@
         {
           "id": "00093d83a3a74c10",
           "subject": "Physics",
-          "unit_id": "",
+          "unit_id": "Rotational Motion",
           "unit_name": "Rotational Motion",
           "chapter": "Rotational Motion",
           "source_file": "active",
@@ -24,18 +24,20 @@
           "option_c": "μg",
           "option_d": "2μg",
           "correct_answer": "B",
-          "solution": "FBD for sphere and block a1 = fr = μmg, a2 = fr = μmg m m m m a1 = μgi^, a2 = −μgi^ / fr / ⟵a",
+          "solution": "FBD for sphere and block a₁ = fr = μmg, a₂ = fr = μmg m m m m a₁ = μgi^, a₂ = −μgi^ / fr / ⟵a",
           "difficulty": "Easy",
           "has_image": 1,
           "image_paths": [
             "/exam-images/Physics/Rotational_Motion/Rotational_Motion___Test_3_q17_1.png"
-          ]
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_02",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Thermodynamics",
+          "unit_name": "Thermodynamics",
           "chapter": "Thermodynamics",
           "source_file": "active",
           "question_number": 2,
@@ -47,14 +49,18 @@
           "correct_answer": "A",
           "solution": "From the First Law of Thermodynamics: ΔQ = ΔU + ΔW. For path ACB: 60 J = ΔU + 30 J => ΔU = 30 J. Since internal energy is a state function, ΔU_ADB = ΔU_ACB = 30 J. For path ADB: ΔQ = ΔU + ΔW = 30 J + 10 J = 40 J.",
           "difficulty": "Medium",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Physics/Full_Mock___Physics/MFT_1_q2_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_03",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Kinetic Theory of Gases",
+          "unit_name": "Kinetic Theory of Gases",
           "chapter": "Kinetic Theory of Gases",
           "source_file": "active",
           "question_number": 3,
@@ -67,13 +73,15 @@
           "solution": "The root-mean-square velocity is v_rms = √(3RT/M). Given T_O2 = 127°C = 400 K, M_O2 = 32, and M_N2 = 28. For v_rms(N2) = v_rms(O2): 3R(T_N2)/28 = 3R(400)/32 => T_N2 = (400 × 28)/32 = 350 K.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_04",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Work, Energy and Power",
+          "unit_name": "Work, Energy and Power",
           "chapter": "Work, Energy and Power",
           "source_file": "active",
           "question_number": 4,
@@ -86,13 +94,15 @@
           "solution": "At equilibrium, dU/dx = 0 => -8a/x⁹ + 4b/x⁵ = 0 => x⁴ = 2a/b = (2 × 4)/20 = 8/20 = 2/5. Substituting into U(x): U_min = 4/(2/5)² - 20/(2/5) = 4/(4/25) - 20 × (5/2) = 25 - 50 = -25 J. Dissociation energy = U(∞) - U_min = 0 - (-25 J) = 25 J.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_05",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Ray Optics",
+          "unit_name": "Ray Optics",
           "chapter": "Ray Optics",
           "source_file": "active",
           "question_number": 5,
@@ -105,13 +115,15 @@
           "solution": "For the lens: u = -15 cm, f = +10 cm. Lens formula: 1/v - 1/(-15) = 1/10 => 1/v = 1/10 - 1/15 = 1/30 => v = +30 cm. For rays to retrace their path, they must strike the convex mirror normally, meaning the virtual image lies at the mirror's center of curvature. Radius of curvature R = 2|f| = 2 × 12 = 24 cm. Distance between lens and mirror = v - R = 30 cm - 24 cm = 6 cm.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_06",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Laws of Motion",
+          "unit_name": "Laws of Motion",
           "chapter": "Laws of Motion",
           "source_file": "active",
           "question_number": 6,
@@ -124,13 +136,15 @@
           "solution": "Maximum friction f = μ m g = 0.2 × 2 × 10 = 4 N. Acceleration of 2 kg block a₂ = 4/2 = 2 m/s². Acceleration of 8 kg block a₁ = (30 - 4)/8 = 26/8 = 3.25 m/s². Relative acceleration a_rel = a₁ - a₂ = 3.25 - 2 = 1.25 m/s². From s = (1/2) a_rel t²: 2 = (1/2)(1.25) t² => t² = 4/1.25 = 3.2 ≈ 3 => t ≈ √3 s.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_07",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Magnetic Effects of Current",
+          "unit_name": "Magnetic Effects of Current",
           "chapter": "Magnetic Effects of Current",
           "source_file": "active",
           "question_number": 7,
@@ -143,13 +157,15 @@
           "solution": "The magnetic field inside an ideal solenoid is given by B = μ₀ n I, where n is the number of turns per unit length and I is the electric current. It is independent of the solenoid diameter. Therefore, only statements 1 and 2 are correct.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_08",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Gravitation",
+          "unit_name": "Gravitation",
           "chapter": "Gravitation",
           "source_file": "active",
           "question_number": 8,
@@ -162,13 +178,15 @@
           "solution": "In a binary star system revolving about their common center of mass, both stars must always remain on opposite sides of the center of mass. Hence their angular velocities are identical: ω_A = ω_B, which means their orbital time periods are equal: T_A = T_B.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_09",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Thermal Properties of Matter",
+          "unit_name": "Thermal Properties of Matter",
           "chapter": "Thermal Properties of Matter",
           "source_file": "active",
           "question_number": 9,
@@ -181,13 +199,15 @@
           "solution": "Heat conduction rate is Q/t = K A ΔT / L. When the radius is halved (r' = r/2), area becomes A' = A/4. Since volume is conserved (A L = A' L'), the new length is L' = 4L. Thus Q' = K (A/4) ΔT t / (4L) = (1/16) (K A ΔT t / L) = Q / 16.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_10",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Electromagnetic Induction",
+          "unit_name": "Electromagnetic Induction",
           "chapter": "Electromagnetic Induction",
           "source_file": "active",
           "question_number": 10,
@@ -200,13 +220,15 @@
           "solution": "Induced emf ε = |M di/dt| = M i_m ω cos(ωt). The maximum induced emf is ε_max = M i_m ω = 0.005 × 10 × 100π = 5π V.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_11",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Units and Measurements",
+          "unit_name": "Units and Measurements",
           "chapter": "Units and Measurements",
           "source_file": "active",
           "question_number": 11,
@@ -219,13 +241,15 @@
           "solution": "1 MSD = 1/p cm. Since q VSD = (p - 1) MSD (when q = p), 1 VSD = (p - 1)/q MSD. Least Count = 1 MSD - 1 VSD = (1/p)[1 - (p-1)/p] = 1/(p·q) cm.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_12",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Electromagnetic Waves",
+          "unit_name": "Electromagnetic Waves",
           "chapter": "Electromagnetic Waves",
           "source_file": "active",
           "question_number": 12,
@@ -238,17 +262,19 @@
           "solution": "Peak electric field E₀ = √2 E_rms = √2 × 6 V/m. The peak magnetic field is B₀ = E₀ / c = (√2 × 6) / (3 × 10⁸) = 2√2 × 10⁻⁸ T ≈ 2.83 × 10⁻⁸ T.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_13",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Semiconductor Electronics",
+          "unit_name": "Semiconductor Electronics",
           "chapter": "Semiconductor Electronics",
           "source_file": "active",
           "question_number": 13,
-          "question_text": "A 6 V DC source is connected across a series combination of a 2 Ω resistor, a 1 Ω resistor, and an ideal diode oriented in forward bias. What is the current flowing through the circuit?",
+          "question_text": "A 6 V DC source is connected across a series combination of a₂ Ω resistor, a₁ Ω resistor, and an ideal diode oriented in forward bias. What is the current flowing through the circuit?",
           "option_a": "3.5 A",
           "option_b": "2.0 A",
           "option_c": "2.5 A",
@@ -257,13 +283,15 @@
           "solution": "An ideal diode in forward bias conducts with zero resistance (closed switch). Total resistance R = 2 Ω + 1 Ω = 3 Ω. The current I = V / R = 6 V / 3 Ω = 2.0 A.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_14",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Wave Optics",
+          "unit_name": "Wave Optics",
           "chapter": "Wave Optics",
           "source_file": "active",
           "question_number": 14,
@@ -276,13 +304,15 @@
           "solution": "The position opposite one slit is y = d/2. For dark fringes, y = (2n - 1) λD / (2d). For the 5th dark fringe (n = 5): y = 9λD / (2d). Equating gives d/2 = 9λD / (2d) => λ = d² / (9D).",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_15",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Electromagnetic Waves",
+          "unit_name": "Electromagnetic Waves",
           "chapter": "Electromagnetic Waves",
           "source_file": "active",
           "question_number": 15,
@@ -290,18 +320,20 @@
           "option_a": "[A]",
           "option_b": "[M L² T⁻³]",
           "option_c": "[M L² T⁻¹ A]",
-          "option_d": "[M L T⁻²]",
+          "option_d": "[M Lᵀ⁻²]",
           "correct_answer": "A",
           "solution": "By Maxwell's equations, i_d = ε₀ (dΦ_E / dt) is the displacement current. Because it has the dimensions of electric current, its dimensional formula is [A] (or [M⁰ L⁰ T⁰ A¹]).",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_16",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Thermodynamics",
+          "unit_name": "Thermodynamics",
           "chapter": "Thermodynamics",
           "source_file": "active",
           "question_number": 16,
@@ -313,14 +345,18 @@
           "correct_answer": "A",
           "solution": "The net work done during any cyclic thermodynamic process equals the area enclosed by the cycle on a P-V diagram. Since Area 1 > Area 2, W₁ > W₂.",
           "difficulty": "Easy",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Physics/Full_Mock___Physics/MFT_1_q4_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_17",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Nuclei",
+          "unit_name": "Nuclei",
           "chapter": "Nuclei",
           "source_file": "active",
           "question_number": 17,
@@ -333,13 +369,15 @@
           "solution": "Mass defect Δm = (3 × 2.014) - (4.001 + 1.007 + 1.008) = 6.042 - 6.016 = 0.026 amu. Energy per 3 deuterons = 0.026 × 931 MeV ≈ 24.2 MeV = 3.87 × 10⁻¹² J. Total energy from 10⁵⁰ deuterons = (10⁵⁰ / 3) × 3.87 × 10⁻¹² J ≈ 1.29 × 10³⁸ J. Time t = Total Energy / Power = 1.29 × 10³⁸ J / 10¹⁶ W ≈ 10²² s.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_18",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Oscillations",
+          "unit_name": "Oscillations",
           "chapter": "Oscillations",
           "source_file": "active",
           "question_number": 18,
@@ -351,14 +389,18 @@
           "correct_answer": "A",
           "solution": "At mean position, total energy is kinetic: (1/2) k A² = (1/2) M v² => v = A √(k/M). By conservation of linear momentum at the mean position: M v₁ = (M + m) v₂. Thus v₂ = [M / (M + m)] v₁. Now (1/2) k A₂² = (1/2)(M + m) v₂² => A₂ = v₂ √((M + m)/k) = A₁ √(M / (M + m)). Here M = 900 g, M + m = 1024 g. So A₁ / A₂ = √(1024 / 900) = 32 / 30 = 16 / 15. Setting 16/15 = α/(α - 1) gives α = 16.",
           "difficulty": "Medium",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Physics/Full_Mock___Physics/MFT_1_q16_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_19",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Electrostatic Potential and Capacitance",
+          "unit_name": "Electrostatic Potential and Capacitance",
           "chapter": "Electrostatic Potential and Capacitance",
           "source_file": "active",
           "question_number": 19,
@@ -371,13 +413,15 @@
           "solution": "Because the battery is disconnected, the charge Q on the plates remains constant. Capacitance is C = ε₀ A / d; as d increases, C decreases. Since V = Q / C and Q is fixed, the potential difference V increases.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_mcq_20",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Oscillations",
+          "unit_name": "Oscillations",
           "chapter": "Oscillations",
           "source_file": "active",
           "question_number": 20,
@@ -390,13 +434,15 @@
           "solution": "Since velocities at A and B are equal, A and B are symmetrically situated about the mean position. Time from mean position to B is 1 s. From B to the extreme and back to B takes 2 s, so B to extreme takes 1 s. Thus time from mean to extreme = 1 s + 1 s = 2 s = T/4. Therefore T = 4 × 2 = 8 s.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "phy_num_21",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Dual Nature of Radiation and Matter",
+          "unit_name": "Dual Nature of Radiation and Matter",
           "chapter": "Dual Nature of Radiation and Matter",
           "source_file": "active",
           "question_number": 21,
@@ -409,13 +455,15 @@
           "solution": "By conservation of linear momentum, total initial momentum is zero: m₁ v₁ + m₂ v₂ = 0 => |p₁| = |p₂|. Since de-Broglie wavelength λ = h/p, the ratio λ₁ / λ₂ = p₂ / p₁ = 1.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "phy_num_22",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Magnetic Effects of Current",
+          "unit_name": "Magnetic Effects of Current",
           "chapter": "Magnetic Effects of Current",
           "source_file": "active",
           "question_number": 22,
@@ -428,13 +476,15 @@
           "solution": "Using the principle of superposition: B = B_complete - B_cavity. The distance from the cylinder axis to cavity axis is d = a/2. Evaluating Ampere's law at point P yields B = (5/12) μ₀ a J. Therefore, N = 5.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "phy_num_23",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Work, Energy and Power",
+          "unit_name": "Work, Energy and Power",
           "chapter": "Work, Energy and Power",
           "source_file": "active",
           "question_number": 23,
@@ -447,13 +497,15 @@
           "solution": "By conservation of mechanical energy, the gain in potential energy equals the initial kinetic energy: ΔU = (1/2) m v² = (1/2) × 0.2 kg × (20 m/s)² = 0.1 × 400 = 40 J.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "phy_num_24",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Alternating Current",
+          "unit_name": "Alternating Current",
           "chapter": "Alternating Current",
           "source_file": "active",
           "question_number": 24,
@@ -466,13 +518,15 @@
           "solution": "Impedance Z = √[R² + (X_L - X_C)²] = √[30² + (80 - 40)²] = √[30² + 40²] = √(900 + 1600) = √2500 = 50 Ω.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "phy_num_25",
           "subject": "Physics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Current Electricity",
+          "unit_name": "Current Electricity",
           "chapter": "Current Electricity",
           "source_file": "active",
           "question_number": 25,
@@ -485,7 +539,9 @@
           "solution": "By the Maximum Power Transfer Theorem, power delivered to the external network is maximized when R_ext = r_int. Hence 2R = 4 Ω => R = 2 Ω.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         }
       ]
     },
@@ -495,8 +551,8 @@
         {
           "id": "chem_mcq_01",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Chemical Thermodynamics",
+          "unit_name": "Chemical Thermodynamics",
           "chapter": "Chemical Thermodynamics",
           "source_file": "active",
           "question_number": 1,
@@ -509,13 +565,15 @@
           "solution": "For each propene monomer, one C=C bond is broken (+590 kJ/mol) and two C-C single bonds are formed (2 × -331 = -662 kJ/mol). Enthalpy change per mole of monomer = 590 - 662 = -72 kJ/mol. For n units, ΔH = n × (-72 kJ/mol) = -360 kJ/mol => n = 5.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_02",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Hydrocarbons",
+          "unit_name": "Hydrocarbons",
           "chapter": "Hydrocarbons",
           "source_file": "active",
           "question_number": 2,
@@ -527,14 +585,18 @@
           "correct_answer": "A",
           "solution": "Hydroxylation of alkenes using cold alkaline KMnO₄ proceeds via syn-addition. Syn-addition on a cis-alkene yields the meso compound (cis + syn -> meso). Thus, meso-2,3-butanediol is formed.",
           "difficulty": "Medium",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_1_q41_1.jpeg"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_03",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Redox Reactions",
+          "unit_name": "Redox Reactions",
           "chapter": "Redox Reactions",
           "source_file": "active",
           "question_number": 3,
@@ -547,13 +609,15 @@
           "solution": "As₂O₃ is oxidized from As(III) to As(V), releasing 4 electrons per mole of As₂O₃ (n-factor = 4). MnO₄⁻ is reduced from Mn(VII) to Mn(II), accepting 5 electrons (n-factor = 5). Equivalents of As₂O₃ = (0.1156 / 198) × 4 = 0.002335 eq. Equivalents of KMnO₄ = M × 5 × (27.08 / 1000) = 0.1354 M. Equating: 0.1354 M = 0.002335 => M = 0.0172 M.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_04",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Electrochemistry",
+          "unit_name": "Electrochemistry",
           "chapter": "Electrochemistry",
           "source_file": "active",
           "question_number": 4,
@@ -566,13 +630,15 @@
           "solution": "Degree of dissociation α = Λ_eq / Λ_eq° = 14.3 / 390.71 = 0.0366 = 3.66%.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_05",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Biomolecules",
+          "unit_name": "Biomolecules",
           "chapter": "Biomolecules",
           "source_file": "active",
           "question_number": 5,
@@ -585,13 +651,15 @@
           "solution": "Transcription synthesizes an antiparallel RNA strand complementary to the template. Template 5'-AGCTACACT-3' yields the complementary RNA 3'-UCGAUGUGA-5'. Read in the conventional 5' to 3' direction, the sequence is 5'-AGUGUAGCU-3'.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_06",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Chemical Bonding",
+          "unit_name": "Chemical Bonding",
           "chapter": "Chemical Bonding",
           "source_file": "active",
           "question_number": 6,
@@ -604,13 +672,15 @@
           "solution": "According to Molecular Orbital Theory, O₂²⁻ (peroxide ion) has 18 electrons. Its electronic configuration has all electrons completely paired, including filled π*2p orbitals. Hence it has no unpaired electrons and is diamagnetic.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_07",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Structure of Atom",
+          "unit_name": "Structure of Atom",
           "chapter": "Structure of Atom",
           "source_file": "active",
           "question_number": 7,
@@ -623,13 +693,15 @@
           "solution": "All three statements are correct: Born's interpretation identifies Ψ² as probability density; radial nodes = n - l - 1 which makes total peaks = n - l; and a node is a region where Ψ = 0 (zero probability density).",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_08",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Haloalkanes and Haloarenes",
+          "unit_name": "Haloalkanes and Haloarenes",
           "chapter": "Haloalkanes and Haloarenes",
           "source_file": "active",
           "question_number": 8,
@@ -642,13 +714,15 @@
           "solution": "This is a bimolecular nucleophilic substitution (SN2). In protic solvents like EtOH, the nucleophile OH⁻ is strongly solvated via hydrogen bonding, retarding its attack. In polar aprotic solvents like DMSO, anions are poorly solvated and highly nucleophilic, making reaction (ii) much faster.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_09",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Structure of Atom",
+          "unit_name": "Structure of Atom",
           "chapter": "Structure of Atom",
           "source_file": "active",
           "question_number": 9,
@@ -661,13 +735,15 @@
           "solution": "In Bohr's model, orbital radius r ∝ n² and orbital period T ∝ n³ ∝ r^(3/2). Thus T₁ / T₂ = (r / 4r)^(3/2) = (1/4)^(3/2) = 1/8. The ratio is 1 : 8.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_10",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Equilibrium",
+          "unit_name": "Equilibrium",
           "chapter": "Equilibrium",
           "source_file": "active",
           "question_number": 10,
@@ -680,13 +756,15 @@
           "solution": "Relative strength α₁ / α₂ = √(K_a1 / K_a2) = √(3.14 × 10⁻⁴ / 1.96 × 10⁻⁵) = √(31.4 / 1.96) ≈ √16 = 4 : 1.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_11",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Organic Chemistry - Some Basic Principles",
+          "unit_name": "Organic Chemistry - Some Basic Principles",
           "chapter": "Organic Chemistry - Some Basic Principles",
           "source_file": "active",
           "question_number": 11,
@@ -699,13 +777,15 @@
           "solution": "The smallest cyclic hydrocarbon is cyclopropane (3 carbons), and cyclization of an acyclic alkene requires at least one double bond / 1 degree of unsaturation. Therefore, statements (i) and (iii) are essential conditions.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_12",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Organic Chemistry - Some Basic Principles",
+          "unit_name": "Organic Chemistry - Some Basic Principles",
           "chapter": "Organic Chemistry - Some Basic Principles",
           "source_file": "active",
           "question_number": 12,
@@ -718,13 +798,15 @@
           "solution": "Resonance structures involve only redistribution of electrons while nuclei remain fixed in place. The keto-enol forms involve the actual migration of a hydrogen atom (proton transfer), making them distinct chemical isomers (tautomers).",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_13",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Chemical Bonding",
+          "unit_name": "Chemical Bonding",
           "chapter": "Chemical Bonding",
           "source_file": "active",
           "question_number": 13,
@@ -736,14 +818,18 @@
           "correct_answer": "A",
           "solution": "All boron trihalides (BF₃, BCl₃, BBr₃) have sp² hybridization with zero lone pairs on the central boron atom, giving a trigonal planar geometry, and are strictly isostructural.",
           "difficulty": "Easy",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_5_q30_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_14",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Hydrocarbons",
+          "unit_name": "Hydrocarbons",
           "chapter": "Hydrocarbons",
           "source_file": "active",
           "question_number": 14,
@@ -755,14 +841,18 @@
           "correct_answer": "A",
           "solution": "Isoprene has structure CH₂=C(CH₃)-CH=CH₂. Ozonolysis of both terminal double bonds yields two moles of methanal (HCHO) and one mole of 2-ketopropanal (CH₃-CO-CHO). Thus compound A is 2-methylbuta-1,3-diene.",
           "difficulty": "Hard",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_5_q35_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_15",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Amines",
+          "unit_name": "Amines",
           "chapter": "Amines",
           "source_file": "active",
           "question_number": 15,
@@ -775,13 +865,15 @@
           "solution": "Sn/HCl reduces nitrobenzene to aniline (4). Zn/NH₄Cl (neutral medium) gives phenylhydroxylamine (3). Alkaline reduction with methanolic NaOCH₃ produces azoxybenzene (2). Vigorous alkaline reduction with Zn/KOH gives hydrazobenzene (1). Hence (p)-4, (q)-3, (r)-2, (s)-1.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_16",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Some Basic Concepts of Chemistry",
+          "unit_name": "Some Basic Concepts of Chemistry",
           "chapter": "Some Basic Concepts of Chemistry",
           "source_file": "active",
           "question_number": 16,
@@ -794,13 +886,15 @@
           "solution": "Initial acid equivalents = 100 × 0.1 = 10 meq. Base added = 30 × 0.2 = 6 meq. Remaining acid = 10 - 6 = 4 meq. KOH required: N × V = 4 => 0.25 × V = 4 => V = 16 mL.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_17",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Aldehydes, Ketones and Carboxylic Acids",
+          "unit_name": "Aldehydes, Ketones and Carboxylic Acids",
           "chapter": "Aldehydes, Ketones and Carboxylic Acids",
           "source_file": "active",
           "question_number": 17,
@@ -813,13 +907,15 @@
           "solution": "Aromatic aldehydes like benzaldehyde undergo the Benzoin condensation when heated with ethanolic KCN to form benzoin (C₆H₅-CH(OH)-CO-C₆H₅). Acetaldehyde does not undergo the Benzoin condensation.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_18",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Biomolecules",
+          "unit_name": "Biomolecules",
           "chapter": "Biomolecules",
           "source_file": "active",
           "question_number": 18,
@@ -832,13 +928,15 @@
           "solution": "At pH < pKa₁, the solution is strongly acidic. The carboxylate group is protonated to -COOH and the amino group is protonated to -NH₃⁺, giving a net positive charge (+1, cation).",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_19",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Amines",
+          "unit_name": "Amines",
           "chapter": "Amines",
           "source_file": "active",
           "question_number": 19,
@@ -851,13 +949,15 @@
           "solution": "Bromination yields 2,4,6-tribromoaniline. Diazotization converts the -NH₂ group into -N₂⁺ Cl⁻, which with HBF₄ forms diazonium fluoroborate -N₂⁺ BF₄⁻. Heating decomposes this group into -F, yielding 2,4,6-tribromofluorobenzene.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_mcq_20",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Chemical Kinetics",
+          "unit_name": "Chemical Kinetics",
           "chapter": "Chemical Kinetics",
           "source_file": "active",
           "question_number": 20,
@@ -867,16 +967,20 @@
           "option_c": "300 × 4.606 K",
           "option_d": "300 K",
           "correct_answer": "A",
-          "solution": "Equating k₁ = k₂: A₁ exp(-E_a1 / RT) = A₂ exp(-E_a2 / RT) => A₂ / A₁ = exp((E_a2 - E_a1) / RT) => 10¹⁰ / 10⁸ = 10² = exp(600 / 2T). Taking ln: 2 ln 10 = 2 × 2.303 = 300 / T => T = 300 / (2 × 2.303) = 150 / 2.303 K.",
+          "solution": "Equating k₁ = k₂: A₁ exp(-E_a1 / Rᵀ) = A₂ exp(-E_a2 / Rᵀ) => A₂ / A₁ = exp((E_a2 - E_a1) / Rᵀ) => 10¹⁰ / 10⁸ = 10² = exp(600 / 2T). Taking ln: 2 ln 10 = 2 × 2.303 = 300 / T => T = 300 / (2 × 2.303) = 150 / 2.303 K.",
           "difficulty": "Hard",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_2_q35_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "chem_num_21",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Classification of Elements and Periodicity in Properties",
+          "unit_name": "Classification of Elements and Periodicity in Properties",
           "chapter": "Classification of Elements and Periodicity in Properties",
           "source_file": "active",
           "question_number": 21,
@@ -889,13 +993,15 @@
           "solution": "Atomic number of Aluminum is Z = 13 (nuclear charge +13). Atomic number of Magnesium is Z = 12 (nuclear charge +12). Difference = 13 - 12 = 1.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "chem_num_22",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Solutions",
+          "unit_name": "Solutions",
           "chapter": "Solutions",
           "source_file": "active",
           "question_number": 22,
@@ -908,13 +1014,15 @@
           "solution": "According to Raoult's law: (P° - P) / P° = n_solute / (n_solute + n_solvent). (640 - 600) / 640 = 40 / 640 = 1 / 16. Moles of solvent = 39 / 78 = 0.5 mol. (2.5/M) / (2.5/M + 0.5) = 1/16 => 16(2.5/M) = 2.5/M + 0.5 => 15(2.5/M) = 0.5 => 37.5 / M = 0.5 => M = 75 g/mol.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "chem_num_23",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Amines",
+          "unit_name": "Amines",
           "chapter": "Amines",
           "source_file": "active",
           "question_number": 23,
@@ -927,13 +1035,15 @@
           "solution": "Compound R is aniline, C₆H₅NH₂, which has molecular formula C₆H₇N. The number of hydrogen atoms is 7.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "chem_num_24",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Organic Chemistry - Some Basic Principles",
+          "unit_name": "Organic Chemistry - Some Basic Principles",
           "chapter": "Organic Chemistry - Some Basic Principles",
           "source_file": "active",
           "question_number": 24,
@@ -945,14 +1055,18 @@
           "correct_answer": "5",
           "solution": "Degree of unsaturation = number of rings + number of π-bonds = 1 (ring) + 4 (double bonds) = 5.",
           "difficulty": "Easy",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Chemistry/Full_Mock___Chemistry/MFT_10_q49_1.png"
+          ],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "chem_num_25",
           "subject": "Chemistry",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Solutions",
+          "unit_name": "Solutions",
           "chapter": "Solutions",
           "source_file": "active",
           "question_number": 25,
@@ -965,7 +1079,9 @@
           "solution": "NaCl dissociates as: NaCl -> Na⁺ + Cl⁻ (producing 2 ions per formula unit). For 100% ionization (α = 1), the van 't Hoff factor is i = 1 + (n - 1)α = 1 + (2 - 1)(1) = 2.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         }
       ]
     },
@@ -975,8 +1091,8 @@
         {
           "id": "math_mcq_01",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Vector Algebra",
+          "unit_name": "Vector Algebra",
           "chapter": "Vector Algebra",
           "source_file": "active",
           "question_number": 1,
@@ -989,13 +1105,15 @@
           "solution": "Take dot product with vector a on both sides: (a · x)(a · b) = a · c + a · x => (a · x)(a · b - 1) = a · c => a · x = (a · c) / (a · b - 1). Substitute this into x = (a · x) b - c to get x = [(a · c) b - c (a · b - 1)] / (a · b - 1).",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_02",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Sequences and Series",
+          "unit_name": "Sequences and Series",
           "chapter": "Sequences and Series",
           "source_file": "active",
           "question_number": 2,
@@ -1008,13 +1126,15 @@
           "solution": "AM(X₆...Xₙ₊₅) = X₆ + ((n-1)/2)d = X₁ + 5d + ((n-1)/2)d = 5 + 5d. In GP, AM(yₚ₊₁...yₚ₊ₙ) = 16^P × AM(y) = 5 × 16^P. Equating: 5 + 5d = 5 × 16^P => 1 + d = 16^P => d = 16^P - 1. Since d is a two-digit natural number, P = 1 gives d = 15.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_03",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Three Dimensional Geometry",
+          "unit_name": "Three Dimensional Geometry",
           "chapter": "Three Dimensional Geometry",
           "source_file": "active",
           "question_number": 3,
@@ -1027,13 +1147,15 @@
           "solution": "Line 1 passes through a₁ = (1, 1, 0) with direction b₁ = (1, 6, 2). Line 2 passes through a₂ = (1, 5, -2) with direction b₂ = (2, 15, 6). a₁ - a₂ = (0, -4, 2). Cross product b₁ × b₂ = (6, -2, 3). Magnitude |b₁ × b₂| = √(36 + 4 + 9) = 7. Dot product (a₁ - a₂) · (b₁ × b₂) = 0(6) + (-4)(-2) + 2(3) = 14. Shortest distance d = |14| / 7 = 2.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_04",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Three Dimensional Geometry",
+          "unit_name": "Three Dimensional Geometry",
           "chapter": "Three Dimensional Geometry",
           "source_file": "active",
           "question_number": 4,
@@ -1045,14 +1167,18 @@
           "correct_answer": "A",
           "solution": "Let a general point on the given line be N(λ - 5, 4λ - 3, -9λ + 6). Direction ratios of PN are (λ - 7, 4λ - 7, -9λ + 7). Since PN is perpendicular to the line: 1(λ - 7) + 4(4λ - 7) - 9(-9λ + 7) = 0 => 98λ - 98 = 0 => λ = 1. Thus N = (-4, 1, -3). Vector PN = (-6, -3, -2) ~ (3, 6, 2). The equation of line through P is (x - 2)/3 = (y - 4)/6 = (z + 1)/2.",
           "difficulty": "Hard",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Mathematics/Area_Under_Curves/Area_Under_Curves___Test_2_q4_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_05",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Continuity and Differentiability",
+          "unit_name": "Continuity and Differentiability",
           "chapter": "Continuity and Differentiability",
           "source_file": "active",
           "question_number": 5,
@@ -1065,13 +1191,15 @@
           "solution": "f(3) = 9 - 6 + 3 = 6. f'(x) = 2x - 2 => f'(3) = 4. f²(3) = 36. Since g is the inverse of f, h'(x) = g'(f²(x)) · 2 f(x) f'(x). For g(36) = a => f(a) = 36 => a² - 2a + 3 = 36 => (a - 1)² = 34 => a - 1 = √34. g'(36) = 1 / f'(a) = 1 / [2(a - 1)] = 1 / (2√34). Then h'(3) = [1 / (2√34)] · [2 · 6 · 4] = 24 / √34.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_06",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Coordinate Geometry - Straight Lines",
+          "unit_name": "Coordinate Geometry - Straight Lines",
           "chapter": "Coordinate Geometry - Straight Lines",
           "source_file": "active",
           "question_number": 6,
@@ -1083,18 +1211,22 @@
           "correct_answer": "A",
           "solution": "Let ∠RPQ = θ and ∠RQP = φ. The slope of PR gives tan θ = y / (1 - x), and slope of QR gives tan φ = y / (x + 1). Given tan(θ - φ) = tan 45° = 1. Expanding (tan θ - tan φ) / (1 + tan θ tan φ) = 1 and simplifying the rational expression leads directly to y² - x² - 2xy + 1 = 0.",
           "difficulty": "Medium",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Mathematics/Quadratic_Equation/Quadratic_Equation___Test_3_q4_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_07",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Determinants",
+          "unit_name": "Determinants",
           "chapter": "Determinants",
           "source_file": "active",
           "question_number": 7,
-          "question_text": "Evaluate the value of the 3×3 determinant Δ:\n| √13 + 3,   2√5,   5 |\n| √15 + √26, 5,     √10 |\n| 3 + √65,   √15,   5 |",
+          "question_text": "Evaluate the value of the 3×3 determinant Δ:\n| √13 + 3, 2√5, 5 |\n| √15 + √26, 5, √10 |\n| 3 + √65, √15, 5 |",
           "option_a": "5√3 (√6 - 5)",
           "option_b": "5 (√6 - √5)",
           "option_c": "√5 (√6 - 3)",
@@ -1103,13 +1235,15 @@
           "solution": "Factoring out √5 from column 2 and √5 from column 3, and applying standard row/column operations reduces the determinant to 5√3 (√6 - 5).",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_08",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Limits and Derivatives",
+          "unit_name": "Limits and Derivatives",
           "chapter": "Limits and Derivatives",
           "source_file": "active",
           "question_number": 8,
@@ -1121,14 +1255,18 @@
           "correct_answer": "A",
           "solution": "As x -> 0⁺: lim x^x = 1. Inside the numerator cosine: x·sin x + 1 -> 1, so the numerator approaches 1 · cos(1) = cos(1). In the denominator: tan x - x -> 0, so cos(tan x - x) -> cos(0) = 1. For small positive x, {x + 1} = x, so {x + 1} - x = 0, giving cos(0) = 1. Therefore L = cos(1) / (1 · 1) = cos(1).",
           "difficulty": "Medium",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Mathematics/Circle/Circle___Test_4_q7_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_09",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Vector Algebra",
+          "unit_name": "Vector Algebra",
           "chapter": "Vector Algebra",
           "source_file": "active",
           "question_number": 9,
@@ -1141,13 +1279,15 @@
           "solution": "By definition of Cartesian components, a · i = a_x, a · j = a_y, and a · k = a_z. Therefore, (a · i)² + (a · j)² + (a · k)² = a_x² + a_y² + a_z² = |a|².",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_10",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Sets and Relations",
+          "unit_name": "Sets and Relations",
           "chapter": "Sets and Relations",
           "source_file": "active",
           "question_number": 10,
@@ -1159,14 +1299,18 @@
           "correct_answer": "A",
           "solution": "The number of subsets of a set of n elements is 2ⁿ. Thus 2^α + 2^β + 2^γ = 28. Writing 28 as a sum of three powers of 2: 28 = 16 + 8 + 4 = 2⁴ + 2³ + 2². The values {α, β, γ} must be the distinct set {4, 3, 2}. The number of ordered permutations of 3 distinct elements is 3! = 6.",
           "difficulty": "Easy",
-          "has_image": 0,
-          "image_paths": []
+          "has_image": 1,
+          "image_paths": [
+            "/exam-images/Mathematics/Basic_of_Mathematics/Basic_of_Mathematics___Test_1_q6_1.png"
+          ],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_11",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Inverse Trigonometric Functions",
+          "unit_name": "Inverse Trigonometric Functions",
           "chapter": "Inverse Trigonometric Functions",
           "source_file": "active",
           "question_number": 11,
@@ -1179,13 +1323,15 @@
           "solution": "At x = 0, the general term is tan⁻¹[ 1 / (1 + k(k-1)) ] = tan⁻¹[ (k - (k-1)) / (1 + k(k-1)) ] = tan⁻¹(k) - tan⁻¹(k-1). The sum telescopes: y(0) = ∑_{k=1}^{2n} [tan⁻¹(k) - tan⁻¹(k-1)] = tan⁻¹(2n) - tan⁻¹(0) = tan⁻¹(2n).",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_12",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Application of Integrals",
+          "unit_name": "Application of Integrals",
           "chapter": "Application of Integrals",
           "source_file": "active",
           "question_number": 12,
@@ -1198,13 +1344,15 @@
           "solution": "Using the integration of inverse functions identity: ∫₁⁴ f(x) dx + ∫₃⁸ f⁻¹(y) dy = 4 · f(4) - 1 · f(1) = 4 · 8 - 1 · 3 = 32 - 3 = 29. Given that ∫₁⁴ f(x) dx = 12, the required area is 29 - 12 = 17.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_13",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Relations and Functions",
+          "unit_name": "Relations and Functions",
           "chapter": "Relations and Functions",
           "source_file": "active",
           "question_number": 13,
@@ -1217,13 +1365,15 @@
           "solution": "Substitute x = 7: (7 + 59)/(7 - 1) = 66/6 = 11 => 3 f(7) + 2 f(11) = 10(7) + 30 = 100. (1)\nNow substitute x = 11: (11 + 59)/(11 - 1) = 70/10 = 7 => 3 f(11) + 2 f(7) = 10(11) + 30 = 140. (2)\nMultiply (1) by 3: 9 f(7) + 6 f(11) = 300. Multiply (2) by 2: 4 f(7) + 6 f(11) = 280.\nSubtracting yields: 5 f(7) = 20 => f(7) = 4.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_14",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Limits and Derivatives",
+          "unit_name": "Limits and Derivatives",
           "chapter": "Limits and Derivatives",
           "source_file": "active",
           "question_number": 14,
@@ -1236,13 +1386,15 @@
           "solution": "Using Taylor series expansion ln(1 + t) = t - t²/2 + t³/3 - ... where t = 1/x: x³ [1/x - 1/(2x²) + 1/(3x³) - ...] = x² - x/2 + 1/3 - ... Evaluating the limit gives 1/3. Hence 1/m = 1/3 => m = 3.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_15",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Differential Equations",
+          "unit_name": "Differential Equations",
           "chapter": "Differential Equations",
           "source_file": "active",
           "question_number": 15,
@@ -1255,13 +1407,15 @@
           "solution": "This is a Bernoulli equation. Divide by y²: y⁻² dy/dx - y⁻¹ f'(x) = -f(x). Substitute z = y⁻¹ => dz/dx = -y⁻² dy/dx. This yields dz/dx + f'(x) z = f(x). The integrating factor is e^{∫ f'(x) dx} = f(x). Then d/dx [z f(x)] = f(x). Integrating gives z f(x) = x + C => f(x) / y = x + C => f(x) = y (x + C).",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_16",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Continuity and Differentiability",
+          "unit_name": "Continuity and Differentiability",
           "chapter": "Continuity and Differentiability",
           "source_file": "active",
           "question_number": 16,
@@ -1274,13 +1428,15 @@
           "solution": "Substitute -x for x: f(2(-x)² - 1) = 2(-x)³ f(-x) => f(2x² - 1) = -2x³ f(-x). Since f(2x² - 1) = 2x³ f(x), it follows that f(-x) = -f(x), meaning f(x) is an odd function. Any even-order derivative of an odd function is itself an odd function. Since 2010 is an even number, f⁽²⁰¹⁰⁾(x) is an odd function, so f⁽²⁰¹⁰⁾(0) = 0.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_17",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Quadratic Equations",
+          "unit_name": "Quadratic Equations",
           "chapter": "Quadratic Equations",
           "source_file": "active",
           "question_number": 17,
@@ -1293,13 +1449,15 @@
           "solution": "Let f(x) = x³ + x² - 5x - 1. Testing integer values: f(-3) = -4, f(-2) = 5 => α ∈ (-3, -2) => [α] = -3. f(-1) = 4, f(0) = -1 => β ∈ (-1, 0) => [β] = -1. f(1) = -4, f(2) = 1 => γ ∈ (1, 2) => [γ] = 1. Sum = -3 + (-1) + 1 = -3.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_18",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Quadratic Equations",
+          "unit_name": "Quadratic Equations",
           "chapter": "Quadratic Equations",
           "source_file": "active",
           "question_number": 18,
@@ -1312,13 +1470,15 @@
           "solution": "Let t = 11^x. The equation is 2t³ - 8t² + 16t - 4 = 0. By Vieta's formulas, product of roots t₁ t₂ t₃ = -(-4)/2 = 2. Since t = 11^x, (11^x₁)(11^x₂)(11^x₃) = 11^(x₁ + x₂ + x₃) = 2.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_19",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Relations and Functions",
+          "unit_name": "Relations and Functions",
           "chapter": "Relations and Functions",
           "source_file": "active",
           "question_number": 19,
@@ -1331,13 +1491,15 @@
           "solution": "Since f is one-to-one, f(u) = f(v) implies u = v. Thus x³ + 14x² + 13x - 5 = 1 - x² + x³ => 15x² + 13x - 6 = 0 => (3x - 1)(5x + 6) = 0 => x = 1/3 or x = -6/5 = -1.2. Since the domain is [-1, 1], x = -1.2 is invalid. Thus only x = 1/3 is a solution, giving exactly 1 real solution.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_mcq_20",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Differential Equations",
+          "unit_name": "Differential Equations",
           "chapter": "Differential Equations",
           "source_file": "active",
           "question_number": 20,
@@ -1350,13 +1512,15 @@
           "solution": "Integrating dy = e^(2x) dx yields y = (1/2) e^(2x) + C. With y(0) = 1: 1 = 1/2 + C => C = 1/2. Thus 2y = e^(2x) + 1. Here m = 1, n = 1, f(x) = 1 => (m + n) f(0) = (1 + 1)(1) = 2.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "MCQ",
+          "section": "Section A (MCQ)"
         },
         {
           "id": "math_num_21",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Probability",
+          "unit_name": "Probability",
           "chapter": "Probability",
           "source_file": "active",
           "question_number": 21,
@@ -1369,13 +1533,15 @@
           "solution": "There are 1000 total equiprobable 3-digit codes. When sampling without replacement, the probability that the correct code is chosen on the k-th trial is p = 1 / 1000 = 0.001. Therefore 1000 · p = 1000 × 0.001 = 1.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "math_num_22",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Integrals",
+          "unit_name": "Integrals",
           "chapter": "Integrals",
           "source_file": "active",
           "question_number": 22,
@@ -1388,13 +1554,15 @@
           "solution": "Rewrite the integral: ∫ sec² x / (sin x)²⁰¹⁹ dx - 2019 ∫ cosec²⁰¹⁹ x dx. Using integration by parts on the first term yields tan x · (sin x)⁻²⁰¹⁹ + C. Therefore f(x) = 1 / (sin x)²⁰¹⁹. Since sin(π/2) = 1, f(π/2) = 1 / 1²⁰¹⁹ = 1.",
           "difficulty": "Hard",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "math_num_23",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Statistics",
+          "unit_name": "Statistics",
           "chapter": "Statistics",
           "source_file": "active",
           "question_number": 23,
@@ -1407,13 +1575,15 @@
           "solution": "Deviations from mean 6 are (2-6) = -4, (4-6) = -2, (6-6) = 0, (8-6) = 2, (10-6) = 4. Squared deviations: 16, 4, 0, 4, 16. Sum = 40. Population variance σ² = 40 / 5 = 8.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "math_num_24",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Probability",
+          "unit_name": "Probability",
           "chapter": "Probability",
           "source_file": "active",
           "question_number": 24,
@@ -1426,13 +1596,15 @@
           "solution": "If y² > x and x² > y for points in [0, 1] × [0, 1], then y⁴ > x² > y => y(y³ - 1) > 0. For y ∈ [0, 1], y(y³ - 1) ≤ 0, which cannot be strictly positive. Thus the intersection region A ∩ B is empty (measure zero), so P(A ∩ B) = 0.",
           "difficulty": "Medium",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         },
         {
           "id": "math_num_25",
           "subject": "Mathematics",
-          "unit_id": "",
-          "unit_name": "",
+          "unit_id": "Sequences and Series",
+          "unit_name": "Sequences and Series",
           "chapter": "Sequences and Series",
           "source_file": "active",
           "question_number": 25,
@@ -1445,7 +1617,9 @@
           "solution": "For i = 2: a₂² = a₁² + 2 a₁ + 1. Since a₁ = 0, a₂² = 0 + 0 + 1 = 1 => a₂ = 1.",
           "difficulty": "Easy",
           "has_image": 0,
-          "image_paths": []
+          "image_paths": [],
+          "type": "NUMERICAL",
+          "section": "Section B (Numerical)"
         }
       ]
     }
