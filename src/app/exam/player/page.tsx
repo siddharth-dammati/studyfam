@@ -13,13 +13,17 @@ import { Logo } from "@/components/ui/Logo";
 import { Loader2, AlertCircle, Lock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import SOHAN_CHEM_MOCK from "@/../questions_database/custom_tests/sohan-chem-mock.json";
+import SOHAN_GRAVITATION_MOCK from "@/../questions_database/custom_tests/sohan-gravitation-mock.json";
 
 function evaluateSohanMockLocally(
   responses: Record<string, string>,
   timeSpentSeconds: number,
-  questionTimes?: Record<string, number>
+  questionTimes?: Record<string, number>,
+  testId?: string
 ): EvaluationResult {
-  const questions = SOHAN_CHEM_MOCK.sections[0].questions;
+  const isGrav = Boolean(testId && (testId.includes("gravitation") || testId === "sohan-gravitation-mock"));
+  const activeMock = isGrav ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK;
+  const questions = activeMock.sections[0].questions;
   let totalQuestions = 0;
   let attemptedCount = 0;
   let correctCount = 0;
@@ -27,12 +31,12 @@ function evaluateSohanMockLocally(
   let totalScore = 0;
   const sectionMap = new Map<string, { total: number; attempted: number; correct: number; incorrect: number; score: number }>();
   const detailedResults: any[] = [];
-  const marksPerQ = SOHAN_CHEM_MOCK.marks_per_question || 4;
-  const negMarks = SOHAN_CHEM_MOCK.negative_marks || 1;
+  const marksPerQ = activeMock.marks_per_question || 4;
+  const negMarks = activeMock.negative_marks || 1;
 
   for (const q of questions) {
     totalQuestions++;
-    const sec = q.subject || "Chemistry";
+    const sec = q.subject || (isGrav ? "Physics" : "Chemistry");
     if (!sectionMap.has(sec)) sectionMap.set(sec, { total: 0, attempted: 0, correct: 0, incorrect: 0, score: 0 });
     const s = sectionMap.get(sec)!;
     s.total++;
@@ -102,7 +106,8 @@ function evaluateSohanMockLocally(
   }));
 
   return {
-    testId: "sohan-chem-mock",
+    testId: activeMock.id,
+    testTitle: activeMock.title,
     totalQuestions,
     attemptedCount,
     correctCount,
@@ -218,17 +223,24 @@ function ExamPlayerContent() {
               })),
             };
           }
-        } else if (id === "sohan-chem-mock" || id.toLowerCase().includes("sohan")) {
-          // Direct guaranteed instant load for Sohan Chemistry Mock
+        } else if (
+          id === "sohan-gravitation-mock" ||
+          id === "sohan-chem-mock" ||
+          id.toLowerCase().includes("gravitation") ||
+          id.toLowerCase().includes("sohan")
+        ) {
+          // Direct guaranteed instant load for Sohan Mock Tests (Gravitation & Chemistry)
+          const isGravTest = id === "sohan-gravitation-mock" || id.toLowerCase().includes("gravitation");
+          const targetMock = isGravTest ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK;
           testData = {
-            id: SOHAN_CHEM_MOCK.id,
-            title: SOHAN_CHEM_MOCK.title,
-            source_file: SOHAN_CHEM_MOCK.source_file,
-            total_questions: SOHAN_CHEM_MOCK.total_questions,
-            duration_minutes: SOHAN_CHEM_MOCK.duration_minutes,
-            marks_per_question: SOHAN_CHEM_MOCK.marks_per_question || 4,
-            negative_marks: SOHAN_CHEM_MOCK.negative_marks || 1,
-            sections: SOHAN_CHEM_MOCK.sections.map((sec: any) => ({
+            id: targetMock.id,
+            title: targetMock.title,
+            source_file: targetMock.source_file,
+            total_questions: targetMock.total_questions,
+            duration_minutes: targetMock.duration_minutes,
+            marks_per_question: targetMock.marks_per_question || 4,
+            negative_marks: targetMock.negative_marks || 1,
+            sections: targetMock.sections.map((sec: any) => ({
               name: sec.name,
               questions: sec.questions.map((q: any) => ({
                 id: q.id,
@@ -296,8 +308,8 @@ function ExamPlayerContent() {
 
             // If not found in local cache, load solutions and past attempt diagnostics from server
             if (!reviewLoaded) {
-              if (id.toLowerCase().includes("sohan")) {
-                const localSol = evaluateSohanMockLocally({}, 0);
+              if (id.toLowerCase().includes("sohan") || id.toLowerCase().includes("gravitation")) {
+                const localSol = evaluateSohanMockLocally({}, 0, undefined, id);
                 setEvaluationResult(localSol);
                 setPhase("result");
                 reviewLoaded = true;
@@ -394,8 +406,8 @@ function ExamPlayerContent() {
       let resultToUse = json?.success ? json.result : null;
 
       // Fallback local evaluation if edge worker returned error or offline
-      if (!resultToUse && (test.id.includes("sohan") || id.toLowerCase().includes("sohan"))) {
-        resultToUse = evaluateSohanMockLocally(responses, timeSpentSeconds, questionTimes);
+      if (!resultToUse && (test.id.includes("sohan") || test.id.includes("gravitation") || id.toLowerCase().includes("sohan") || id.toLowerCase().includes("gravitation"))) {
+        resultToUse = evaluateSohanMockLocally(responses, timeSpentSeconds, questionTimes, test.id || id);
       }
 
       if (resultToUse) {
@@ -447,8 +459,8 @@ function ExamPlayerContent() {
         alert(json?.error || "Submission failed. Please try again.");
       }
     } catch (err: any) {
-      if (test.id.includes("sohan") || id.toLowerCase().includes("sohan")) {
-        const fallbackResult = evaluateSohanMockLocally(responses, timeSpentSeconds, questionTimes);
+      if (test.id.includes("sohan") || test.id.includes("gravitation") || id.toLowerCase().includes("sohan") || id.toLowerCase().includes("gravitation")) {
+        const fallbackResult = evaluateSohanMockLocally(responses, timeSpentSeconds, questionTimes, test.id || id);
         setEvaluationResult(fallbackResult);
         setPhase("result");
         return;

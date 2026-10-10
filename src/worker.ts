@@ -4,6 +4,7 @@ import DEFAULT_ACTIVE_EXAM_PAPER from "../questions_database/active_exam_paper.j
 import CURATED_QUESTION_BANK from "../questions_database/curated_question_bank.json";
 import MFT_QUESTIONS_BY_FILE from "../questions_database/mft_questions.json";
 import SOHAN_CHEM_MOCK from "../questions_database/custom_tests/sohan-chem-mock.json";
+import SOHAN_GRAVITATION_MOCK from "../questions_database/custom_tests/sohan-gravitation-mock.json";
 
 export interface Env {
   ASSETS: {
@@ -1751,11 +1752,14 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
     const sectionBreakdown: any[] = [];
     const detailedResults: any[] = [];
 
-    // ── Case 0: Unlisted Sohan Chemistry Mock Test ───────────────────────────
-    if (cleanTestId === "sohan-chem-mock" || cleanTestId.toLowerCase().includes("sohan")) {
-      const questions = SOHAN_CHEM_MOCK.sections[0].questions;
-      const marksPerQ = SOHAN_CHEM_MOCK.marks_per_question || 4;
-      const negMarks = SOHAN_CHEM_MOCK.negative_marks || 1;
+    // ── Case 0: Unlisted Sohan Mock Tests (Chemistry & Gravitation) ─────────
+    const isSohanGravSubmit = cleanTestId === "sohan-gravitation-mock" || cleanTestId.toLowerCase().includes("gravitation");
+    const isSohanChemSubmit = cleanTestId === "sohan-chem-mock" || cleanTestId.toLowerCase().includes("sohan");
+    if (isSohanGravSubmit || isSohanChemSubmit) {
+      const activeMock = isSohanGravSubmit ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK;
+      const questions = activeMock.sections[0].questions;
+      const marksPerQ = activeMock.marks_per_question || 4;
+      const negMarks = activeMock.negative_marks || 1;
       const sectionMap = new Map<string, { total: number; attempted: number; correct: number; incorrect: number; score: number }>();
 
       for (const q of questions) {
@@ -1820,8 +1824,8 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
       }
 
       evaluation = {
-        testId: "sohan-chem-mock",
-        testTitle: SOHAN_CHEM_MOCK.title,
+        testId: activeMock.id,
+        testTitle: activeMock.title,
         totalQuestions,
         attemptedCount,
         correctCount,
@@ -2145,9 +2149,12 @@ async function handleExamDetail(request: Request, env: Env): Promise<Response> {
     // Decode and normalise: "MFT-1.pdf", "MFT-1", "MFT-01" all resolve to "MFT-1.pdf"
     const cleanId = decodeURIComponent(rawId);
 
-    // Support Unlisted Sohan Chemistry Mock Test
-    if (cleanId === "sohan-chem-mock" || cleanId.toLowerCase().includes("sohan")) {
-      const sanitizedSections = SOHAN_CHEM_MOCK.sections.map((sec: any) => ({
+    // Support Unlisted Sohan Mock Tests (Chemistry & Gravitation)
+    const isSohanGravGet = cleanId === "sohan-gravitation-mock" || cleanId.toLowerCase().includes("gravitation");
+    const isSohanChemGet = cleanId === "sohan-chem-mock" || cleanId.toLowerCase().includes("sohan");
+    if (isSohanGravGet || isSohanChemGet) {
+      const activeMock = isSohanGravGet ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK;
+      const sanitizedSections = activeMock.sections.map((sec: any) => ({
         name: sec.name,
         questions: sec.questions.map((q: any) => ({
           ...sanitizeQuestion(q),
@@ -2157,7 +2164,7 @@ async function handleExamDetail(request: Request, env: Env): Promise<Response> {
       }));
 
       const test = {
-        ...SOHAN_CHEM_MOCK,
+        ...activeMock,
         allowGuest: true,
         is_unlisted: true,
         sections: sanitizedSections,
@@ -2287,12 +2294,15 @@ async function handleExamSolutions(request: Request, env: Env): Promise<Response
 
     const cleanId = decodeURIComponent(rawId);
 
-    // Support Unlisted Sohan Chemistry Mock Solutions
-    if (cleanId === "sohan-chem-mock" || cleanId.toLowerCase().includes("sohan")) {
-      const questions = SOHAN_CHEM_MOCK.sections[0].questions;
+    // Support Unlisted Sohan Mock Solutions (Chemistry & Gravitation)
+    const isSohanGravSol = cleanId === "sohan-gravitation-mock" || cleanId.toLowerCase().includes("gravitation");
+    const isSohanChemSol = cleanId === "sohan-chem-mock" || cleanId.toLowerCase().includes("sohan");
+    if (isSohanGravSol || isSohanChemSol) {
+      const activeMock = isSohanGravSol ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK;
+      const questions = activeMock.sections[0].questions;
       const userResponses: Record<string, string> = body.responses || {};
-      const marksPerQ = SOHAN_CHEM_MOCK.marks_per_question || 4;
-      const negativeMarks = SOHAN_CHEM_MOCK.negative_marks || 1;
+      const marksPerQ = activeMock.marks_per_question || 4;
+      const negativeMarks = activeMock.negative_marks || 1;
 
       let totalScore = 0, correct = 0, incorrect = 0, attempted = 0;
       const detailedResults: any[] = [];
@@ -2358,8 +2368,8 @@ async function handleExamSolutions(request: Request, env: Env): Promise<Response
       }
 
       const result: any = {
-        testId: "sohan-chem-mock",
-        testTitle: SOHAN_CHEM_MOCK.title,
+        testId: activeMock.id,
+        testTitle: activeMock.title,
         totalQuestions: questions.length,
         attemptedCount: attempted,
         correctCount: correct,

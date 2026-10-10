@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chemistry Mock Test — Sohan Mocks</title>
+  <title>Sohan Mocks — Exclusive JEE Mock Test Series</title>
   <meta name="robots" content="noindex, nofollow, noarchive" />
   <link rel="icon" href="/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #070a12;
-      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-bg: rgba(15, 23, 42, 0.8);
       --card-border: rgba(255, 255, 255, 0.1);
       --primary: #2563eb;
       --text-main: #f8fafc;
@@ -33,40 +33,27 @@
       font-family: var(--font-sans);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
+      justify-content: flex-start;
+      padding: 3rem 1.5rem;
       background-image: 
-        radial-gradient(circle at 50% 25%, rgba(37, 99, 235, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 50% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 60%),
         radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
       background-size: auto, 28px 28px;
     }
 
-    .card {
+    .container {
       width: 100%;
-      max-width: 520px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 28px;
-      padding: 2.5rem 2rem;
+      max-width: 1040px;
+    }
+
+    .header {
       text-align: center;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 2.5rem;
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #3b82f6, #6366f1, #10b981);
-    }
-
-    .badge {
+    .badge-hub {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
@@ -79,51 +66,175 @@
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
 
-    h1 {
-      font-size: clamp(1.85rem, 5vw, 2.4rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
+    h1.hub-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
       margin-bottom: 0.75rem;
       color: #ffffff;
     }
 
-    p.subtitle {
+    p.hub-subtitle {
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.75rem;
       margin-bottom: 2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 2.25rem 1.75rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card.grav {
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    .card.grav:hover {
+      border-color: rgba(245, 158, 11, 0.6);
+    }
+    .card.grav::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #f59e0b, #ea580c, #dc2626);
+    }
+
+    .card.chem {
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .card.chem:hover {
+      border-color: rgba(59, 130, 246, 0.6);
+    }
+    .card.chem::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #6366f1, #10b981);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .pill-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .pill-tag.amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .pill-tag.blue {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .level-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+    .level-badge.adv {
+      background: rgba(220, 38, 38, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(220, 38, 38, 0.3);
+    }
+    .level-badge.main {
+      background: rgba(37, 99, 235, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(37, 99, 235, 0.3);
+    }
+
+    h2.test-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+      color: #ffffff;
+    }
+
+    p.test-desc {
+      color: var(--text-muted);
+      font-size: 0.875rem;
       line-height: 1.5;
+      margin-bottom: 1.5rem;
     }
 
     .specs {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 1.75rem;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
     }
 
     .spec-item {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
-      padding: 1rem 0.5rem;
+      border-radius: 14px;
+      padding: 0.85rem 0.4rem;
+      text-align: center;
     }
 
     .spec-val {
       font-family: var(--font-mono);
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       font-weight: 800;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.15rem;
     }
 
+    .spec-val.amber { color: #fbbf24; }
+    .spec-val.orange { color: #fb923c; }
+    .spec-val.red { color: #f87171; }
     .spec-val.blue { color: #60a5fa; }
-    .spec-val.purple { color: #c084fc; }
-    .spec-val.green { color: #34d399; }
+    .spec-val.indigo { color: #a5b4fc; }
+    .spec-val.emerald { color: #34d399; }
 
     .spec-label {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -133,20 +244,14 @@
     .notice {
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 0.5rem;
-      font-size: 0.8rem;
+      font-size: 0.775rem;
       color: #cbd5e1;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 0.75rem 1rem;
-      border-radius: 12px;
-      margin-bottom: 2rem;
-    }
-
-    .notice svg {
-      color: #34d399;
-      flex-shrink: 0;
+      padding: 0.6rem 0.85rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
     }
 
     .btn-start {
@@ -154,23 +259,35 @@
       align-items: center;
       justify-content: center;
       gap: 0.6rem;
-      background: linear-gradient(135deg, #2563eb, #4f46e5);
       color: #ffffff;
-      padding: 1rem 1.75rem;
-      border-radius: 14px;
-      font-size: 1rem;
+      padding: 0.9rem 1.5rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
       font-weight: 700;
       text-decoration: none;
-      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5);
       transition: all 0.2s ease;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.6rem;
     }
 
-    .btn-start:hover {
+    .btn-start.amber-grad {
+      background: linear-gradient(135deg, #d97706, #ea580c);
+      box-shadow: 0 8px 20px -4px rgba(217, 119, 6, 0.45);
+    }
+    .btn-start.amber-grad:hover {
+      background: linear-gradient(135deg, #f59e0b, #f97316);
       transform: translateY(-2px);
-      box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.65);
+      box-shadow: 0 12px 25px -4px rgba(217, 119, 6, 0.65);
+    }
+
+    .btn-start.blue-grad {
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.45);
+    }
+    .btn-start.blue-grad:hover {
       background: linear-gradient(135deg, #3b82f6, #4338ca);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px -4px rgba(37, 99, 235, 0.65);
     }
 
     .btn-secondary {
@@ -180,9 +297,9 @@
       gap: 0.5rem;
       background: rgba(255, 255, 255, 0.04);
       color: #cbd5e1;
-      padding: 0.85rem 1.5rem;
-      border-radius: 14px;
-      font-size: 0.875rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
       font-weight: 600;
       text-decoration: none;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -195,69 +312,135 @@
     }
 
     .footer-note {
+      text-align: center;
       font-size: 0.75rem;
       color: #475569;
-      margin-top: 1.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 1.5rem;
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <div class="badge">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-      </svg>
-      <span>Sohan Mocks • Unlisted</span>
+  <div class="container">
+    <div class="header">
+      <div class="badge-hub">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>Sohan Mocks Series • Unlisted Hub</span>
+      </div>
+      <h1 class="hub-title">Sohan Mocks Series</h1>
+      <p class="hub-subtitle">High-yield, authentic TCS iON CBT simulation with instant diagnostics and full step-by-step LaTeX solutions.</p>
     </div>
 
-    <h1>Chemistry Mock Test</h1>
-    <p class="subtitle">Full 25-question JEE Main pattern test on the authentic TCS iON CBT exam player.</p>
+    <div class="grid">
+      <!-- Card 1: Gravitation Very Hard Mock -->
+      <div class="card grav">
+        <div>
+          <div class="card-top">
+            <span class="pill-tag amber">Physics Special • Very Hard</span>
+            <span class="level-badge adv">JEE Advanced</span>
+          </div>
+          <h2 class="test-title">Gravitation Mock Test</h2>
+          <p class="test-desc">25 ultra-hard problems: Kepler orbits, variable density fields, chord tunnels, cavity superposition, Hohmann transfers, and self-binding energy.</p>
 
-    <div class="specs">
-      <div class="spec-item">
-        <div class="spec-val blue">25</div>
-        <div class="spec-label">Questions</div>
+          <div class="specs">
+            <div class="spec-item">
+              <div class="spec-val amber">25</div>
+              <div class="spec-label">Questions</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val orange">60m</div>
+              <div class="spec-label">Duration</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val red">100</div>
+              <div class="spec-label">Max Marks</div>
+            </div>
+          </div>
+
+          <div class="notice">
+            <span>20 MCQs (+4/-1) + 5 Integer Numericals (+4/0)</span>
+          </div>
+        </div>
+
+        <div>
+          <a href="/exam/player?id=sohan-gravitation-mock&guest=1" class="btn-start amber-grad">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Start Gravitation Test</span>
+          </a>
+
+          <a href="/exam/player?id=sohan-gravitation-mock&guest=1&review=1" class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>View Step-by-Step Solutions</span>
+          </a>
+        </div>
       </div>
-      <div class="spec-item">
-        <div class="spec-val purple">60m</div>
-        <div class="spec-label">Duration</div>
-      </div>
-      <div class="spec-item">
-        <div class="spec-val green">100</div>
-        <div class="spec-label">Max Marks</div>
+
+      <!-- Card 2: Chemistry Major Test 02 -->
+      <div class="card chem">
+        <div>
+          <div class="card-top">
+            <span class="pill-tag blue">Major Test 02 • Chemistry</span>
+            <span class="level-badge main">JEE Main Pattern</span>
+          </div>
+          <h2 class="test-title">Chemistry Mock Test</h2>
+          <p class="test-desc">Full 25-question mock test covering Thermodynamics, p-Block elements, Qualitative Analysis, Coordination Chemistry, and Reaction Mechanisms.</p>
+
+          <div class="specs">
+            <div class="spec-item">
+              <div class="spec-val blue">25</div>
+              <div class="spec-label">Questions</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val indigo">60m</div>
+              <div class="spec-label">Duration</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val emerald">100</div>
+              <div class="spec-label">Max Marks</div>
+            </div>
+          </div>
+
+          <div class="notice">
+            <span>20 MCQs (+4/-1) + 5 Integer Numericals (+4/0)</span>
+          </div>
+        </div>
+
+        <div>
+          <a href="/exam/player?id=sohan-chem-mock&guest=1" class="btn-start blue-grad">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Start Chemistry Test</span>
+          </a>
+
+          <a href="/exam/player?id=sohan-chem-mock&guest=1&review=1" class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>View Step-by-Step Solutions</span>
+          </a>
+        </div>
       </div>
     </div>
-
-    <div class="notice">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-      </svg>
-      <span>No login required • Free guest access with instant diagnostics</span>
-    </div>
-
-    <a href="/exam/player?id=sohan-chem-mock&guest=1" class="btn-start">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-      </svg>
-      <span>Start Mock Test</span>
-    </a>
-
-    <a href="/exam/player?id=sohan-chem-mock&guest=1&review=1" class="btn-secondary">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-        <polyline points="14 2 14 8 20 8"></polyline>
-        <line x1="16" y1="13" x2="8" y2="13"></line>
-        <line x1="16" y1="17" x2="8" y2="17"></line>
-        <polyline points="10 9 9 9 8 9"></polyline>
-      </svg>
-      <span>View Solutions & Diagnostic Key</span>
-    </a>
 
     <div class="footer-note">
-      StudyFAM Assessment Platform • Unlisted
+      StudyFAM Assessment Platform • Offline LaTeX Paper available in <code>sohanmock/Gravitation_JEE_Advanced_Hard_Test.tex</code>
     </div>
   </div>
 
