@@ -14,6 +14,7 @@ import { Loader2, AlertCircle, Lock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import SOHAN_CHEM_MOCK from "@/../questions_database/custom_tests/sohan-chem-mock.json";
 import SOHAN_GRAVITATION_MOCK from "@/../questions_database/custom_tests/sohan-gravitation-mock.json";
+import SOHAN_GRAVITATION_MEDIUM_MOCK from "@/../questions_database/custom_tests/sohan-gravitation-medium-mock.json";
 
 function evaluateSohanMockLocally(
   responses: Record<string, string>,
@@ -21,8 +22,10 @@ function evaluateSohanMockLocally(
   questionTimes?: Record<string, number>,
   testId?: string
 ): EvaluationResult {
-  const isGrav = Boolean(testId && (testId.includes("gravitation") || testId === "sohan-gravitation-mock"));
-  const activeMock = isGrav ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK;
+  const isGravMed = Boolean(testId && (testId.includes("medium") || testId === "sohan-gravitation-medium-mock"));
+  const isGravHard = Boolean(testId && (testId.includes("gravitation") || testId === "sohan-gravitation-mock"));
+  const isGrav = isGravMed || isGravHard;
+  const activeMock = isGravMed ? SOHAN_GRAVITATION_MEDIUM_MOCK : (isGravHard ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK);
   const questions = activeMock.sections[0].questions;
   let totalQuestions = 0;
   let attemptedCount = 0;
@@ -224,14 +227,19 @@ function ExamPlayerContent() {
             };
           }
         } else if (
+          id === "sohan-gravitation-medium-mock" ||
           id === "sohan-gravitation-mock" ||
           id === "sohan-chem-mock" ||
+          id.toLowerCase().includes("medium") ||
           id.toLowerCase().includes("gravitation") ||
           id.toLowerCase().includes("sohan")
         ) {
-          // Direct guaranteed instant load for Sohan Mock Tests (Gravitation & Chemistry)
-          const isGravTest = id === "sohan-gravitation-mock" || id.toLowerCase().includes("gravitation");
-          const targetMock = isGravTest ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK;
+          // Direct guaranteed instant load for Sohan Mock Tests
+          const isGravMedTest = id === "sohan-gravitation-medium-mock" || id.toLowerCase().includes("medium");
+          const isGravHardTest = id === "sohan-gravitation-mock" || id.toLowerCase().includes("gravitation");
+          const targetMock = isGravMedTest
+            ? SOHAN_GRAVITATION_MEDIUM_MOCK
+            : (isGravHardTest ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK);
           testData = {
             id: targetMock.id,
             title: targetMock.title,

@@ -45,7 +45,7 @@
 
     .container {
       width: 100%;
-      max-width: 1040px;
+      max-width: 1140px;
     }
 
     .header {
@@ -80,7 +80,7 @@
     p.hub-subtitle {
       color: var(--text-muted);
       font-size: 1rem;
-      max-width: 600px;
+      max-width: 650px;
       margin: 0 auto;
       line-height: 1.6;
     }
@@ -88,7 +88,7 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.75rem;
+      gap: 1.5rem;
       margin-bottom: 2rem;
     }
 
@@ -96,7 +96,7 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 28px;
-      padding: 2.25rem 1.75rem;
+      padding: 2rem 1.6rem;
       backdrop-filter: blur(20px);
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       position: relative;
@@ -109,6 +109,22 @@
 
     .card:hover {
       transform: translateY(-4px);
+    }
+
+    .card.med {
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .card.med:hover {
+      border-color: rgba(16, 185, 129, 0.6);
+    }
+    .card.med::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #14b8a6, #06b6d4);
     }
 
     .card.grav {
@@ -159,6 +175,12 @@
       letter-spacing: 0.05em;
     }
 
+    .pill-tag.emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
     .pill-tag.amber {
       background: rgba(245, 158, 11, 0.15);
       color: #fbbf24;
@@ -178,6 +200,11 @@
       padding: 0.2rem 0.6rem;
       border-radius: 6px;
     }
+    .level-badge.med {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
     .level-badge.adv {
       background: rgba(220, 38, 38, 0.2);
       color: #f87171;
@@ -190,48 +217,50 @@
     }
 
     h2.test-title {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
       color: #ffffff;
     }
 
     p.test-desc {
       color: var(--text-muted);
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       line-height: 1.5;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .specs {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0.6rem;
+      gap: 0.5rem;
       margin-bottom: 1.25rem;
     }
 
     .spec-item {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 0.85rem 0.4rem;
+      border-radius: 12px;
+      padding: 0.75rem 0.35rem;
       text-align: center;
     }
 
     .spec-val {
       font-family: var(--font-mono);
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 800;
       margin-bottom: 0.15rem;
     }
 
+    .spec-val.emerald { color: #34d399; }
+    .spec-val.teal { color: #2dd4bf; }
+    .spec-val.cyan { color: #22d3ee; }
     .spec-val.amber { color: #fbbf24; }
     .spec-val.orange { color: #fb923c; }
     .spec-val.red { color: #f87171; }
     .spec-val.blue { color: #60a5fa; }
     .spec-val.indigo { color: #a5b4fc; }
-    .spec-val.emerald { color: #34d399; }
 
     .spec-label {
       font-size: 0.65rem;
@@ -245,29 +274,39 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.775rem;
+      font-size: 0.75rem;
       color: #cbd5e1;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 0.6rem 0.85rem;
+      padding: 0.55rem 0.75rem;
       border-radius: 10px;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .btn-start {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       color: #ffffff;
-      padding: 0.9rem 1.5rem;
+      padding: 0.85rem 1.25rem;
       border-radius: 12px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       text-decoration: none;
       transition: all 0.2s ease;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-start.emerald-grad {
+      background: linear-gradient(135deg, #059669, #0d9488);
+      box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.45);
+    }
+    .btn-start.emerald-grad:hover {
+      background: linear-gradient(135deg, #10b981, #14b8a6);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px -4px rgba(16, 185, 129, 0.65);
     }
 
     .btn-start.amber-grad {
@@ -297,7 +336,7 @@
       gap: 0.5rem;
       background: rgba(255, 255, 255, 0.04);
       color: #cbd5e1;
-      padding: 0.75rem 1.25rem;
+      padding: 0.7rem 1rem;
       border-radius: 12px;
       font-size: 0.8rem;
       font-weight: 600;
@@ -336,14 +375,65 @@
     </div>
 
     <div class="grid">
-      <!-- Card 1: Gravitation Very Hard Mock -->
+      <!-- Card 1: Gravitation Medium Mock (NEW) -->
+      <div class="card med">
+        <div>
+          <div class="card-top">
+            <span class="pill-tag emerald">Physics • Fresh New</span>
+            <span class="level-badge med">JEE Main (Medium)</span>
+          </div>
+          <h2 class="test-title">Gravitation (Medium)</h2>
+          <p class="test-desc">25 balanced JEE Main problems with diagrams: $g$ variation, Kepler's 3rd law, escape velocity, Earth tunnels, orbital satellite energy, and neutral points.</p>
+
+          <div class="specs">
+            <div class="spec-item">
+              <div class="spec-val emerald">25</div>
+              <div class="spec-label">Questions</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val teal">60m</div>
+              <div class="spec-label">Duration</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val cyan">100</div>
+              <div class="spec-label">Max Marks</div>
+            </div>
+          </div>
+
+          <div class="notice">
+            <span>20 MCQs (+4/-1) + 5 Integer Numericals (+4/0)</span>
+          </div>
+        </div>
+
+        <div>
+          <a href="/exam/player?id=sohan-gravitation-medium-mock&guest=1" class="btn-start emerald-grad">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Start Test</span>
+          </a>
+
+          <a href="/exam/player?id=sohan-gravitation-medium-mock&guest=1&review=1" class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>View Step-by-Step Solutions</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2: Gravitation Very Hard Mock -->
       <div class="card grav">
         <div>
           <div class="card-top">
-            <span class="pill-tag amber">Physics Special • Very Hard</span>
-            <span class="level-badge adv">JEE Advanced</span>
+            <span class="pill-tag amber">Physics Special</span>
+            <span class="level-badge adv">JEE Advanced (Hard)</span>
           </div>
-          <h2 class="test-title">Gravitation Mock Test</h2>
+          <h2 class="test-title">Gravitation (Very Hard)</h2>
           <p class="test-desc">25 ultra-hard problems: Kepler orbits, variable density fields, chord tunnels, cavity superposition, Hohmann transfers, and self-binding energy.</p>
 
           <div class="specs">
@@ -371,7 +461,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <polygon points="5 3 19 12 5 21 5 3"></polygon>
             </svg>
-            <span>Start Gravitation Test</span>
+            <span>Start Test</span>
           </a>
 
           <a href="/exam/player?id=sohan-gravitation-mock&guest=1&review=1" class="btn-secondary">
@@ -387,15 +477,15 @@
         </div>
       </div>
 
-      <!-- Card 2: Chemistry Major Test 02 -->
+      <!-- Card 3: Chemistry Major Test 02 -->
       <div class="card chem">
         <div>
           <div class="card-top">
-            <span class="pill-tag blue">Major Test 02 • Chemistry</span>
+            <span class="pill-tag blue">Chemistry Special</span>
             <span class="level-badge main">JEE Main Pattern</span>
           </div>
-          <h2 class="test-title">Chemistry Mock Test</h2>
-          <p class="test-desc">Full 25-question mock test covering Thermodynamics, p-Block elements, Qualitative Analysis, Coordination Chemistry, and Reaction Mechanisms.</p>
+          <h2 class="test-title">Chemistry Full Mock</h2>
+          <p class="test-desc">Full 25-question test covering Thermodynamics, p-Block elements, Qualitative Analysis, Coordination Chemistry, and Reaction Mechanisms.</p>
 
           <div class="specs">
             <div class="spec-item">
@@ -422,7 +512,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <polygon points="5 3 19 12 5 21 5 3"></polygon>
             </svg>
-            <span>Start Chemistry Test</span>
+            <span>Start Test</span>
           </a>
 
           <a href="/exam/player?id=sohan-chem-mock&guest=1&review=1" class="btn-secondary">
@@ -440,7 +530,7 @@
     </div>
 
     <div class="footer-note">
-      StudyFAM Assessment Platform • Offline LaTeX Paper available in <code>sohanmock/Gravitation_JEE_Advanced_Hard_Test.tex</code>
+      StudyFAM Assessment Platform • Offline LaTeX Papers available in <code>sohanmock/</code>
     </div>
   </div>
 
