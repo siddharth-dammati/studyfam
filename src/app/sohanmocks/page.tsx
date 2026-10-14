@@ -243,6 +243,75 @@ export default function SohanMocksPage() {
             </div>
           </div>
 
+          {/* Card 4: Work, Power & Energy Full Mock Test - NEW */}
+          <div className="bg-slate-900/80 border border-violet-500/30 rounded-3xl p-6 sm:p-7 backdrop-blur-xl shadow-2xl relative flex flex-col justify-between overflow-hidden group hover:border-violet-500/60 transition-all">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500" />
+            
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/15 text-violet-300 text-xs font-bold uppercase tracking-wide border border-violet-500/30">
+                  <Zap className="w-3.5 h-3.5 text-violet-400" />
+                  Physics • High Yield
+                </span>
+                <span className="text-xs font-mono font-bold text-violet-400 bg-violet-950/40 border border-violet-500/20 px-2.5 py-0.5 rounded-md">
+                  JEE Main & Adv
+                </span>
+              </div>
+
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-white group-hover:text-violet-200 transition-colors">
+                  Work, Power & Energy
+                </h2>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-400 mb-5 font-medium leading-relaxed">
+                25 core problems with 7 diagrams: Lennard-Jones potential, vertical circle tension & slacking, rough incline friction, spring compression, loop-the-loop, two blocks with spring, and hanging chain.
+              </p>
+
+              {/* Metrics */}
+              <div className="grid grid-cols-3 gap-2 mb-5">
+                <div className="bg-slate-800/60 border border-white/5 rounded-xl p-2.5 text-center">
+                  <div className="text-lg font-extrabold font-mono text-violet-400">25</div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400 mt-0.5">Questions</div>
+                </div>
+                <div className="bg-slate-800/60 border border-white/5 rounded-xl p-2.5 text-center">
+                  <div className="text-lg font-extrabold font-mono text-purple-400">60m</div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400 mt-0.5">Duration</div>
+                </div>
+                <div className="bg-slate-800/60 border border-white/5 rounded-xl p-2.5 text-center">
+                  <div className="text-lg font-extrabold font-mono text-indigo-400">100</div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400 mt-0.5">Max Marks</div>
+                </div>
+              </div>
+
+              <div className="text-xs text-slate-400 bg-white/5 border border-white/5 rounded-xl py-2 px-3 mb-5 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Pattern: 20 MCQs (+4/-1) + 5 Numericals (+4/0)</span>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col gap-2 mt-auto">
+              <Link
+                href="/exam/player?id=sohan-wpe-mock&guest=1"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm shadow-[0_8px_20px_-4px_rgba(139,92,246,0.5)] transition-all transform hover:-translate-y-0.5 active:scale-95 border border-white/20"
+              >
+                <Play className="w-4 h-4 fill-current" />
+                <span>Start Test</span>
+              </Link>
+              <Link
+                href="/exam/player?id=sohan-wpe-mock&guest=1&review=1"
+                className="w-full inline-flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-semibold text-xs border border-white/10 transition-all"
+              >
+                <FileText className="w-3.5 h-3.5 text-slate-400" />
+                <span>View Solutions & Key</span>
+              </Link>
+            </div>
+          </div>
+
         </div>
 
         {/* Footer info */}

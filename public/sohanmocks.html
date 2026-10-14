@@ -159,6 +159,22 @@
       background: linear-gradient(90deg, #3b82f6, #6366f1, #10b981);
     }
 
+    .card.wpe {
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+    .card.wpe:hover {
+      border-color: rgba(139, 92, 246, 0.6);
+    }
+    .card.wpe::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #8b5cf6, #a855f7, #6366f1);
+    }
+
     .card-top {
       display: flex;
       justify-content: space-between;
@@ -193,6 +209,12 @@
       border: 1px solid rgba(59, 130, 246, 0.3);
     }
 
+    .pill-tag.violet {
+      background: rgba(139, 92, 246, 0.15);
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
     .level-badge {
       font-family: var(--font-mono);
       font-size: 0.75rem;
@@ -214,6 +236,11 @@
       background: rgba(37, 99, 235, 0.2);
       color: #93c5fd;
       border: 1px solid rgba(37, 99, 235, 0.3);
+    }
+    .level-badge.violet {
+      background: rgba(139, 92, 246, 0.2);
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.3);
     }
 
     h2.test-title {
@@ -261,6 +288,8 @@
     .spec-val.red { color: #f87171; }
     .spec-val.blue { color: #60a5fa; }
     .spec-val.indigo { color: #a5b4fc; }
+    .spec-val.violet { color: #a78bfa; }
+    .spec-val.purple { color: #c084fc; }
 
     .spec-label {
       font-size: 0.65rem;
@@ -327,6 +356,16 @@
       background: linear-gradient(135deg, #3b82f6, #4338ca);
       transform: translateY(-2px);
       box-shadow: 0 12px 25px -4px rgba(37, 99, 235, 0.65);
+    }
+
+    .btn-start.violet-grad {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      box-shadow: 0 8px 20px -4px rgba(139, 92, 246, 0.45);
+    }
+    .btn-start.violet-grad:hover {
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px -4px rgba(139, 92, 246, 0.65);
     }
 
     .btn-secondary {
@@ -516,6 +555,57 @@
           </a>
 
           <a href="/exam/player?id=sohan-chem-mock&guest=1&review=1" class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>View Step-by-Step Solutions</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4: Work, Power & Energy Full Mock Test -->
+      <div class="card wpe">
+        <div>
+          <div class="card-top">
+            <span class="pill-tag violet">Physics • High Yield</span>
+            <span class="level-badge violet">JEE Main & Adv</span>
+          </div>
+          <h2 class="test-title">Work, Power & Energy</h2>
+          <p class="test-desc">25 core problems with 7 diagrams: Lennard-Jones potential, vertical circle tension & slacking, rough incline friction, spring compression, loop-the-loop, two blocks with spring, and hanging chain.</p>
+
+          <div class="specs">
+            <div class="spec-item">
+              <div class="spec-val violet">25</div>
+              <div class="spec-label">Questions</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val purple">60m</div>
+              <div class="spec-label">Duration</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val indigo">100</div>
+              <div class="spec-label">Max Marks</div>
+            </div>
+          </div>
+
+          <div class="notice">
+            <span>20 MCQs (+4/-1) + 5 Integer Numericals (+4/0)</span>
+          </div>
+        </div>
+
+        <div>
+          <a href="/exam/player?id=sohan-wpe-mock&guest=1" class="btn-start violet-grad">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Start Test</span>
+          </a>
+
+          <a href="/exam/player?id=sohan-wpe-mock&guest=1&review=1" class="btn-secondary">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>

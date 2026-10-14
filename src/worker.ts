@@ -6,6 +6,7 @@ import MFT_QUESTIONS_BY_FILE from "../questions_database/mft_questions.json";
 import SOHAN_CHEM_MOCK from "../questions_database/custom_tests/sohan-chem-mock.json";
 import SOHAN_GRAVITATION_MOCK from "../questions_database/custom_tests/sohan-gravitation-mock.json";
 import SOHAN_GRAVITATION_MEDIUM_MOCK from "../questions_database/custom_tests/sohan-gravitation-medium-mock.json";
+import SOHAN_WPE_MOCK from "../questions_database/custom_tests/sohan-wpe-mock.json";
 
 export interface Env {
   ASSETS: {
@@ -1753,12 +1754,15 @@ async function handleExamSubmit(request: Request, env: Env): Promise<Response> {
     const sectionBreakdown: any[] = [];
     const detailedResults: any[] = [];
 
-    // ── Case 0: Unlisted Sohan Mock Tests (Chemistry & Gravitation) ─────────
+    // ── Case 0: Unlisted Sohan Mock Tests (Chemistry, Gravitation, Work Power Energy) ─────────
+    const isSohanWpeSubmit = cleanTestId === "sohan-wpe-mock" || cleanTestId.toLowerCase().includes("wpe") || cleanTestId.toLowerCase().includes("work");
     const isSohanGravMedSubmit = cleanTestId === "sohan-gravitation-medium-mock" || cleanTestId.toLowerCase().includes("medium");
     const isSohanGravHardSubmit = cleanTestId === "sohan-gravitation-mock" || cleanTestId.toLowerCase().includes("gravitation");
     const isSohanChemSubmit = cleanTestId === "sohan-chem-mock" || cleanTestId.toLowerCase().includes("sohan");
-    if (isSohanGravMedSubmit || isSohanGravHardSubmit || isSohanChemSubmit) {
-      const activeMock = isSohanGravMedSubmit ? SOHAN_GRAVITATION_MEDIUM_MOCK : (isSohanGravHardSubmit ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK);
+    if (isSohanWpeSubmit || isSohanGravMedSubmit || isSohanGravHardSubmit || isSohanChemSubmit) {
+      const activeMock = isSohanWpeSubmit
+        ? SOHAN_WPE_MOCK
+        : (isSohanGravMedSubmit ? SOHAN_GRAVITATION_MEDIUM_MOCK : (isSohanGravHardSubmit ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK));
       const questions = activeMock.sections[0].questions;
       const marksPerQ = activeMock.marks_per_question || 4;
       const negMarks = activeMock.negative_marks || 1;
@@ -2151,12 +2155,15 @@ async function handleExamDetail(request: Request, env: Env): Promise<Response> {
     // Decode and normalise: "MFT-1.pdf", "MFT-1", "MFT-01" all resolve to "MFT-1.pdf"
     const cleanId = decodeURIComponent(rawId);
 
-    // Support Unlisted Sohan Mock Tests (Chemistry & Gravitation)
+    // Support Unlisted Sohan Mock Tests (Chemistry, Gravitation, Work Power Energy)
+    const isSohanWpeGet = cleanId === "sohan-wpe-mock" || cleanId.toLowerCase().includes("wpe") || cleanId.toLowerCase().includes("work");
     const isSohanGravMedGet = cleanId === "sohan-gravitation-medium-mock" || cleanId.toLowerCase().includes("medium");
     const isSohanGravHardGet = cleanId === "sohan-gravitation-mock" || cleanId.toLowerCase().includes("gravitation");
     const isSohanChemGet = cleanId === "sohan-chem-mock" || cleanId.toLowerCase().includes("sohan");
-    if (isSohanGravMedGet || isSohanGravHardGet || isSohanChemGet) {
-      const activeMock = isSohanGravMedGet ? SOHAN_GRAVITATION_MEDIUM_MOCK : (isSohanGravHardGet ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK);
+    if (isSohanWpeGet || isSohanGravMedGet || isSohanGravHardGet || isSohanChemGet) {
+      const activeMock = isSohanWpeGet
+        ? SOHAN_WPE_MOCK
+        : (isSohanGravMedGet ? SOHAN_GRAVITATION_MEDIUM_MOCK : (isSohanGravHardGet ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK));
       const sanitizedSections = activeMock.sections.map((sec: any) => ({
         name: sec.name,
         questions: sec.questions.map((q: any) => ({
@@ -2297,12 +2304,15 @@ async function handleExamSolutions(request: Request, env: Env): Promise<Response
 
     const cleanId = decodeURIComponent(rawId);
 
-    // Support Unlisted Sohan Mock Solutions (Chemistry & Gravitation)
+    // Support Unlisted Sohan Mock Solutions (Chemistry, Gravitation, Work Power Energy)
+    const isSohanWpeSol = cleanId === "sohan-wpe-mock" || cleanId.toLowerCase().includes("wpe") || cleanId.toLowerCase().includes("work");
     const isSohanGravMedSol = cleanId === "sohan-gravitation-medium-mock" || cleanId.toLowerCase().includes("medium");
     const isSohanGravHardSol = cleanId === "sohan-gravitation-mock" || cleanId.toLowerCase().includes("gravitation");
     const isSohanChemSol = cleanId === "sohan-chem-mock" || cleanId.toLowerCase().includes("sohan");
-    if (isSohanGravMedSol || isSohanGravHardSol || isSohanChemSol) {
-      const activeMock = isSohanGravMedSol ? SOHAN_GRAVITATION_MEDIUM_MOCK : (isSohanGravHardSol ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK);
+    if (isSohanWpeSol || isSohanGravMedSol || isSohanGravHardSol || isSohanChemSol) {
+      const activeMock = isSohanWpeSol
+        ? SOHAN_WPE_MOCK
+        : (isSohanGravMedSol ? SOHAN_GRAVITATION_MEDIUM_MOCK : (isSohanGravHardSol ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK));
       const questions = activeMock.sections[0].questions;
       const userResponses: Record<string, string> = body.responses || {};
       const marksPerQ = activeMock.marks_per_question || 4;

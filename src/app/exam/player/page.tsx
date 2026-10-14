@@ -15,6 +15,7 @@ import Link from "next/link";
 import SOHAN_CHEM_MOCK from "@/../questions_database/custom_tests/sohan-chem-mock.json";
 import SOHAN_GRAVITATION_MOCK from "@/../questions_database/custom_tests/sohan-gravitation-mock.json";
 import SOHAN_GRAVITATION_MEDIUM_MOCK from "@/../questions_database/custom_tests/sohan-gravitation-medium-mock.json";
+import SOHAN_WPE_MOCK from "@/../questions_database/custom_tests/sohan-wpe-mock.json";
 
 function evaluateSohanMockLocally(
   responses: Record<string, string>,
@@ -22,10 +23,13 @@ function evaluateSohanMockLocally(
   questionTimes?: Record<string, number>,
   testId?: string
 ): EvaluationResult {
+  const isWpe = Boolean(testId && (testId.includes("wpe") || testId.includes("work") || testId === "sohan-wpe-mock"));
   const isGravMed = Boolean(testId && (testId.includes("medium") || testId === "sohan-gravitation-medium-mock"));
   const isGravHard = Boolean(testId && (testId.includes("gravitation") || testId === "sohan-gravitation-mock"));
-  const isGrav = isGravMed || isGravHard;
-  const activeMock = isGravMed ? SOHAN_GRAVITATION_MEDIUM_MOCK : (isGravHard ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK);
+  const isPhysics = isWpe || isGravMed || isGravHard;
+  const activeMock = isWpe
+    ? SOHAN_WPE_MOCK
+    : (isGravMed ? SOHAN_GRAVITATION_MEDIUM_MOCK : (isGravHard ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK));
   const questions = activeMock.sections[0].questions;
   let totalQuestions = 0;
   let attemptedCount = 0;
@@ -39,7 +43,7 @@ function evaluateSohanMockLocally(
 
   for (const q of questions) {
     totalQuestions++;
-    const sec = q.subject || (isGrav ? "Physics" : "Chemistry");
+    const sec = q.subject || (isPhysics ? "Physics" : "Chemistry");
     if (!sectionMap.has(sec)) sectionMap.set(sec, { total: 0, attempted: 0, correct: 0, incorrect: 0, score: 0 });
     const s = sectionMap.get(sec)!;
     s.total++;
@@ -227,19 +231,25 @@ function ExamPlayerContent() {
             };
           }
         } else if (
+          id === "sohan-wpe-mock" ||
           id === "sohan-gravitation-medium-mock" ||
           id === "sohan-gravitation-mock" ||
           id === "sohan-chem-mock" ||
+          id.toLowerCase().includes("wpe") ||
+          id.toLowerCase().includes("work") ||
           id.toLowerCase().includes("medium") ||
           id.toLowerCase().includes("gravitation") ||
           id.toLowerCase().includes("sohan")
         ) {
           // Direct guaranteed instant load for Sohan Mock Tests
+          const isWpeTest = id === "sohan-wpe-mock" || id.toLowerCase().includes("wpe") || id.toLowerCase().includes("work");
           const isGravMedTest = id === "sohan-gravitation-medium-mock" || id.toLowerCase().includes("medium");
           const isGravHardTest = id === "sohan-gravitation-mock" || id.toLowerCase().includes("gravitation");
-          const targetMock = isGravMedTest
-            ? SOHAN_GRAVITATION_MEDIUM_MOCK
-            : (isGravHardTest ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK);
+          const targetMock = isWpeTest
+            ? SOHAN_WPE_MOCK
+            : (isGravMedTest
+                ? SOHAN_GRAVITATION_MEDIUM_MOCK
+                : (isGravHardTest ? SOHAN_GRAVITATION_MOCK : SOHAN_CHEM_MOCK));
           testData = {
             id: targetMock.id,
             title: targetMock.title,

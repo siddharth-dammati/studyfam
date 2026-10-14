@@ -53,3 +53,5 @@ free mocks data/
 test_extracted_images/
 .wrangler/
 scratch/
+scratch_*
+temp_*
