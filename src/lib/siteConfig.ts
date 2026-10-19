@@ -71,9 +71,9 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     examTimeLabel: "9:00 AM – 12:00 PM IST",
     registrationFee: 27,
     supportAmount: 18,
-    registrationOpen: false,
-    targetDateIso: "2026-10-20T00:00:00+05:30",
-    showLiveCounters: false,
+    registrationOpen: true,
+    targetDateIso: "2026-10-19T00:00:00+05:30",
+    showLiveCounters: true,
   },
   scholarship: {
     scenarioHeadline: "Projected Scenario (If 50,000 Aspirants Register · 1,000 Winners)",
@@ -118,9 +118,9 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     },
   ],
   registration: {
-    bannerNotice: "⏳ All-India Registrations open on October 20, 2026. Join the priority waitlist now!",
-    bannerNoticeEnabled: true,
-    countdownMode: true,
+    bannerNotice: "",
+    bannerNoticeEnabled: false,
+    countdownMode: false,
     minIncomeExclusionRule: true,
     enabledStreams: ["class-11", "class-12", "dropper"],
   },
@@ -144,9 +144,9 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   announcement: {
     enabled: true,
     badge: "SCHOLARSHIP MOCK",
-    text: "All-India JEE Main 2027 Mock Test opens on October 20, 2026. 50% Merit · 50% Need-Based fee sponsorships!",
-    linkText: "Explore National Mock →",
-    linkUrl: "/all-india-mock",
+    text: "All-India JEE Main 2027 Mock Test registrations are LIVE! 50% Merit · 50% Need-Based fee sponsorships!",
+    linkText: "Register Now →",
+    linkUrl: "/#register",
   },
 };
 

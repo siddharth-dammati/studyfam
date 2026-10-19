@@ -56,29 +56,8 @@ export function AllIndiaMockTokkoPage() {
     return () => clearInterval(interval);
   }, [examTarget]);
 
-  // Countdown to 20 Oct 2026, 00:00 IST (Registration Date)
-  const regTarget = new Date("2026-10-20T00:00:00+05:30").getTime();
-  const [regClock, setRegClock] = useState({ text: "Registrations open in", time: "--", live: false });
-
-  useEffect(() => {
-    const tickReg = () => {
-      const now = Date.now();
-      const diff = regTarget - now;
-      if (diff <= 0 || isOpen) {
-        setRegClock({ text: "Registrations are LIVE", time: "● OPEN NOW", live: true });
-      } else {
-        const d = Math.floor(diff / 864e5);
-        const h = String(Math.floor((diff / 36e5) % 24)).padStart(2, "0");
-        const m = String(Math.floor((diff / 6e4) % 60)).padStart(2, "0");
-        const s = String(Math.floor((diff / 1e3) % 60)).padStart(2, "0");
-        const timeStr = d > 0 ? `${d}d : ${h}h : ${m}m : ${s}s` : `${h}h : ${m}m : ${s}s`;
-        setRegClock({ text: "Registrations open in", time: timeStr, live: false });
-      }
-    };
-    tickReg();
-    const interval = setInterval(tickReg, 1000);
-    return () => clearInterval(interval);
-  }, [regTarget, isOpen]);
+  // Registrations are permanently LIVE
+  const [regClock] = useState({ text: "Registrations are LIVE", time: "● OPEN NOW", live: true });
 
   // Scroll Nav Shadow
   useEffect(() => {
@@ -89,17 +68,12 @@ export function AllIndiaMockTokkoPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Pre-Registration Form State
+  // Registration Form State
   const [regForm, setRegForm] = useState({ name: "", phone: "", stream: "class-12", track: "merit" });
-  const [regSuccess, setRegSuccess] = useState(false);
 
   const handleRegSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!regForm.name || !regForm.phone) return;
-    try {
-      localStorage.setItem("sf_scholarship_waitlist", JSON.stringify(regForm));
-    } catch {}
-    setRegSuccess(true);
+    setRegModalOpen(true);
   };
 
   return (
@@ -214,7 +188,7 @@ export function AllIndiaMockTokkoPage() {
               onClick={() => setRegModalOpen(true)}
               className="btn btn-blue btn-sm"
             >
-              <span>{isOpen ? "Register for ₹27 →" : "Pre-Register / Alert →"}</span>
+              <span>Register for ₹27 →</span>
             </button>
 
             {user ? (
@@ -231,7 +205,7 @@ export function AllIndiaMockTokkoPage() {
         <div className="wrap hero-grid">
           <div>
             <span className="hero-badge">
-              <i></i> Official CBT Scholarship Exam · 27 Dec 2026 · Entry ₹27
+              <i></i> Official CBT Scholarship Exam · 27 Dec 2026 · Registrations LIVE
             </span>
 
             <h1>
@@ -253,7 +227,7 @@ export function AllIndiaMockTokkoPage() {
                 onClick={() => setRegModalOpen(true)}
                 className="btn btn-blue"
               >
-                <span>{isOpen ? "Register Now (₹27) →" : "Pre-Register / Priority Alert →"}</span>
+                <span>Register Now (₹27) →</span>
               </button>
 
               <a className="btn btn-ghost" href="#fee-split">
@@ -266,7 +240,7 @@ export function AllIndiaMockTokkoPage() {
             </div>
 
             <p className="cta-note">
-              Registrations open 20 Oct 2026 · 100% NTA pattern (75 Qs) · Verified escrow pool · UPI refunds in 7 days
+              Registrations are LIVE · 100% NTA pattern (75 Qs) · Verified escrow pool · UPI refunds in 7 days
             </p>
 
             {/* Hero Key Metrics */}
@@ -723,116 +697,98 @@ export function AllIndiaMockTokkoPage() {
         </section>
 
         {/* 11. REGISTRATION / SEAT ALERT SECTION (OCTOBER 19 FOCUS) */}
+        {/* 11. REGISTRATION SECTION (LIVE REGISTRATION) */}
         <section id="register" className="bg-[#fafafa]">
           <div className="wrap">
             <div className="center mb-10">
-              <span className="kick">October 19 Priority Access</span>
-              <h2 className="sec-title">Registrations Open 20 Oct 2026.</h2>
+              <span className="kick">Official CBT Portal</span>
+              <h2 className="sec-title">Official Slot Registration</h2>
               <p className="sec-sub center">
-                Reserve your spot now to receive instantaneous SMS/WhatsApp notifications and priority seat allocation the moment registration goes live.
+                Secure your proctored CBT examination seat for Sunday, 27 Dec 2026. Entry fee ₹27 with ₹18 locked in verified scholarship refund escrow.
               </p>
             </div>
 
             <div className="max-w-xl mx-auto bg-white border border-[rgba(26,26,26,0.1)] rounded-[32px] p-6 sm:p-10 shadow-lg">
-              <div className={`reg-open ${regClock.live ? "live" : ""}`} style={{ background: "#fffbeb", borderColor: "#fde68a", color: "#92400e", width: "100%", justifyContent: "center" }}>
-                <span className="ro-dot"></span>
-                <span className="ro-text">{regClock.text}</span>
-                <b className="ro-time">{regClock.time}</b>
+              <div className="reg-open live" style={{ background: "#ecfdf5", borderColor: "#a7f3d0", color: "#065f46", width: "100%", justifyContent: "center", marginBottom: "20px" }}>
+                <span className="ro-dot" style={{ background: "#10b981", boxShadow: "0 0 10px #10b981" }}></span>
+                <span className="ro-text" style={{ fontWeight: 700 }}>● REGISTRATIONS ARE LIVE</span>
+                <b className="ro-time" style={{ color: "#047857" }}>ENTRY ₹27 · 100% REFUND POOL</b>
               </div>
 
-              {regSuccess ? (
-                <div className="text-center py-6 space-y-4">
-                  <div className="text-5xl">🎉</div>
-                  <h3 className="text-2xl font-bold text-slate-900">
-                    You are on the Priority Waitlist!
-                  </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    Thank you, <strong>{regForm.name}</strong>. We will notify you directly at <strong>{regForm.phone}</strong> the exact moment registration links go live on 20 Oct 2026.
-                  </p>
-                  <div className="pt-2">
-                    <button
-                      onClick={() => setRegModalOpen(true)}
-                      className="btn btn-blue btn-sm"
+              <form onSubmit={handleRegSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Candidate name (as per Aadhaar / School ID)"
+                    value={regForm.name}
+                    onChange={(e) => setRegForm({ ...regForm, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1a5fe0] transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
+                    10-Digit Mobile / WhatsApp Number
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    pattern="[0-9]{10}"
+                    maxLength={10}
+                    placeholder="WhatsApp number for admit card & alerts"
+                    value={regForm.phone}
+                    onChange={(e) => setRegForm({ ...regForm, phone: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1a5fe0] transition-colors"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
+                      Appearing Batch
+                    </label>
+                    <select
+                      value={regForm.stream}
+                      onChange={(e) => setRegForm({ ...regForm, stream: e.target.value })}
+                      className="w-full px-3 py-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1a5fe0]"
                     >
-                      Open Full Registration Form →
-                    </button>
+                      <option value="class-12">Class 12 (JEE 2027)</option>
+                      <option value="dropper">Dropper (JEE 2027)</option>
+                      <option value="class-11">Class 11 (JEE 2028)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
+                      Scholarship Track
+                    </label>
+                    <select
+                      value={regForm.track}
+                      onChange={(e) => setRegForm({ ...regForm, track: e.target.value })}
+                      className="w-full px-3 py-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1a5fe0]"
+                    >
+                      <option value="merit">Pure Merit (50%)</option>
+                      <option value="need">Need-Based (≤ 8 LPA)</option>
+                    </select>
                   </div>
                 </div>
-              ) : (
-                <form onSubmit={handleRegSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Candidate name (as per Aadhaar / School ID)"
-                      value={regForm.name}
-                      onChange={(e) => setRegForm({ ...regForm, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1a5fe0] transition-colors"
-                    />
-                  </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
-                      10-Digit Mobile / WhatsApp Number
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      pattern="[0-9]{10}"
-                      maxLength={10}
-                      placeholder="WhatsApp number for admit card alerts"
-                      value={regForm.phone}
-                      onChange={(e) => setRegForm({ ...regForm, phone: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1a5fe0] transition-colors"
-                    />
-                  </div>
+                <button
+                  type="submit"
+                  className="w-full btn btn-blue mt-2"
+                >
+                  <span>Proceed to Register &amp; Pay ₹27 →</span>
+                </button>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
-                        Appearing Batch
-                      </label>
-                      <select
-                        value={regForm.stream}
-                        onChange={(e) => setRegForm({ ...regForm, stream: e.target.value })}
-                        className="w-full px-3 py-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1a5fe0]"
-                      >
-                        <option value="class-12">Class 12 (JEE 2027)</option>
-                        <option value="dropper">Dropper (JEE 2027)</option>
-                        <option value="class-11">Class 11 (JEE 2028)</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
-                        Scholarship Track
-                      </label>
-                      <select
-                        value={regForm.track}
-                        onChange={(e) => setRegForm({ ...regForm, track: e.target.value })}
-                        className="w-full px-3 py-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1a5fe0]"
-                      >
-                        <option value="merit">Pure Merit (50%)</option>
-                        <option value="need">Need-Based (≤ 8 LPA)</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full btn btn-blue mt-2"
-                  >
-                    <span>Pre-Register for Priority Alert →</span>
-                  </button>
-
-                  <p className="text-[11px] text-center text-slate-400 mt-2 font-mono">
-                    DPDP Act 2023 Compliant · Zero Spam · Direct SMS/WhatsApp Dispatch
-                  </p>
-                </form>
-              )}
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+                  <span>🔒 Secured by Cashfree PG</span>
+                  <span>UPI · Cards · Netbanking</span>
+                </div>
+              </form>
             </div>
           </div>
         </section>

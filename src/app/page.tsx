@@ -108,8 +108,8 @@ export default function HomePage() {
           "@type": "Offer",
           price: "27",
           priceCurrency: "INR",
-          validFrom: "2026-10-20T00:00:00+05:30",
-          availability: "https://schema.org/PreOrder",
+          validFrom: "2026-10-19T00:00:00+05:30",
+          availability: "https://schema.org/InStock",
           url: "https://studyfam.in/#register",
         },
         organizer: {

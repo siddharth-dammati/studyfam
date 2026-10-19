@@ -98,7 +98,7 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
                 }`}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                {isConfirmed ? "Registration Confirmed" : "Waitlist Active"}
+                {isConfirmed ? "Registration Confirmed" : "Payment Pending"}
               </span>
               <span className="text-xs text-slate-500 font-mono">
                 {isConfirmed ? `₹${registration.amount_paid || 27} Paid` : "₹0 Paid"}
@@ -259,10 +259,10 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
             <div>
               <div className="flex items-center gap-2 text-amber-900 font-bold text-xs">
                 <Sparkles size={15} className="text-amber-600 shrink-0" />
-                <span>Mock Registrations are Open!</span>
+                <span>Registrations are LIVE!</span>
               </div>
               <p className="text-xs text-amber-800 mt-1 leading-relaxed">
-                You are on the waitlist. Pay <strong>₹27</strong> to lock your official All-India CBT seat and compete for the fee scholarship pool.
+                Your seat reservation is pending. Pay <strong>₹27</strong> to lock your official All-India CBT seat and compete for the fee scholarship pool.
               </p>
             </div>
             <button

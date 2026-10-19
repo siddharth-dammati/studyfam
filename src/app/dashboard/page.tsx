@@ -442,7 +442,7 @@ export default function DashboardPage() {
                 {isConfirmed ? "Seat Locked" : "Registered"} · 27 Dec
               </div>
               <div className="text-[11px] text-emerald-600 font-medium truncate">
-                {isConfirmed ? "Official Slot Confirmed" : "Pre-Registered"}
+                {isConfirmed ? "Official Slot Confirmed" : "Registration Pending"}
               </div>
             </div>
           </div>

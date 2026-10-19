@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useSiteConfig } from "@/context/SiteConfigContext";
 
-// Registrations target opening date: October 20, 2026
-export const DEFAULT_TARGET_DATE = new Date("2026-10-20T00:00:00+05:30");
+// Registrations are officially LIVE (Opened 19 October 2026)
+export const DEFAULT_TARGET_DATE = new Date("2026-10-19T00:00:00+05:30");
 
 export function useRegistrationState() {
   const { config } = useSiteConfig();
@@ -37,12 +37,13 @@ export function useRegistrationState() {
   const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
+  // Registrations are permanently live
   return {
-    isOpen: isClient ? isOpen : false,
-    days,
-    hours,
-    minutes,
-    seconds,
+    isOpen: true,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
     isClient,
     targetDate,
   };

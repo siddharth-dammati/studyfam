@@ -14,10 +14,10 @@ import Link from "next/link";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  isMockOpen: boolean;
+  isMockOpen?: boolean;
 }
 
-export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
+export function RegistrationModal({ isOpen, onClose, isMockOpen = true }: Props) {
   const { config } = useSiteConfig();
   const { profile } = useAuth();
   const [step, setStep] = useState(1);
@@ -237,9 +237,7 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
             </h3>
 
             <p className="text-xs sm:text-sm text-slate-600 mb-5 leading-relaxed">
-              {isMockOpen 
-                ? "Your seat for the All-India Mock Test on 27 December 2026 (9:00 AM - 12:00 PM) is officially locked in."
-                : "Thank you for joining! Your priority waitlist spot is confirmed. We will notify you via WhatsApp and Email the moment registrations open on October 20, 2026."}
+              Your seat for the All-India Mock Test on 27 December 2026 (9:00 AM - 12:00 PM) is officially locked in.
             </p>
 
             {/* Payment & Candidate Receipt */}
@@ -311,13 +309,11 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
 
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-2xl font-bold text-slate-900 tracking-tight">
-                {isMockOpen ? "Complete Registration" : "Join Official Waitlist"}
+                Complete Registration
               </h3>
             </div>
             <p className="text-xs sm:text-sm text-slate-600 mb-5 font-medium">
-              {isMockOpen 
-                ? `Pay ₹${config?.hero?.registrationFee || 27} via UPI, Cards, or Netbanking to lock your All-India Mock seat.` 
-                : "Registrations will open on October 20, 2026. Join the priority waitlist to lock your early access."}
+              Pay ₹{config?.hero?.registrationFee || 27} via UPI, Cards, or Netbanking to lock your All-India Mock seat.
             </p>
 
             {errorMsg && (
@@ -532,19 +528,15 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen }: Props) {
                     <span className="flex items-center justify-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin" /> {loadingText}
                     </span>
-                  ) : isMockOpen ? (
-                    "Pay ₹27 & Confirm Spot"
                   ) : (
-                    "Join Priority Waitlist — Free"
+                    "Pay ₹27 & Confirm Spot"
                   )}
                 </Button>
               </div>
 
-              {isMockOpen && (
-                <p className="text-[11px] text-center text-slate-400">
-                  Secured by Cashfree Payments · UPI, Cards, Netbanking supported
-                </p>
-              )}
+              <p className="text-[11px] text-center text-slate-400">
+                Secured by Cashfree Payments · UPI, Cards, Netbanking supported
+              </p>
             </form>
           </>
         )}

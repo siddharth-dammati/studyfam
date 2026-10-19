@@ -64,28 +64,8 @@ export function StudyFamTokkoPage() {
     return () => clearInterval(interval);
   }, [examTarget]);
 
-  // Countdown to 20 Oct 2026, 00:00 IST (Registration Date)
-  const regTarget = new Date("2026-10-20T00:00:00+05:30").getTime();
-  const [regClock, setRegClock] = useState({ text: "Registrations open in", time: "--", live: false });
-
-  useEffect(() => {
-    const tickReg = () => {
-      const now = Date.now();
-      const diff = regTarget - now;
-      if (diff <= 0) {
-        setRegClock({ text: "Registrations are OPEN", time: "● LIVE", live: true });
-      } else {
-        const d = Math.floor(diff / 864e5);
-        const h = String(Math.floor((diff / 36e5) % 24)).padStart(2, "0");
-        const m = String(Math.floor((diff / 6e4) % 60)).padStart(2, "0");
-        const s = String(Math.floor((diff / 1e3) % 60)).padStart(2, "0");
-        setRegClock({ text: "Registrations open in", time: `${d}d : ${h}h : ${m}m : ${s}s`, live: false });
-      }
-    };
-    tickReg();
-    const interval = setInterval(tickReg, 1000);
-    return () => clearInterval(interval);
-  }, [regTarget]);
+  // Registrations are permanently LIVE
+  const [regClock] = useState({ text: "Registrations are OPEN", time: "● LIVE", live: true });
 
   // Scroll Nav Shadow
   useEffect(() => {
@@ -137,18 +117,6 @@ export function StudyFamTokkoPage() {
     }
   }, []);
 
-  // Pre-Registration Form State
-  const [regForm, setRegForm] = useState({ name: "", phone: "", stream: "" });
-  const [regSuccess, setRegSuccess] = useState(false);
-
-  const handleRegSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!regForm.name || !regForm.phone) return;
-    try {
-      localStorage.setItem("sf_tokko_waitlist", JSON.stringify(regForm));
-    } catch {}
-    setRegSuccess(true);
-  };
 
   return (
     <>
@@ -810,7 +778,7 @@ export function StudyFamTokkoPage() {
                     <a className="btn btn-line" href="#pricing">See plans</a>
                   </div>
                   <p style={{ fontSize: "13px", color: "rgba(255,255,255,.55)", marginTop: "12px" }}>
-                    Registration opens 20 Oct 2026 · 50% merit + 50% need tracks · Equal opportunity 50:50 · Ranks in 48 hrs · UPI payout in 7 days
+                    Registrations are LIVE · 50% merit + 50% need tracks · Equal opportunity 50:50 · Ranks in 48 hrs · UPI payout in 7 days
                   </p>
                 </div>
 
@@ -990,7 +958,7 @@ export function StudyFamTokkoPage() {
               </details>
               <details>
                 <summary>When is the Scholarship Mock?</summary>
-                <p>27 Dec 2026, 9:00 AM–12:00 PM IST (report 8:00 AM, gate closes 8:30 AM). Entry ₹27 — ₹18 to the scholarship pool, ₹9 to platform &amp; proctoring. Registration opens 20 Oct 2026.</p>
+                <p>27 Dec 2026, 9:00 AM–12:00 PM IST (report 8:00 AM, gate closes 8:30 AM). Entry ₹27 — ₹18 to the scholarship pool, ₹9 to platform &amp; proctoring. Registrations are LIVE.</p>
               </details>
               <details>
                 <summary>Who wins the scholarship?</summary>
@@ -1004,13 +972,13 @@ export function StudyFamTokkoPage() {
           </div>
         </section>
 
-        {/* 14. Seat Alert / Pre-Registration Form */}
+        {/* 14. Registration Section */}
         <section id="register" style={{ paddingTop: 0 }}>
           <div className="wrap">
             <div className="center">
-              <span className="kick">Seat alert</span>
-              <h2 className="sec-title">Don&apos;t miss 20 Oct.</h2>
-              <p className="sec-sub center">Drop your details — we&apos;ll ping you the moment registration opens.</p>
+              <span className="kick">Official CBT Portal</span>
+              <h2 className="sec-title">Registrations are LIVE.</h2>
+              <p className="sec-sub center">Secure your proctored CBT examination seat for Sunday, 27 Dec 2026.</p>
             </div>
             <div className="regbox" style={{ maxWidth: "560px", margin: "32px auto 0", background: "#fff", border: "1px solid var(--line)", borderRadius: "28px", padding: "34px", boxShadow: "0 30px 60px -35px rgba(0,0,0,.3)" }}>
               <div className={`reg-open ${regClock.live ? "live" : ""}`} style={{ background: "#fffbeb", borderColor: "#fde68a", color: "#92400e" }}>
@@ -1019,60 +987,14 @@ export function StudyFamTokkoPage() {
                 <b className="ro-time">{regClock.time}</b>
               </div>
 
-              {regSuccess ? (
-                <div style={{ textAlign: "center", padding: "20px 0" }}>
-                  <div style={{ fontSize: "36px", marginBottom: "10px" }}>🎉</div>
-                  <h3 style={{ fontSize: "22px", color: "var(--b0)", marginBottom: "6px" }}>You&apos;re on the Priority List!</h3>
-                  <p style={{ color: "var(--mut)", fontSize: "15px", marginBottom: "18px" }}>
-                    Thank you, <strong>{regForm.name}</strong>. We will WhatsApp / SMS you directly at <strong>{regForm.phone}</strong> when registrations go live on 20 Oct 2026.
-                  </p>
-                  <Link href="/exam/player?id=MFT-1.pdf" className="btn btn-blue btn-sm">
-                    Start Practicing Free Mock (MFT-01) →
-                  </Link>
-                </div>
-              ) : (
-                <form onSubmit={handleRegSubmit}>
-                  <label className="sr" htmlFor="nm">Full name</label>
-                  <input
-                    id="nm"
-                    required
-                    placeholder="Full name (as per school ID)"
-                    autoComplete="name"
-                    value={regForm.name}
-                    onChange={(e) => setRegForm({ ...regForm, name: e.target.value })}
-                    style={{ width: "100%", padding: "14px 18px", borderRadius: "var(--r-xl)", border: "1.5px solid var(--line)", margin: "6px 0", fontSize: "16px", fontFamily: "inherit" }}
-                  />
-                  <label className="sr" htmlFor="ph">Mobile number</label>
-                  <input
-                    id="ph"
-                    required
-                    pattern="[0-9]{10}"
-                    maxLength={10}
-                    inputMode="numeric"
-                    placeholder="10-digit mobile number"
-                    autoComplete="tel"
-                    value={regForm.phone}
-                    onChange={(e) => setRegForm({ ...regForm, phone: e.target.value })}
-                    style={{ width: "100%", padding: "14px 18px", borderRadius: "var(--r-xl)", border: "1.5px solid var(--line)", margin: "6px 0", fontSize: "16px", fontFamily: "inherit" }}
-                  />
-                  <label className="sr" htmlFor="cls">Appearing for</label>
-                  <select
-                    id="cls"
-                    required
-                    value={regForm.stream}
-                    onChange={(e) => setRegForm({ ...regForm, stream: e.target.value })}
-                    style={{ width: "100%", padding: "14px 18px", borderRadius: "var(--r-xl)", border: "1.5px solid var(--line)", margin: "6px 0", fontSize: "16px", fontFamily: "inherit", background: "#fff" }}
-                  >
-                    <option value="">Appearing for…</option>
-                    <option value="class-12">JEE Main 2027 (Class 12)</option>
-                    <option value="dropper">JEE Main 2027 (Dropper)</option>
-                    <option value="class-11">Class 11 (JEE 2028)</option>
-                  </select>
-                  <button className="btn btn-dark" style={{ width: "100%", marginTop: "10px" }} type="submit">
-                    Notify me →
-                  </button>
-                </form>
-              )}
+              <div style={{ textAlign: "center", padding: "18px 0" }}>
+                <p style={{ color: "var(--mut)", fontSize: "16px", marginBottom: "20px", lineHeight: "1.5" }}>
+                  Proctored slot allocations, verified scholarship pool participation, and official CBT admit cards are now active.
+                </p>
+                <Link href="/all-india-mock#register" className="btn btn-blue" style={{ width: "100%" }}>
+                  Register for ₹27 →
+                </Link>
+              </div>
             </div>
           </div>
         </section>
