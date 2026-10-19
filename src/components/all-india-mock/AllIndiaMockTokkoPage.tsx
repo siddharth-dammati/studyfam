@@ -88,16 +88,17 @@ export function AllIndiaMockTokkoPage() {
         section[id]{scroll-margin-top:80px}
         .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border-radius:var(--r-xl);padding:16px 34px;font-size:16px;border:1.5px solid transparent;cursor:pointer;transition:transform .18s,box-shadow .2s,background .2s;font-family:inherit;letter-spacing:-.02em;white-space:nowrap}
         .btn:active{transform:scale(.97)}
-        .btn-dark{background:var(--b1);color:#fff}
-        .btn-dark:hover{background:var(--b0);transform:translateY(-2px);box-shadow:0 18px 34px -16px rgba(26,95,224,.55)}
-        .btn-blue{background:linear-gradient(135deg,#0a1c96,#1f6ff2);color:#fff;box-shadow:0 18px 36px -16px rgba(26,95,224,.6)}
-        .btn-blue:hover{transform:translateY(-2px)}
+        .btn-dark, a.btn-dark, button.btn-dark{background:var(--b1);color:#ffffff !important}
+        .btn-dark:hover, a.btn-dark:hover, button.btn-dark:hover{background:var(--b0);transform:translateY(-2px);box-shadow:0 18px 34px -16px rgba(26,95,224,.55);color:#ffffff !important}
+        .btn-blue, a.btn-blue, button.btn-blue{background:linear-gradient(135deg,#0a1c96,#1f6ff2);color:#ffffff !important;box-shadow:0 18px 36px -16px rgba(26,95,224,.6)}
+        .btn-blue:hover, a.btn-blue:hover, button.btn-blue:hover{transform:translateY(-2px);color:#ffffff !important}
+        .all-india-mock-page a.btn-blue, .all-india-mock-page a.btn-blue *, .all-india-mock-page button.btn-blue, .all-india-mock-page button.btn-blue *, .all-india-mock-page a.btn-dark, .all-india-mock-page a.btn-dark *, .all-india-mock-page button.btn-dark, .all-india-mock-page button.btn-dark *{color:#ffffff !important}
         .btn-ghost{background:#fff;border-color:var(--line);color:var(--ink)}
         .btn-ghost:hover{border-color:var(--b1)}
         .btn-lav{background:var(--lav);color:#1a1a1a}
         .btn-lav:hover{background:#c89be9;transform:translateY(-2px)}
-        .btn-line{border-color:rgba(255,255,255,.35);background:transparent;color:#fff}
-        .btn-line:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+        .btn-line, a.btn-line, button.btn-line{border-color:rgba(255,255,255,.35);background:transparent;color:#ffffff !important}
+        .btn-line:hover, a.btn-line:hover, button.btn-line:hover{border-color:#fff;background:rgba(255,255,255,.1);color:#ffffff !important}
         .btn-sm{padding:10px 22px;font-size:14px}
         .ann{background:linear-gradient(100deg,#0a1c96,#1a5fe0 60%,#1f6ff2);color:#fff;font-size:13.5px;text-align:center;padding:10px 16px;font-weight:500}
         .ann .tag{background:var(--lav);color:#1a1a1a;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:var(--r-xl);margin-right:10px}
@@ -236,15 +237,15 @@ export function AllIndiaMockTokkoPage() {
             </button>
 
             {user ? (
-              <Link href="/dashboard" className="btn btn-blue btn-sm">
-                <span>Dashboard →</span>
+              <Link href="/dashboard" className="btn btn-blue btn-sm !text-white text-white">
+                <span className="!text-white text-white">Dashboard →</span>
               </Link>
             ) : (
               <button
                 onClick={() => setRegModalOpen(true)}
-                className="btn btn-blue btn-sm"
+                className="btn btn-blue btn-sm !text-white text-white"
               >
-                <span>Register for ₹27 →</span>
+                <span className="!text-white text-white">Register for ₹27 →</span>
               </button>
             )}
           </div>
@@ -275,15 +276,15 @@ export function AllIndiaMockTokkoPage() {
 
             <div className="cta-row">
               {user ? (
-                <Link href="/dashboard" className="btn btn-blue">
-                  <span>Go to Dashboard →</span>
+                <Link href="/dashboard" className="btn btn-blue !text-white text-white">
+                  <span className="!text-white text-white">Go to Dashboard →</span>
                 </Link>
               ) : (
                 <button
                   onClick={() => setRegModalOpen(true)}
-                  className="btn btn-blue"
+                  className="btn btn-blue !text-white text-white"
                 >
-                  <span>Register Now (₹27) →</span>
+                  <span className="!text-white text-white">Register Now (₹27) →</span>
                 </button>
               )}
 
@@ -797,8 +798,8 @@ export function AllIndiaMockTokkoPage() {
                 </p>
 
                 <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
-                  <Link href="/dashboard" className="btn btn-blue w-full sm:w-auto">
-                    <span>Go to Dashboard →</span>
+                  <Link href="/dashboard" className="btn btn-blue w-full sm:w-auto !text-white text-white">
+                    <span className="!text-white text-white">Go to Dashboard →</span>
                   </Link>
                   <Link href="/exam" className="btn btn-ghost w-full sm:w-auto">
                     <span>Practice 10 Free MFTs</span>
@@ -1098,15 +1099,15 @@ export function AllIndiaMockTokkoPage() {
             </span>
           </div>
           {user ? (
-            <Link href="/dashboard" className="btn btn-blue btn-sm shrink-0 !py-2.5 !px-5">
-              <span>Dashboard →</span>
+            <Link href="/dashboard" className="btn btn-blue btn-sm shrink-0 !py-2.5 !px-5 !text-white text-white">
+              <span className="!text-white text-white">Dashboard →</span>
             </Link>
           ) : (
             <button
               onClick={() => setRegModalOpen(true)}
-              className="btn btn-blue btn-sm shrink-0 !py-2.5 !px-5"
+              className="btn btn-blue btn-sm shrink-0 !py-2.5 !px-5 !text-white text-white"
             >
-              <span>Register for ₹27 →</span>
+              <span className="!text-white text-white">Register for ₹27 →</span>
             </button>
           )}
         </div>
