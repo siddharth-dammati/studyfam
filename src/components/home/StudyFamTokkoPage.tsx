@@ -443,12 +443,7 @@ export function StudyFamTokkoPage() {
         }
       `}} />
 
-      {/* 1. Single Top Announcement Bar */}
-      <div className="ann">
-        <span className="tag">NEW</span>All-India Scholarship Mock · <b>27 Dec 2026, 9 AM IST</b> · Entry ₹27 · Registration opens 20 Oct 2026
-      </div>
-
-      {/* 2. Sticky Navbar with Google Login */}
+      {/* Sticky Navbar with Google Login */}
       <nav id="topnav" className={scrolled ? "scrolled" : ""}>
         <div className="nav-in">
           <Link className="logo" href="/" aria-label="StudyFAM home">

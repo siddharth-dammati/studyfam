@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "katex/dist/katex.min.css";
 import { SiteConfigProvider } from "@/context/SiteConfigContext";
-import { AnnouncementBanner } from "@/components/ui/AnnouncementBanner";
 
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 const geist = Geist({
@@ -251,7 +250,6 @@ export default function RootLayout({
       </head>
       <body className={`font-sans bg-[var(--background)] text-[var(--foreground)] antialiased selection:bg-[var(--accent)]/20 selection:text-[var(--accent)]`}>
         <SiteConfigProvider>
-          <AnnouncementBanner />
           {children}
         </SiteConfigProvider>
       </body>

@@ -186,21 +186,22 @@ export function AllIndiaMockTokkoPage() {
         .count div b{font-size:24px;font-weight:700;display:block;color:#fff;line-height:1}
         .count div span{font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.05em}
 
+        .menu-btn{display:none;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:17px;cursor:pointer;color:var(--ink);flex-shrink:0;font-family:inherit}
+        .mnav{display:none;border-top:1px solid var(--line);background:var(--bg);padding:8px 24px 18px}
+        .mnav.open{display:grid}
+        .mnav a, .mnav button{font-weight:600;font-size:15px;padding:11px 4px;border-bottom:1px solid var(--line);text-align:left;background:none;border-left:none;border-right:none;border-top:none;cursor:pointer;font-family:inherit;color:inherit}
+        .mnav a:last-child, .mnav button:last-child{border-bottom:none}
+
         /* Responsive breakpoints */
         @media(max-width:960px){
           .hero-grid{grid-template-columns:1fr;gap:36px}
           .nav-links{display:none}
+          .menu-btn{display:grid}
           .hero-stats{grid-template-columns:repeat(2,1fr);gap:16px 24px}
         }
       `}} />
 
-      {/* 1. Top Announcement Bar */}
-      <div className="ann">
-        <span className="tag">⚡ OCT 19 ADVISORY</span>
-        All-India Scholarship Mock: <b>Sunday, 27 Dec 2026 (9 AM IST)</b> · Entry ₹27 (₹18 Escrowed Pool) · Registrations Open <b>20 Oct 2026</b>
-      </div>
-
-      {/* 2. Sticky Navbar */}
+      {/* Sticky Navbar */}
       <nav className={scrolled ? "scrolled" : ""}>
         <div className="nav-in">
           <Link className="logo" href="/" aria-label="StudyFAM home">
@@ -239,7 +240,36 @@ export function AllIndiaMockTokkoPage() {
                 Dashboard
               </Link>
             ) : null}
+
+            <button
+              className="menu-btn"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle navigation menu"
+            >
+              {mobileOpen ? "✕" : "☰"}
+            </button>
           </div>
+        </div>
+
+        {/* Mobile Navigation Drawer */}
+        <div className={`mnav ${mobileOpen ? "open" : ""}`}>
+          <a href="#overview" onClick={() => setMobileOpen(false)}>Overview</a>
+          <a href="#fee-split" onClick={() => setMobileOpen(false)}>₹18 Fee Pool</a>
+          <a href="#tracks" onClick={() => setMobileOpen(false)}>Scholarship Tracks</a>
+          <a href="#advantages" onClick={() => setMobileOpen(false)}>Why StudyFAM</a>
+          <a href="#pattern" onClick={() => setMobileOpen(false)}>Exam Pattern</a>
+          <Link href="/exam" onClick={() => setMobileOpen(false)}>10 Free Full MFTs</Link>
+          <Link href="/percentile-analyzer" onClick={() => setMobileOpen(false)}>Percentile Analyzer</Link>
+          {user ? (
+            <Link href="/dashboard" onClick={() => setMobileOpen(false)}>My Dashboard →</Link>
+          ) : (
+            <button
+              onClick={() => { signInWithGoogle("/dashboard"); setMobileOpen(false); }}
+              style={{ color: "var(--b1)", fontWeight: 700 }}
+            >
+              Sign in with Google →
+            </button>
+          )}
         </div>
       </nav>
 

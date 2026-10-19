@@ -1,24 +1,28 @@
 import type { Metadata } from "next";
-import { StudyFamTokkoPage } from "@/components/home/StudyFamTokkoPage";
+import { AllIndiaMockTokkoPage } from "@/components/all-india-mock/AllIndiaMockTokkoPage";
 import { HOME_FAQS } from "@/lib/faqData";
 import { FREE_MOCKS_DATA } from "@/lib/freeMocksData";
 
 export const metadata: Metadata = {
-  title: "StudyFam — India's Free JEE Main CBT Platform & ₹27 National Scholarship Exam",
+  title: "StudyFAM — All-India JEE Main 2027 CBT Mock Test & ₹18 Scholarship Pool",
   description:
-    "Practice 10 free full-length JEE Main mock tests (MFT-01 to MFT-10) with authentic NTA TCS iON CBT interface, question pacing diagnostics, and compete on 27 Dec 2026 in the National Mock (₹27 entry / ₹18 scholarship pool per student). 100% free practice suite forever.",
+    "Compete on 27 Dec 2026 in India's premier proctored JEE Main CBT mock. ₹18 of every ₹27 registration is escrowed to refund 100% of NTA application fees (₹1,000 Boys / ₹800 Girls) across 50% Merit & 50% Need-based tracks. Practice 10 free full-length MFTs forever.",
   keywords: [
-    "free jee mock test",
-    "jee main 2027 mock test free",
     "all india jee mock test",
+    "jee main 2027 scholarship exam",
+    "free jee mock test",
+    "jee main 2026 mock test free",
+    "jee main 2027 mock test",
     "online cbt test series for jee",
     "nta jee main mock test with solutions",
     "tcs ion cbt mock test replica",
-    "full syllabus jee mock test free",
     "jee main cbt simulation",
     "studyfam jee mock",
     "jee test series 75 questions",
     "jee scholarship mock test",
+    "jee application fee refund",
+    "mathongo test series free alternative",
+    "full syllabus jee mock test free",
   ],
   authors: [{ name: "StudyFAM Education" }],
   creator: "StudyFAM",
@@ -28,9 +32,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "StudyFam — Free JEE Main CBT Platform & ₹27 National Scholarship Exam",
+    title: "StudyFAM — All-India JEE Main 2027 CBT Mock Test & ₹18 Scholarship Pool",
     description:
-      "Take 10 free full-length JEE Main mock tests (750 questions) with official TCS iON CBT simulation, All-India rank predictor, and step-by-step solutions. Compete in the 27 Dec All-India Mock (Registrations start 20 Oct 2026).",
+      "Compete on 27 Dec 2026 in India's premier proctored JEE Main CBT mock. ₹18 of every ₹27 registration is escrowed to refund 100% of NTA application fees (₹1,000 Boys / ₹800 Girls) across 50% Merit & 50% Need-based tracks. Practice 10 free full-length MFTs.",
     url: "https://studyfam.in",
     siteName: "StudyFAM",
     locale: "en_IN",
@@ -40,15 +44,15 @@ export const metadata: Metadata = {
         url: "/icon.png",
         width: 512,
         height: 512,
-        alt: "StudyFAM Free JEE Main Mock Tests",
+        alt: "StudyFAM All-India JEE Main CBT Mock Test & Scholarship Exam",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "StudyFam — Free JEE Main CBT Platform",
+    title: "StudyFAM — All-India JEE Main 2027 CBT Mock Test & ₹18 Scholarship Pool",
     description:
-      "Practice 10 free full-length JEE Main mock tests on official TCS iON CBT interface with instant solutions. 27 Dec All-India Mock Registrations open 20 Oct 2026.",
+      "Compete on 27 Dec 2026 in India's premier proctored JEE Main CBT mock. ₹18 of every ₹27 registration is escrowed to refund 100% of NTA application fees. Practice 10 free full MFTs.",
     images: ["/icon.png"],
   },
   robots: {
@@ -81,8 +85,34 @@ export default function HomePage() {
         "@type": "WebSite",
         "@id": "https://studyfam.in/#website",
         url: "https://studyfam.in",
-        name: "StudyFAM Free JEE Mock Tests",
+        name: "StudyFAM All-India JEE Mock & Scholarship Exam",
         publisher: {
+          "@id": "https://studyfam.in/#organization",
+        },
+      },
+      {
+        "@type": "Event",
+        "@id": "https://studyfam.in/#all-india-mock-event",
+        name: "All-India Major Mock Test 2027 (National Scholarship Examination)",
+        description:
+          "Nationwide JEE Main 2027 CBT mock exam where ₹18 of every ₹27 registration fee funds 100% NTA application fee refunds for top rankers across Merit and Need-based tracks.",
+        startDate: "2026-12-27T09:00:00+05:30",
+        endDate: "2026-12-27T12:00:00+05:30",
+        eventStatus: "https://schema.org/EventScheduled",
+        eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+        location: {
+          "@type": "VirtualLocation",
+          url: "https://studyfam.in/#register",
+        },
+        offers: {
+          "@type": "Offer",
+          price: "27",
+          priceCurrency: "INR",
+          validFrom: "2026-10-20T00:00:00+05:30",
+          availability: "https://schema.org/PreOrder",
+          url: "https://studyfam.in/#register",
+        },
+        organizer: {
           "@id": "https://studyfam.in/#organization",
         },
       },
@@ -99,32 +129,6 @@ export default function HomePage() {
           description: `${mock.keyHighlights} Contains ${mock.totalQuestions} questions across Physics, Chemistry, and Mathematics. Duration: ${mock.durationMinutes} minutes.`,
           url: `https://studyfam.in${mock.playerUrl}`,
         })),
-      },
-      {
-        "@type": "Event",
-        "@id": "https://studyfam.in/#all-india-mock-event",
-        name: "All-India Major Mock Test 2027 (National Scholarship Examination)",
-        description:
-          "Nationwide JEE Main 2027 CBT mock exam where ₹18 of every ₹27 registration fee funds 100% NTA application fee refunds for top rankers across Merit and Need-based tracks.",
-        startDate: "2026-12-27T09:00:00+05:30",
-        endDate: "2026-12-27T12:00:00+05:30",
-        eventStatus: "https://schema.org/EventScheduled",
-        eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-        location: {
-          "@type": "VirtualLocation",
-          url: "https://studyfam.in/all-india-mock",
-        },
-        offers: {
-          "@type": "Offer",
-          price: "27",
-          priceCurrency: "INR",
-          validFrom: "2026-10-20T00:00:00+05:30",
-          availability: "https://schema.org/PreOrder",
-          url: "https://studyfam.in/all-india-mock",
-        },
-        organizer: {
-          "@id": "https://studyfam.in/#organization",
-        },
       },
       {
         "@type": "FAQPage",
@@ -149,14 +153,20 @@ export default function HomePage() {
           {
             "@type": "ListItem",
             position: 2,
-            name: "Free JEE Main Mock Tests",
-            item: "https://studyfam.in/#free-mocks",
+            name: "All-India Mock (27 Dec)",
+            item: "https://studyfam.in/#overview",
           },
           {
             "@type": "ListItem",
             position: 3,
-            name: "All-India Mock (27 Dec)",
-            item: "https://studyfam.in/#all-india-mock",
+            name: "₹18 Fee Pool",
+            item: "https://studyfam.in/#fee-split",
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
+            name: "Free JEE Main Mock Tests",
+            item: "https://studyfam.in/exam",
           },
         ],
       },
@@ -170,8 +180,8 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      {/* StudyFAM Main High-Converting Landing Page */}
-      <StudyFamTokkoPage />
+      {/* StudyFAM All-India Mock Flagship Index Page */}
+      <AllIndiaMockTokkoPage />
     </>
   );
 }
