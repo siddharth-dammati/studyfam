@@ -22,6 +22,7 @@ import {
   Activity,
   UserCheck,
   CheckCircle2,
+  AlertCircle,
   FileText,
 } from "lucide-react";
 import Link from "next/link";
@@ -432,17 +433,28 @@ export default function DashboardPage() {
 
         {/* Top Quick-Status Ribbon - Tokko Bento Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 sm:p-5 bg-white border border-[rgba(26,26,26,0.08)] rounded-[22px] shadow-[0_10px_30px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_18px_36px_-15px_rgba(10,28,150,0.08)] hover:-translate-y-0.5 transition-all flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-2xl bg-[#dcfce7] text-[#16a34a] border border-[#86efac]/80 flex items-center justify-center shrink-0">
-              <CheckCircle2 size={18} />
+          <div
+            onClick={!isConfirmed ? () => setIsRegModalOpen(true) : undefined}
+            className={`p-4 sm:p-5 bg-white border border-[rgba(26,26,26,0.08)] rounded-[22px] shadow-[0_10px_30px_-15px_rgba(0,0,0,0.04)] hover:shadow-[0_18px_36px_-15px_rgba(10,28,150,0.08)] hover:-translate-y-0.5 transition-all flex items-center gap-3.5 ${
+              !isConfirmed ? "cursor-pointer" : ""
+            }`}
+          >
+            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
+              isConfirmed
+                ? "bg-[#dcfce7] text-[#16a34a] border border-[#86efac]/80"
+                : "bg-amber-100 text-amber-800 border border-amber-200"
+            }`}>
+              {isConfirmed ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
             </div>
             <div className="min-w-0">
               <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Mock Status</div>
               <div className="text-sm font-bold text-slate-900 truncate">
-                {isConfirmed ? "Seat Locked" : "Registered"} · 27 Dec
+                {isConfirmed ? "Seat Locked · 27 Dec" : "Payment Pending · ₹27"}
               </div>
-              <div className="text-[11px] text-emerald-600 font-medium truncate">
-                {isConfirmed ? "Official Slot Confirmed" : "Registration Pending"}
+              <div className={`text-[11px] font-medium truncate ${
+                isConfirmed ? "text-emerald-600" : "text-amber-700 font-bold"
+              }`}>
+                {isConfirmed ? "Official Slot Confirmed" : "Click to Pay ₹27 →"}
               </div>
             </div>
           </div>
@@ -549,6 +561,7 @@ export default function DashboardPage() {
           <div className="space-y-6">
             <AllIndiaMockUpdatesCard
               candidateRecord={candidateRecord}
+              onOpenRegister={() => setIsRegModalOpen(true)}
               onSwitchToPractice={() => setActiveTab("practice")}
             />
             <MeritPoolStatusCard />
@@ -622,6 +635,7 @@ export default function DashboardPage() {
           fetchCandidateRecord();
         }}
         isMockOpen={isOpen}
+        initialRecord={candidateRecord}
       />
 
       <ScholarshipDossierModal

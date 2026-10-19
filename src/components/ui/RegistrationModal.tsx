@@ -15,9 +15,24 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   isMockOpen?: boolean;
+  initialRecord?: {
+    id?: string;
+    full_name?: string;
+    email?: string;
+    phone?: string;
+    jee_status?: string;
+    status?: string;
+    amount_paid?: number;
+    order_id?: string;
+    payment_id?: string | null;
+    gender?: string;
+    family_income?: string;
+    scholarship_track?: string;
+    scholarship_slab?: string;
+  } | null;
 }
 
-export function RegistrationModal({ isOpen, onClose, isMockOpen = true }: Props) {
+export function RegistrationModal({ isOpen, onClose, isMockOpen = true, initialRecord }: Props) {
   const { config } = useSiteConfig();
   const { profile } = useAuth();
   const [step, setStep] = useState(1);
@@ -37,51 +52,69 @@ export function RegistrationModal({ isOpen, onClose, isMockOpen = true }: Props)
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const currentEmail = profile?.email?.toLowerCase().trim();
+    let rec: any = initialRecord || null;
+    let storedOrder: string | null = null;
 
     if (typeof window !== "undefined") {
-      const storedOrder = localStorage.getItem("sf_confirmed_order_id");
-      const storedRecord = localStorage.getItem("sf_candidate_record");
-      if (storedRecord) {
-        try {
-          const rec = JSON.parse(storedRecord);
-          const isMatchesCurrent = currentEmail
-            ? rec?.email?.toLowerCase() === currentEmail
-            : Boolean(storedOrder || rec.order_id);
-
-          if (isMatchesCurrent && rec && (rec.status === "confirmed" || rec.status === "registered" || rec.amount_paid >= 27 || rec.order_id)) {
-            setFullName(rec.full_name || "");
-            setEmail(rec.email || "");
-            if (rec.gender) setGender(rec.gender);
-            if (rec.family_income) setFamilyIncome(rec.family_income);
-            if (rec.scholarship_track) {
-              if (rec.family_income === "above_8l" && rec.scholarship_track === "need_based") {
-                setScholarshipTrack("merit");
-              } else {
-                setScholarshipTrack(rec.scholarship_track);
-              }
-            }
-            setRegisteredId(rec.id || storedOrder);
-            setOrderId(rec.order_id || storedOrder);
-            setPaymentId(rec.payment_id || null);
-            setStep(3); // Already confirmed! Show slip directly
-            return;
-          }
-        } catch {}
+      storedOrder = localStorage.getItem("sf_confirmed_order_id");
+      if (!rec) {
+        const storedRecord = localStorage.getItem("sf_candidate_record");
+        if (storedRecord) {
+          try {
+            rec = JSON.parse(storedRecord);
+          } catch {}
+        }
       }
     }
 
-    // Default to step 1 for fresh registration
+    const isConfirmed = Boolean(
+      (rec?.amount_paid && rec.amount_paid >= 27) ||
+      rec?.status === "confirmed" ||
+      rec?.status === "registered"
+    );
+
+    if (rec) {
+      if (rec.full_name) setFullName(rec.full_name);
+      if (rec.email) setEmail(rec.email);
+      if (rec.phone) setPhone(rec.phone);
+      if (rec.jee_status && ["class-11", "class-12", "dropper"].includes(rec.jee_status)) {
+        setJeeStatus(rec.jee_status as any);
+      }
+      if (rec.gender && ["boy", "girl", "other"].includes(rec.gender)) {
+        setGender(rec.gender as any);
+      }
+      if (rec.family_income) setFamilyIncome(rec.family_income);
+      if (rec.scholarship_track) {
+        if (rec.family_income === "above_8l" && rec.scholarship_track === "need_based") {
+          setScholarshipTrack("merit");
+        } else if (["merit", "need_based", "opt_out"].includes(rec.scholarship_track)) {
+          setScholarshipTrack(rec.scholarship_track as any);
+        }
+      }
+
+      if (isConfirmed) {
+        setRegisteredId(rec.id || storedOrder);
+        setOrderId(rec.order_id || storedOrder);
+        setPaymentId(rec.payment_id || null);
+        setStep(3); // Already confirmed! Show slip directly
+        return;
+      }
+    }
+
+    // Default to step 1 for fresh registration or pending payment
     setStep(1);
     setRegisteredId(null);
     setOrderId(null);
     setPaymentId(null);
 
     if (profile) {
-      if (profile.fullName) setFullName(profile.fullName);
-      if (profile.email) setEmail(profile.email);
+      if (!fullName && profile.fullName) setFullName(profile.fullName);
+      if (!email && profile.email) setEmail(profile.email);
     }
-  }, [profile, isOpen]);
+  }, [profile, isOpen, initialRecord]);
 
   if (!isOpen) return null;
 

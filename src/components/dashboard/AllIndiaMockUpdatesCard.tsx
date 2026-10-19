@@ -26,11 +26,13 @@ import { CandidateRecord } from "./CandidateRegistrationCard";
 
 interface AllIndiaMockUpdatesCardProps {
   candidateRecord?: CandidateRecord | null;
+  onOpenRegister?: () => void;
   onSwitchToPractice?: () => void;
 }
 
 export function AllIndiaMockUpdatesCard({
   candidateRecord,
+  onOpenRegister,
   onSwitchToPractice,
 }: AllIndiaMockUpdatesCardProps) {
   const [showSecurityDetails, setShowSecurityDetails] = useState(false);
@@ -94,18 +96,19 @@ export function AllIndiaMockUpdatesCard({
               All-India JEE Main 2027 Mock Test
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Sunday, 27 Dec 2026 · 09:00 AM – 12:00 PM IST · ₹27 Entry (₹18 scholarship pool + ₹9 ops) · Registrations open 20 Oct 2026.
+              Sunday, 27 Dec 2026 · 09:00 AM – 12:00 PM IST · ₹27 Entry (₹18 scholarship pool + ₹9 ops) · Registrations are LIVE.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
             {!isConfirmed && (
-              <Link
-                href="/all-india-mock"
+              <button
+                type="button"
+                onClick={onOpenRegister}
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-[#0a1c96] to-[#1f6ff2] hover:shadow-[0_14px_30px_-10px_rgba(26,95,224,0.5)] text-white rounded-full text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer hover:-translate-y-0.5 active:scale-95"
               >
                 <span>Register for ₹27 →</span>
-              </Link>
+              </button>
             )}
             <Link
               href="/admit-card"
@@ -163,10 +166,18 @@ export function AllIndiaMockUpdatesCard({
                 <span className="text-[11px] font-mono uppercase tracking-wider text-indigo-100 font-bold">
                   Candidate Seat
                 </span>
-                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-300/30 flex items-center gap-1 shadow-2xs">
-                  <CheckCircle2 size={11} />
-                  <span>{isConfirmed ? "Seat Locked" : "Registered"}</span>
-                </span>
+                <button
+                  type="button"
+                  onClick={!isConfirmed ? onOpenRegister : undefined}
+                  className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-2xs transition-all ${
+                    isConfirmed
+                      ? "bg-emerald-400/20 text-emerald-300 border border-emerald-300/30"
+                      : "bg-amber-400/25 hover:bg-amber-400/35 text-amber-200 border border-amber-300/40 cursor-pointer active:scale-95"
+                  }`}
+                >
+                  {isConfirmed ? <CheckCircle2 size={11} /> : <AlertCircle size={11} />}
+                  <span>{isConfirmed ? "Seat Locked" : "Payment Pending (₹27) →"}</span>
+                </button>
               </div>
               <div className="space-y-1">
                 <div className="text-xs text-indigo-200">Candidate Roll No:</div>
