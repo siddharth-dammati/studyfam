@@ -30,7 +30,6 @@ import {
 export function AllIndiaMockTokkoPage() {
   const { user, profile, signInWithGoogle, signOut } = useAuth();
   const { isOpen } = useRegistrationState();
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isRegModalOpen, setRegModalOpen] = useState(false);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
@@ -186,37 +185,20 @@ export function AllIndiaMockTokkoPage() {
         .count div b{font-size:24px;font-weight:700;display:block;color:#fff;line-height:1}
         .count div span{font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.05em}
 
-        .menu-btn{display:none;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:17px;cursor:pointer;color:var(--ink);flex-shrink:0;font-family:inherit}
-        .mnav{display:none;border-top:1px solid var(--line);background:var(--bg);padding:8px 24px 18px}
-        .mnav.open{display:grid}
-        .mnav a, .mnav button{font-weight:600;font-size:15px;padding:11px 4px;border-bottom:1px solid var(--line);text-align:left;background:none;border-left:none;border-right:none;border-top:none;cursor:pointer;font-family:inherit;color:inherit}
-        .mnav a:last-child, .mnav button:last-child{border-bottom:none}
-
         /* Responsive breakpoints */
         @media(max-width:960px){
           .hero-grid{grid-template-columns:1fr;gap:36px}
-          .nav-links{display:none}
-          .menu-btn{display:grid}
           .hero-stats{grid-template-columns:repeat(2,1fr);gap:16px 24px}
         }
       `}} />
 
-      {/* Sticky Navbar */}
+      {/* Clean Sticky Navbar */}
       <nav className={scrolled ? "scrolled" : ""}>
         <div className="nav-in">
           <Link className="logo" href="/" aria-label="StudyFAM home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-blue.png" alt="StudyFAM" className="logo-img" />
           </Link>
-
-          <div className="nav-links">
-            <a href="#overview">Overview</a>
-            <a href="#fee-split">₹18 Fee Pool</a>
-            <a href="#tracks">Scholarship Tracks</a>
-            <a href="#advantages">Advantages</a>
-            <a href="#pattern">Exam Pattern</a>
-            <Link href="/exam">10 Free MFTs</Link>
-          </div>
 
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <button
@@ -225,7 +207,7 @@ export function AllIndiaMockTokkoPage() {
               title="Share with classmates"
             >
               <Share2 size={14} className="text-blue-600" />
-              <span className="hidden sm:inline">Share ₹27 Mock</span>
+              <span className="hidden sm:inline">Share</span>
             </button>
 
             <button
@@ -240,36 +222,7 @@ export function AllIndiaMockTokkoPage() {
                 Dashboard
               </Link>
             ) : null}
-
-            <button
-              className="menu-btn"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle navigation menu"
-            >
-              {mobileOpen ? "✕" : "☰"}
-            </button>
           </div>
-        </div>
-
-        {/* Mobile Navigation Drawer */}
-        <div className={`mnav ${mobileOpen ? "open" : ""}`}>
-          <a href="#overview" onClick={() => setMobileOpen(false)}>Overview</a>
-          <a href="#fee-split" onClick={() => setMobileOpen(false)}>₹18 Fee Pool</a>
-          <a href="#tracks" onClick={() => setMobileOpen(false)}>Scholarship Tracks</a>
-          <a href="#advantages" onClick={() => setMobileOpen(false)}>Why StudyFAM</a>
-          <a href="#pattern" onClick={() => setMobileOpen(false)}>Exam Pattern</a>
-          <Link href="/exam" onClick={() => setMobileOpen(false)}>10 Free Full MFTs</Link>
-          <Link href="/percentile-analyzer" onClick={() => setMobileOpen(false)}>Percentile Analyzer</Link>
-          {user ? (
-            <Link href="/dashboard" onClick={() => setMobileOpen(false)}>My Dashboard →</Link>
-          ) : (
-            <button
-              onClick={() => { signInWithGoogle("/dashboard"); setMobileOpen(false); }}
-              style={{ color: "var(--b1)", fontWeight: 700 }}
-            >
-              Sign in with Google →
-            </button>
-          )}
         </div>
       </nav>
 
@@ -425,140 +378,7 @@ export function AllIndiaMockTokkoPage() {
       </div>
 
       <main>
-        {/* 5. THE SCHOLARSHIP POOL & FEE BREAKDOWN SECTION (Crucial user request) */}
-        <section id="fee-split" className="bg-[#f8fafc] border-b border-[rgba(26,26,26,0.08)]">
-          <div className="wrap">
-            <div className="center mb-12">
-              <span className="kick">Transparent Student Economics</span>
-              <h2 className="sec-title">Where does your ₹27 entry fee go?</h2>
-              <p className="sec-sub center">
-                No corporate profits. No hidden margins. StudyFAM operates an audited community escrow model where student registrations directly fund peer scholarships.
-              </p>
-            </div>
-
-            {/* 2-Column Fee Split Architecture */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {/* Card 1: ₹18 Escrow Pool */}
-              <div className="bg-white border-2 border-emerald-500/30 rounded-[28px] p-6 sm:p-8 shadow-sm relative overflow-hidden flex flex-col justify-between">
-                <div className="absolute top-0 right-0 bg-emerald-500 text-white font-mono text-[11px] font-bold px-4 py-1 rounded-bl-xl uppercase tracking-wider">
-                  66.7% Escrowed
-                </div>
-
-                <div>
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center font-bold text-2xl font-mono">
-                      ₹18
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-slate-900">
-                        Student Fee Support Pool
-                      </h3>
-                      <p className="text-xs text-slate-500 font-mono">
-                        Direct Escrow Account · Audited Payouts
-                      </p>
-                    </div>
-                  </div>
-
-                  <p className="text-sm text-slate-600 leading-relaxed mb-5">
-                    <strong>Every single rupee of this ₹18 is locked in escrow</strong> and returned directly to top-performing and deserving candidates as full NTA registration refunds:
-                  </p>
-
-                  <div className="space-y-3 text-xs sm:text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <span>
-                        <strong>₹1,000 Full Refund</strong> for top-ranked Male candidates (official NTA general/OBC fee).
-                      </span>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <span>
-                        <strong>₹800 Full Refund</strong> for top-ranked Female candidates (official NTA female concession fee).
-                      </span>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <span>
-                        <strong>Direct UPI / Bank SLA:</strong> Verified disbursement directly to student UPI within 7 business days.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-emerald-700 font-bold">
-                  <span>Zero Corporate Retention</span>
-                  <span>100% Back to Students</span>
-                </div>
-              </div>
-
-              {/* Card 2: ₹9 Platform Operations */}
-              <div className="bg-white border border-[rgba(26,26,26,0.1)] rounded-[28px] p-6 sm:p-8 shadow-sm relative overflow-hidden flex flex-col justify-between">
-                <div className="absolute top-0 right-0 bg-blue-600 text-white font-mono text-[11px] font-bold px-4 py-1 rounded-bl-xl uppercase tracking-wider">
-                  33.3% Cloud &amp; Ops
-                </div>
-
-                <div>
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center font-bold text-2xl font-mono">
-                      ₹9
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-slate-900">
-                        High-Concurrency CBT Cloud
-                      </h3>
-                      <p className="text-xs text-slate-500 font-mono">
-                        Anti-Cheat, Proctoring &amp; Infrastructure
-                      </p>
-                    </div>
-                  </div>
-
-                  <p className="text-sm text-slate-600 leading-relaxed mb-5">
-                    Covers actual computing and technical costs to host a nationwide synchronized exam without server bottlenecks:
-                  </p>
-
-                  <div className="space-y-3 text-xs sm:text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                      <span>
-                        <strong>100,000+ Concurrent Cloud:</strong> Zero server crashes during the high-load 9 AM exam start.
-                      </span>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                      <span>
-                        <strong>Anti-Cheat Telemetry:</strong> Fullscreen lock, tab-switching detection, and anomalous click monitoring.
-                      </span>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                      <span>
-                        <strong>Gateway &amp; SMS Costs:</strong> Payment gateway charges, GST, and SMS/WhatsApp admit slips.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500 font-bold">
-                  <span>Audited Non-Profit Model</span>
-                  <span>Published Escrow Ledger</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Summary Pill */}
-            <div className="mt-8 text-center">
-              <Link
-                href="/transparency"
-                className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#0a1c96] hover:underline"
-              >
-                <span>Read the published Escrow &amp; Audit Governance Policy</span>
-                <ArrowRight size={13} />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* 6. DUAL TRACK ARCHITECTURE SECTION */}
+        {/* 1. DUAL TRACK ARCHITECTURE SECTION */}
         <section id="tracks" className="border-b border-[rgba(26,26,26,0.08)] bg-white">
           <div className="wrap">
             <div className="center mb-12">
@@ -1017,7 +837,140 @@ export function AllIndiaMockTokkoPage() {
           </div>
         </section>
 
-        {/* 12. FREQUENTLY ASKED QUESTIONS */}
+        {/* THE SCHOLARSHIP POOL & FEE BREAKDOWN SECTION (Transparent Student Economics) */}
+        <section id="fee-split" className="bg-[#f8fafc] border-t border-b border-[rgba(26,26,26,0.08)]">
+          <div className="wrap">
+            <div className="center mb-12">
+              <span className="kick">Transparent Student Economics</span>
+              <h2 className="sec-title">Where does your ₹27 entry fee go?</h2>
+              <p className="sec-sub center">
+                No corporate profits. No hidden margins. StudyFAM operates an audited community escrow model where student registrations directly fund peer scholarships.
+              </p>
+            </div>
+
+            {/* 2-Column Fee Split Architecture */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {/* Card 1: ₹18 Escrow Pool */}
+              <div className="bg-white border-2 border-emerald-500/30 rounded-[28px] p-6 sm:p-8 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                <div className="absolute top-0 right-0 bg-emerald-500 text-white font-mono text-[11px] font-bold px-4 py-1 rounded-bl-xl uppercase tracking-wider">
+                  66.7% Escrowed
+                </div>
+
+                <div>
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center font-bold text-2xl font-mono">
+                      ₹18
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-900">
+                        Student Fee Support Pool
+                      </h3>
+                      <p className="text-xs text-slate-500 font-mono">
+                        Direct Escrow Account · Audited Payouts
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-slate-600 leading-relaxed mb-5">
+                    <strong>Every single rupee of this ₹18 is locked in escrow</strong> and returned directly to top-performing and deserving candidates as full NTA registration refunds:
+                  </p>
+
+                  <div className="space-y-3 text-xs sm:text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                    <div className="flex items-start space-x-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                      <span>
+                        <strong>₹1,000 Full Refund</strong> for top-ranked Male candidates (official NTA general/OBC fee).
+                      </span>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                      <span>
+                        <strong>₹800 Full Refund</strong> for top-ranked Female candidates (official NTA female concession fee).
+                      </span>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                      <span>
+                        <strong>Direct UPI / Bank SLA:</strong> Verified disbursement directly to student UPI within 7 business days.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-emerald-700 font-bold">
+                  <span>Zero Corporate Retention</span>
+                  <span>100% Back to Students</span>
+                </div>
+              </div>
+
+              {/* Card 2: ₹9 Platform Operations */}
+              <div className="bg-white border border-[rgba(26,26,26,0.1)] rounded-[28px] p-6 sm:p-8 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                <div className="absolute top-0 right-0 bg-blue-600 text-white font-mono text-[11px] font-bold px-4 py-1 rounded-bl-xl uppercase tracking-wider">
+                  33.3% Cloud &amp; Ops
+                </div>
+
+                <div>
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center font-bold text-2xl font-mono">
+                      ₹9
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-900">
+                        High-Concurrency CBT Cloud
+                      </h3>
+                      <p className="text-xs text-slate-500 font-mono">
+                        Anti-Cheat, Proctoring &amp; Infrastructure
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-slate-600 leading-relaxed mb-5">
+                    Covers actual computing and technical costs to host a nationwide synchronized exam without server bottlenecks:
+                  </p>
+
+                  <div className="space-y-3 text-xs sm:text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                    <div className="flex items-start space-x-2">
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                      <span>
+                        <strong>100,000+ Concurrent Cloud:</strong> Zero server crashes during the high-load 9 AM exam start.
+                      </span>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                      <span>
+                        <strong>Anti-Cheat Telemetry:</strong> Fullscreen lock, tab-switching detection, and anomalous click monitoring.
+                      </span>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                      <span>
+                        <strong>Gateway &amp; SMS Costs:</strong> Payment gateway charges, GST, and SMS/WhatsApp admit slips.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500 font-bold">
+                  <span>Audited Non-Profit Model</span>
+                  <span>Published Escrow Ledger</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Summary Pill */}
+            <div className="mt-8 text-center">
+              <Link
+                href="/transparency"
+                className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#0a1c96] hover:underline"
+              >
+                <span>Read the published Escrow &amp; Audit Governance Policy</span>
+                <ArrowRight size={13} />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* FREQUENTLY ASKED QUESTIONS */}
         <section id="faq" className="bg-white border-t border-[rgba(26,26,26,0.08)]">
           <div className="wrap">
             <div className="center mb-10">
