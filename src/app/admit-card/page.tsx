@@ -59,7 +59,7 @@ function AdmitCardContent() {
         if (orderIdParam) {
           try {
             const res = await verifyCashfreeOrder(orderIdParam);
-            if (res.registration && isMounted) {
+            if (res.success && res.status === "PAID" && res.registration && isMounted) {
               const hydrated = hydrateCandidateRecord(res.registration);
               if (!currentEmail || hydrated.email?.toLowerCase() === currentEmail) {
                 setCandidate(hydrated);
@@ -79,7 +79,7 @@ function AdmitCardContent() {
 
           if (data && data.length > 0 && isMounted) {
             const hydrated = hydrateCandidateRecord(data[0]);
-            if (!currentEmail || hydrated.email?.toLowerCase() === currentEmail) {
+            if ((hydrated.amount_paid >= 27 || hydrated.status === "confirmed" || hydrated.status === "registered") && (!currentEmail || hydrated.email?.toLowerCase() === currentEmail)) {
               setCandidate(hydrated);
               setLoading(false);
               return;
@@ -93,7 +93,7 @@ function AdmitCardContent() {
           if (cached) {
             try {
               const parsed = JSON.parse(cached);
-              if (parsed && (parsed.status === "confirmed" || parsed.status === "registered" || parsed.order_id || parsed.amount_paid >= 27)) {
+              if (parsed && (parsed.status === "confirmed" || parsed.status === "registered" || parsed.amount_paid >= 27)) {
                 if (currentEmail) {
                   if (parsed.email?.toLowerCase() === currentEmail && isMounted) {
                     setCandidate(hydrateCandidateRecord(parsed));

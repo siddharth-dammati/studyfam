@@ -66,8 +66,12 @@ export function AllIndiaMockUpdatesCard({
     return () => clearInterval(interval);
   }, []);
 
-  const isConfirmed =
-    candidateRecord?.amount_paid && candidateRecord.amount_paid >= 27;
+  const isConfirmed = Boolean(
+    (candidateRecord?.amount_paid && candidateRecord.amount_paid >= 27) ||
+    candidateRecord?.status === "confirmed" ||
+    candidateRecord?.status === "registered" ||
+    candidateRecord?.payment_status === "success"
+  );
 
   const rollNumber = candidateRecord?.order_id
     ? `SF-${candidateRecord.order_id.slice(-6).toUpperCase()}`

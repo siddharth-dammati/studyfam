@@ -61,13 +61,12 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
 
   // Candidate is registered
   if (registration) {
-    const isConfirmed =
-      registration.amount_paid >= 27 ||
+    const isConfirmed = Boolean(
+      (registration.amount_paid && registration.amount_paid >= 27) ||
       registration.status === "registered" ||
       registration.status === "confirmed" ||
-      registration.payment_status === "success" ||
-      Boolean(registration.order_id) ||
-      Boolean(registration.payment_id);
+      registration.payment_status === "success"
+    );
 
     const streamLabel =
       registration.jee_status === "class-11"
@@ -101,7 +100,7 @@ export function CandidateRegistrationCard({ registration, loading, onOpenRegiste
                 {isConfirmed ? "Registration Confirmed" : "Payment Pending"}
               </span>
               <span className="text-xs text-slate-500 font-mono">
-                {isConfirmed ? `₹${registration.amount_paid || 27} Paid` : "₹0 Paid"}
+                {isConfirmed ? `₹${registration.amount_paid || 27} Paid` : "₹0 Paid (Payment Pending)"}
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-[#1a1a1a] tracking-tight">

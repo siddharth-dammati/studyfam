@@ -76,10 +76,18 @@ export default function DashboardPage() {
         } catch {}
 
         const rec = hydrateCandidateRecord(data[0], cachedFallback);
-        const storedOrderId = typeof window !== "undefined" ? localStorage.getItem("sf_confirmed_order_id") : null;
-        if (storedOrderId === rec.order_id || rec.amount_paid >= 27) {
-          rec.status = "confirmed";
-          rec.amount_paid = 27;
+        const isDbConfirmed = Boolean(
+          (rec.amount_paid && rec.amount_paid >= 27) ||
+          rec.status === "confirmed" ||
+          rec.status === "registered" ||
+          rec.payment_status === "success"
+        );
+
+        if (!isDbConfirmed) {
+          rec.amount_paid = rec.amount_paid || 0;
+          try {
+            localStorage.removeItem("sf_confirmed_order_id");
+          } catch {}
         }
         setCandidateRecord(rec);
         try {
@@ -251,10 +259,9 @@ export default function DashboardPage() {
 
     // ONLY verify order if order_id is explicitly passed in URL query param (e.g. redirected from Cashfree checkout)
     if (orderIdParam) {
-      setIsJustConfirmed(true);
-
       verifyCashfreeOrder(orderIdParam).then((res) => {
-        if (res.registration) {
+        if (res.success && res.status === "PAID" && res.registration) {
+          setIsJustConfirmed(true);
           const hydrated = hydrateCandidateRecord(res.registration);
           if (!currentEmail || hydrated.email?.toLowerCase() === currentEmail) {
             setCandidateRecord(hydrated);
@@ -265,9 +272,15 @@ export default function DashboardPage() {
             } catch {}
           }
         } else {
+          // Payment was not completed / cancelled
+          setIsJustConfirmed(false);
+          try {
+            localStorage.removeItem("sf_confirmed_order_id");
+          } catch {}
           fetchCandidateRecord(orderIdParam);
         }
       }).catch(() => {
+        setIsJustConfirmed(false);
         fetchCandidateRecord(orderIdParam);
       });
     } else if (!authLoading) {
