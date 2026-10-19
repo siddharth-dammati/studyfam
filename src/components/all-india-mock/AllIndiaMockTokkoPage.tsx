@@ -81,7 +81,7 @@ export function AllIndiaMockTokkoPage() {
       {/* Scoped Tokko Design System CSS */}
       <style dangerouslySetInnerHTML={{ __html: `
         :root{--bg:#fafafa;--card:#fff;--ink:#1a1a1a;--mut:#555;--mut2:#888;--line:rgba(26,26,26,.1);--b0:#0a1c96;--b1:#1a5fe0;--b2:#2f8fff;--lav:#d6aef2;--lavbg:#f3e9fd;--tint:#e9f1fd;--grn:#16a34a;--grnbg:#dcfce7;--gold:#f59e0b;--r-s:16px;--r-m:24px;--r-l:32px;--r-xl:100px}
-        .all-india-mock-page{line-height:1.3;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+        .all-india-mock-page{line-height:1.3;letter-spacing:-.02em;-webkit-font-smoothing:antialiased;overflow-x:hidden;width:100%;position:relative}
         .all-india-mock-page h1,.all-india-mock-page h2,.all-india-mock-page h3{font-weight:700;letter-spacing:-.04em;line-height:1.05;text-wrap:balance}
         .all-india-mock-page a{color:inherit;text-decoration:none}
         .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -102,7 +102,7 @@ export function AllIndiaMockTokkoPage() {
         .ann{background:linear-gradient(100deg,#0a1c96,#1a5fe0 60%,#1f6ff2);color:#fff;font-size:13.5px;text-align:center;padding:10px 16px;font-weight:500}
         .ann .tag{background:var(--lav);color:#1a1a1a;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:var(--r-xl);margin-right:10px}
         .ann b{color:var(--lav)}
-        nav{position:sticky;top:0;z-index:50;background:rgba(250,250,250,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);transition:box-shadow .25s}
+        nav{position:sticky;top:0;z-index:50;background:rgba(250,250,250,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);transition:box-shadow .25s}
         nav.scrolled{box-shadow:0 14px 30px -20px rgba(0,0,0,.2)}
         .nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;max-width:1200px;margin:0 auto}
         .logo{display:inline-flex;align-items:center;flex-shrink:0}
@@ -115,8 +115,8 @@ export function AllIndiaMockTokkoPage() {
         .hero::after{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(47,143,255,.2),transparent 65%);bottom:-260px;left:-180px;pointer-events:none}
         .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;position:relative;z-index:1}
         .hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);padding:8px 18px;font-size:13.5px;font-weight:600}
-        .hero-badge i{width:8px;height:8px;border-radius:50%;background:var(--grn)}
-        .hero h1{font-size:clamp(38px,6vw,84px);margin:18px 0 16px;letter-spacing:-.04em}
+        .hero-badge i{width:8px;height:8px;border-radius:50%;background:var(--grn);flex-shrink:0}
+        .hero h1{font-size:clamp(30px,6.5vw,84px);margin:18px 0 16px;letter-spacing:-.04em}
         .hero h1 .hl{color:var(--b1)}
         .hero h1 .u{position:relative;white-space:nowrap}
         .hero h1 .u svg{position:absolute;left:0;right:0;bottom:-.12em;width:100%;height:.28em}
@@ -135,14 +135,14 @@ export function AllIndiaMockTokkoPage() {
         .ticket-body dl{margin:0;display:grid;grid-template-columns:90px 1fr;gap:6px;font-size:13px}
         .ticket-body dt{color:var(--mut2);font-weight:600}
         .ticket-body dd{margin:0;font-weight:700;color:var(--ink)}
-        .ticket .photo{width:90px;height:105px;background:#f3f4f6;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:36px;border:1px solid var(--line)}
+        .ticket .photo{width:90px;height:105px;background:#f3f4f6;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:36px;border:1px solid var(--line);flex-shrink:0}
         .barcode{height:36px;background:repeating-linear-gradient(90deg,#1a1a1a,#1a1a1a 2px,transparent 2px,transparent 5px,#1a1a1a 5px,#1a1a1a 9px,transparent 9px,transparent 12px);margin:16px 0 12px;border-radius:4px;opacity:.85}
         .ticket-foot{display:flex;justify-content:space-between;font-size:11px;color:var(--mut2);font-family:monospace;font-weight:600}
         
         /* Section Kick & Titles */
         section{padding:72px 0}
         .kick{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--b1);background:var(--tint);padding:6px 18px;border-radius:var(--r-xl);margin-bottom:14px}
-        .sec-title{font-size:clamp(30px,4.5vw,62px);max-width:860px}
+        .sec-title{font-size:clamp(26px,4.5vw,62px);max-width:860px}
         .sec-sub{font-size:17.5px;color:var(--mut);max-width:680px;margin-top:12px;line-height:1.45}
         .center{text-align:center}
         .center .sec-title,.center .sec-sub{margin-left:auto;margin-right:auto}
@@ -150,7 +150,7 @@ export function AllIndiaMockTokkoPage() {
         /* Reg Open Live Bar */
         .reg-open{display:inline-flex;align-items:center;gap:10px;padding:9px 20px;border-radius:var(--r-xl);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:14px;margin-bottom:20px}
         .reg-open.live .ro-dot{background:#4ade80;box-shadow:0 0 12px #4ade80}
-        .ro-dot{width:8px;height:8px;border-radius:50%;background:#fbbf24}
+        .ro-dot{width:8px;height:8px;border-radius:50%;background:#fbbf24;flex-shrink:0}
         .ro-time{font-family:monospace;font-size:15px;letter-spacing:.02em}
 
         /* Countdown Grid */
@@ -159,10 +159,61 @@ export function AllIndiaMockTokkoPage() {
         .count div b{font-size:24px;font-weight:700;display:block;color:#fff;line-height:1}
         .count div span{font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.05em}
 
+        /* Mobile Sticky Action Bar */
+        .sticky-mobile-cta{display:none}
+
         /* Responsive breakpoints */
         @media(max-width:960px){
           .hero-grid{grid-template-columns:1fr;gap:36px}
           .hero-stats{grid-template-columns:repeat(2,1fr);gap:16px 24px}
+        }
+        @media(max-width:768px){
+          section{padding:48px 0}
+          .sticky-mobile-cta{
+            display:flex;
+            position:fixed;
+            bottom:0;
+            left:0;
+            right:0;
+            z-index:45;
+            background:rgba(255,255,255,.95);
+            backdrop-filter:blur(16px);
+            -webkit-backdrop-filter:blur(16px);
+            border-top:1px solid var(--line);
+            padding:10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+            box-shadow:0 -8px 24px -6px rgba(0,0,0,.12);
+          }
+        }
+        @media(max-width:640px){
+          .wrap{padding:0 16px}
+          .nav-in{padding:10px 14px;gap:8px}
+          .logo-img{height:26px;width:auto}
+          .btn-sm{padding:8px 14px;font-size:13px}
+          .hero{padding:36px 0 30px}
+          .hero-badge{font-size:11.5px;padding:6px 12px;line-height:1.35;white-space:normal;text-align:left}
+          .hero h1{font-size:clamp(28px, 7.5vw, 42px);margin:14px 0 12px}
+          .sub{font-size:15px;line-height:1.45}
+          .cta-row{margin:20px 0 10px;gap:10px}
+          .cta-row .btn{width:100%}
+          .hero-stats{grid-template-columns:repeat(2, 1fr);gap:12px 14px;width:100%;margin-top:20px}
+          .hero-stats div b{font-size:24px}
+          .hero-stats div span{font-size:12px}
+          .kick{font-size:11px;padding:5px 12px;margin-bottom:10px}
+          .sec-title{font-size:clamp(23px, 6vw, 34px)}
+          .sec-sub{font-size:15px;margin-top:8px}
+        }
+        @media(max-width:540px){
+          .count{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0}
+          .count div{min-width:0;padding:8px 2px}
+          .count div b{font-size:18px}
+          .count div span{font-size:9.5px}
+          .ticket{padding:16px;border-radius:18px}
+          .ticket-head{font-size:10px;margin-bottom:12px;padding-bottom:10px}
+          .ticket-body{grid-template-columns:1fr 70px;gap:10px}
+          .ticket-body dl{grid-template-columns:68px 1fr;gap:4px;font-size:11.5px}
+          .ticket .photo{width:70px;height:85px;font-size:26px}
+          .ticket-foot{font-size:10px;flex-direction:column;gap:3px}
+          .reg-open{font-size:12px;padding:7px 14px;flex-wrap:wrap;justify-content:center}
         }
       `}} />
 
@@ -174,7 +225,7 @@ export function AllIndiaMockTokkoPage() {
             <img src="/logo-blue.png" alt="StudyFAM" className="logo-img" />
           </Link>
 
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
             <button
               onClick={() => setShareModalOpen(true)}
               className="btn btn-ghost btn-sm"
@@ -184,18 +235,18 @@ export function AllIndiaMockTokkoPage() {
               <span className="hidden sm:inline">Share</span>
             </button>
 
-            <button
-              onClick={() => setRegModalOpen(true)}
-              className="btn btn-blue btn-sm"
-            >
-              <span>Register for ₹27 →</span>
-            </button>
-
             {user ? (
-              <Link href="/dashboard" className="btn btn-ghost btn-sm">
-                Dashboard
+              <Link href="/dashboard" className="btn btn-blue btn-sm">
+                <span>Dashboard →</span>
               </Link>
-            ) : null}
+            ) : (
+              <button
+                onClick={() => setRegModalOpen(true)}
+                className="btn btn-blue btn-sm"
+              >
+                <span>Register for ₹27 →</span>
+              </button>
+            )}
           </div>
         </div>
       </nav>
@@ -223,12 +274,18 @@ export function AllIndiaMockTokkoPage() {
             </p>
 
             <div className="cta-row">
-              <button
-                onClick={() => setRegModalOpen(true)}
-                className="btn btn-blue"
-              >
-                <span>Register Now (₹27) →</span>
-              </button>
+              {user ? (
+                <Link href="/dashboard" className="btn btn-blue">
+                  <span>Go to Dashboard →</span>
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setRegModalOpen(true)}
+                  className="btn btn-blue"
+                >
+                  <span>Register Now (₹27) →</span>
+                </button>
+              )}
 
               <a className="btn btn-ghost" href="#fee-split">
                 How ₹18 Pool Works ↓
@@ -643,12 +700,21 @@ export function AllIndiaMockTokkoPage() {
                   <strong>Total: 75 Questions · 300 Maximum Marks · 180 Minutes</strong>
                   <div className="text-blue-200 text-xs">Section B includes negative marking (-1) in strict compliance with NTA guidelines.</div>
                 </div>
-                <button
-                  onClick={() => setRegModalOpen(true)}
-                  className="px-4 py-2 bg-white text-slate-900 rounded-full font-bold hover:bg-slate-100 shrink-0"
-                >
-                  Confirm My Slot
-                </button>
+                {user ? (
+                  <Link
+                    href="/dashboard"
+                    className="px-5 py-2.5 bg-white text-slate-900 rounded-full font-bold hover:bg-slate-100 shrink-0 text-center"
+                  >
+                    View in Dashboard →
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => setRegModalOpen(true)}
+                    className="px-5 py-2.5 bg-white text-slate-900 rounded-full font-bold hover:bg-slate-100 shrink-0 text-center"
+                  >
+                    Register for ₹27 →
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -702,94 +768,127 @@ export function AllIndiaMockTokkoPage() {
           <div className="wrap">
             <div className="center mb-10">
               <span className="kick">Official CBT Portal</span>
-              <h2 className="sec-title">Official Slot Registration</h2>
+              <h2 className="sec-title">{user ? "Candidate Dashboard Portal" : "Official Slot Registration"}</h2>
               <p className="sec-sub center">
-                Secure your proctored CBT examination seat for Sunday, 27 Dec 2026. Entry fee ₹27 with ₹18 locked in verified scholarship refund escrow.
+                {user 
+                  ? "Access your registered exam hall ticket, reporting details, and all-India ranking analytics."
+                  : "Secure your proctored CBT examination seat for Sunday, 27 Dec 2026. Entry fee ₹27 with ₹18 locked in verified scholarship refund escrow."}
               </p>
             </div>
 
-            <div className="max-w-xl mx-auto bg-white border border-[rgba(26,26,26,0.1)] rounded-[32px] p-6 sm:p-10 shadow-lg">
-              <div className="reg-open live" style={{ background: "#ecfdf5", borderColor: "#a7f3d0", color: "#065f46", width: "100%", justifyContent: "center", marginBottom: "20px" }}>
-                <span className="ro-dot" style={{ background: "#10b981", boxShadow: "0 0 10px #10b981" }}></span>
-                <span className="ro-text" style={{ fontWeight: 700 }}>● REGISTRATIONS ARE LIVE</span>
-                <b className="ro-time" style={{ color: "#047857" }}>ENTRY ₹27 · 100% REFUND POOL</b>
+            {user ? (
+              <div className="max-w-xl mx-auto bg-white border border-[rgba(26,26,26,0.1)] rounded-[32px] p-6 sm:p-10 shadow-lg text-center space-y-5">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold font-mono">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>CANDIDATE SIGNED IN</span>
+                </div>
+
+                <div className="space-y-1.5">
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900">
+                    Welcome, {profile?.fullName || user.user_metadata?.full_name || "Candidate"}!
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-500 font-mono">
+                    {user.email}
+                  </p>
+                </div>
+
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-md mx-auto">
+                  You are signed into StudyFAM. Visit your candidate dashboard to review your slot details, download your official CBT admit card, and start practicing free full-length tests.
+                </p>
+
+                <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
+                  <Link href="/dashboard" className="btn btn-blue w-full sm:w-auto">
+                    <span>Go to Dashboard →</span>
+                  </Link>
+                  <Link href="/exam" className="btn btn-ghost w-full sm:w-auto">
+                    <span>Practice 10 Free MFTs</span>
+                  </Link>
+                </div>
               </div>
-
-              <form onSubmit={handleRegSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Candidate name (as per Aadhaar / School ID)"
-                    value={regForm.name}
-                    onChange={(e) => setRegForm({ ...regForm, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1a5fe0] transition-colors"
-                  />
+            ) : (
+              <div className="max-w-xl mx-auto bg-white border border-[rgba(26,26,26,0.1)] rounded-[32px] p-6 sm:p-10 shadow-lg">
+                <div className="reg-open live" style={{ background: "#ecfdf5", borderColor: "#a7f3d0", color: "#065f46", width: "100%", justifyContent: "center", marginBottom: "20px" }}>
+                  <span className="ro-dot" style={{ background: "#10b981", boxShadow: "0 0 10px #10b981" }}></span>
+                  <span className="ro-text" style={{ fontWeight: 700 }}>● REGISTRATIONS ARE LIVE</span>
+                  <b className="ro-time" style={{ color: "#047857" }}>ENTRY ₹27 · 100% REFUND POOL</b>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
-                    10-Digit Mobile / WhatsApp Number
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    pattern="[0-9]{10}"
-                    maxLength={10}
-                    placeholder="WhatsApp number for admit card & alerts"
-                    value={regForm.phone}
-                    onChange={(e) => setRegForm({ ...regForm, phone: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1a5fe0] transition-colors"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
+                <form onSubmit={handleRegSubmit} className="space-y-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
-                      Appearing Batch
+                      Full Name
                     </label>
-                    <select
-                      value={regForm.stream}
-                      onChange={(e) => setRegForm({ ...regForm, stream: e.target.value })}
-                      className="w-full px-3 py-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1a5fe0]"
-                    >
-                      <option value="class-12">Class 12 (JEE 2027)</option>
-                      <option value="dropper">Dropper (JEE 2027)</option>
-                      <option value="class-11">Class 11 (JEE 2028)</option>
-                    </select>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Candidate name (as per Aadhaar / School ID)"
+                      value={regForm.name}
+                      onChange={(e) => setRegForm({ ...regForm, name: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1a5fe0] transition-colors"
+                    />
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
-                      Scholarship Track
+                      10-Digit Mobile / WhatsApp Number
                     </label>
-                    <select
-                      value={regForm.track}
-                      onChange={(e) => setRegForm({ ...regForm, track: e.target.value })}
-                      className="w-full px-3 py-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1a5fe0]"
-                    >
-                      <option value="merit">Pure Merit (50%)</option>
-                      <option value="need">Need-Based (≤ 8 LPA)</option>
-                    </select>
+                    <input
+                      type="tel"
+                      required
+                      pattern="[0-9]{10}"
+                      maxLength={10}
+                      placeholder="WhatsApp number for admit card & alerts"
+                      value={regForm.phone}
+                      onChange={(e) => setRegForm({ ...regForm, phone: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#1a5fe0] transition-colors"
+                    />
                   </div>
-                </div>
 
-                <button
-                  type="submit"
-                  className="w-full btn btn-blue mt-2"
-                >
-                  <span>Proceed to Register &amp; Pay ₹27 →</span>
-                </button>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
+                        Appearing Batch
+                      </label>
+                      <select
+                        value={regForm.stream}
+                        onChange={(e) => setRegForm({ ...regForm, stream: e.target.value })}
+                        className="w-full px-3 py-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1a5fe0]"
+                      >
+                        <option value="class-12">Class 12 (JEE 2027)</option>
+                        <option value="dropper">Dropper (JEE 2027)</option>
+                        <option value="class-11">Class 11 (JEE 2028)</option>
+                      </select>
+                    </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
-                  <span>🔒 Secured by Cashfree PG</span>
-                  <span>UPI · Cards · Netbanking</span>
-                </div>
-              </form>
-            </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
+                        Scholarship Track
+                      </label>
+                      <select
+                        value={regForm.track}
+                        onChange={(e) => setRegForm({ ...regForm, track: e.target.value })}
+                        className="w-full px-3 py-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-[#1a5fe0]"
+                      >
+                        <option value="merit">Pure Merit (50%)</option>
+                        <option value="need">Need-Based (≤ 8 LPA)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full btn btn-blue mt-2"
+                  >
+                    <span>Register for ₹27 →</span>
+                  </button>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+                    <span>🔒 Secured by Cashfree PG</span>
+                    <span>UPI · Cards · Netbanking</span>
+                  </div>
+                </form>
+              </div>
+            )}
           </div>
         </section>
 
@@ -987,7 +1086,33 @@ export function AllIndiaMockTokkoPage() {
       {/* 13. Canonical Tokko Footer */}
       <Footer />
 
-      {/* 14. Registration & Share Modals */}
+      {/* 14. Sticky Mobile Bottom Action Bar */}
+      <div className="sticky-mobile-cta">
+        <div className="flex items-center justify-between gap-3 w-full">
+          <div className="flex flex-col text-left min-w-0">
+            <span className="text-[10px] font-mono text-slate-400 font-bold uppercase tracking-wider truncate">
+              27 Dec 2026 · CBT Mock
+            </span>
+            <span className="text-xs font-bold text-slate-900 truncate">
+              100% Fee Refund Pool
+            </span>
+          </div>
+          {user ? (
+            <Link href="/dashboard" className="btn btn-blue btn-sm shrink-0 !py-2.5 !px-5">
+              <span>Dashboard →</span>
+            </Link>
+          ) : (
+            <button
+              onClick={() => setRegModalOpen(true)}
+              className="btn btn-blue btn-sm shrink-0 !py-2.5 !px-5"
+            >
+              <span>Register for ₹27 →</span>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* 15. Registration & Share Modals */}
       <RegistrationModal
         isOpen={isRegModalOpen}
         onClose={() => setRegModalOpen(false)}

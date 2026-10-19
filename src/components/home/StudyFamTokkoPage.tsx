@@ -772,9 +772,15 @@ export function StudyFamTokkoPage() {
                   </div>
 
                   <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
-                    <Link className="btn btn-lav" href={SCHOLARSHIP_LINK} style={{ background: "var(--lav)", color: "#1a1a1a" }}>
-                      Register for ₹27 →
-                    </Link>
+                    {user ? (
+                      <Link className="btn btn-lav" href="/dashboard" style={{ background: "var(--lav)", color: "#1a1a1a" }}>
+                        Dashboard →
+                      </Link>
+                    ) : (
+                      <Link className="btn btn-lav" href={SCHOLARSHIP_LINK} style={{ background: "var(--lav)", color: "#1a1a1a" }}>
+                        Register for ₹27 →
+                      </Link>
+                    )}
                     <a className="btn btn-line" href="#pricing">See plans</a>
                   </div>
                   <p style={{ fontSize: "13px", color: "rgba(255,255,255,.55)", marginTop: "12px" }}>
@@ -991,9 +997,15 @@ export function StudyFamTokkoPage() {
                 <p style={{ color: "var(--mut)", fontSize: "16px", marginBottom: "20px", lineHeight: "1.5" }}>
                   Proctored slot allocations, verified scholarship pool participation, and official CBT admit cards are now active.
                 </p>
-                <Link href="/all-india-mock#register" className="btn btn-blue" style={{ width: "100%" }}>
-                  Register for ₹27 →
-                </Link>
+                {user ? (
+                  <Link href="/dashboard" className="btn btn-blue" style={{ width: "100%" }}>
+                    Go to Dashboard →
+                  </Link>
+                ) : (
+                  <Link href="/all-india-mock#register" className="btn btn-blue" style={{ width: "100%" }}>
+                    Register for ₹27 →
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -1007,7 +1019,11 @@ export function StudyFamTokkoPage() {
               <p>Stop guessing where you stand. Start building rank with direction — ten free papers, one national stage.</p>
               <div className="row">
                 <Link className="btn btn-lav" href={MFT_LINKS[1]}>Start Free →</Link>
-                <Link className="btn btn-line" href={SCHOLARSHIP_LINK}>Join ₹27 Scholarship</Link>
+                {user ? (
+                  <Link className="btn btn-line" href="/dashboard">My Dashboard →</Link>
+                ) : (
+                  <Link className="btn btn-line" href={SCHOLARSHIP_LINK}>Join ₹27 Scholarship</Link>
+                )}
               </div>
             </div>
           </div>
@@ -1020,7 +1036,11 @@ export function StudyFamTokkoPage() {
       {/* 17. Sticky CTA on Mobile */}
       <div className="sticky-cta">
         <a className="btn btn-dark" href="#mfts">Free mocks</a>
-        <Link className="btn btn-blue" href={SCHOLARSHIP_LINK}>₹27 Scholarship</Link>
+        {user ? (
+          <Link className="btn btn-blue" href="/dashboard">Dashboard →</Link>
+        ) : (
+          <Link className="btn btn-blue" href={SCHOLARSHIP_LINK}>Register for ₹27 →</Link>
+        )}
       </div>
     </>
   );
