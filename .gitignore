@@ -50,6 +50,7 @@ temp_binary_logo.png
 
 # large raw source data
 free mocks data/
+mock test for sohan/
 test_extracted_images/
 .wrangler/
 scratch/
