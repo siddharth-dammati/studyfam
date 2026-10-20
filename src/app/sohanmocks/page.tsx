@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Play, Clock, Award, CheckCircle2, Lock, FileText, Zap, Sparkles, Orbit, FlaskConical, Target } from "lucide-react";
+import { Play, Clock, Award, CheckCircle2, Lock, FileText, Zap, Sparkles, Orbit, FlaskConical, Target, Calculator, Sigma } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Sohan Mocks — Exclusive JEE Mock Test Series",
@@ -304,6 +304,75 @@ export default function SohanMocksPage() {
               </Link>
               <Link
                 href="/exam/player?id=sohan-wpe-mock&guest=1&review=1"
+                className="w-full inline-flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-semibold text-xs border border-white/10 transition-all"
+              >
+                <FileText className="w-3.5 h-3.5 text-slate-400" />
+                <span>View Solutions & Key</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Card 5: Mathematics Full Mock Test - NEW */}
+          <div className="bg-slate-900/80 border border-rose-500/30 rounded-3xl p-6 sm:p-7 backdrop-blur-xl shadow-2xl relative flex flex-col justify-between overflow-hidden group hover:border-rose-500/60 transition-all">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-rose-500 via-pink-500 to-fuchsia-500" />
+            
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/15 text-rose-300 text-xs font-bold uppercase tracking-wide border border-rose-500/30">
+                  <Calculator className="w-3.5 h-3.5 text-rose-400" />
+                  Mathematics • Full Mock
+                </span>
+                <span className="text-xs font-mono font-bold text-rose-400 bg-rose-950/40 border border-rose-500/20 px-2.5 py-0.5 rounded-md">
+                  JEE Main 2026
+                </span>
+              </div>
+
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
+                  <Sigma className="w-5 h-5" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-white group-hover:text-rose-200 transition-colors">
+                  Mathematics Full Mock
+                </h2>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-400 mb-5 font-medium leading-relaxed">
+                25 high-yield problems across Calculus, Matrices & Determinants, Vectors & 3D, Conic Sections, Probability, and Sequences with step-by-step verified proofs.
+              </p>
+
+              {/* Metrics */}
+              <div className="grid grid-cols-3 gap-2 mb-5">
+                <div className="bg-slate-800/60 border border-white/5 rounded-xl p-2.5 text-center">
+                  <div className="text-lg font-extrabold font-mono text-rose-400">25</div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400 mt-0.5">Questions</div>
+                </div>
+                <div className="bg-slate-800/60 border border-white/5 rounded-xl p-2.5 text-center">
+                  <div className="text-lg font-extrabold font-mono text-pink-400">60m</div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400 mt-0.5">Duration</div>
+                </div>
+                <div className="bg-slate-800/60 border border-white/5 rounded-xl p-2.5 text-center">
+                  <div className="text-lg font-extrabold font-mono text-fuchsia-400">100</div>
+                  <div className="text-[10px] uppercase font-bold text-slate-400 mt-0.5">Max Marks</div>
+                </div>
+              </div>
+
+              <div className="text-xs text-slate-400 bg-white/5 border border-white/5 rounded-xl py-2 px-3 mb-5 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Pattern: 20 MCQs (+4/-1) + 5 Numericals (+4/0)</span>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col gap-2 mt-auto">
+              <Link
+                href="/exam/player?id=sohan-math-mock&guest=1"
+                className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-bold text-sm shadow-[0_8px_20px_-4px_rgba(244,63,94,0.5)] transition-all transform hover:-translate-y-0.5 active:scale-95 border border-white/20"
+              >
+                <Play className="w-4 h-4 fill-current" />
+                <span>Start Test</span>
+              </Link>
+              <Link
+                href="/exam/player?id=sohan-math-mock&guest=1&review=1"
                 className="w-full inline-flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-semibold text-xs border border-white/10 transition-all"
               >
                 <FileText className="w-3.5 h-3.5 text-slate-400" />
